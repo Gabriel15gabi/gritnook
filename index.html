@@ -1,0 +1,2769 @@
+<title>El Escritorio de DAW</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@200;300;400;500;600;700&display=swap">
+
+<style>
+/* ═══════════════ tokens ═══════════════
+   Monocromo estricto. No hay color de acento ni de estado: lo que en otra
+   interfaz sería verde o rojo aquí se codifica con forma y con peso. */
+:root{
+  --bg:#FAFAFA; --surface:#FFFFFF; --surface-2:#F4F4F4; --surface-3:#EBEBEB;
+  --line:#E7E7E7; --line-2:#D4D4D4;
+  --ink:#0A0A0A; --ink-2:#4A4A4A; --ink-3:#6B6B6B; --ink-4:#A8A8A8;
+  --on-ink:#FFFFFF;
+  --verde:#16A34A; --on-verde:#FFFFFF;
+  --ring:rgba(10,10,10,.10);
+  --sombra-modal:0 28px 70px -28px rgba(0,0,0,.30), 0 2px 10px -2px rgba(0,0,0,.06);
+  --r-s:6px; --r-m:8px; --r-l:12px;
+  --sans:"Inter",ui-sans-serif,system-ui,-apple-system,"Segoe UI",Roboto,"Helvetica Neue",Arial,sans-serif;
+  color-scheme:light;
+}
+@media (prefers-color-scheme: dark){
+  :root:not([data-theme="light"]){
+    --bg:#0A0A0A; --surface:#111111; --surface-2:#181818; --surface-3:#222222;
+    --line:#222222; --line-2:#303030;
+    --ink:#F4F4F4; --ink-2:#ABABAB; --ink-3:#8A8A8A; --ink-4:#555555;
+    --on-ink:#0A0A0A;
+    --ring:rgba(244,244,244,.14);
+    --sombra-modal:0 28px 70px -24px rgba(0,0,0,.8), 0 0 0 1px rgba(255,255,255,.04);
+    color-scheme:dark;
+  }
+}
+:root[data-theme="dark"]{
+  --bg:#0A0A0A; --surface:#111111; --surface-2:#181818; --surface-3:#222222;
+  --line:#222222; --line-2:#303030;
+  --ink:#F4F4F4; --ink-2:#ABABAB; --ink-3:#8A8A8A; --ink-4:#555555;
+  --on-ink:#0A0A0A;
+  --ring:rgba(244,244,244,.14);
+  --sombra-modal:0 28px 70px -24px rgba(0,0,0,.8), 0 0 0 1px rgba(255,255,255,.04);
+  color-scheme:dark;
+}
+
+/* ═══════════════ base ═══════════════ */
+*{box-sizing:border-box}
+html{-webkit-text-size-adjust:100%}
+body{margin:0; background:var(--bg); color:var(--ink); font:400 14px/1.5 var(--sans);
+  -webkit-font-smoothing:antialiased; text-rendering:optimizeLegibility}
+h1,h2,h3,p{margin:0}
+button,input,select,textarea{font:inherit; color:inherit}
+a{color:inherit}
+:focus-visible{outline:2px solid var(--ink); outline-offset:2px; border-radius:4px}
+.oculto{display:none !important}
+.num{font-variant-numeric:tabular-nums}
+svg.i{width:16px; height:16px; flex:0 0 16px; fill:none; stroke:currentColor; stroke-width:1.5;
+  stroke-linecap:round; stroke-linejoin:round}
+
+/* ═══════════════ estructura ═══════════════ */
+.app{display:grid; grid-template-columns:252px minmax(0,1fr); min-height:100vh}
+
+.lateral{position:sticky; top:0; height:100vh; min-width:0; display:flex; flex-direction:column;
+  padding:24px 14px 16px; border-right:1px solid var(--line); background:var(--bg)}
+.marca{padding:2px 10px 26px}
+.marca .nombre{font:600 19px/1 var(--sans); letter-spacing:-.022em}
+.marca .curso{font:400 12px/1 var(--sans); color:var(--ink-3); margin-top:8px}
+
+.nav{display:flex; flex-direction:column; gap:2px}
+.nav-item{display:flex; align-items:center; gap:11px; height:36px; padding:0 10px; width:100%;
+  border:0; border-radius:var(--r-m); background:none; color:var(--ink-2); cursor:pointer;
+  font:500 13.5px/1 var(--sans); text-align:left; transition:background .12s, color .12s}
+.nav-item:hover{background:var(--surface-2); color:var(--ink)}
+.nav-item[aria-selected="true"]{background:var(--surface); color:var(--ink); box-shadow:inset 0 0 0 1px var(--line)}
+.nav-item .cuenta{margin-left:auto; font:600 11px/1 var(--sans); font-variant-numeric:tabular-nums; background:var(--ink); color:var(--on-ink);
+  border-radius:99px; padding:3px 7px}
+
+.lateral-pie{margin-top:auto; display:flex; align-items:center; justify-content:space-between; gap:8px;
+  padding:14px 6px 0; border-top:1px solid var(--line)}
+.sync{display:flex; align-items:center; gap:8px; font:400 12px/1.2 var(--sans); color:var(--ink-3); min-width:0}
+.sync .punto{width:6px; height:6px; border-radius:50%; flex:0 0 6px; border:1.5px solid var(--ink-3)}
+.sync.ok .punto{background:var(--ink); border-color:var(--ink)}
+.herramientas{display:flex; gap:2px}
+.icono-btn{width:32px; height:32px; display:grid; place-items:center; border:0; border-radius:var(--r-m);
+  background:none; color:var(--ink-2); cursor:pointer; transition:background .12s, color .12s}
+.icono-btn:hover{background:var(--surface-2); color:var(--ink)}
+
+.principal{min-width:0; padding:32px 52px 56px}
+.principal:focus{outline:none}
+.contenedor{max-width:1300px; margin:0 auto}
+
+@media (max-width:880px){
+  .app{grid-template-columns:minmax(0,1fr)}
+  .lateral{position:sticky; z-index:30; height:auto; flex-direction:row; flex-wrap:wrap; align-items:center;
+    gap:12px; padding:14px 16px 10px; border-right:0; border-bottom:1px solid var(--line)}
+  .marca{padding:0; flex:1}
+  .marca .nombre{font-size:23px}
+  .marca .curso{display:none}
+  .lateral-pie{margin:0; padding:0; border:0}
+  .sync span:last-child{display:none}
+  .nav{order:3; flex-direction:row; width:100%; overflow-x:auto; gap:4px; scrollbar-width:none; padding-bottom:2px}
+  .nav::-webkit-scrollbar{display:none}
+  .nav-item{width:auto; flex:0 0 auto; height:32px}
+  .principal{padding:26px 16px 64px}
+}
+
+/* ═══════════════ cabecera de sección ═══════════════ */
+.cab{display:flex; align-items:flex-end; justify-content:space-between; gap:24px; flex-wrap:wrap; margin-bottom:26px}
+.eyebrow{font:500 12.5px/1 var(--sans); color:var(--ink-3); margin-bottom:12px}
+.titulo{font:600 34px/1.12 var(--sans); letter-spacing:-.03em; text-wrap:balance}
+.titulo em{font-style:normal; color:var(--ink-3)}
+.lead{margin-top:12px; color:var(--ink-2); max-width:62ch; font-size:14.5px; line-height:1.55}
+.cab-datos{display:flex; gap:32px}
+.cab-dato{display:flex; flex-direction:column; gap:6px; min-width:74px}
+.cab-dato .cifra{font-size:34px}
+
+/* ═══════════════ piezas ═══════════════ */
+.rejilla-12{display:grid; grid-template-columns:repeat(12,minmax(0,1fr)); gap:16px; align-items:start}
+.c-5{grid-column:span 5} .c-7{grid-column:span 7} .c-12{grid-column:span 12}
+.pila{display:flex; flex-direction:column; gap:16px; min-width:0}
+@media (max-width:1180px){ .rejilla-12 > *{grid-column:span 12} }
+
+.panel{background:var(--surface); border:1px solid var(--line); border-radius:var(--r-l); padding:22px 24px; min-width:0}
+.panel-cab{display:flex; align-items:center; justify-content:space-between; gap:12px; margin-bottom:18px}
+.etq{font:500 13px/1.2 var(--sans); color:var(--ink-2)}
+.meta{font:400 12.5px/1.45 var(--sans); color:var(--ink-3)}
+.cifra{font:300 48px/1 var(--sans); letter-spacing:-.045em; font-variant-numeric:tabular-nums}
+.cifra.vacia{color:var(--ink-4)}
+.cifra.m{font-size:38px}
+.subrayado{border-bottom:1px solid currentColor}
+
+.btn{display:inline-flex; align-items:center; justify-content:center; gap:8px; height:34px; padding:0 14px;
+  border-radius:var(--r-m); border:1px solid var(--line-2); background:var(--surface); color:var(--ink);
+  font:500 13.5px/1 var(--sans); cursor:pointer; white-space:nowrap; text-decoration:none;
+  transition:background .12s, border-color .12s, color .12s, opacity .12s}
+.btn:hover{background:var(--surface-2)}
+.btn.primario{background:var(--ink); color:var(--on-ink); border-color:var(--ink)}
+.btn.primario:hover{opacity:.86; background:var(--ink)}
+.btn.fantasma{border-color:transparent; background:transparent; color:var(--ink-2)}
+.btn.fantasma:hover{background:var(--surface-2); color:var(--ink)}
+/* borrar, en monocromo: sin rojo; lo protege la confirmación */
+.btn.borrar{border-color:transparent; background:transparent; color:var(--ink-3)}
+.btn.borrar:hover{color:var(--ink); background:var(--surface-2)}
+.btn.mini{height:28px; padding:0 10px; font-size:12.5px; border-radius:var(--r-s)}
+.btn.cuadrado{width:28px; padding:0}
+.btn svg{width:14px; height:14px}
+.barra-btns{display:flex; gap:8px; flex-wrap:wrap; align-items:center}
+
+.campo{display:flex; flex-direction:column; gap:7px; font:500 12.5px/1 var(--sans); color:var(--ink-2); min-width:0}
+input[type=text],input[type=date],input[type=number],input[type=url],select,textarea{
+  width:100%; height:36px; padding:0 11px; border:1px solid var(--line-2); border-radius:var(--r-m);
+  background:var(--surface); color:var(--ink); font:400 14px/1.4 var(--sans);
+  transition:border-color .12s, box-shadow .12s}
+textarea{height:auto; padding:10px 12px; line-height:1.6; resize:vertical}
+input:focus,select:focus,textarea:focus{outline:none; border-color:var(--ink); box-shadow:0 0 0 3px var(--ring)}
+::placeholder{color:var(--ink-3)}
+select{appearance:none; -webkit-appearance:none; padding-right:32px;
+  background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' fill='none' stroke='%23888' stroke-width='1.6' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M3 4.5l3 3 3-3'/%3E%3C/svg%3E");
+  background-repeat:no-repeat; background-position:right 11px center}
+input[type=checkbox]{appearance:none; -webkit-appearance:none; width:17px; height:17px; flex:0 0 17px; margin:0;
+  border:1.5px solid var(--line-2); border-radius:5px; background:var(--surface); display:grid; place-content:center; cursor:pointer}
+input[type=checkbox]:checked{background:var(--ink); border-color:var(--ink)}
+input[type=checkbox]:checked::after{content:""; width:8px; height:4.5px; border-left:1.7px solid var(--on-ink);
+  border-bottom:1.7px solid var(--on-ink); transform:translate(0,-1px) rotate(-45deg)}
+
+/* estado: vacío = vas bien · medio = ojo · macizo e invertido = en riesgo */
+.estado{display:inline-flex; align-items:center; gap:7px; height:24px; padding:0 10px 0 9px; border-radius:99px;
+  border:1px solid var(--line-2); font:500 12px/1 var(--sans); color:var(--ink-2); white-space:nowrap}
+.estado .dot{width:8px; height:8px; border-radius:50%; border:1.5px solid currentColor; flex:0 0 8px}
+.estado.aviso{color:var(--ink); border-color:var(--ink-3)}
+.estado.aviso .dot{background:linear-gradient(90deg,currentColor 50%,transparent 50%)}
+.estado.riesgo{background:var(--ink); border-color:var(--ink); color:var(--on-ink)}
+.estado.riesgo .dot{background:currentColor}
+
+/* barras: el estudio es progreso (macizo); las faltas son consumo (rayado) */
+.medidor{height:5px; border-radius:99px; background:var(--surface-3); overflow:hidden}
+.medidor > i{display:block; height:100%; border-radius:99px; background:var(--ink); transition:width .5s cubic-bezier(.2,.7,.2,1)}
+.medidor.faltas{height:6px}
+.medidor.faltas > i{background:repeating-linear-gradient(-45deg, var(--ink) 0 2px, transparent 2px 4.5px)}
+.medidor.faltas.lleno > i{background:var(--ink)}
+.barra-fila{display:flex; justify-content:space-between; align-items:baseline; gap:8px; font-size:12.5px; color:var(--ink-2); margin:14px 0 7px}
+
+.codigo{display:inline-grid; place-items:center; min-width:46px; height:22px; padding:0 6px; border:1px solid var(--line-2);
+  border-radius:5px; font:600 10.5px/1 var(--sans); letter-spacing:.05em; color:var(--ink-2)}
+
+.lista{display:flex; flex-direction:column}
+.fila{display:flex; align-items:center; gap:12px; padding:12px 0; border-top:1px solid var(--line); min-width:0}
+.fila:first-child{border-top:0; padding-top:2px}
+.fila .principal-fila{flex:1; min-width:0}
+.fila .t{font-weight:500; overflow:hidden; text-overflow:ellipsis; white-space:nowrap}
+.fila-boton{width:100%; border:0; background:none; text-align:left; cursor:pointer; color:inherit; border-radius:var(--r-s)}
+.fila-boton:hover .t{text-decoration:underline; text-underline-offset:3px}
+
+.vacio{color:var(--ink-3); font-size:13.5px; padding:18px 0 6px}
+
+/* ═══════════════ escritorio ═══════════════ */
+.reloj{font:200 80px/1 var(--sans); letter-spacing:-.05em; font-variant-numeric:tabular-nums; margin:4px 0 8px}
+.reloj.descanso{color:var(--ink-3)}
+.fase{font:500 11px/1 var(--sans); color:var(--ink-3); letter-spacing:.08em; text-transform:uppercase}
+
+.dias{display:flex; align-items:flex-end; gap:4px; height:60px; margin-top:18px}
+.dia{flex:1; height:100%; display:flex; align-items:flex-end}
+.dia > i{display:block; width:100%; min-height:3px; border-radius:3px 3px 1px 1px; background:var(--ink)}
+.dia.sin > i{background:var(--line-2); height:2px !important; border-radius:1px}
+.dia:hover > i{opacity:.7}
+.dias-eje{display:flex; justify-content:space-between; margin-top:9px; font:400 11.5px/1 var(--sans); color:var(--ink-3)}
+
+.nota-rapida{border:0; padding:0; background:transparent; min-height:92px; font-size:15px; line-height:1.6; resize:none}
+.nota-rapida:focus{box-shadow:none}
+
+/* ═══════════════ objetivos del día ═══════════════
+   El verde es el único color de la app y solo significa una cosa: hecho. */
+.objetivos .panel-cab{flex-wrap:wrap; row-gap:12px}
+.obj-titulo{display:flex; align-items:baseline; gap:10px}
+.obj-derecha{display:flex; align-items:center; gap:16px}
+.semana-obj{display:flex; gap:8px}
+.dia-obj{display:flex; flex-direction:column; align-items:center; gap:5px}
+.dia-obj i{display:block; width:10px; height:10px; border-radius:50%; border:1.5px solid var(--line-2)}
+.dia-obj i.parcial{border-color:var(--ink-3); background:linear-gradient(90deg,var(--ink-3) 50%,transparent 50%)}
+.dia-obj i.lleno{border-color:var(--verde); background:var(--verde)}
+.dia-obj i.hoy{box-shadow:0 0 0 2px var(--surface), 0 0 0 3.5px var(--ink-3)}
+.dia-obj b{font:500 10px/1 var(--sans); color:var(--ink-3)}
+.obj-lista{display:grid; grid-template-columns:repeat(auto-fit,minmax(min(168px,100%),1fr)); gap:10px}
+.objetivo{display:flex; align-items:center; gap:12px; min-width:0; padding:12px 14px; border:1px solid var(--line);
+  border-radius:10px; background:var(--surface); color:var(--ink); text-align:left; cursor:pointer;
+  transition:background .12s, border-color .12s}
+.objetivo:hover{background:var(--surface-2); border-color:var(--line-2)}
+.obj-texto{display:flex; flex-direction:column; gap:3px; min-width:0}
+.obj-texto .t{font:500 13.5px/1.3 var(--sans); overflow:hidden; display:-webkit-box; -webkit-box-orient:vertical; -webkit-line-clamp:2; line-clamp:2}
+.obj-texto .meta{overflow:hidden; text-overflow:ellipsis; white-space:nowrap}
+.objetivo.hecho .obj-texto .t{color:var(--ink-2)}
+/* el círculo es un anillo que se rellena con el progreso; al completarse, verde con su check */
+.circulo{position:relative; flex:0 0 24px; width:24px; height:24px; border-radius:50%; display:grid; place-items:center;
+  background:conic-gradient(var(--ink) calc(var(--p, 0) * 1%), var(--line-2) 0)}
+.circulo::before{content:""; position:absolute; inset:2px; border-radius:50%; background:var(--surface); transition:background .12s}
+.objetivo:hover .circulo::before{background:var(--surface-2)}
+.circulo.hecho{background:var(--verde)}
+.circulo.hecho::before{display:none}
+.circulo svg{position:relative; width:13px; height:13px; fill:none; stroke:var(--on-verde); stroke-width:2.1;
+  stroke-linecap:round; stroke-linejoin:round}
+.obj-nuevo{display:grid; grid-template-columns:minmax(0,1fr) auto; gap:10px; align-items:end; margin-top:16px}
+
+/* ═══════════════ módulos ═══════════════ */
+.rejilla-modulos{display:grid; grid-template-columns:repeat(auto-fill,minmax(min(360px,100%),1fr)); gap:16px}
+.modulo{display:flex; flex-direction:column}
+.modulo-cab{display:flex; justify-content:space-between; align-items:center; gap:10px}
+.modulo-nombre{font:600 16.5px/1.3 var(--sans); letter-spacing:-.015em; margin:14px 0 20px}
+.modulo-cifras{display:grid; grid-template-columns:repeat(2,minmax(0,1fr)); gap:18px; padding-bottom:18px; border-bottom:1px solid var(--line)}
+.modulo-cifras .meta{margin-top:10px}
+.modulo-frase{font-size:13.5px; color:var(--ink-2); margin-top:16px; line-height:1.5}
+.modulo-frase strong{color:var(--ink); font-weight:600}
+.modulo-acciones{display:flex; justify-content:space-between; align-items:center; gap:10px; margin-top:20px; padding-top:16px; border-top:1px solid var(--line)}
+.paso{display:inline-flex; align-items:center; gap:2px; border:1px solid var(--line-2); border-radius:var(--r-s); padding:2px}
+.paso .num{min-width:44px; text-align:center; font-size:12.5px}
+.paso .btn{height:24px; width:24px; padding:0; border:0}
+
+/* ═══════════════ apuntes ═══════════════ */
+.notas{display:grid; grid-template-columns:300px minmax(0,1fr); gap:16px; align-items:start}
+@media (max-width:980px){ .notas{grid-template-columns:minmax(0,1fr)} }
+.lista-notas{display:flex; flex-direction:column; gap:2px; margin-top:12px; max-height:calc(100vh - 290px); overflow:auto}
+.nota-item{display:flex; flex-direction:column; gap:6px; width:100%; padding:11px 12px; text-align:left; cursor:pointer;
+  border:1px solid transparent; border-radius:var(--r-m); background:none; color:var(--ink)}
+.nota-item:hover{background:var(--surface-2)}
+.nota-item[aria-current="true"]{background:var(--surface); border-color:var(--line)}
+.nota-item .t{font:500 13.5px/1.3 var(--sans); overflow:hidden; text-overflow:ellipsis; white-space:nowrap}
+.nota-item .m{font:400 12px/1 var(--sans); font-variant-numeric:tabular-nums; color:var(--ink-3)}
+.editor{padding:26px 30px 22px}
+.editor-titulo{height:auto !important; padding:0 !important; border:0 !important; background:transparent !important;
+  font:600 28px/1.2 var(--sans) !important; letter-spacing:-.026em; box-shadow:none !important}
+.editor-meta{display:grid; grid-template-columns:minmax(0,220px) minmax(0,1fr); gap:10px; margin:18px 0 20px}
+@media (max-width:600px){ .editor{padding:20px 18px 16px} .editor-meta{grid-template-columns:minmax(0,1fr)} .cab-datos{gap:22px} .titulo{font-size:29px} .reloj{font-size:66px} }
+/* ═══════════════ libreta de cuadrícula ═══════════════
+   El papel es papel también en modo oscuro: una hoja de verdad no se vuelve
+   negra. Las tintas se multiplican con él, así el subrayador deja ver el texto. */
+:root{--papel-libreta:#FDFCF8; --cuadro:rgba(74,118,168,.22); --margen-libreta:rgba(214,92,92,.55)}
+@media (prefers-color-scheme: dark){
+  :root:not([data-theme="light"]){--papel-libreta:#E8E5DE; --cuadro:rgba(60,96,140,.28); --margen-libreta:rgba(190,78,78,.55)}
+}
+:root[data-theme="dark"]{--papel-libreta:#E8E5DE; --cuadro:rgba(60,96,140,.28); --margen-libreta:rgba(190,78,78,.55)}
+.lb-barra{position:sticky; top:10px; z-index:6; display:flex; flex-wrap:wrap; align-items:center; gap:8px 12px;
+  padding:6px 8px; margin:0 0 16px; border:1px solid var(--line); border-radius:10px; background:var(--surface);
+  box-shadow:0 6px 18px -12px rgba(0,0,0,.25)}
+.lb-grupo{display:flex; align-items:center; gap:2px}
+.lb-grupo + .lb-grupo{padding-left:12px; border-left:1px solid var(--line)}
+.lb-derecha{margin-left:auto}
+.lb-btn{width:32px; height:32px; display:grid; place-items:center; border:0; border-radius:7px; background:none;
+  color:var(--ink-2); cursor:pointer; transition:background .12s, color .12s}
+.lb-btn:hover{background:var(--surface-2); color:var(--ink)}
+.lb-btn[aria-pressed="true"]{background:var(--ink); color:var(--on-ink)}
+.lb-btn:disabled{opacity:.3; cursor:default; background:none}
+.lb-grosor i{display:block; border-radius:50%; background:currentColor}
+.lb-color{width:20px; height:20px; margin:0 4px; border:0; border-radius:50%; background:var(--c); cursor:pointer;
+  box-shadow:inset 0 0 0 1px rgba(0,0,0,.18)}
+.lb-color[aria-pressed="true"]{box-shadow:inset 0 0 0 1px rgba(0,0,0,.18), 0 0 0 2px var(--surface), 0 0 0 3.5px var(--ink)}
+.libreta-marco{overflow-x:auto; overflow-y:hidden; padding:2px 2px 14px}
+.hoja-escala{position:relative; margin:0 auto}
+.hoja-papel{position:absolute; top:0; left:0; width:800px; transform-origin:0 0; border-radius:2px;
+  background-color:var(--papel-libreta);
+  background-image:
+    linear-gradient(var(--cuadro) 1px, transparent 1px),
+    linear-gradient(90deg, var(--cuadro) 1px, transparent 1px),
+    url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='180' height='180'%3E%3Cfilter id='f'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='3' stitchTiles='stitch'/%3E%3CfeColorMatrix type='saturate' values='0'/%3E%3C/filter%3E%3Crect width='180' height='180' filter='url(%23f)' opacity='0.07'/%3E%3C/svg%3E");
+  background-size:24px 24px, 24px 24px, 180px 180px;
+  box-shadow:0 1px 1px rgba(0,0,0,.06), 0 2px 6px -2px rgba(0,0,0,.08), 0 18px 40px -22px rgba(0,0,0,.35)}
+.hoja-papel::before{content:""; position:absolute; top:0; bottom:0; left:71px; width:1.5px; background:var(--margen-libreta); z-index:0}
+.hoja-texto{position:absolute; top:0; left:0; width:100%; z-index:1; margin:0; padding:24px 44px 48px 88px;
+  color:#1D2126; font:400 15px/24px var(--sans); white-space:pre-wrap; overflow-wrap:anywhere; overflow:hidden;
+  outline:none; cursor:text; caret-color:#1D2126}
+.hoja-texto:focus,.hoja-texto:focus-visible{outline:none}
+.hoja-texto b,.hoja-texto strong{font-weight:700}
+/* un editable no trae texto de ayuda: se pinta sobre la primera línea mientras está vacío */
+.hoja-texto.sin-texto::before{content:attr(data-placeholder); position:absolute; top:24px; left:88px; color:#8A9099; pointer-events:none}
+.lb-btn.lb-negrita svg{stroke-width:2.2}
+.capa{position:absolute; top:0; left:0; z-index:2; pointer-events:none; mix-blend-mode:multiply}
+.capa.viva{z-index:3}
+.libreta.dibujar .capa.viva{pointer-events:auto; touch-action:none; cursor:crosshair}
+.editor-pie{display:flex; justify-content:space-between; align-items:center; gap:10px; flex-wrap:wrap;
+  margin-top:14px; padding-top:14px; border-top:1px solid var(--line)}
+.ia{margin-top:16px; border:1px solid var(--line); border-radius:var(--r-m); background:var(--surface-2); padding:16px 18px}
+.ia-cab{display:flex; justify-content:space-between; align-items:center; gap:10px}
+.firma{font:500 11px/1 var(--sans); letter-spacing:.08em; text-transform:uppercase; color:var(--ink-3)}
+.ia .salida{white-space:pre-wrap; font-size:14.5px; line-height:1.65; margin-top:12px; max-height:360px; overflow:auto}
+.cargando{color:var(--ink-3)}
+
+/* ═══════════════ entregas ═══════════════ */
+.form-entrega{display:grid; grid-template-columns:minmax(0,2.2fr) minmax(0,1fr) minmax(0,1fr) minmax(0,.8fr) auto; gap:10px; align-items:end}
+@media (max-width:1100px){ .form-entrega{grid-template-columns:repeat(2,minmax(0,1fr))} }
+.grupo{margin-top:30px}
+.grupo-cab{display:flex; align-items:baseline; gap:10px; margin-bottom:6px}
+.grupo-cab h2{font:600 17px/1.2 var(--sans); letter-spacing:-.015em}
+.fila .fecha{font:400 13px/1 var(--sans); font-variant-numeric:tabular-nums; color:var(--ink-2); white-space:nowrap}
+.tachada .t{text-decoration:line-through; color:var(--ink-3)}
+
+/* ═══════════════ casillero ═══════════════ */
+.casillero-top{display:grid; grid-template-columns:minmax(0,1.3fr) minmax(0,1fr); gap:16px}
+@media (max-width:980px){ .casillero-top{grid-template-columns:minmax(0,1fr)} }
+.soltar{display:flex; flex-direction:column; align-items:center; justify-content:center; gap:10px; text-align:center;
+  min-height:220px; padding:28px; border:1px dashed var(--line-2); border-radius:var(--r-l); background:var(--surface);
+  color:var(--ink-2); transition:border-color .15s, background .15s}
+.soltar.encima{border-color:var(--ink); background:var(--surface-2)}
+.soltar strong{font:600 17px/1.3 var(--sans); letter-spacing:-.015em; color:var(--ink)}
+.rejilla-docs{display:grid; grid-template-columns:repeat(auto-fill,minmax(min(300px,100%),1fr)); gap:12px; margin-top:16px}
+.doc{display:flex; gap:14px; align-items:flex-start; padding:14px 16px; border:1px solid var(--line); border-radius:var(--r-m); background:var(--surface)}
+.tipo{display:grid; place-items:center; flex:0 0 40px; width:40px; height:50px; border:1px solid var(--line-2); border-radius:4px 10px 4px 4px;
+  background:var(--surface-2); font:600 9.5px/1 var(--sans); letter-spacing:.07em; color:var(--ink-2)}
+.doc .t{font-weight:500; overflow:hidden; text-overflow:ellipsis; white-space:nowrap}
+.visor img{max-width:100%; border-radius:var(--r-m); border:1px solid var(--line)}
+.visor pre{white-space:pre-wrap; font:400 13px/1.6 ui-monospace,"SF Mono","Cascadia Mono",Consolas,monospace; background:var(--surface-2); padding:14px; border-radius:var(--r-m); overflow-x:auto}
+
+/* ═══════════════ inglés ═══════════════ */
+.traductor{display:grid; grid-template-columns:repeat(2,minmax(0,1fr)); border:1px solid var(--line); border-radius:var(--r-l); overflow:hidden; background:var(--surface)}
+@media (max-width:820px){ .traductor{grid-template-columns:minmax(0,1fr)} .traductor .lado + .lado{border-left:0 !important; border-top:1px solid var(--line)} }
+.lado{display:flex; flex-direction:column; gap:12px; padding:18px 20px; min-height:250px}
+.lado + .lado{border-left:1px solid var(--line); background:var(--surface-2)}
+.idioma{display:flex; justify-content:space-between; align-items:center; font:500 12.5px/1 var(--sans); color:var(--ink-2)}
+.lado textarea{flex:1; min-height:160px; border:0; background:transparent; padding:0; font:400 18px/1.55 var(--sans); resize:none; box-shadow:none !important}
+.salida-trad{flex:1; font:400 18px/1.55 var(--sans); white-space:pre-wrap}
+.salida-trad:empty::before{content:"La traducción aparecerá aquí."; color:var(--ink-3)}
+.trad-pie{display:flex; justify-content:space-between; align-items:center; gap:10px; flex-wrap:wrap; margin-top:12px}
+.seccion{margin-top:40px}
+.seccion-cab{display:flex; justify-content:space-between; align-items:baseline; gap:12px; margin-bottom:14px}
+.seccion-cab h2{font:600 20px/1.2 var(--sans); letter-spacing:-.02em}
+.form-vocab{display:grid; grid-template-columns:minmax(0,1fr) minmax(0,1fr) auto; gap:10px; align-items:end; margin-bottom:14px}
+@media (max-width:680px){ .form-vocab{grid-template-columns:minmax(0,1fr)} }
+.palabras{display:grid; grid-template-columns:repeat(auto-fill,minmax(min(220px,100%),1fr)); gap:10px}
+.palabra{padding:13px 15px; border:1px solid var(--line); border-radius:var(--r-m); background:var(--surface)}
+.palabra .en{font:500 15px/1.3 var(--sans)}
+.palabra .es{color:var(--ink-2); margin-top:3px; font-size:13.5px}
+.palabra-pie{display:flex; justify-content:space-between; align-items:center; margin-top:10px}
+.cajas{display:flex; gap:3px}
+.cajas i{width:14px; height:4px; border-radius:2px; background:var(--surface-3)}
+.cajas i.llena{background:var(--ink)}
+.tabla-scroll{overflow-x:auto; border:1px solid var(--line); border-radius:var(--r-l); background:var(--surface)}
+table{width:100%; border-collapse:collapse}
+th{text-align:left; font:500 12px/1 var(--sans); color:var(--ink-3); padding:13px 16px; border-bottom:1px solid var(--line)}
+td{padding:11px 16px; border-bottom:1px solid var(--line); font-size:13.5px}
+tr:last-child td{border-bottom:0}
+.termino{font-weight:600; letter-spacing:-.005em}
+.tarjeta-repaso{display:flex; flex-direction:column; justify-content:center; align-items:center; gap:16px; min-height:220px;
+  padding:30px 20px; border:1px solid var(--line); border-radius:var(--r-l); text-align:center}
+.tarjeta-repaso .cara{font:300 40px/1.1 var(--sans); letter-spacing:-.03em}
+.tarjeta-repaso .reverso{font-size:17px; color:var(--ink-2)}
+
+/* ═══════════════ diálogo y avisos ═══════════════ */
+dialog{width:min(660px,94vw); padding:0; border:1px solid var(--line); border-radius:14px; background:var(--surface);
+  color:var(--ink); box-shadow:var(--sombra-modal)}
+dialog::backdrop{background:rgba(0,0,0,.38); backdrop-filter:blur(2px)}
+.dlg-cab{display:flex; justify-content:space-between; align-items:flex-start; gap:12px; padding:22px 24px 0}
+.dlg-cab h3{font:600 20px/1.25 var(--sans); letter-spacing:-.02em}
+.dlg-cuerpo{padding:20px 24px; max-height:66vh; overflow:auto}
+.dlg-pie{display:flex; justify-content:space-between; gap:8px; padding:14px 24px 18px; border-top:1px solid var(--line)}
+.dlg-pie .derecha{display:flex; gap:8px; margin-left:auto}
+.rejilla-campos{display:grid; grid-template-columns:repeat(3,minmax(0,1fr)); gap:12px}
+@media (max-width:600px){ .rejilla-campos{grid-template-columns:repeat(2,minmax(0,1fr))} }
+.separador{border:0; border-top:1px solid var(--line); margin:22px 0}
+.tabla-pesos td{padding:8px 6px; border-bottom:1px solid var(--line)}
+.tabla-pesos th{padding:8px 6px}
+.resumen{margin-top:16px; padding:14px 16px; border-radius:var(--r-m); background:var(--surface-2); font-size:14px; line-height:1.55}
+
+#avisos{position:fixed; right:22px; bottom:22px; z-index:60; display:flex; flex-direction:column; gap:8px; max-width:360px}
+.toast{padding:11px 15px; border-radius:var(--r-m); background:var(--ink); color:var(--on-ink);
+  font:500 13px/1.45 var(--sans); box-shadow:0 14px 34px -14px rgba(0,0,0,.4); transition:opacity .3s, transform .3s}
+.toast.mal{background:var(--surface); color:var(--ink); border:1px solid var(--ink)}
+
+@media (prefers-reduced-motion: reduce){ *{animation-duration:.001ms !important; transition-duration:.001ms !important} }
+/* ── el profe: conversación ── */
+.nav-sep{height:1px; width:auto; margin:9px 6px 8px; border:0; background:var(--line)}
+@media (max-width:880px){ .nav-sep{width:1px; height:18px; margin:0 5px; flex:0 0 auto; align-self:center} }
+.chat-nota{margin:0; font:400 12.5px/1.55 var(--sans); color:var(--ink-3)}
+/* el verde de la app deja el número justo de contraste a 11 px: el contador lleva el suyo */
+.nav-item .cuenta.verde{background:#15803D; color:#FFFFFF}
+@media (prefers-color-scheme: dark){:root:not([data-theme="light"]) .nav-item .cuenta.verde{background:#22C55E; color:#07130C}}
+:root[data-theme="dark"] .nav-item .cuenta.verde{background:#22C55E; color:#07130C}
+.chat-panel{display:flex; flex-direction:column; gap:14px}
+.chat{display:flex; flex-direction:column; gap:13px; max-height:min(58vh,580px); overflow-y:auto; padding:2px}
+.msg{display:flex; flex-direction:column; gap:4px; max-width:min(78%,580px)}
+.msg.tu{align-self:flex-end; align-items:flex-end}
+.msg.profe{align-self:flex-start}
+.burbuja{padding:10px 13px; border-radius:14px; font:400 14px/1.55 var(--sans); white-space:pre-wrap; overflow-wrap:anywhere}
+.msg.profe .burbuja{background:var(--surface-2); color:var(--ink); border-bottom-left-radius:5px}
+.msg.tu .burbuja{background:var(--ink); color:var(--on-ink); border-bottom-right-radius:5px}
+.msg time{font:400 11px/1 var(--sans); color:var(--ink-4); font-variant-numeric:tabular-nums}
+.acc{display:inline-flex; align-items:center; gap:6px; padding:5px 10px; border-radius:999px;
+  background:var(--surface); box-shadow:inset 0 0 0 1px var(--line); font:500 12px/1 var(--sans); color:var(--ink-2)}
+.acc svg{width:11px; height:11px; flex:0 0 11px; fill:none; stroke:var(--verde); stroke-width:2.3; stroke-linecap:round; stroke-linejoin:round}
+.puntos{display:inline-flex; gap:5px; padding:6px 2px}
+.puntos i{width:6px; height:6px; border-radius:50%; background:var(--ink-4); animation:latido 1.1s infinite ease-in-out}
+.puntos i:nth-child(2){animation-delay:.15s}
+.puntos i:nth-child(3){animation-delay:.3s}
+@keyframes latido{0%,60%,100%{opacity:.3} 30%{opacity:.9}}
+@media (prefers-reduced-motion: reduce){.puntos i{animation:none}}
+.chat-sug{display:flex; flex-wrap:wrap; gap:7px}
+.sug{padding:6px 11px; border-radius:999px; border:0; background:var(--surface-2); color:var(--ink-2);
+  font:500 12.5px/1 var(--sans); cursor:pointer; transition:background .12s, color .12s}
+.sug:hover{background:var(--surface-3); color:var(--ink)}
+.chat-barra{display:flex; gap:9px; align-items:flex-end; flex-wrap:wrap}
+.chat-barra select{flex:0 0 auto; max-width:200px}
+.chat-barra textarea{flex:1 1 240px; min-height:42px; max-height:160px; resize:none; line-height:1.5}
+.chat-vacio{padding:26px 8px; text-align:center; color:var(--ink-3); font:400 13.5px/1.6 var(--sans)}
+.repaso-fila{display:flex; align-items:center; gap:10px; padding:9px 0; border-top:1px solid var(--line)}
+.repaso-fila:first-child{border-top:0}
+.repaso-fila .t{flex:1; font:500 13.5px/1.4 var(--sans); color:var(--ink)}
+</style>
+
+<div class="app">
+  <aside class="lateral">
+    <div class="marca">
+      <div class="nombre">Escritorio</div>
+      <div class="curso" id="curso">1.º DAW</div>
+    </div>
+    <nav class="nav" id="nav" role="tablist" aria-label="Secciones"></nav>
+    <div class="lateral-pie">
+      <div class="sync" id="sync" title="Dónde se guardan tus datos"><span class="punto"></span><span id="txtSync">Este dispositivo</span></div>
+      <div class="herramientas">
+        <button class="icono-btn" id="btnTema" type="button"></button>
+        <button class="icono-btn" id="btnAjustes" type="button" aria-label="Ajustes" title="Ajustes"></button>
+      </div>
+    </div>
+  </aside>
+  <main class="principal" id="principal" role="tabpanel" tabindex="-1">
+    <div class="contenedor" id="contenido"></div>
+  </main>
+</div>
+
+<dialog id="dlg"><form method="dialog" id="dlgForm">
+  <div class="dlg-cab"><h3 id="dlgTit">—</h3>
+    <button class="icono-btn" value="cancelar" aria-label="Cerrar"><svg class="i" viewBox="0 0 16 16"><path d="M4 4l8 8M12 4l-8 8"/></svg></button></div>
+  <div class="dlg-cuerpo" id="dlgCuerpo"></div>
+  <div class="dlg-pie" id="dlgPie"></div>
+</form></dialog>
+
+<div id="avisos" aria-live="polite"></div>
+
+<script>
+"use strict";
+/* ══════════════════ utilidades ══════════════════ */
+const $ = (s, r = document) => r.querySelector(s);
+const esc = s => String(s ?? "").replace(/[&<>"']/g, c => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[c]));
+const uid = () => Date.now().toString(36) + Math.random().toString(36).slice(2, 7);
+const hoyISO = (d = new Date()) => new Date(d.getTime() - d.getTimezoneOffset() * 6e4).toISOString().slice(0, 10);
+const num = (v, d = 0) => { const n = parseFloat(String(v).replace(",", ".")); return Number.isFinite(n) ? n : d; };
+const clamp = (n, a, b) => Math.min(b, Math.max(a, n));
+const nota = n => (Math.round(n * 100) / 100).toLocaleString("es-ES", { maximumFractionDigits: 2 });
+const horasTxt = m => { const h = Math.floor(m / 60), r = Math.round(m % 60); return h ? (r ? h + " h " + r + " min" : h + " h") : r + " min"; };
+const diasEntre = (a, b) => Math.round((new Date(a + "T00:00") - new Date(b + "T00:00")) / 864e5);
+const mayus = s => s.charAt(0).toUpperCase() + s.slice(1);
+/* lo que llega de la base de datos viene congelado: se clona antes de tocarlo */
+const clonar = o => JSON.parse(JSON.stringify(o));
+
+function aviso(txt, tipo = "") {
+  const d = document.createElement("div");
+  d.className = "toast " + tipo; d.textContent = txt;
+  $("#avisos").append(d);
+  setTimeout(() => { d.style.opacity = "0"; d.style.transform = "translateY(4px)"; setTimeout(() => d.remove(), 320); }, 4200);
+}
+const avisados = new Set();
+const avisoUnaVez = (clave, txt, tipo = "mal") => { if (avisados.has(clave)) return; avisados.add(clave); aviso(txt, tipo); };
+const guardaLS = (k, v) => { try { localStorage.setItem("desk-daw:" + k, JSON.stringify(v)); return true; } catch (e) { return false; } };
+const leeLS = k => { try { const v = localStorage.getItem("desk-daw:" + k); return v ? JSON.parse(v) : null; } catch (e) { return null; } };
+
+/* iconos de trazo fino, dibujados a mano para que compartan grosor y remate */
+const ICON = {
+  escritorio: '<rect x="2.5" y="2.5" width="4.5" height="4.5" rx="1"/><rect x="9" y="2.5" width="4.5" height="4.5" rx="1"/><rect x="2.5" y="9" width="4.5" height="4.5" rx="1"/><rect x="9" y="9" width="4.5" height="4.5" rx="1"/>',
+  modulos: '<path d="M8 2.2 13.8 5 8 7.8 2.2 5Z"/><path d="M2.2 8 8 10.8 13.8 8"/><path d="M2.2 11 8 13.8 13.8 11"/>',
+  apuntes: '<path d="M3 13.2l.8-3.1 7.4-7.4a1.4 1.4 0 0 1 2 2l-7.4 7.4z"/><path d="M9.8 4.2l2 2"/>',
+  entregas: '<rect x="2.5" y="2.5" width="11" height="11" rx="2.2"/><path d="M5.4 8.1l1.8 1.8 3.5-3.6"/>',
+  casillero: '<rect x="2" y="2.8" width="12" height="3.2" rx="1"/><path d="M3 6v6.2a1 1 0 0 0 1 1h8a1 1 0 0 0 1-1V6"/><path d="M6.5 8.8h3"/>',
+  ingles: '<path d="M2 4.2h6.5M5.2 2.4v1.8M3.6 4.2c.6 2.4 2 4 4 5M7 4.2c-.4 2.1-1.9 4.1-4.4 5.3"/><path d="M8.8 13.8l2.5-6 2.5 6M9.6 11.8h3.4"/>',
+  ajustes: '<path d="M2.5 5h11M2.5 11h11"/><circle cx="6" cy="5" r="1.7"/><circle cx="10" cy="11" r="1.7"/>',
+  sol: '<circle cx="8" cy="8" r="2.8"/><path d="M8 1.6v1.5M8 12.9v1.5M1.6 8h1.5M12.9 8h1.5M3.5 3.5l1 1M11.5 11.5l1 1M3.5 12.5l1-1M11.5 4.5l1-1"/>',
+  luna: '<path d="M13.2 9.6A5.6 5.6 0 1 1 6.4 2.8a4.4 4.4 0 0 0 6.8 6.8z"/>',
+  cambiar: '<path d="M2.5 5.5h10l-2.6-2.6M13.5 10.5h-10l2.6 2.6"/>',
+  mas: '<path d="M8 3v10M3 8h10"/>',
+  tutor: '<path d="M8 2.4a2.6 2.6 0 1 0 0 5.2 2.6 2.6 0 0 0 0-5.2z"/><path d="M2.9 13.8a5.1 5.1 0 0 1 10.2 0"/>'
+};
+const icono = (n, cls = "i") => `<svg class="${cls}" viewBox="0 0 16 16" aria-hidden="true">${ICON[n]}</svg>`;
+
+/* ══════════════════ estado ══════════════════ */
+const MODULOS_DAW = [
+  { cod: "PRO", nombre: "Programación", horas: 256, color: 0 },
+  { cod: "BD", nombre: "Bases de Datos", horas: 192, color: 1 },
+  { cod: "SI", nombre: "Sistemas Informáticos", horas: 192, color: 2 },
+  { cod: "LMSGI", nombre: "Lenguajes de Marcas", horas: 128, color: 3 },
+  { cod: "ED", nombre: "Entornos de Desarrollo", horas: 96, color: 4 },
+  { cod: "FOL", nombre: "Formación y Orientación Laboral", horas: 96, color: 5 },
+  { cod: "ING", nombre: "Inglés Técnico", horas: 64, color: 6 }
+];
+const PESOS_DEF = () => ([
+  { id: uid(), nombre: "Exámenes", peso: 60, nota: null },
+  { id: uid(), nombre: "Ejercicios y prácticas", peso: 30, nota: null },
+  { id: uid(), nombre: "Actitud y participación", peso: 10, nota: null }
+]);
+const GLOSARIO = [
+  ["deploy", "desplegar (subir la aplicación al servidor)"], ["query", "consulta (a la base de datos)"],
+  ["statement", "sentencia / instrucción"], ["array", "vector o arreglo"], ["loop", "bucle"],
+  ["nested", "anidado"], ["scope", "ámbito de una variable"], ["default", "por defecto"],
+  ["overload", "sobrecargar (un método)"], ["inheritance", "herencia"], ["request", "petición"],
+  ["stateless", "sin estado"], ["framework", "entorno de trabajo"], ["merge", "fusionar (ramas)"],
+  ["rollback", "deshacer los cambios de una transacción"], ["debug", "depurar errores"]
+];
+const OBJ_DEF = () => ({ activos: { estudio: true, riesgo: true, descanso: true, tarea: true, vocab: true, apunte: true }, propios: [], dias: {} });
+function estadoInicial() {
+  return {
+    config: { curso: "1.º DAW", objetivo: 5, pctFaltas: 15, pomodoro: 25, descanso: 5, postit: "" },
+    modulos: MODULOS_DAW.map(m => ({
+      id: uid(), cod: m.cod, nombre: m.nombre, color: m.color, horas: m.horas,
+      faltas: 0, objetivo: 5, metaSemanal: Math.max(1, Math.round(m.horas / 32 / 2)), pesos: PESOS_DEF()
+    })),
+    tareas: [], vocab: [], horas: {}, apuntes: {}, casillero: {}, objetivos: OBJ_DEF(), tutor: tutorDef()
+  };
+}
+let S = estadoInicial();
+let seccion = "escritorio", apunteActivo = null, filtroApuntes = "";
+
+/* ══════════════════ almacenamiento ══════════════════
+   Mismas claves y mismos documentos que la versión anterior: rediseñar no
+   puede costar ni un apunte de lo que ya estuviera guardado. */
+const DOCS = { ajustes: ["config", "modulos"], agenda: ["tareas"], ingles: ["vocab"], horas: ["horas"], objetivos: ["objetivos"], tutor: ["tutor"] };
+let db = null, sample = null, descargas = null;
+const pendientes = {}, subiendo = new Set();
+
+function cargarLocal() {
+  const g = leeLS("estado");
+  if (g && g.modulos) S = Object.assign(estadoInicial(), g);
+  if (!S.apuntes) S.apuntes = {};
+  if (!S.casillero) S.casillero = {};
+}
+const guardarLocal = () => {
+  if (!guardaLS("estado", S)) avisoUnaVez("ls", "El navegador se ha quedado sin sitio para guardar. " +
+    (db ? "Tus datos siguen a salvo en tu cuenta." : "Descarga una copia desde Ajustes para no perder nada."));
+};
+function marcaSync(txt, ok) {
+  $("#sync").className = "sync" + (ok ? " ok" : "");
+  $("#txtSync").textContent = txt;
+  $("#sync").title = ok ? "Guardado en tu cuenta: lo verás igual desde el móvil o el portátil."
+                        : "Guardado solo en este navegador. Haz una copia de seguridad desde Ajustes.";
+}
+const empaqueta = nd => { const o = {}; DOCS[nd].forEach(k => o[k] = S[k]); return o; };
+function guardar(nd) {
+  guardarLocal();
+  if (!db) return;
+  clearTimeout(pendientes[nd]);
+  pendientes[nd] = setTimeout(() => {
+    subiendo.add(nd);
+    db.doc("escritorio/" + nd).set(empaqueta(nd))
+      .catch(e => aviso("No se pudo sincronizar (" + e.code + "). Tus datos siguen en este dispositivo.", "mal"))
+      .finally(() => setTimeout(() => subiendo.delete(nd), 900));
+  }, 650);
+}
+function guardarApunte(n) {
+  guardarLocal();
+  if (!db) return;
+  const tam = JSON.stringify(n).length, nombre = "«" + (n.titulo || "Este apunte") + "»";
+  if (tam > 245000) { avisoUnaVez("lleno-" + n.id, nombre + " pesa demasiado para sincronizarse. Se queda guardado en este dispositivo; sigue en un apunte nuevo."); return; }
+  if (tam > 190000) avisoUnaVez("casi-" + n.id, nombre + " se está llenando. Si vas a dibujar mucho más, sigue en un apunte nuevo.", "");
+  db.doc("apuntes/" + n.id).set(n).catch(e => aviso("No se pudo sincronizar el apunte: " + e.code, "mal"));
+}
+const editando = () => ["TEXTAREA", "INPUT", "SELECT"].includes(document.activeElement && document.activeElement.tagName) ||
+  !!(document.activeElement && document.activeElement.isContentEditable) ||
+  (seccion === "apuntes" && typeof LB !== "undefined" && (LB.dibujando || LB.modo === "dibujar") && lbVivaActiva());
+
+async function conectar() {
+  try { db = await claude.use("db"); } catch (e) { db = null; }
+  try { sample = await claude.use("sample"); } catch (e) { sample = null; }
+  try { descargas = await claude.use("downloads"); } catch (e) { descargas = null; }
+  if (!db) { marcaSync("Este dispositivo", false); pinta(); return; }
+  marcaSync("Sincronizado", true);
+
+  Object.keys(DOCS).forEach(nd => {
+    db.doc("escritorio/" + nd).onSnapshot(snap => {
+      if (subiendo.has(nd)) return;
+      if (!snap.exists) { db.doc("escritorio/" + nd).set(empaqueta(nd)).catch(() => {}); return; }
+      const d = snap.data(); let cambio = false;
+      DOCS[nd].forEach(k => { if (d[k] !== undefined) { S[k] = clonar(d[k]); cambio = true; } });
+      if (cambio) { guardarLocal(); if (!editando()) pinta(); }
+    }, () => marcaSync("Este dispositivo", false));
+  });
+
+  /* primer snapshot: manda la nube, pero lo que solo exista aquí se sube en vez de perderse */
+  let primerAp = true, primerCas = true;
+  db.collection("apuntes").onSnapshot(qs => {
+    const m = {}; qs.docs.forEach(d => { const v = clonar(d.data()); v.id = d.id; m[d.id] = v; });
+    if (primerAp) { primerAp = false; Object.values(S.apuntes).forEach(n => { if (!m[n.id]) { m[n.id] = n; guardarApunte(n); } }); }
+    S.apuntes = m; guardarLocal(); if (!editando()) pinta();
+  }, () => {});
+  db.collection("casillero").onSnapshot(qs => {
+    const m = {}; qs.docs.forEach(d => { const v = clonar(d.data()); v.id = d.id; m[d.id] = v; });
+    if (primerCas) { primerCas = false; Object.values(S.casillero).forEach(d => { if (!m[d.id]) { m[d.id] = d; db.doc("casillero/" + d.id).set(d).catch(() => {}); } }); }
+    S.casillero = m; guardarLocal(); if (!editando()) pinta();
+  }, () => {});
+  tutorMirar();
+  pinta();
+}
+
+/* ══════════════════ cálculos ══════════════════ */
+function calcModulo(m) {
+  const pesos = m.pesos || [];
+  const evaluadas = pesos.filter(p => p.nota !== null && p.nota !== "" && p.nota !== undefined);
+  const pesoEval = evaluadas.reduce((s, p) => s + num(p.peso), 0);
+  const pesoTotal = pesos.reduce((s, p) => s + num(p.peso), 0) || 100;
+  const acumulado = evaluadas.reduce((s, p) => s + num(p.nota) * num(p.peso), 0) / 100;
+  const media = pesoEval > 0 ? (acumulado * 100) / pesoEval : null;
+  const restante = Math.max(0, pesoTotal - pesoEval);
+  const obj = num(m.objetivo, 5);
+  let necesita = null, imposible = false, yaEsta = false;
+  if (restante <= 0.001) yaEsta = acumulado >= obj;
+  else {
+    necesita = (obj * (pesoTotal / 100) - acumulado) * 100 / restante;
+    if (necesita <= 0) { yaEsta = true; necesita = 0; }
+    if (necesita > 10.0001) imposible = true;
+  }
+  const pct = num(m.pctFaltas === undefined ? S.config.pctFaltas : m.pctFaltas, 15);
+  const faltasMax = Math.round(num(m.horas, 0) * pct / 100);
+  const faltasPct = faltasMax > 0 ? num(m.faltas) / faltasMax : 0;
+
+  let est = "ok", txt = "Vas bien";
+  if (imposible) { est = "riesgo"; txt = "Solo con recuperación"; }
+  else if (faltasPct >= 1) { est = "riesgo"; txt = "Faltas al límite"; }
+  else if (media !== null && media < obj) { est = "riesgo"; txt = "Suspenso ahora"; }
+  else if (necesita !== null && necesita > 7) { est = "aviso"; txt = "Te exige mucho"; }
+  else if (faltasPct >= 0.7) { est = "aviso"; txt = "Ojo con las faltas"; }
+  else if (media === null) { est = "aviso"; txt = "Sin notas aún"; }
+  return { media, acumulado, pesoEval, restante, necesita, imposible, yaEsta, faltasMax, faltasPct, pct, est, txt, obj };
+}
+const estadoHTML = c => `<span class="estado ${c.est}"><span class="dot"></span>${c.txt}</span>`;
+function minutosSemana(modId) {
+  const hoy = new Date(), dow = (hoy.getDay() + 6) % 7;
+  const lunes = new Date(hoy); lunes.setDate(hoy.getDate() - dow);
+  let t = 0;
+  for (let i = 0; i < 7; i++) { const d = new Date(lunes); d.setDate(lunes.getDate() + i); t += (S.horas[modId] || {})[hoyISO(d)] || 0; }
+  return t;
+}
+const totalDia = iso => Object.values(S.horas).reduce((s, reg) => s + (reg[iso] || 0), 0);
+function racha() {
+  let n = 0; const d = new Date();
+  if (!totalDia(hoyISO(d))) d.setDate(d.getDate() - 1);
+  while (totalDia(hoyISO(d)) > 0) { n++; d.setDate(d.getDate() - 1); }
+  return n;
+}
+const modPorId = id => S.modulos.find(m => m.id === id);
+
+/* ══════════════════ cronómetro ══════════════════ */
+const T = { activo: false, fase: "trabajo", fin: 0, modId: null, restante: 0, tick: null };
+function cargarTimer() {
+  const g = leeLS("timer"); if (!g) return;
+  Object.assign(T, g, { tick: null });
+  if (T.activo && T.fin > Date.now()) arrancarTick(); else T.activo = false;
+}
+const guardarTimer = () => guardaLS("timer", { activo: T.activo, fase: T.fase, fin: T.fin, modId: T.modId, restante: T.restante });
+const segsRestantes = () => T.activo ? Math.max(0, Math.round((T.fin - Date.now()) / 1000)) : T.restante;
+function arrancarTick() { clearInterval(T.tick); T.tick = setInterval(() => { pintaReloj(); if (T.activo && segsRestantes() <= 0) terminarFase(); }, 500); }
+function iniciarTimer() {
+  if (!T.modId) { aviso("Elige primero el módulo que vas a estudiar."); return; }
+  const mins = T.fase === "trabajo" ? num(S.config.pomodoro, 25) : num(S.config.descanso, 5);
+  T.fin = Date.now() + (T.restante > 0 ? T.restante : mins * 60) * 1000;
+  T.activo = true; T.restante = 0; guardarTimer(); arrancarTick(); pintaReloj();
+}
+function pausarTimer() { T.restante = segsRestantes(); T.activo = false; clearInterval(T.tick); guardarTimer(); pintaReloj(); }
+function reiniciarTimer() { T.activo = false; T.restante = 0; clearInterval(T.tick); guardarTimer(); pintaReloj(); }
+function terminarFase() {
+  clearInterval(T.tick); T.activo = false;
+  if (T.fase === "trabajo") {
+    registrarMinutos(T.modId, num(S.config.pomodoro, 25));
+    const m = modPorId(T.modId);
+    aviso("Sesión guardada: " + num(S.config.pomodoro, 25) + " min de " + (m ? m.nombre : "estudio") + ". Descansa.");
+    T.fase = "descanso";
+  } else { registrarDescanso(num(S.config.descanso, 5)); aviso("Descanso terminado. A por otra."); T.fase = "trabajo"; }
+  T.restante = 0; guardarTimer(); pitido(); pinta();
+}
+function registrarMinutos(modId, mins) {
+  if (!modId || !mins) return;
+  const iso = hoyISO();
+  S.horas[modId] = S.horas[modId] || {};
+  S.horas[modId][iso] = (S.horas[modId][iso] || 0) + mins;
+  guardar("horas");
+}
+function pitido() {
+  try {
+    const ac = new (window.AudioContext || window.webkitAudioContext)();
+    const o = ac.createOscillator(), g = ac.createGain();
+    o.type = "sine"; o.frequency.value = 528; o.connect(g); g.connect(ac.destination);
+    g.gain.setValueAtTime(.0001, ac.currentTime);
+    g.gain.exponentialRampToValueAtTime(.16, ac.currentTime + .04);
+    g.gain.exponentialRampToValueAtTime(.0001, ac.currentTime + 1.1);
+    o.start(); o.stop(ac.currentTime + 1.15);
+  } catch (e) {}
+}
+function pintaReloj() {
+  const el = $("#reloj"); if (!el) return;
+  const s = segsRestantes() || (T.fase === "trabajo" ? num(S.config.pomodoro, 25) * 60 : num(S.config.descanso, 5) * 60);
+  el.textContent = String(Math.floor(s / 60)).padStart(2, "0") + ":" + String(s % 60).padStart(2, "0");
+  el.classList.toggle("descanso", T.fase === "descanso");
+  const b = $("#btnTimer"); if (b) b.textContent = T.activo ? "Pausar" : (T.restante > 0 ? "Seguir" : "Empezar");
+  const f = $("#faseTimer"); if (f) f.textContent = T.fase === "trabajo" ? "Concentración" : "Descanso";
+}
+
+/* ══════════════════ Claude ══════════════════ */
+async function pedirAClaude(prompt, destino) {
+  if (!sample) { destino.textContent = "Esta función necesita que abras la página desde tu cuenta de Claude."; return null; }
+  destino.textContent = "Pensando…"; destino.classList.add("cargando");
+  try {
+    const r = await sample(prompt, { onText: ({ text }) => { destino.classList.remove("cargando"); destino.textContent = text; } });
+    destino.classList.remove("cargando");
+    destino.textContent = r.text + (r.truncated ? "\n\n[…cortado por longitud: pide menos de una vez]" : "");
+    return r.text;
+  } catch (e) {
+    destino.classList.remove("cargando");
+    if (["not_granted", "sampling_disabled", "not_declared", "capability_disabled", "capability_removed"].includes(e.code)) {
+      destino.textContent = "Función no disponible en esta vista."; sample = null; pinta();
+    } else if (e.code === "rate_limited") destino.textContent = "Has hecho muchas peticiones seguidas. Espera un poco y vuelve a darle.";
+    else if (e.code === "cancelled") destino.textContent = "";
+    else destino.textContent = (e.text ? e.text + "\n\n" : "") + "Se cortó la respuesta (" + e.code + "). Prueba otra vez.";
+    return null;
+  }
+}
+const PROMPTS = {
+  resumen: (t, c, m) => `Eres el compañero de clase de un estudiante de 1.º de Desarrollo de Aplicaciones Web (FP grado superior, España).
+Resume estos apuntes del módulo "${m}" en 5-8 puntos clave, en español, claros y con los términos técnicos correctos.
+Si hay código, conserva los fragmentos importantes. No inventes contenido que no esté en el texto.
+Devuelve solo la lista, sin introducción.
+
+APUNTES (título: ${t}):
+"""${c}"""`,
+  explicar: (t, c, m) => `Eres profesor de "${m}" en 1.º de Desarrollo de Aplicaciones Web (FP, España).
+Explica el contenido de estos apuntes con palabras sencillas, como si el alumno lo viera por primera vez.
+Usa una analogía cotidiana y, si es de programación, un ejemplo de código corto y comentado en español.
+Máximo 300 palabras. No inventes nada que no esté en el texto.
+
+APUNTES (título: ${t}):
+"""${c}"""`,
+  examen: (t, c, m) => `Eres el profesor de "${m}" de 1.º de Desarrollo de Aplicaciones Web (FP, España) preparando un examen.
+A partir de estos apuntes, escribe 5 preguntas de examen realistas (mezcla teoría y un ejercicio práctico).
+Formato: "1. Pregunta" y debajo "   Respuesta: ..." de dos o tres líneas. En español. Solo con el contenido de los apuntes.
+
+APUNTES (título: ${t}):
+"""${c}"""`
+};
+
+/* ══════════════════ objetivos del día ══════════════════
+   Unos se cumplen solos con lo que ya haces en la app (estudiar con el
+   cronómetro, tachar una entrega, repasar vocabulario, escribir un apunte);
+   otros los marcas tú. Los que dependen de algo pendiente solo aparecen
+   cuando ese algo existe: sin entregas apuntadas no te pide completar una. */
+const CHECK = '<svg viewBox="0 0 12 12" aria-hidden="true"><path d="M2.6 6.3 5 8.6 9.4 3.8"/></svg>';
+const OBJ_SUGERIDOS = [
+  ["estudio", () => "Estudiar " + num(S.config.pomodoro, 25) + " min", "Se marca solo al completar una sesión del cronómetro."],
+  ["riesgo", () => "Estudiar el módulo que peor llevas", "Aparece si algún módulo está en riesgo; se marca al estudiarlo con el cronómetro."],
+  ["descanso", () => "Descansar 15 min", "Suma los descansos del cronómetro; también puedes marcarlo a mano."],
+  ["tarea", () => "Completar 1 entrega", "Aparece cuando tienes entregas pendientes; se marca al tachar una."],
+  ["vocab", () => "Repasar vocabulario", "Aparece cuando te toca repasar palabras; se marca al contestar el repaso."],
+  ["apunte", () => "Escribir en tus apuntes", "Se marca solo al escribir en cualquier apunte."]
+];
+const OBJ_IDEAS = ["Leer 10 páginas", "Salir a caminar 20 min", "Preparar la mochila para mañana",
+  "Beber 2 litros de agua", "Acostarme antes de las 12", "Ordenar el escritorio"];
+
+/* se corrige en su sitio, sin reasignar: el diálogo guarda referencias al objeto */
+function normalizarObjetivos() {
+  if (!S.objetivos || typeof S.objetivos !== "object") S.objetivos = OBJ_DEF();
+  const O = S.objetivos, def = OBJ_DEF();
+  if (!O.activos || typeof O.activos !== "object") O.activos = {};
+  for (const k in def.activos) if (typeof O.activos[k] !== "boolean") O.activos[k] = def.activos[k];
+  if (!Array.isArray(O.propios)) O.propios = [];
+  if (!O.dias || typeof O.dias !== "object") O.dias = {};
+  return O;
+}
+function diaObj(iso = hoyISO()) {
+  const O = normalizarObjetivos();
+  if (!O.dias[iso]) O.dias[iso] = { hechos: {}, descanso: 0 };
+  if (!O.dias[iso].hechos) O.dias[iso].hechos = {};
+  return O.dias[iso];
+}
+function registrarDescanso(mins) { const d = diaObj(); d.descanso = num(d.descanso) + mins; guardar("objetivos"); }
+
+function objetivosDeHoy() {
+  const O = normalizarObjetivos(), hoy = hoyISO(), d = O.dias[hoy] || { hechos: {}, descanso: 0 };
+  const hechosDia = d.hechos || {}, meta = num(S.config.pomodoro, 25), lista = [];
+  if (O.activos.estudio) {
+    const min = totalDia(hoy);
+    lista.push({ id: "estudio", titulo: "Estudiar " + meta + " min", p: min / meta * 100, hecho: min >= meta,
+      sub: min >= meta ? horasTxt(min) + " hoy" : horasTxt(min) + " de " + meta + " min" });
+  }
+  if (O.activos.riesgo) {
+    const mal = S.modulos.find(m => calcModulo(m).est === "riesgo");
+    if (mal) {
+      const min = (S.horas[mal.id] || {})[hoy] || 0;
+      lista.push({ id: "riesgo", titulo: "Estudiar " + mal.cod + " " + meta + " min", p: min / meta * 100, hecho: min >= meta,
+        sub: min >= meta ? "Hecho, es el que peor llevas" : "Es el que peor llevas" });
+    }
+  }
+  if (O.activos.descanso) {
+    const min = num(d.descanso, 0), hecho = !!hechosDia.descanso || min >= 15;
+    lista.push({ id: "descanso", titulo: "Descansar 15 min", p: min / 15 * 100, hecho, toggle: true,
+      sub: hecho ? "Hecho" : min ? min + " de 15 min" : "Márcalo al descansar" });
+  }
+  if (O.activos.tarea) {
+    const pend = S.tareas.filter(t => !t.hecha).length;
+    const hoyHechas = S.tareas.filter(t => t.hecha && t.hechaEn === hoy).length;
+    if (pend || hoyHechas) lista.push({ id: "tarea", titulo: "Completar 1 entrega", p: hoyHechas ? 100 : 0, hecho: hoyHechas > 0,
+      sub: hoyHechas ? hoyHechas + (hoyHechas === 1 ? " entregada hoy" : " entregadas hoy")
+                     : pend + (pend === 1 ? " pendiente" : " pendientes") });
+  }
+  if (O.activos.vocab) {
+    const toca = S.vocab.filter(v => !v.proximo || v.proximo <= hoy).length;
+    if (toca || d.repaso) lista.push({ id: "vocab", titulo: "Repasar vocabulario", p: d.repaso ? 100 : 0, hecho: !!d.repaso,
+      sub: d.repaso ? "Hecho" : toca + (toca === 1 ? " palabra te toca hoy" : " palabras te tocan hoy") });
+  }
+  if (O.activos.apunte) {
+    const hecho = Object.values(S.apuntes).some(n => n.editado && hoyISO(new Date(n.editado)) === hoy);
+    lista.push({ id: "apunte", titulo: "Escribir en tus apuntes", p: hecho ? 100 : 0, hecho,
+      sub: hecho ? "Hecho" : "Cualquier apunte cuenta" });
+  }
+  normalizarTutor().repasos.filter(r => !r.hecho && r.fecha <= hoy).forEach(r => {
+    const m = modPorId(r.modId), hecho = !!hechosDia["rep:" + r.id];
+    lista.push({ id: "rep:" + r.id, titulo: "Repasar " + r.tema, p: hecho ? 100 : 0, hecho, toggle: true,
+      sub: hecho ? "Hecho" : (m ? m.cod + " · " : "") + "te lo puso el profe" });
+  });
+  O.propios.forEach(o => lista.push({ id: o.id, titulo: o.texto, p: hechosDia[o.id] ? 100 : 0, hecho: !!hechosDia[o.id],
+    toggle: true, propio: true, sub: hechosDia[o.id] ? "Hecho" : "Márcalo al hacerlo" }));
+  lista.forEach(o => { o.p = clamp(o.p || 0, 0, 100); });
+  return lista;
+}
+
+/* Guarda el resultado del día (para los siete puntos de la semana) y avisa
+   cuando algo se cumple solo. Los que marcas tú no avisan: ya lo has visto. */
+function evaluarObjetivos() {
+  const lista = objetivosDeHoy(), hechos = lista.filter(o => o.hecho).length, total = lista.length;
+  const d = diaObj(), antes = { n: d.n, total: d.total, completo: !!d.completo };
+  if (!d.visto) d.visto = {};
+  const nuevos = lista.filter(o => o.hecho && !o.propio && !d.visto[o.id]);
+  lista.forEach(o => { if (o.hecho) d.visto[o.id] = true; else delete d.visto[o.id]; });
+  d.n = hechos; d.total = total; d.completo = total > 0 && hechos === total;
+  if (d.completo && !antes.completo) aviso("Objetivos de hoy cumplidos. Buen trabajo.");
+  else if (nuevos.length === 1) aviso("Objetivo cumplido: " + nuevos[0].titulo + ".");
+  else if (nuevos.length > 1) aviso(nuevos.length + " objetivos cumplidos.");
+  /* solo se conservan diez semanas: el documento no puede crecer sin límite */
+  const dias = S.objetivos.dias, claves = Object.keys(dias).sort();
+  if (claves.length > 70) claves.slice(0, claves.length - 70).forEach(k => delete dias[k]);
+  if (antes.n !== d.n || antes.total !== d.total || antes.completo !== d.completo || nuevos.length) guardar("objetivos");
+}
+
+function semanaObj() {
+  const O = normalizarObjetivos(), hoy = hoyISO(), base = new Date(), dow = (base.getDay() + 6) % 7;
+  const lunes = new Date(base); lunes.setDate(base.getDate() - dow);
+  const nombres = ["lunes", "martes", "miércoles", "jueves", "viernes", "sábado", "domingo"];
+  return nombres.map((nombre, i) => {
+    const f = new Date(lunes); f.setDate(lunes.getDate() + i);
+    const iso = hoyISO(f), r = O.dias[iso], futuro = iso > hoy;
+    const cl = futuro || !r || !r.total ? "" : r.completo ? "lleno" : r.n ? "parcial" : "";
+    const txt = futuro ? "todavía no" : r && r.total ? r.n + " de " + r.total : "sin datos";
+    return { letra: "LMXJVSD"[i], nombre, cl, hoy: iso === hoy, txt };
+  });
+}
+
+function panelObjetivos() {
+  const lista = objetivosDeHoy(), hechos = lista.filter(o => o.hecho).length, sem = semanaObj();
+  return `
+    <section class="panel c-12 objetivos" aria-labelledby="tObj">
+      <div class="panel-cab">
+        <div class="obj-titulo"><h2 class="etq" id="tObj">Objetivos de hoy</h2>
+          <span class="meta num">${lista.length ? hechos + " de " + lista.length : ""}</span></div>
+        <div class="obj-derecha">
+          <span class="semana-obj" role="img" aria-label="Esta semana: ${sem.map(x => x.nombre + ", " + x.txt).join("; ")}">
+            ${sem.map(x => `<span class="dia-obj" title="${mayus(x.nombre)}: ${x.txt}"><i class="${x.cl}${x.hoy ? " hoy" : ""}"></i><b>${x.letra}</b></span>`).join("")}
+          </span>
+          <button class="btn mini fantasma" id="btnObjetivos">Editar</button>
+        </div>
+      </div>
+      ${lista.length ? `<div class="obj-lista">${lista.map(o => `
+        <button class="objetivo${o.hecho ? " hecho" : ""}" data-obj="${esc(o.id)}"${o.toggle ? ` aria-pressed="${o.hecho}"` : ""}
+          aria-label="${esc(o.titulo)}: ${o.hecho ? "hecho" : esc(o.sub)}">
+          <span class="circulo${o.hecho ? " hecho" : ""}" style="--p:${Math.round(o.p)}">${o.hecho ? CHECK : ""}</span>
+          <span class="obj-texto"><span class="t" title="${esc(o.titulo)}">${esc(o.titulo)}</span><span class="meta">${esc(o.sub)}</span></span>
+        </button>`).join("")}</div>`
+      : `<p class="vacio">No tienes objetivos activos. Actívalos o añade los tuyos desde Editar.</p>`}
+    </section>`;
+}
+
+function dlgObjetivos() {
+  const dibuja = () => {
+    const O = normalizarObjetivos();
+    const ideas = OBJ_IDEAS.filter(i => !O.propios.some(o => o.texto === i));
+    $("#dlgCuerpo").innerHTML = `
+      <p class="meta" style="margin-bottom:16px">Los sugeridos se marcan solos con lo que haces en la app. Los tuyos los marcas tú tocando el círculo.</p>
+      <div class="etq" style="margin-bottom:4px">Sugeridos</div>
+      <div class="lista">${OBJ_SUGERIDOS.map(([id, titulo, desc]) => `
+        <label class="fila" style="cursor:pointer">
+          <input type="checkbox" data-sug="${id}"${O.activos[id] ? " checked" : ""}>
+          <span class="principal-fila"><span class="t" style="display:block">${esc(titulo())}</span>
+            <span class="meta">${esc(desc)}</span></span>
+        </label>`).join("")}</div>
+      <hr class="separador">
+      <div class="etq" style="margin-bottom:4px">Tuyos</div>
+      ${O.propios.length ? `<div class="lista">${O.propios.map(o => `
+        <div class="fila"><span class="principal-fila"><span class="t">${esc(o.texto)}</span></span>
+          <button type="button" class="btn borrar mini" data-quitar-obj="${esc(o.id)}">Quitar</button></div>`).join("")}</div>`
+        : `<p class="meta" style="padding:8px 0">Aún no has añadido ninguno.</p>`}
+      <div class="obj-nuevo">
+        <label class="campo">Nuevo objetivo<input type="text" id="nuevoObj" placeholder="Leer 10 páginas" maxlength="60"></label>
+        <button type="button" class="btn" id="btnAddObj">${icono("mas")}Añadir</button>
+      </div>
+      ${ideas.length ? `<div class="barra-btns" style="margin-top:12px">${ideas.map(i =>
+        `<button type="button" class="btn mini fantasma" data-idea="${esc(i)}">${icono("mas")}${esc(i)}</button>`).join("")}</div>` : ""}`;
+  };
+  const anadir = texto => {
+    const O = normalizarObjetivos();
+    texto = (texto || "").trim();
+    if (!texto) { aviso("Escribe el objetivo primero."); return; }
+    if (O.propios.length >= 8) { aviso("Con 8 objetivos propios ya tienes de sobra para un día."); return; }
+    if (O.propios.some(o => o.texto.toLowerCase() === texto.toLowerCase())) { aviso("Ese ya lo tienes."); return; }
+    O.propios.push({ id: "p" + uid(), texto }); guardar("objetivos"); dibuja();
+    const n = $("#nuevoObj"); if (n) n.focus();
+  };
+  abrirDlg("Objetivos diarios", "", [{ txt: "Listo", clase: "btn primario", accion: () => pinta() }]);
+  dibuja();
+  const cuerpo = $("#dlgCuerpo");
+  cuerpo.onchange = e => {
+    const c = e.target.closest("[data-sug]");
+    if (c) { normalizarObjetivos().activos[c.dataset.sug] = c.checked; guardar("objetivos"); }
+  };
+  cuerpo.onclick = e => {
+    const q = e.target.closest("[data-quitar-obj]");
+    if (q) { const O = normalizarObjetivos(); O.propios = O.propios.filter(o => o.id !== q.dataset.quitarObj); guardar("objetivos"); dibuja(); return; }
+    const idea = e.target.closest("[data-idea]");
+    if (idea) { anadir(idea.dataset.idea); return; }
+    if (e.target.closest("#btnAddObj")) anadir($("#nuevoObj").value);
+  };
+  cuerpo.onkeydown = e => { if (e.key === "Enter" && e.target.id === "nuevoObj") { e.preventDefault(); anadir(e.target.value); } };
+}
+
+/* ══════════════════ libreta ══════════════════
+   Una hoja de cuadrícula de verdad: se escribe con el teclado y se dibuja
+   encima con bolígrafo, rotulador, subrayador, goma y formas. El dibujo se
+   guarda como trazos (no como imagen): pesa poco, se ve nítido a cualquier
+   tamaño y se deshace trazo a trazo. La hoja mide siempre 800 unidades de
+   ancho y se escala entera, así el texto y el dibujo nunca se desalinean. */
+const LB_ANCHO = 800, LB_CUADRO = 24, LB_MIN_ALTO = 1056;
+const LB_TINTAS = [["#1C1C1E", "Negro"], ["#1D4ED8", "Azul"], ["#DC2626", "Rojo"], ["#15803D", "Verde"], ["#EA580C", "Naranja"], ["#7C3AED", "Morado"]];
+const LB_FLUOR = [["#FDE047", "Amarillo"], ["#86EFAC", "Verde"], ["#F9A8D4", "Rosa"], ["#93C5FD", "Azul"]];
+const LB_HERR = {
+  boli:   { nombre: "Bolígrafo",  grosores: [1.3, 2, 3] },
+  rotu:   { nombre: "Rotulador",  grosores: [3, 4.5, 7] },
+  fluor:  { nombre: "Subrayador", grosores: [12, 16, 22] },
+  goma:   { nombre: "Goma",       grosores: [8, 14, 24] },
+  linea:  { nombre: "Línea",      grosores: [2, 3, 5], forma: true },
+  flecha: { nombre: "Flecha",     grosores: [2, 3, 5], forma: true },
+  rect:   { nombre: "Rectángulo", grosores: [2, 3, 5], forma: true },
+  elipse: { nombre: "Círculo",    grosores: [2, 3, 5], forma: true }
+};
+const LB_ICON = {
+  escribir: '<path d="M3.5 3.5h9M8 3.5v9.5M6.2 13h3.6"/>',
+  boli: '<path d="M11.6 2.4l2 2-7.9 7.9-2.8.8.8-2.8z"/><path d="M10.2 3.8l2 2"/>',
+  rotu: '<path d="M9.8 2.2l4 4-6.2 6.2-4.6.9.9-4.6z"/><path d="M8.3 3.7l4 4"/><path d="M2.2 13.8l1.4-1.4"/>',
+  fluor: '<path d="M10 2.2l3.8 3.8-5.6 5.6H5.4L4.4 10.6V7.8z"/><path d="M2.5 13.8h6"/>',
+  negrita: '<path d="M4.5 2.8h4.2a2.6 2.6 0 0 1 0 5.2H4.5zM4.5 8h4.9a2.8 2.8 0 0 1 0 5.6H4.5z"/>',
+  goma: '<path d="M6.2 13.5h7.3"/><path d="M3.3 10.1l6-6a1.5 1.5 0 0 1 2.1 0l1.5 1.5a1.5 1.5 0 0 1 0 2.1l-5.2 5.2a1.5 1.5 0 0 1-1.1.4H4.8a1.5 1.5 0 0 1-1.1-.4l-.4-.4a1.5 1.5 0 0 1 0-2.4z"/><path d="M6.3 7.1l3.6 3.6"/>',
+  linea: '<path d="M3 13L13 3"/>',
+  flecha: '<path d="M3 13L13 3M7.6 3H13v5.4"/>',
+  rect: '<rect x="2.5" y="3.5" width="11" height="9" rx="1"/>',
+  elipse: '<ellipse cx="8" cy="8" rx="5.8" ry="4.6"/>',
+  iman: '<path d="M4 2.5v5.2a4 4 0 0 0 8 0V2.5"/><path d="M4 5.5h2.4M9.6 5.5H12"/>',
+  deshacer: '<path d="M5.8 4L2.8 7l3 3"/><path d="M3 7h6.6a3.6 3.6 0 0 1 0 7.2H7.5"/>',
+  rehacer: '<path d="M10.2 4l3 3-3 3"/><path d="M13 7H6.4a3.6 3.6 0 0 0 0 7.2h2.1"/>',
+  papelera: '<path d="M3 4.5h10M6.5 4.5V3h3v1.5M4.6 4.5l.7 8.3a1 1 0 0 0 1 .9h3.4a1 1 0 0 0 1-.9l.7-8.3"/>'
+};
+const lbIcono = n => `<svg class="i" viewBox="0 0 16 16" aria-hidden="true">${LB_ICON[n]}</svg>`;
+
+/* preferencias (útil, colores, grosor, imán) sobreviven entre sesiones; el resto es estado de la hoja */
+const LB = Object.assign({ modo: "escribir", herr: "rotu", tinta: "#1C1C1E", fluor: "#FDE047", grosor: 1, iman: true }, leeLS("libreta") || {});
+if (!LB_HERR[LB.herr]) LB.herr = "rotu";
+if (![0, 1, 2].includes(LB.grosor)) LB.grosor = 1;
+if (LB.modo !== "dibujar") LB.modo = "escribir";
+Object.assign(LB, { trazos: [], hist: {}, vivo: null, dibujando: false, H: LB_MIN_ALTO, k: 1, nota: null,
+  pedido: false, cursor: null, pendiente: false, temp: null, ro: null });
+const lbPrefs = () => guardaLS("libreta", { modo: LB.modo, herr: LB.herr, tinta: LB.tinta, fluor: LB.fluor, grosor: LB.grosor, iman: LB.iman });
+const lbHist = () => LB.hist[LB.nota] || (LB.hist[LB.nota] = { deshacer: [], rehacer: [] });
+const lbImanV = v => Math.round(v / LB_CUADRO) * LB_CUADRO;
+const lbVivaActiva = () => !!(LB.papel && LB.papel.isConnected);
+
+function lbBarraHTML() {
+  const h = LB.hist[apunteActivo] || { deshacer: [], rehacer: [] };
+  const trazosHoja = LB.nota === apunteActivo ? LB.trazos : (((S.apuntes[apunteActivo] || {}).dibujo || {}).trazos || []);
+  const fluor = LB.herr === "fluor", paleta = fluor ? LB_FLUOR : LB_TINTAS, actual = fluor ? LB.fluor : LB.tinta;
+  const herr = id => `<button type="button" class="lb-btn" data-lb-herr="${id}" aria-pressed="${LB.modo === "dibujar" && LB.herr === id}" title="${LB_HERR[id].nombre}" aria-label="${LB_HERR[id].nombre}">${lbIcono(id)}</button>`;
+  return `
+      <div class="lb-barra" id="lbBarra" role="toolbar" aria-label="Herramientas de la libreta">
+        <div class="lb-grupo">
+          <button type="button" class="lb-btn" data-lb-modo="escribir" aria-pressed="${LB.modo === "escribir"}" title="Escribir con el teclado" aria-label="Escribir con el teclado">${lbIcono("escribir")}</button>
+          <button type="button" class="lb-btn lb-negrita" id="lbNegrita" aria-pressed="false" title="Negrita (Ctrl+B)" aria-label="Negrita">${lbIcono("negrita")}</button>
+          ${["boli", "rotu", "fluor", "goma"].map(herr).join("")}
+        </div>
+        <div class="lb-grupo">
+          ${["linea", "flecha", "rect", "elipse"].map(herr).join("")}
+          <button type="button" class="lb-btn" id="lbIman" aria-pressed="${LB.iman}" title="Ajustar las formas a la cuadrícula" aria-label="Ajustar las formas a la cuadrícula">${lbIcono("iman")}</button>
+        </div>
+        <div class="lb-grupo" role="group" aria-label="${fluor ? "Colores del subrayador" : "Colores de tinta"}">
+          ${paleta.map(([c, nombre]) => `<button type="button" class="lb-color" data-lb-color="${c}" style="--c:${c}" aria-pressed="${c === actual}" title="${nombre}" aria-label="${nombre}"></button>`).join("")}
+        </div>
+        <div class="lb-grupo" role="group" aria-label="Grosor">
+          ${[4, 7, 11].map((d, i) => `<button type="button" class="lb-btn lb-grosor" data-lb-grosor="${i}" aria-pressed="${LB.grosor === i}" title="${["Fino", "Medio", "Grueso"][i]}" aria-label="Grosor ${["fino", "medio", "grueso"][i]}"><i style="width:${d}px; height:${d}px"></i></button>`).join("")}
+        </div>
+        <div class="lb-grupo lb-derecha">
+          <button type="button" class="lb-btn" id="lbDeshacer" title="Deshacer (Ctrl+Z)" aria-label="Deshacer"${h.deshacer.length ? "" : " disabled"}>${lbIcono("deshacer")}</button>
+          <button type="button" class="lb-btn" id="lbRehacer" title="Rehacer (Ctrl+Y)" aria-label="Rehacer"${h.rehacer.length ? "" : " disabled"}>${lbIcono("rehacer")}</button>
+          <button type="button" class="lb-btn" id="lbLimpiar" title="Borrar todo el dibujo (el texto no se toca)" aria-label="Borrar todo el dibujo"${trazosHoja.length ? "" : " disabled"}>${lbIcono("papelera")}</button>
+        </div>
+      </div>`;
+}
+function lbPintarBarra() {
+  const b = $("#lbBarra"); if (b) b.outerHTML = lbBarraHTML();
+  const lib = $("#libreta"); if (lib) lib.classList.toggle("dibujar", LB.modo === "dibujar");
+}
+
+/* ── montaje: se llama tras cada repintado de Apuntes ── */
+function montarLibreta() {
+  const papel = $("#lbPapel"), n = S.apuntes[apunteActivo];
+  if (!papel || !n) return;
+  if (LB.nota !== apunteActivo) {
+    lbGuardarYa();                                  /* lo pendiente de la hoja anterior, antes de cambiar */
+    LB.nota = apunteActivo;
+    LB.trazos = clonar((n.dibujo && n.dibujo.trazos) || []);
+  }
+  Object.assign(LB, { papel, base: $("#lbBase"), viva: $("#lbVivo"), ta: $("#apCuerpo"), marco: $("#lbMarco"), escala: $("#lbEscala"), H: 0 });
+  const v = LB.viva;
+  v.addEventListener("pointerdown", lbAbajo);
+  v.addEventListener("pointermove", lbMover);
+  v.addEventListener("pointerup", lbArriba);
+  v.addEventListener("pointercancel", lbArriba);
+  v.addEventListener("pointerleave", () => { if (!LB.dibujando) { LB.cursor = null; lbPintarVivo(); } });
+  if (LB.ro) LB.ro.disconnect();
+  if (window.ResizeObserver) { LB.ro = new ResizeObserver(() => lbEscalar()); LB.ro.observe(LB.marco); }
+  lbAjustar(true);
+  lbPintarBarra();
+}
+
+/* La hoja crece con el texto y con el dibujo; los lienzos solo se redimensionan
+   (y por tanto se repintan) cuando cambia la altura. */
+function lbAjustar(forzar) {
+  if (!lbVivaActiva()) return;
+  const ta = LB.ta;
+  ta.style.height = "auto";
+  const alto = ta.scrollHeight;
+  let maxY = 0;
+  for (const tr of LB.trazos) for (let i = 1; i < tr.p.length; i += 2) if (tr.p[i] > maxY) maxY = tr.p[i];
+  const H = Math.max(LB_MIN_ALTO, Math.ceil((alto + 48) / LB_CUADRO) * LB_CUADRO, Math.ceil((maxY + 240) / LB_CUADRO) * LB_CUADRO);
+  ta.style.height = H + "px";
+  if (H !== LB.H || forzar) {
+    LB.H = H;
+    LB.papel.style.height = H + "px";
+    const dpr = Math.min(window.devicePixelRatio || 1, 2);
+    for (const cv of [LB.base, LB.viva]) {
+      cv.width = Math.round(LB_ANCHO * dpr); cv.height = Math.round(H * dpr);
+      cv.style.width = LB_ANCHO + "px"; cv.style.height = H + "px";
+      cv.getContext("2d").setTransform(dpr, 0, 0, dpr, 0, 0);
+    }
+    lbRedibujar(); lbPintarVivo();
+  }
+  lbEscalar();
+}
+/* entre 600 y 800 px de hueco la hoja se reduce entera; por debajo, se desliza de lado */
+function lbEscalar() {
+  if (!lbVivaActiva()) return;
+  const disp = LB.marco.clientWidth - 4;
+  LB.k = disp >= LB_ANCHO ? 1 : disp >= 600 ? disp / LB_ANCHO : 1;
+  LB.papel.style.transform = LB.k === 1 ? "" : "scale(" + LB.k + ")";
+  LB.escala.style.width = LB_ANCHO * LB.k + "px";
+  LB.escala.style.height = LB.H * LB.k + "px";
+}
+function lbPunto(e) {
+  const r = LB.viva.getBoundingClientRect();
+  return [(e.clientX - r.left) * LB_ANCHO / r.width, (e.clientY - r.top) * LB.H / r.height];
+}
+
+/* ── pintado ── */
+function lbDibujarTrazo(ctx, tr) {
+  const p = tr.p; if (!p || p.length < 2) return;
+  ctx.save();
+  ctx.lineJoin = "round";
+  ctx.lineCap = tr.t === "fluor" ? "butt" : "round";   /* el subrayador tiene punta biselada */
+  ctx.lineWidth = tr.w; ctx.strokeStyle = tr.c; ctx.fillStyle = tr.c;
+  ctx.globalAlpha = tr.t === "fluor" ? .42 : tr.t === "boli" ? .92 : 1;
+  if (tr.t === "boli" || tr.t === "rotu" || tr.t === "fluor") {
+    const n = p.length / 2;
+    if (n === 1) { ctx.beginPath(); ctx.arc(p[0], p[1], tr.w / 2, 0, Math.PI * 2); ctx.fill(); ctx.restore(); return; }
+    ctx.beginPath(); ctx.moveTo(p[0], p[1]);
+    for (let i = 1; i < n - 1; i++) ctx.quadraticCurveTo(p[2 * i], p[2 * i + 1], (p[2 * i] + p[2 * i + 2]) / 2, (p[2 * i + 1] + p[2 * i + 3]) / 2);
+    ctx.lineTo(p[2 * n - 2], p[2 * n - 1]); ctx.stroke();
+  } else if (tr.t === "poli") {
+    /* lo que queda de una forma tras pasarle la goma: tramos rectos, sin suavizar */
+    const n = p.length / 2;
+    ctx.beginPath(); ctx.moveTo(p[0], p[1]);
+    for (let i = 1; i < n; i++) ctx.lineTo(p[2 * i], p[2 * i + 1]);
+    ctx.stroke();
+  } else {
+    const [x1, y1, x2, y2] = p;
+    if (tr.t === "linea" || tr.t === "flecha") {
+      ctx.beginPath(); ctx.moveTo(x1, y1); ctx.lineTo(x2, y2); ctx.stroke();
+      if (tr.t === "flecha") {
+        const a = Math.atan2(y2 - y1, x2 - x1), L = 10 + tr.w * 2.2;
+        ctx.beginPath();
+        ctx.moveTo(x2 - L * Math.cos(a - .45), y2 - L * Math.sin(a - .45)); ctx.lineTo(x2, y2);
+        ctx.lineTo(x2 - L * Math.cos(a + .45), y2 - L * Math.sin(a + .45)); ctx.stroke();
+      }
+    } else if (tr.t === "rect") ctx.strokeRect(Math.min(x1, x2), Math.min(y1, y2), Math.abs(x2 - x1), Math.abs(y2 - y1));
+    else if (tr.t === "elipse") { ctx.beginPath(); ctx.ellipse((x1 + x2) / 2, (y1 + y2) / 2, Math.abs(x2 - x1) / 2, Math.abs(y2 - y1) / 2, 0, 0, Math.PI * 2); ctx.stroke(); }
+  }
+  ctx.restore();
+}
+function lbRedibujar() {
+  if (!LB.base) return;
+  const ctx = LB.base.getContext("2d");
+  ctx.clearRect(0, 0, LB_ANCHO, LB.H);
+  for (const tr of LB.trazos) lbDibujarTrazo(ctx, tr);
+}
+function lbPedirVivo() { if (LB.pedido) return; LB.pedido = true; requestAnimationFrame(() => { LB.pedido = false; lbPintarVivo(); }); }
+function lbPintarVivo() {
+  if (!LB.viva) return;
+  const ctx = LB.viva.getContext("2d");
+  ctx.clearRect(0, 0, LB_ANCHO, LB.H);
+  if (LB.vivo && !LB.vivo.goma) lbDibujarTrazo(ctx, LB.vivo);
+  if (LB.modo === "dibujar" && LB.herr === "goma" && LB.cursor) {
+    ctx.save(); ctx.beginPath();
+    ctx.arc(LB.cursor[0], LB.cursor[1], LB_HERR.goma.grosores[LB.grosor], 0, Math.PI * 2);
+    ctx.lineWidth = 1.2; ctx.strokeStyle = "rgba(0,0,0,.5)"; ctx.setLineDash([3, 3]); ctx.stroke(); ctx.restore();
+  }
+}
+
+/* ── geometría para la goma y la simplificación ── */
+function distSeg(px, py, ax, ay, bx, by) {
+  const dx = bx - ax, dy = by - ay, l2 = dx * dx + dy * dy;
+  const t = l2 ? clamp(((px - ax) * dx + (py - ay) * dy) / l2, 0, 1) : 0;
+  return Math.hypot(px - (ax + dx * t), py - (ay + dy * t));
+}
+function lbPoligonal(tr) {
+  const p = tr.p;
+  if (tr.t === "rect") { const [a, b, c, d] = p; return [a, b, c, b, c, d, a, d, a, b]; }
+  if (tr.t === "elipse") {
+    const [x1, y1, x2, y2] = p, cx = (x1 + x2) / 2, cy = (y1 + y2) / 2, rx = Math.abs(x2 - x1) / 2, ry = Math.abs(y2 - y1) / 2, o = [];
+    for (let i = 0; i <= 32; i++) { const a = i / 32 * Math.PI * 2; o.push(cx + rx * Math.cos(a), cy + ry * Math.sin(a)); }
+    return o;
+  }
+  return p;
+}
+function lbToca(tr, x, y, r) {
+  const q = lbPoligonal(tr), lim = r + tr.w / 2;
+  if (q.length === 2) return Math.hypot(x - q[0], y - q[1]) <= lim;
+  for (let i = 0; i < q.length - 2; i += 2) if (distSeg(x, y, q[i], q[i + 1], q[i + 2], q[i + 3]) <= lim) return true;
+  return false;
+}
+/* Ramer–Douglas–Peucker: un trazo a mano de 150 puntos queda en unos 30 sin cambiar su forma */
+function lbSimplificar(p, tol) {
+  const n = p.length / 2;
+  if (n < 3) return p.map(Math.round);
+  const keep = new Uint8Array(n); keep[0] = keep[n - 1] = 1;
+  const pila = [[0, n - 1]];
+  while (pila.length) {
+    const [a, b] = pila.pop(); let max = 0, idx = -1;
+    for (let i = a + 1; i < b; i++) {
+      const d = distSeg(p[2 * i], p[2 * i + 1], p[2 * a], p[2 * a + 1], p[2 * b], p[2 * b + 1]);
+      if (d > max) { max = d; idx = i; }
+    }
+    if (max > tol && idx > 0) { keep[idx] = 1; pila.push([a, idx], [idx, b]); }
+  }
+  const o = [];
+  for (let i = 0; i < n; i++) if (keep[i]) o.push(Math.round(p[2 * i]), Math.round(p[2 * i + 1]));
+  return o;
+}
+
+/* ── puntero: ratón, dedo o lápiz ── */
+function lbAbajo(e) {
+  if (LB.modo !== "dibujar" || (e.pointerType === "mouse" && e.button !== 0)) return;
+  e.preventDefault();
+  try { LB.viva.setPointerCapture(e.pointerId); } catch (err) {}
+  const [x, y] = lbPunto(e);
+  LB.dibujando = true;
+  if (LB.herr === "goma") { LB.vivo = { goma: true, antes: LB.trazos.slice(), ultimo: null }; LB.cursor = [x, y]; lbBorrarEn(x, y); lbPintarVivo(); return; }
+  const h = LB_HERR[LB.herr], w = h.grosores[LB.grosor], c = LB.herr === "fluor" ? LB.fluor : LB.tinta;
+  if (h.forma) { const sx = LB.iman ? lbImanV(x) : x, sy = LB.iman ? lbImanV(y) : y; LB.vivo = { t: LB.herr, c, w, p: [sx, sy, sx, sy] }; }
+  else LB.vivo = { t: LB.herr, c, w, p: [x, y] };
+  lbPintarVivo();
+}
+function lbMover(e) {
+  if (LB.modo !== "dibujar") return;
+  const [x, y] = lbPunto(e);
+  if (!LB.dibujando) { if (LB.herr === "goma") { LB.cursor = [x, y]; lbPedirVivo(); } return; }
+  const tr = LB.vivo;
+  if (tr.goma) { LB.cursor = [x, y]; lbBorrarEn(x, y); lbPedirVivo(); return; }
+  if (LB_HERR[tr.t].forma) {
+    let nx = LB.iman ? lbImanV(x) : x, ny = LB.iman ? lbImanV(y) : y;
+    if (e.shiftKey) {                               /* Mayús: cuadrado, círculo o ángulos de 45° */
+      const dx = nx - tr.p[0], dy = ny - tr.p[1];
+      if (tr.t === "rect" || tr.t === "elipse") { const m = Math.max(Math.abs(dx), Math.abs(dy)); nx = tr.p[0] + Math.sign(dx || 1) * m; ny = tr.p[1] + Math.sign(dy || 1) * m; }
+      else { const a = Math.round(Math.atan2(dy, dx) / (Math.PI / 4)) * (Math.PI / 4), L = Math.hypot(dx, dy); nx = tr.p[0] + Math.cos(a) * L; ny = tr.p[1] + Math.sin(a) * L; }
+    }
+    tr.p[2] = nx; tr.p[3] = ny;
+  } else {
+    const evs = e.getCoalescedEvents ? e.getCoalescedEvents() : [e];
+    for (const ev of (evs.length ? evs : [e])) {
+      const [cx, cy] = lbPunto(ev), lx = tr.p[tr.p.length - 2], ly = tr.p[tr.p.length - 1];
+      if (Math.hypot(cx - lx, cy - ly) >= .8) tr.p.push(cx, cy);
+    }
+  }
+  lbPedirVivo();
+}
+function lbArriba() {
+  if (!LB.dibujando) return;
+  LB.dibujando = false;
+  const v = LB.vivo; LB.vivo = null;
+  if (!v) return;
+  if (v.goma) {
+    const cambio = v.antes.length !== LB.trazos.length || v.antes.some((tr, i) => tr !== LB.trazos[i]);
+    if (cambio) lbOperar({ tipo: "snap", antes: v.antes, despues: LB.trazos.slice() });
+    lbPintarVivo(); return;
+  }
+  if (LB_HERR[v.t].forma) {
+    if (Math.hypot(v.p[2] - v.p[0], v.p[3] - v.p[1]) < 3) { lbPintarVivo(); return; }   /* un clic sin arrastrar no es una forma */
+    v.p = v.p.map(Math.round);
+  } else v.p = lbSimplificar(v.p, v.t === "fluor" ? 1.2 : .55);
+  LB.trazos.push(v);
+  if (LB.base) lbDibujarTrazo(LB.base.getContext("2d"), v);
+  lbPintarVivo();
+  lbOperar({ tipo: "add", trazo: v });
+  lbAjustar();                                      /* si dibujas cerca del final, la hoja crece */
+}
+/* ── texto con negrita ──
+   El apunte se guarda dos veces: en HTML mínimo (solo negrita y saltos de
+   línea) para mostrarlo, y en texto plano para buscar, contar palabras y
+   pasárselo a Claude. Todo lo que entra se reconstruye desde cero con esas
+   piezas: ningún atributo, estilo ni script sobrevive. */
+function limpiarHtml(html) {
+  const t = document.createElement("template"); t.innerHTML = html || "";
+  const raiz = document.createElement("div");
+  /* la negrita se decide por lo que se VE: <b>, <strong> o un peso grueso; un peso normal dentro de <b> la anula */
+  const peso = (el, heredado) => {
+    if (el.tagName === "B" || el.tagName === "STRONG") return true;
+    const fw = el.style && el.style.fontWeight;
+    if (fw) { if (/bold|bolder|[6-9]00/.test(fw)) return true; if (/normal|lighter|[1-5]00/.test(fw)) return false; }
+    return heredado;
+  };
+  const volcar = (origen, destino, negrita) => {
+    for (const nodo of origen.childNodes) {
+      if (nodo.nodeType === 3) {
+        if (!nodo.nodeValue) continue;
+        const txt = document.createTextNode(nodo.nodeValue);
+        if (negrita) {
+          const ult = destino.lastChild;
+          if (ult && ult.nodeName === "B") ult.appendChild(txt);
+          else { const b = document.createElement("b"); b.appendChild(txt); destino.appendChild(b); }
+        } else destino.appendChild(txt);
+      } else if (nodo.nodeType === 1) {
+        const tag = nodo.tagName;
+        if (tag === "SCRIPT" || tag === "STYLE" || tag === "TEMPLATE") continue;
+        if (tag === "BR") destino.appendChild(document.createElement("br"));
+        else if (/^(DIV|P|LI|H[1-6]|BLOCKQUOTE|PRE)$/.test(tag)) {
+          const d = document.createElement("div");
+          volcar(nodo, d, peso(nodo, negrita));
+          if (!d.childNodes.length) d.appendChild(document.createElement("br"));
+          destino.appendChild(d);
+        } else volcar(nodo, destino, peso(nodo, negrita));
+      }
+    }
+  };
+  volcar(t.content, raiz, false);
+  return raiz.innerHTML;
+}
+/* los apuntes de antes solo tenían texto: cada línea pasa a ser un bloque */
+const textoAHtml = txt => (txt || "").split("\n").map(l => "<div>" + (l ? esc(l) : "<br>") + "</div>").join("");
+/* texto plano del HTML limpio, línea a línea como se ve en la hoja; con marcas, la negrita sale como **negrita** (para descargar) */
+function htmlATexto(html, marcas) {
+  const t = document.createElement("template"); t.innerHTML = html || "";
+  const marcar = s => s.split("\n").map(l => { const m = l.match(/^(\s*)(.*?)(\s*)$/); return m[1] + (m[2] ? "**" + m[2] + "**" : "") + m[3]; }).join("\n");
+  let out = "";
+  const bloque = () => { if (out && !out.endsWith("\n")) out += "\n"; };
+  const recorrer = nodo => {
+    for (const c of nodo.childNodes) {
+      if (c.nodeType === 3) out += c.nodeValue;
+      else if (c.nodeName === "BR") out += "\n";
+      else if (c.nodeName === "DIV") { bloque(); recorrer(c); bloque(); }
+      else if (c.nodeName === "B" && marcas) out += marcar(c.textContent);
+      else recorrer(c);
+    }
+  };
+  recorrer(t.content);
+  return out.replace(/\u00A0/g, " ").replace(/\n$/, "");
+}
+/* el HTML guardado solo manda si cuenta el mismo texto que el apunte; si el texto
+   cambió por otro lado (Claude, otro dispositivo con la versión anterior), manda el texto */
+function apunteHtml(n) {
+  if (n.html) { const h = limpiarHtml(n.html); if (htmlATexto(h) === (n.cuerpo || "")) return h; }
+  return textoAHtml(n.cuerpo);
+}
+
+/* ── goma de verdad: corta los trazos por donde pasa ──
+   Cada trazo se remuestrea a pasos de 1,5 px, se quitan los puntos que caen
+   bajo la goma y cada tramo que sobrevive pasa a ser un trazo nuevo. Las
+   formas se convierten antes en su contorno para poder cortarlas igual. Los
+   trazos nunca se modifican en su sitio: se sustituyen por otros nuevos, y
+   así deshacer solo tiene que volver a la lista de antes. */
+/* puntos cada «paso» px a lo largo del trazo; orig marca los que ya eran vértices del trazo */
+function lbDensificar(p, paso) {
+  const d = [p[0], p[1]], orig = [1];
+  for (let i = 2; i < p.length; i += 2) {
+    const x0 = p[i - 2], y0 = p[i - 1], x1 = p[i], y1 = p[i + 1];
+    const n = Math.max(1, Math.ceil(Math.hypot(x1 - x0, y1 - y0) / paso));
+    for (let k = 1; k <= n; k++) { d.push(x0 + (x1 - x0) * k / n, y0 + (y1 - y0) * k / n); orig.push(k === n ? 1 : 0); }
+  }
+  return { d, orig };
+}
+/* el contorno de cada trazo tal como se ve, incluida la punta de la flecha */
+function lbComoPolilineas(tr) {
+  const p = tr.p;
+  if (tr.t === "linea") return [p.slice(0, 4)];
+  if (tr.t === "flecha") {
+    const [x1, y1, x2, y2] = p, a = Math.atan2(y2 - y1, x2 - x1), L = 10 + tr.w * 2.2;
+    return [[x1, y1, x2, y2],
+            [x2 - L * Math.cos(a - .45), y2 - L * Math.sin(a - .45), x2, y2, x2 - L * Math.cos(a + .45), y2 - L * Math.sin(a + .45)]];
+  }
+  if (tr.t === "rect") { const [a, b, c, d] = p; return [[a, b, c, b, c, d, a, d, a, b]]; }
+  if (tr.t === "elipse") {
+    const [x1, y1, x2, y2] = p, cx = (x1 + x2) / 2, cy = (y1 + y2) / 2, rx = Math.abs(x2 - x1) / 2, ry = Math.abs(y2 - y1) / 2, o = [];
+    for (let i = 0; i <= 96; i++) { const a = i / 96 * Math.PI * 2; o.push(cx + rx * Math.cos(a), cy + ry * Math.sin(a)); }
+    return [o];
+  }
+  return [p];
+}
+function lbCerca(qs, x, y, lim) {
+  for (const q of qs) {
+    if (q.length === 2) { if (Math.hypot(x - q[0], y - q[1]) <= lim) return true; continue; }
+    for (let i = 0; i < q.length - 2; i += 2) if (distSeg(x, y, q[i], q[i + 1], q[i + 2], q[i + 3]) <= lim) return true;
+  }
+  return false;
+}
+/* devuelve null si la goma no llega a quitarle nada; si no, los trozos que sobreviven */
+function lbCortar(tr, x, y, r) {
+  /* la punta redonda asoma medio grosor más allá del último punto; el subrayador acaba en seco */
+  const lim = r + (tr.t === "fluor" ? tr.w * .25 : tr.w / 2), qs = lbComoPolilineas(tr);
+  if (!lbCerca(qs, x, y, lim)) return null;
+  if (tr.p.length === 2) return [];                       /* un punto tocado desaparece entero */
+  const libre = tr.t === "boli" || tr.t === "rotu" || tr.t === "fluor", t = libre ? tr.t : "poli";
+  const lim2 = lim * lim, trozos = [], dec = v => Math.round(v * 10) / 10;
+  let quitado = false;
+  for (const q of qs) {
+    /* de cada tramo que sobrevive se guardan sus vértices de siempre y los dos puntos de corte:
+       la forma no se deforma por mucho que pases la goma cerca */
+    const { d, orig } = lbDensificar(q, 1.5);
+    let tramo = [], corte = null;
+    const cerrar = () => {
+      if (corte) tramo.push(corte[0], corte[1]);
+      if (tramo.length >= 4) trozos.push({ t, c: tr.c, w: tr.w, p: tramo.map(dec) });
+      tramo = []; corte = null;
+    };
+    for (let i = 0, j = 0; i < d.length; i += 2, j++) {
+      const dx = d[i] - x, dy = d[i + 1] - y;
+      if (dx * dx + dy * dy <= lim2) { quitado = true; cerrar(); }
+      else if (!tramo.length || orig[j]) { tramo.push(d[i], d[i + 1]); corte = null; }
+      else corte = [d[i], d[i + 1]];
+    }
+    cerrar();
+  }
+  return quitado ? trozos : null;
+}
+function lbBorrarEn(x, y) {
+  const r = LB_HERR.goma.grosores[LB.grosor], desde = LB.vivo.ultimo || [x, y];
+  /* entre dos lecturas del ratón la goma también pasa: se recorre el tramo a pasos de media goma */
+  const pasos = Math.min(60, Math.max(1, Math.ceil(Math.hypot(x - desde[0], y - desde[1]) / (r * .5))));
+  let cambio = false;
+  for (let s = 1; s <= pasos; s++) {
+    const px = desde[0] + (x - desde[0]) * s / pasos, py = desde[1] + (y - desde[1]) * s / pasos;
+    for (let i = LB.trazos.length - 1; i >= 0; i--) {
+      const trozos = lbCortar(LB.trazos[i], px, py, r);
+      if (trozos) { LB.trazos.splice(i, 1, ...trozos); cambio = true; }
+    }
+  }
+  LB.vivo.ultimo = [x, y];
+  if (cambio) lbRedibujar();
+}
+
+/* ── historial y guardado ── */
+function lbOperar(op) {
+  const h = lbHist();
+  h.deshacer.push(op); h.rehacer.length = 0;
+  if (h.deshacer.length > 200) h.deshacer.shift();
+  lbGuardar(); lbPintarBarra();
+}
+function lbDeshacer() {
+  const h = lbHist(), op = h.deshacer.pop(); if (!op) return;
+  if (op.tipo === "add") { const i = LB.trazos.lastIndexOf(op.trazo); if (i >= 0) LB.trazos.splice(i, 1); }
+  else if (op.tipo === "snap") LB.trazos = op.antes.slice();
+  h.rehacer.push(op); lbRedibujar(); lbGuardar(); lbPintarBarra();
+}
+function lbRehacer() {
+  const h = lbHist(), op = h.rehacer.pop(); if (!op) return;
+  if (op.tipo === "add") LB.trazos.push(op.trazo);
+  else if (op.tipo === "snap") LB.trazos = op.despues.slice();
+  h.deshacer.push(op); lbRedibujar(); lbGuardar(); lbPintarBarra();
+}
+/* sin confirmación a propósito: se puede deshacer, y así no depende de ventanas emergentes */
+function lbLimpiar() {
+  if (!LB.trazos.length) return;
+  const viejos = LB.trazos; LB.trazos = [];
+  lbOperar({ tipo: "snap", antes: viejos, despues: [] });
+  lbRedibujar(); lbAjustar();
+  aviso("Dibujo borrado. Ctrl+Z para recuperarlo.");
+}
+function lbGuardar() { clearTimeout(LB.temp); LB.pendiente = true; LB.temp = setTimeout(lbGuardarYa, 600); }
+function lbGuardarYa() {
+  clearTimeout(LB.temp);
+  if (!LB.pendiente) return;
+  LB.pendiente = false;
+  const n = S.apuntes[LB.nota]; if (!n) return;
+  n.dibujo = { v: 1, trazos: LB.trazos };
+  n.editado = new Date().toISOString();
+  guardarApunte(n);
+}
+function lbModo(m) {
+  LB.modo = m; lbPrefs();
+  if (m === "escribir" && LB.ta && LB.ta.isConnected) LB.ta.focus({ preventScroll: true });
+  else if (document.activeElement === LB.ta) LB.ta.blur();
+  LB.cursor = null; lbPintarBarra(); lbPintarVivo();
+}
+
+document.addEventListener("click", e => {
+  const t = e.target;
+  if (t.closest("#lbNegrita")) {
+    const ed = LB.ta; if (!ed || !ed.isConnected) return;
+    if (LB.modo !== "escribir") lbModo("escribir");   /* ya deja el foco en el texto */
+    else if (document.activeElement !== ed) ed.focus({ preventScroll: true });
+    document.execCommand("bold");
+    lbEstadoNegrita(); return;
+  }
+  if (t.closest("[data-lb-modo]")) { lbModo("escribir"); return; }
+  const he = t.closest("[data-lb-herr]"); if (he) { LB.herr = he.dataset.lbHerr; lbModo("dibujar"); return; }
+  const co = t.closest("[data-lb-color]");
+  if (co) {
+    if (LB.herr === "fluor") LB.fluor = co.dataset.lbColor; else LB.tinta = co.dataset.lbColor;
+    if (LB.herr === "goma") LB.herr = "rotu";          /* elegir un color es querer pintar */
+    lbModo("dibujar"); return;
+  }
+  const gr = t.closest("[data-lb-grosor]"); if (gr) { LB.grosor = +gr.dataset.lbGrosor; lbPrefs(); lbPintarBarra(); lbPintarVivo(); return; }
+  if (t.closest("#lbIman")) { LB.iman = !LB.iman; lbPrefs(); lbPintarBarra(); return; }
+  if (t.closest("#lbDeshacer")) { lbDeshacer(); return; }
+  if (t.closest("#lbRehacer")) { lbRehacer(); return; }
+  if (t.closest("#lbLimpiar")) { lbLimpiar(); return; }
+});
+/* Ctrl+Z / Ctrl+Y para el dibujo; mientras escribes, el texto usa su propio deshacer */
+document.addEventListener("keydown", e => {
+  if (seccion !== "apuntes" || !lbVivaActiva()) return;
+  const tag = document.activeElement && document.activeElement.tagName;
+  if (["TEXTAREA", "INPUT", "SELECT"].includes(tag) || (document.activeElement && document.activeElement.isContentEditable)) return;
+  const mod = e.ctrlKey || e.metaKey, k = (e.key || "").toLowerCase();
+  if (mod && k === "z" && !e.shiftKey) { e.preventDefault(); lbDeshacer(); }
+  else if (mod && (k === "y" || (k === "z" && e.shiftKey))) { e.preventDefault(); lbRehacer(); }
+});
+
+/* ── negrita y pegado en el texto de la hoja ── */
+function lbEstadoNegrita() {
+  const b = $("#lbNegrita"); if (!b) return;
+  let on = false; try { on = document.activeElement === LB.ta && document.queryCommandState("bold"); } catch (err) {}
+  b.setAttribute("aria-pressed", String(on));
+}
+/* el botón B no puede quitarle el foco al texto: se perdería la selección */
+document.addEventListener("mousedown", e => { if (e.target.closest && e.target.closest("#lbNegrita")) e.preventDefault(); });
+/* el botón B se enciende cuando el cursor está sobre texto en negrita (también tras Ctrl+B) */
+document.addEventListener("selectionchange", lbEstadoNegrita);
+document.addEventListener("keyup", e => { if (e.target.id === "apCuerpo") lbEstadoNegrita(); });
+/* lo que se pega entra como texto limpio: ni colores ni tipografías de la web de origen */
+document.addEventListener("paste", e => {
+  if (!(e.target.closest && e.target.closest("#apCuerpo"))) return;
+  e.preventDefault();
+  const txt = (e.clipboardData || window.clipboardData).getData("text/plain");
+  if (txt) document.execCommand("insertText", false, txt);
+});
+/* cada Intro crea un bloque <div> y la negrita se escribe como <b>, no como estilos */
+try { document.execCommand("defaultParagraphSeparator", false, "div"); document.execCommand("styleWithCSS", false, false); } catch (err) {}
+
+/* ══════════════════ navegación ══════════════════ */
+const SECCIONES = [
+  { id: "escritorio", txt: "Escritorio" }, { id: "modulos", txt: "Módulos" },
+  { id: "apuntes", txt: "Apuntes" }, { id: "entregas", txt: "Entregas" },
+  { id: "casillero", txt: "Casillero" }, { id: "ingles", txt: "Inglés" },
+  /* aparte y al final: esto es una conversación, no una pantalla más */
+  { id: "tutor", txt: "Tutor", aparte: true }
+];
+function pintaNav() {
+  const urgentes = S.tareas.filter(t => !t.hecha && t.fecha && diasEntre(t.fecha, hoyISO()) <= 3).length;
+  const sinLeer = tutorNoLeidos();
+  /* tabindex móvil: solo la sección activa entra en el tabulador; las flechas recorren el resto */
+  $("#nav").innerHTML = SECCIONES.map(s =>
+    (s.aparte ? `<hr class="nav-sep">` : "") +
+    `<button class="nav-item" role="tab" data-sec="${s.id}" aria-controls="principal"
+       aria-selected="${s.id === seccion}" tabindex="${s.id === seccion ? 0 : -1}">${icono(s.id)}<span>${s.txt}</span>` +
+    (s.id === "entregas" && urgentes ? `<span class="cuenta" title="Vencen en 3 días o menos">${urgentes}</span>` : "") +
+    (s.id === "tutor" && sinLeer ? `<span class="cuenta verde" title="Mensajes del profe sin leer">${sinLeer}</span>` : "") + `</button>`).join("");
+  $("#curso").textContent = S.config.curso + " · curso 26–27";
+}
+
+/* ══════════════════ vistas ══════════════════ */
+function vistaEscritorio() {
+  const ahora = new Date(), hh = ahora.getHours();
+  const saludo = hh < 6 ? "Aún despierto" : hh < 13 ? "Buenos días" : hh < 21 ? "Buenas tardes" : "Buenas noches";
+  const proximas = S.tareas.filter(t => !t.hecha && t.fecha).sort((a, b) => a.fecha.localeCompare(b.fecha)).slice(0, 5);
+  const pendientesTot = S.tareas.filter(t => !t.hecha).length;
+  const dias = []; for (let i = 13; i >= 0; i--) { const d = new Date(ahora); d.setDate(ahora.getDate() - i); dias.push({ d, min: totalDia(hoyISO(d)) }); }
+  const maxDia = Math.max(60, ...dias.map(x => x.min));
+  const semana = S.modulos.reduce((s, m) => s + minutosSemana(m.id), 0);
+  const meta = S.modulos.reduce((s, m) => s + num(m.metaSemanal) * 60, 0);
+  const calc = S.modulos.map(m => ({ m, c: calcModulo(m) }));
+  const enRiesgo = calc.filter(x => x.c.est === "riesgo").length;
+
+  return `
+  <header class="cab">
+    <div>
+      <div class="eyebrow">${mayus(ahora.toLocaleDateString("es-ES", { weekday: "long", day: "numeric", month: "long" }))}</div>
+      <h1 class="titulo">${saludo}<em>.</em></h1>
+    </div>
+    <div class="cab-datos">
+      <div class="cab-dato"><span class="cifra">${racha()}</span><span class="meta">días seguidos</span></div>
+      <div class="cab-dato"><span class="cifra">${pendientesTot}</span><span class="meta">entregas pendientes</span></div>
+      <div class="cab-dato"><span class="cifra">${enRiesgo}</span><span class="meta">módulos en riesgo</span></div>
+    </div>
+  </header>
+
+  <div class="rejilla-12">
+    ${panelObjetivos()}
+    <section class="panel c-5" aria-labelledby="tSesion">
+      <div class="panel-cab"><h2 class="etq" id="tSesion">Sesión de estudio</h2><span class="fase" id="faseTimer">Concentración</span></div>
+      <select id="selTimer" aria-label="Módulo que vas a estudiar">
+        <option value="">Elige un módulo…</option>
+        ${S.modulos.map(m => `<option value="${m.id}"${T.modId === m.id ? " selected" : ""}>${esc(m.cod)} · ${esc(m.nombre)}</option>`).join("")}
+      </select>
+      <div class="reloj" id="reloj">25:00</div>
+      <div class="barra-btns">
+        <button class="btn primario" id="btnTimer">Empezar</button>
+        <button class="btn" id="btnReset">Reiniciar</button>
+        <button class="btn fantasma" id="btnManual">${icono("mas")}30 min a mano</button>
+      </div>
+    </section>
+
+    <section class="panel c-7" aria-labelledby="tSemana">
+      <div class="panel-cab"><h2 class="etq" id="tSemana">Esta semana</h2>
+        <span class="meta num">${meta ? Math.round(semana / meta * 100) : 0} % de lo previsto</span></div>
+      <div style="display:flex; align-items:baseline; gap:12px; flex-wrap:wrap">
+        <span class="cifra">${horasTxt(semana)}</span><span class="meta">de ${horasTxt(meta)} previstas</span>
+      </div>
+      <div class="medidor" style="margin-top:18px"><i style="width:${meta ? clamp(semana / meta * 100, 0, 100) : 0}%"></i></div>
+      <div class="dias" role="img" aria-label="Minutos de estudio de los últimos catorce días">
+        ${dias.map(x => `<span class="dia${x.min ? "" : " sin"}" title="${mayus(x.d.toLocaleDateString("es-ES", { weekday: "long", day: "numeric", month: "short" }))}: ${x.min ? horasTxt(x.min) : "sin estudiar"}"><i style="height:${x.min ? Math.max(6, x.min / maxDia * 100) : 3}%"></i></span>`).join("")}
+      </div>
+      <div class="dias-eje"><span>hace 14 días</span><span>hoy</span></div>
+    </section>
+
+    <div class="c-7 pila">
+      <section class="panel" aria-labelledby="tProx">
+        <div class="panel-cab"><h2 class="etq" id="tProx">Lo próximo que vence</h2>
+          <button class="btn mini fantasma" data-ir="entregas">Ver entregas</button></div>
+        ${proximas.length ? `<div class="lista">${proximas.map(t => {
+          const m = modPorId(t.modId), dd = diasEntre(t.fecha, hoyISO());
+          const cl = dd < 0 ? "riesgo" : dd <= 2 ? "aviso" : "ok";
+          const txt = dd < 0 ? "Atrasada " + (-dd) + " d" : dd === 0 ? "Hoy" : dd === 1 ? "Mañana" : "En " + dd + " días";
+          return `<div class="fila"><span class="codigo">${m ? esc(m.cod) : "—"}</span>
+            <span class="principal-fila"><span class="t">${esc(t.titulo)}</span></span>
+            <span class="fecha">${t.fecha}</span>
+            <span class="estado ${cl}"><span class="dot"></span>${txt}</span></div>`;
+        }).join("")}</div>` : `<p class="vacio">Nada pendiente apuntado. Añade tus entregas en la sección Entregas.</p>`}
+      </section>
+      <section class="panel" aria-labelledby="tNota">
+        <div class="panel-cab"><h2 class="etq" id="tNota">Nota rápida</h2><span class="meta">Se guarda sola</span></div>
+        <textarea class="nota-rapida" id="postit" aria-labelledby="tNota" placeholder="Algo que no se te puede olvidar…">${esc(S.config.postit || "")}</textarea>
+      </section>
+    </div>
+
+    <section class="panel c-5" aria-labelledby="tMods">
+      <div class="panel-cab"><h2 class="etq" id="tMods">Estado de los módulos</h2>
+        <button class="btn mini fantasma" data-ir="modulos">Ver todos</button></div>
+      <div class="lista">${calc.map(({ m, c }) => `
+        <button class="fila fila-boton" data-ir="modulos">
+          <span class="codigo">${esc(m.cod)}</span>
+          <span class="principal-fila"><span class="t">${esc(m.nombre)}</span></span>
+          <span class="num meta">${c.media === null ? "—" : nota(c.media)}</span>
+          ${estadoHTML(c)}
+        </button>`).join("")}</div>
+    </section>
+  </div>`;
+}
+
+function vistaModulos() {
+  return `
+  <header class="cab">
+    <div>
+      <div class="eyebrow">${esc(S.config.curso)}</div>
+      <h1 class="titulo">Módulos</h1>
+      <p class="lead">Cada módulo te dice la nota que llevas y la mínima que necesitas en lo que queda para llegar a tu objetivo.</p>
+    </div>
+    <button class="btn primario" id="btnNuevoMod">${icono("mas")}Añadir módulo</button>
+  </header>
+  <div class="rejilla-modulos">
+  ${S.modulos.map(m => {
+    const c = calcModulo(m), semana = minutosSemana(m.id), meta = num(m.metaSemanal) * 60;
+    let frase;
+    if (c.imposible) frase = `Con lo que queda no llegas al <strong>${nota(c.obj)}</strong>: prepara la recuperación y habla con el profesor.`;
+    else if (c.yaEsta && c.restante <= 0.001) frase = `Módulo cerrado con un <strong>${nota(c.acumulado)}</strong>.`;
+    else if (c.yaEsta) frase = `Ya tienes el <strong>${nota(c.obj)}</strong> asegurado aunque entregues en blanco lo que queda.`;
+    else if (c.necesita === null) frase = `Añade cómo te evalúan para calcular lo que necesitas.`;
+    else frase = `Necesitas un <strong>${nota(c.necesita)}</strong> de media en el <strong>${nota(c.restante)} %</strong> que queda.`;
+    return `<article class="panel modulo">
+      <div class="modulo-cab"><span class="codigo">${esc(m.cod)}</span>${estadoHTML(c)}</div>
+      <h2 class="modulo-nombre">${esc(m.nombre)}</h2>
+      <div class="modulo-cifras">
+        <div><div class="cifra${c.media === null ? " vacia" : ""}">${c.media === null ? "—" : nota(c.media)}</div>
+          <div class="meta">nota actual · ${nota(c.pesoEval)} % evaluado</div></div>
+        <div><div class="cifra${c.necesita === null || c.yaEsta ? " vacia" : ""}">${c.necesita === null || c.yaEsta ? "—" : nota(c.necesita)}</div>
+          <div class="meta">necesitas en lo que falta</div></div>
+      </div>
+      <p class="modulo-frase">${frase}</p>
+      <div class="barra-fila"><span>Estudio esta semana</span><span class="num">${horasTxt(semana)} / ${num(m.metaSemanal)} h</span></div>
+      <div class="medidor"><i style="width:${meta ? clamp(semana / meta * 100, 0, 100) : 0}%"></i></div>
+      <div class="barra-fila"><span>Faltas de asistencia</span><span class="num">${num(m.faltas)} / ${c.faltasMax} h</span></div>
+      <div class="medidor faltas${c.faltasPct >= 1 ? " lleno" : ""}"><i style="width:${clamp(c.faltasPct * 100, 0, 100)}%"></i></div>
+      <p class="meta" style="margin-top:8px">Pierdes la evaluación continua al pasar de ${c.faltasMax} h (${nota(c.pct)} % de ${num(m.horas)} h).</p>
+      <div class="modulo-acciones">
+        <button class="btn mini" data-editar-mod="${m.id}">Notas y pesos</button>
+        <span class="paso" role="group" aria-label="Faltas de ${esc(m.nombre)}">
+          <button class="btn fantasma" data-quitar-falta="${m.id}" aria-label="Quitar una hora de falta">−</button>
+          <span class="num">${num(m.faltas)} h</span>
+          <button class="btn fantasma" data-falta="${m.id}" aria-label="Añadir una hora de falta">+</button>
+        </span>
+      </div>
+    </article>`;
+  }).join("")}
+  </div>`;
+}
+
+function dlgModulo(id) {
+  const m = modPorId(id); if (!m) return;
+  const pintaResumen = () => {
+    const c = calcModulo(m), suma = m.pesos.reduce((s, p) => s + num(p.peso), 0);
+    $("#resumenPesos").innerHTML =
+      `<p class="meta">Los pesos suman <strong class="num">${nota(suma)} %</strong>${Math.round(suma) === 100 ? "." : " — deberían sumar 100 %."}</p>
+       <p style="margin-top:6px">${c.media === null ? "Aún no hay notas puestas." :
+        c.imposible ? `Llevas un <strong>${nota(c.media)}</strong>. Con el ${nota(c.restante)} % que queda ya no se llega al ${nota(c.obj)}.` :
+        c.yaEsta ? `Llevas un <strong>${nota(c.media)}</strong>: el ${nota(c.obj)} ya está asegurado.` :
+        `Llevas un <strong>${nota(c.media)}</strong>. Te hace falta un <strong>${nota(c.necesita)}</strong> de media en el ${nota(c.restante)} % restante.`}</p>`;
+  };
+  const pintaTabla = () => {
+    $("#tablaPesos").innerHTML = m.pesos.map(p => `<tr data-p="${p.id}">
+      <td><input type="text" value="${esc(p.nombre)}" data-campo="nombre" aria-label="Nombre del apartado"></td>
+      <td style="width:96px"><input type="number" min="0" max="100" step="1" value="${num(p.peso)}" data-campo="peso" aria-label="Peso en porcentaje"></td>
+      <td style="width:96px"><input type="number" min="0" max="10" step="0.01" value="${p.nota === null || p.nota === undefined ? "" : p.nota}" data-campo="nota" placeholder="—" aria-label="Nota obtenida"></td>
+      <td style="width:36px"><button type="button" class="btn borrar mini cuadrado" data-borrar-peso="${p.id}" aria-label="Quitar apartado">×</button></td></tr>`).join("");
+    pintaResumen();
+  };
+  abrirDlg(esc(m.cod) + " · " + esc(m.nombre), `
+    <label class="campo" style="margin-bottom:14px">Nombre del módulo<input type="text" id="mNombre" value="${esc(m.nombre)}"></label>
+    <div class="rejilla-campos">
+      <label class="campo">Código<input type="text" id="mCod" value="${esc(m.cod)}"></label>
+      <label class="campo">Horas del curso<input type="number" id="mHoras" value="${num(m.horas)}" min="0"></label>
+      <label class="campo">Nota objetivo<input type="number" id="mObj" value="${num(m.objetivo, 5)}" min="1" max="10" step="0.5"></label>
+      <label class="campo">Estudio a la semana (h)<input type="number" id="mMeta" value="${num(m.metaSemanal)}" min="0"></label>
+      <label class="campo">Faltas acumuladas (h)<input type="number" id="mFaltas" value="${num(m.faltas)}" min="0"></label>
+      <label class="campo">% de faltas permitido<input type="number" id="mPct" value="${num(m.pctFaltas === undefined ? S.config.pctFaltas : m.pctFaltas)}" min="0" max="100"></label>
+    </div>
+    <hr class="separador">
+    <div class="etq" style="margin-bottom:6px">Cómo te evalúan</div>
+    <table class="tabla-pesos"><thead><tr><th>Apartado</th><th>Peso %</th><th>Nota</th><th></th></tr></thead>
+      <tbody id="tablaPesos"></tbody></table>
+    <button type="button" class="btn mini fantasma" id="btnAddPeso" style="margin-top:10px">${icono("mas")}Añadir apartado</button>
+    <div class="resumen" id="resumenPesos"></div>`,
+    [{ txt: "Borrar módulo", clase: "btn borrar", izquierda: true, accion: () => {
+        if (!confirm("¿Borrar " + m.nombre + " y sus horas registradas?")) return true;
+        S.modulos = S.modulos.filter(x => x.id !== id); delete S.horas[id];
+        guardar("ajustes"); guardar("horas"); pinta();
+      } },
+     { txt: "Listo", clase: "btn primario", accion: () => { guardar("ajustes"); pinta(); } }]);
+
+  pintaTabla();
+  /* cerrar con la X también guarda lo tocado: antes solo lo hacía «Listo» */
+  $("#dlg").addEventListener("close", () => guardar("ajustes"), { once: true });
+  const leerCab = () => {
+    m.cod = $("#mCod").value.trim() || m.cod; m.nombre = $("#mNombre").value.trim() || m.nombre;
+    m.horas = num($("#mHoras").value, m.horas); m.objetivo = clamp(num($("#mObj").value, 5), 0, 10);
+    m.metaSemanal = num($("#mMeta").value, 0); m.faltas = Math.max(0, num($("#mFaltas").value, 0));
+    m.pctFaltas = clamp(num($("#mPct").value, 15), 0, 100);
+    pintaResumen();
+  };
+  ["mCod", "mNombre", "mHoras", "mObj", "mMeta", "mFaltas", "mPct"].forEach(k => $("#" + k).addEventListener("input", leerCab));
+  $("#btnAddPeso").addEventListener("click", () => { m.pesos.push({ id: uid(), nombre: "Nuevo apartado", peso: 0, nota: null }); pintaTabla(); });
+  $("#tablaPesos").addEventListener("input", e => {
+    const tr = e.target.closest("tr"), p = m.pesos.find(x => x.id === tr.dataset.p); if (!p) return;
+    const campo = e.target.dataset.campo;
+    if (campo === "nombre") p.nombre = e.target.value;
+    else if (campo === "peso") p.peso = clamp(num(e.target.value, 0), 0, 100);
+    else p.nota = e.target.value === "" ? null : clamp(num(e.target.value, 0), 0, 10);
+    pintaResumen();
+  });
+  $("#tablaPesos").addEventListener("click", e => {
+    const b = e.target.closest("[data-borrar-peso]"); if (!b) return;
+    m.pesos = m.pesos.filter(x => x.id !== b.dataset.borrarPeso); pintaTabla();
+  });
+}
+
+function vistaApuntes() {
+  const lista = Object.values(S.apuntes).sort((a, b) => (b.editado || "").localeCompare(a.editado || ""));
+  const f = filtroApuntes.toLowerCase();
+  const visibles = lista.filter(n => !f || (n.titulo + " " + n.cuerpo + " " + (n.tags || []).join(" ")).toLowerCase().includes(f));
+  const n = apunteActivo ? S.apuntes[apunteActivo] : null;
+  return `
+  <header class="cab">
+    <div>
+      <div class="eyebrow">Cuaderno</div>
+      <h1 class="titulo">Apuntes</h1>
+      <p class="lead">Se guardan solos mientras escribes o dibujas.${sample ? " Claude puede resumirlos, explicártelos y sacarte preguntas de examen." : ""}</p>
+    </div>
+    <button class="btn primario" id="btnNuevoApunte">${icono("mas")}Nuevo apunte</button>
+  </header>
+  <div class="notas">
+    <div>
+      <input type="text" id="buscarApuntes" placeholder="Buscar en tus apuntes…" value="${esc(filtroApuntes)}" aria-label="Buscar en tus apuntes">
+      <div class="lista-notas">
+        ${visibles.length ? visibles.map(x => { const m = modPorId(x.modId); return `
+          <button class="nota-item" data-apunte="${x.id}" aria-current="${x.id === apunteActivo}">
+            <span class="t">${esc(x.titulo || "Sin título")}</span>
+            <span class="m">${m ? esc(m.cod) : "—"} · ${(x.editado || "").slice(0, 10)}${x.dibujo && x.dibujo.trazos && x.dibujo.trazos.length ? " · con dibujo" : ""}</span>
+          </button>`; }).join("")
+          : `<p class="vacio">${f ? "Nada coincide con esa búsqueda." : "Todavía no hay apuntes."}</p>`}
+      </div>
+    </div>
+    ${n ? `
+    <section class="panel editor">
+      <input type="text" class="editor-titulo" id="apTitulo" value="${esc(n.titulo)}" placeholder="Título del apunte" aria-label="Título">
+      <div class="editor-meta">
+        <select id="apModulo" aria-label="Módulo">
+          <option value="">Sin módulo</option>
+          ${S.modulos.map(m => `<option value="${m.id}"${m.id === n.modId ? " selected" : ""}>${esc(m.cod)} · ${esc(m.nombre)}</option>`).join("")}
+        </select>
+        <input type="text" id="apTags" value="${esc((n.tags || []).join(", "))}" placeholder="Etiquetas separadas por comas" aria-label="Etiquetas">
+      </div>
+      ${lbBarraHTML()}
+      <div class="libreta${LB.modo === "dibujar" ? " dibujar" : ""}" id="libreta">
+        <div class="libreta-marco" id="lbMarco">
+          <div class="hoja-escala" id="lbEscala">
+            <div class="hoja-papel" id="lbPapel">
+              <div class="hoja-texto${n.cuerpo && n.cuerpo.trim() ? "" : " sin-texto"}" id="apCuerpo" contenteditable="true" role="textbox" aria-multiline="true" aria-label="Contenido del apunte" aria-placeholder="Escribe aquí…" data-placeholder="Escribe aquí… o elige un rotulador y dibuja encima" spellcheck="true">${apunteHtml(n)}</div>
+              <canvas class="capa" id="lbBase" aria-hidden="true"></canvas>
+              <canvas class="capa viva" id="lbVivo" role="img" aria-label="Dibujo de la hoja"></canvas>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="editor-pie">
+        <div class="barra-btns">
+          ${sample ? `<span class="firma" style="margin-right:4px">Pedir a Claude</span>
+          <button class="btn mini" data-ia="resumen">Resumir</button>
+          <button class="btn mini" data-ia="explicar">Explícamelo fácil</button>
+          <button class="btn mini" data-ia="examen">5 preguntas de examen</button>
+          <button class="btn mini" id="btnPreguntarProfe">Preguntar al profe</button>` : ""}
+        </div>
+        <div class="barra-btns">
+          <span class="meta num" id="contadorPalabras"></span>
+          <button class="btn mini fantasma" id="btnExportarApunte">Descargar</button>
+          <button class="btn mini borrar" data-borrar-apunte="${n.id}">Borrar</button>
+        </div>
+      </div>
+      <div class="ia oculto" id="panelIA">
+        <div class="ia-cab"><span class="firma" id="tituloIA">Claude</span>
+          <div class="barra-btns"><button class="btn mini" id="btnPegarIA">Añadir al apunte</button>
+          <button class="btn mini fantasma" id="btnCerrarIA">Cerrar</button></div></div>
+        <div class="salida" id="salidaIA"></div>
+      </div>
+    </section>`
+    : `<section class="panel"><p class="vacio" style="padding:40px 0; text-align:center">Elige un apunte o crea uno nuevo.</p></section>`}
+  </div>`;
+}
+
+function vistaEntregas() {
+  const hoy = hoyISO();
+  const pend = S.tareas.filter(t => !t.hecha), hechas = S.tareas.filter(t => t.hecha);
+  const grupos = [
+    { t: "Atrasadas", f: x => x.fecha && diasEntre(x.fecha, hoy) < 0 },
+    { t: "Esta semana", f: x => x.fecha && diasEntre(x.fecha, hoy) >= 0 && diasEntre(x.fecha, hoy) <= 7 },
+    { t: "Más adelante", f: x => x.fecha && diasEntre(x.fecha, hoy) > 7 },
+    { t: "Sin fecha", f: x => !x.fecha }
+  ];
+  const fila = t => {
+    const m = modPorId(t.modId), dd = t.fecha ? diasEntre(t.fecha, hoy) : null;
+    const cl = dd === null ? "" : dd < 0 ? "riesgo" : dd <= 2 ? "aviso" : "ok";
+    const rel = dd === null ? "" : dd < 0 ? "Atrasada " + (-dd) + " d" : dd === 0 ? "Hoy" : dd === 1 ? "Mañana" : "En " + dd + " días";
+    return `<div class="fila${t.hecha ? " tachada" : ""}">
+      <input type="checkbox" data-hecha="${t.id}" ${t.hecha ? "checked" : ""} aria-label="Marcar ${esc(t.titulo)} como entregada">
+      <span class="codigo">${m ? esc(m.cod) : "—"}</span>
+      <span class="principal-fila"><span class="t">${esc(t.titulo)}</span>
+        ${t.peso ? `<span class="meta">Vale el ${num(t.peso)} % de la nota</span>` : ""}</span>
+      ${t.fecha ? `<span class="fecha">${t.fecha}</span>` : ""}
+      ${!t.hecha && rel ? `<span class="estado ${cl}"><span class="dot"></span>${rel}</span>` : ""}
+      <button class="btn borrar mini cuadrado" data-borrar-tarea="${t.id}" aria-label="Borrar entrega">×</button></div>`;
+  };
+  return `
+  <header class="cab">
+    <div>
+      <div class="eyebrow">Actividades</div>
+      <h1 class="titulo">Entregas</h1>
+      <p class="lead">Todo lo que hay que entregar, con su fecha y lo que pesa en la nota.</p>
+    </div>
+  </header>
+  <section class="panel">
+    <div class="form-entrega">
+      <label class="campo">Qué hay que entregar<input type="text" id="tTitulo" placeholder="Ejercicio 4: bucles anidados"></label>
+      <label class="campo">Módulo<select id="tModulo">${S.modulos.map(m => `<option value="${m.id}">${esc(m.cod)} · ${esc(m.nombre)}</option>`).join("")}</select></label>
+      <label class="campo">Fecha límite<input type="date" id="tFecha"></label>
+      <label class="campo">Peso %<input type="number" id="tPeso" min="0" max="100" placeholder="Opcional"></label>
+      <button class="btn primario" id="btnAddTarea">Apuntar</button>
+    </div>
+  </section>
+  ${pend.length ? grupos.map(g => { const items = pend.filter(g.f); return items.length ? `
+    <div class="grupo"><div class="grupo-cab"><h2>${g.t}</h2><span class="meta num">${items.length}</span></div>
+      <div class="lista">${items.sort((a, b) => (a.fecha || "9").localeCompare(b.fecha || "9")).map(fila).join("")}</div></div>` : ""; }).join("")
+    : `<p class="vacio" style="margin-top:24px">No tienes nada pendiente apuntado.</p>`}
+  ${hechas.length ? `<details class="grupo"><summary class="etq" style="cursor:pointer">Entregadas · ${hechas.length}</summary>
+    <div class="lista" style="margin-top:10px">${hechas.map(fila).join("")}</div></details>` : ""}`;
+}
+
+const LIMITE_ARCHIVO = 180 * 1024;
+const tipoDoc = d => d.tipo === "enlace" ? "LINK" : (d.mime || "").startsWith("image/") ? "IMG" : (d.mime || "").includes("pdf") ? "PDF" : "TXT";
+function vistaCasillero() {
+  const docs = Object.values(S.casillero).sort((a, b) => (b.creado || "").localeCompare(a.creado || ""));
+  return `
+  <header class="cab">
+    <div>
+      <div class="eyebrow">Documentos</div>
+      <h1 class="titulo">Casillero</h1>
+      <p class="lead">Guarda aquí lo que te dan en clase. Los archivos pequeños se guardan enteros; los grandes, mejor por enlace.</p>
+    </div>
+  </header>
+  <div class="casillero-top">
+    <div class="soltar" id="zonaSoltar">
+      <strong>Suelta aquí un archivo</strong>
+      <span class="meta">Imágenes, txt, md, csv o pdf de hasta 180 KB. Las fotos se comprimen solas.</span>
+      <button class="btn mini" id="btnElegir">Elegir archivo</button>
+      <input type="file" id="inputArchivo" class="oculto" accept="image/*,.txt,.md,.csv,.json,.html,.css,.js,.sql,.pdf">
+    </div>
+    <section class="panel">
+      <div class="panel-cab"><h2 class="etq">Guardar un enlace</h2></div>
+      <div style="display:grid; gap:12px">
+        <label class="campo">Título<input type="text" id="dTitulo" placeholder="Apuntes del tema 2 (Drive)"></label>
+        <label class="campo">Enlace<input type="url" id="dUrl" placeholder="https://…"></label>
+        <label class="campo">Módulo<select id="dModulo">${S.modulos.map(m => `<option value="${m.id}">${esc(m.cod)} · ${esc(m.nombre)}</option>`).join("")}</select></label>
+        <div><button class="btn primario" id="btnAddEnlace">Guardar enlace</button></div>
+      </div>
+    </section>
+  </div>
+  ${docs.length ? `<div class="rejilla-docs">${docs.map(d => { const m = modPorId(d.modId); return `
+    <div class="doc"><span class="tipo">${tipoDoc(d)}</span>
+      <span style="flex:1; min-width:0">
+        <div class="t">${esc(d.titulo)}</div>
+        <div class="meta num">${m ? esc(m.cod) : "—"} · ${(d.creado || "").slice(0, 10)}${d.tam ? " · " + Math.round(d.tam / 1024) + " KB" : ""}</div>
+        <div class="barra-btns" style="margin-top:10px">
+          ${d.tipo === "enlace" ? `<a class="btn mini" href="${esc(d.url)}" target="_blank" rel="noopener noreferrer">Abrir enlace</a>`
+            : `<button class="btn mini" data-ver-doc="${d.id}">Ver</button>`}
+          ${d.tipo !== "enlace" && descargas ? `<button class="btn mini fantasma" data-bajar-doc="${d.id}">Descargar</button>` : ""}
+          <button class="btn mini borrar" data-borrar-doc="${d.id}">Borrar</button>
+        </div>
+      </span></div>`; }).join("")}</div>`
+    : `<p class="vacio" style="margin-top:20px">El casillero está vacío.</p>`}`;
+}
+
+async function comprimirImagen(file) {
+  const url = URL.createObjectURL(file);
+  try {
+    const img = await new Promise((ok, mal) => { const i = new Image(); i.onload = () => ok(i); i.onerror = mal; i.src = url; });
+    for (const [ancho, q] of [[1500, .72], [1200, .62], [900, .5], [700, .42]]) {
+      const escala = Math.min(1, ancho / img.width);
+      const cv = document.createElement("canvas");
+      cv.width = Math.round(img.width * escala); cv.height = Math.round(img.height * escala);
+      cv.getContext("2d").drawImage(img, 0, 0, cv.width, cv.height);
+      const data = cv.toDataURL("image/jpeg", q);
+      if (data.length < LIMITE_ARCHIVO * 1.34) return data;
+    }
+    return null;
+  } finally { URL.revokeObjectURL(url); }
+}
+async function guardarArchivo(file) {
+  const modId = ($("#dModulo") && $("#dModulo").value) || (S.modulos[0] && S.modulos[0].id);
+  let contenido = null, mime = file.type || "application/octet-stream";
+  if (file.type.startsWith("image/")) {
+    contenido = await comprimirImagen(file); mime = "image/jpeg";
+    if (!contenido) { aviso("Esa imagen es enorme incluso comprimida. Súbela a Drive y guarda el enlace.", "mal"); return; }
+  } else if (file.size <= LIMITE_ARCHIVO) {
+    contenido = await new Promise(ok => { const r = new FileReader(); r.onload = () => ok(r.result); r.readAsDataURL(file); });
+  } else {
+    aviso("«" + file.name + "» pesa " + Math.round(file.size / 1024) + " KB (el máximo son 180 KB). Súbelo a Drive o Classroom y guarda aquí el enlace.", "mal");
+    if ($("#dTitulo")) { $("#dTitulo").value = file.name.replace(/\.[^.]+$/, ""); $("#dUrl").focus(); }
+    return;
+  }
+  const id = uid();
+  const doc = { id, titulo: file.name, modId, tipo: "archivo", mime, tam: contenido.length, creado: new Date().toISOString(), datos: contenido };
+  S.casillero[id] = doc; guardarLocal();
+  if (db) db.doc("casillero/" + id).set(doc).catch(e => aviso("No se pudo sincronizar el archivo: " + e.code, "mal"));
+  aviso("Guardado: " + file.name); pinta();
+}
+
+let dirTrad = "es-en";
+function vistaIngles() {
+  const hoy = hoyISO();
+  const pendientesRep = S.vocab.filter(v => !v.proximo || v.proximo <= hoy).length;
+  const de = dirTrad === "es-en" ? "Español" : "Inglés", a = dirTrad === "es-en" ? "Inglés" : "Español";
+  return `
+  <header class="cab">
+    <div>
+      <div class="eyebrow">Inglés técnico</div>
+      <h1 class="titulo">Traductor <em>y</em> vocabulario</h1>
+    </div>
+    ${S.vocab.length ? `<button class="btn primario" id="btnRepasar">Repasar${pendientesRep ? " · " + pendientesRep : ""}</button>` : ""}
+  </header>
+  ${sample ? `
+  <div class="traductor">
+    <div class="lado">
+      <div class="idioma"><span>${de}</span>
+        <button class="btn mini fantasma" id="btnCambiarDir" title="Cambiar el sentido">${icono("cambiar")}${de} → ${a}</button></div>
+      <textarea id="tradEntrada" aria-label="Texto en ${de.toLowerCase()}" placeholder="${dirTrad === "es-en" ? "Escribe lo que quieres traducir…" : "Type the English you want to understand…"}"></textarea>
+    </div>
+    <div class="lado">
+      <div class="idioma"><span>${a}</span><button class="btn mini fantasma" id="btnGuardarVocab">Guardar en vocabulario</button></div>
+      <div class="salida-trad" id="tradSalida" aria-live="polite"></div>
+    </div>
+  </div>
+  <div class="trad-pie">
+    <div class="barra-btns"><button class="btn primario" id="btnTraducir">Traducir</button>
+      <button class="btn" id="btnGramatica">Explícame la gramática</button>
+      <button class="btn" id="btnCorregir">Corrige mi inglés</button></div>
+    <span class="firma">Con Claude</span>
+  </div>` : `<section class="panel"><p class="vacio">El traductor no está disponible en esta vista. El vocabulario y el repaso siguen funcionando.</p></section>`}
+
+  <section class="seccion">
+    <div class="seccion-cab"><h2>Mi vocabulario</h2><span class="meta num">${S.vocab.length} palabras</span></div>
+    <div class="form-vocab">
+      <label class="campo">Inglés<input type="text" id="vEn" placeholder="deploy"></label>
+      <label class="campo">Español<input type="text" id="vEs" placeholder="desplegar"></label>
+      <button class="btn" id="btnAddVocab">${icono("mas")}Añadir</button>
+    </div>
+    ${S.vocab.length ? `<div class="palabras">${S.vocab.slice().reverse().map(v => `
+      <div class="palabra">
+        <div class="en">${esc(v.en)}</div><div class="es">${esc(v.es)}</div>
+        <div class="palabra-pie">
+          <span class="cajas" title="Caja ${v.caja || 1} de 5">${[1, 2, 3, 4, 5].map(k => `<i class="${k <= (v.caja || 1) ? "llena" : ""}"></i>`).join("")}</span>
+          <button class="btn mini borrar" data-borrar-vocab="${v.id}">Quitar</button>
+        </div>
+      </div>`).join("")}</div>` : `<p class="vacio">Aún no has guardado ninguna palabra.</p>`}
+  </section>
+
+  <section class="seccion">
+    <div class="seccion-cab"><h2>Chuleta de DAW</h2><span class="meta">Inglés que sale en clase</span></div>
+    <div class="tabla-scroll"><table><thead><tr><th>Inglés</th><th>En clase significa</th><th></th></tr></thead><tbody>
+      ${GLOSARIO.map(([en, es]) => `<tr><td class="termino">${esc(en)}</td><td>${esc(es)}</td>
+        <td style="width:110px; text-align:right"><button class="btn mini fantasma" data-glos-en="${esc(en)}" data-glos-es="${esc(es)}">Añadir</button></td></tr>`).join("")}
+    </tbody></table></div>
+  </section>`;
+}
+
+function dlgRepaso() {
+  const hoy = hoyISO();
+  const cola = S.vocab.filter(v => !v.proximo || v.proximo <= hoy);
+  if (!cola.length) { aviso("No te toca repasar nada hoy. Vuelve mañana."); return; }
+  let i = 0, revelada = false;
+  const pinta2 = () => {
+    const v = cola[i];
+    $("#dlgCuerpo").innerHTML = `
+      <p class="meta num" style="text-align:center; margin-bottom:12px">${i + 1} de ${cola.length} · caja ${v.caja || 1} de 5</p>
+      <div class="tarjeta-repaso">
+        <div class="cara">${esc(v.en)}</div>
+        ${revelada ? `<div class="reverso">${esc(v.es)}</div>` : `<button type="button" class="btn" id="btnRevelar">Ver la traducción</button>`}
+      </div>
+      ${revelada ? `<div class="barra-btns" style="margin-top:14px; justify-content:center">
+        <button type="button" class="btn" id="btnMal">No me acordaba</button>
+        <button type="button" class="btn primario" id="btnBien">Lo sabía</button></div>` : ""}`;
+    if (!revelada) $("#btnRevelar").onclick = () => { revelada = true; pinta2(); };
+    else {
+      const avanzar = bien => {
+        const dias = [1, 2, 4, 8, 16];
+        v.caja = clamp((v.caja || 1) + (bien ? 1 : -1), 1, 5);
+        const d = new Date(); d.setDate(d.getDate() + dias[v.caja - 1]);
+        v.proximo = hoyISO(d); guardar("ingles");
+        diaObj().repaso = true; guardar("objetivos");
+        i++; revelada = false;
+        if (i >= cola.length) { $("#dlg").close(); aviso("Repaso terminado: " + cola.length + " palabras."); pinta(); }
+        else pinta2();
+      };
+      $("#btnBien").onclick = () => avanzar(true);
+      $("#btnMal").onclick = () => avanzar(false);
+    }
+  };
+  abrirDlg("Repaso", "", [{ txt: "Dejarlo aquí", clase: "btn", accion: () => pinta() }]);
+  pinta2();
+}
+
+/* ══════════════════ diálogo ══════════════════ */
+function abrirDlg(titulo, html, botones) {
+  $("#dlgTit").textContent = titulo;
+  const cuerpoDlg = $("#dlgCuerpo");
+  cuerpoDlg.onclick = cuerpoDlg.onchange = cuerpoDlg.onkeydown = null;
+  cuerpoDlg.innerHTML = html;
+  const pie = $("#dlgPie"); pie.innerHTML = "";
+  const der = document.createElement("div"); der.className = "derecha";
+  botones.forEach(b => {
+    const el = document.createElement("button");
+    el.className = b.clase; el.type = "button"; el.textContent = b.txt;
+    el.onclick = () => { const quedarse = b.accion && b.accion(); if (!quedarse) $("#dlg").close(); };
+    (b.izquierda ? pie : der).append(el);
+  });
+  pie.append(der);
+  $("#dlg").showModal();
+}
+function dlgAjustes() {
+  abrirDlg("Ajustes", `
+    <div class="rejilla-campos">
+      <label class="campo">Curso<input type="text" id="cCurso" value="${esc(S.config.curso)}"></label>
+      <label class="campo">Nota objetivo<input type="number" id="cObj" value="${num(S.config.objetivo, 5)}" min="1" max="10" step="0.5"></label>
+      <label class="campo">% de faltas permitido<input type="number" id="cPct" value="${num(S.config.pctFaltas, 15)}" min="0" max="100"></label>
+      <label class="campo">Minutos de concentración<input type="number" id="cPom" value="${num(S.config.pomodoro, 25)}" min="5" max="90"></label>
+      <label class="campo">Minutos de descanso<input type="number" id="cDes" value="${num(S.config.descanso, 5)}" min="1" max="30"></label>
+    </div>
+    <hr class="separador">
+    <div class="etq">Copia de seguridad</div>
+    <p class="meta" style="margin:6px 0 12px">Un curso entero de apuntes merece una copia. El archivo lo puedes volver a cargar aquí mismo.</p>
+    <div class="barra-btns">
+      <button type="button" class="btn" id="btnExportar">Descargar copia (.json)</button>
+      <button type="button" class="btn fantasma" id="btnImportar">Cargar una copia</button>
+      <input type="file" id="inputImportar" accept="application/json,.json" class="oculto">
+    </div>
+    <p class="meta" style="margin-top:18px">${db ? "Tus datos se guardan en tu cuenta: los verás igual desde el móvil." : "Ahora mismo se guardan solo en este navegador."}</p>`,
+    [{ txt: "Listo", clase: "btn primario", accion: () => {
+      S.config.curso = $("#cCurso").value.trim() || S.config.curso;
+      S.config.objetivo = clamp(num($("#cObj").value, 5), 0, 10);
+      S.config.pctFaltas = clamp(num($("#cPct").value, 15), 0, 100);
+      S.config.pomodoro = clamp(num($("#cPom").value, 25), 5, 90);
+      S.config.descanso = clamp(num($("#cDes").value, 5), 1, 30);
+      guardar("ajustes"); pinta();
+    } }]);
+
+  $("#btnExportar").onclick = async () => {
+    if (!descargas) { aviso("Las descargas no están disponibles en esta vista.", "mal"); return; }
+    try { await descargas.save({ filename: "escritorio-daw-" + hoyISO() + ".json", data: JSON.stringify(S, null, 2) }); aviso("Copia descargada."); }
+    catch (e) { if (e.code !== "declined") aviso("No se pudo descargar (" + e.code + ").", "mal"); }
+  };
+  $("#btnImportar").onclick = () => $("#inputImportar").click();
+  $("#inputImportar").onchange = async e => {
+    const f = e.target.files[0]; if (!f) return;
+    try {
+      const d = JSON.parse(await f.text());
+      if (!d.modulos) throw new Error("formato");
+      if (!confirm("Esto sustituye lo que tienes ahora por la copia. ¿Seguimos?")) return;
+      S = Object.assign(estadoInicial(), d);
+      Object.keys(DOCS).forEach(guardar);
+      Object.values(S.apuntes).forEach(guardarApunte);
+      pinta(); $("#dlg").close(); aviso("Copia restaurada.");
+    } catch (err) { aviso("Ese archivo no es una copia válida.", "mal"); }
+  };
+}
+
+/* ══════════════════ pintado ══════════════════ */
+function pinta() {
+  evaluarObjetivos();
+  pintaNav();
+  const c = $("#contenido");
+  c.innerHTML = { escritorio: vistaEscritorio, tutor: vistaTutor, modulos: vistaModulos, apuntes: vistaApuntes,
+    entregas: vistaEntregas, casillero: vistaCasillero, ingles: vistaIngles }[seccion]();
+  if (seccion === "escritorio") pintaReloj();
+  if (seccion === "tutor") { tutorLeido(); chatAbajo(); }
+  if (seccion === "apuntes" && apunteActivo && S.apuntes[apunteActivo]) { contarPalabras(); montarLibreta(); }
+}
+function contarPalabras() {
+  const t = $("#apCuerpo"); if (!t) return;
+  const v = (t.innerText || "").trim(), p = v ? v.split(/\s+/).length : 0;
+  $("#contadorPalabras").textContent = p + (p === 1 ? " palabra" : " palabras");
+}
+function irASeccion(id, foco) {
+  seccion = id; pinta();
+  window.scrollTo({ top: 0 });
+  if (foco === "nav") { const b = $('.nav-item[data-sec="' + id + '"]'); if (b) b.focus(); }
+  else $("#principal").focus({ preventScroll: true });
+}
+
+/* ══════════════════ eventos ══════════════════ */
+$("#nav").addEventListener("click", e => {
+  const b = e.target.closest("[data-sec]"); if (b) irASeccion(b.dataset.sec);
+});
+$("#nav").addEventListener("keydown", e => {
+  const mov = { ArrowDown: 1, ArrowRight: 1, ArrowUp: -1, ArrowLeft: -1, Home: "inicio", End: "fin" }[e.key];
+  if (mov === undefined) return;
+  e.preventDefault();
+  const i = SECCIONES.findIndex(s => s.id === seccion);
+  const d = mov === "inicio" ? 0 : mov === "fin" ? SECCIONES.length - 1 : (i + mov + SECCIONES.length) % SECCIONES.length;
+  irASeccion(SECCIONES[d].id, "nav");
+});
+
+document.addEventListener("click", async e => {
+  const t = e.target;
+  const ir = t.closest("[data-ir]"); if (ir) { irASeccion(ir.dataset.ir); return; }
+
+  /* objetivos: los que marcas tú se alternan; los automáticos te llevan a donde se cumplen */
+  const ob = t.closest("[data-obj]");
+  if (ob) {
+    const id = ob.dataset.obj, d = diaObj();
+    const alternable = id === "descanso" || id.startsWith("rep:") || normalizarObjetivos().propios.some(o => o.id === id);
+    if (alternable) {
+      if (id === "descanso" && num(d.descanso) >= 15 && !d.hechos.descanso) { aviso("Ya está: llevas " + d.descanso + " min de descanso hoy."); return; }
+      d.hechos[id] = !d.hechos[id];
+      if (id.startsWith("rep:")) {
+        const r = normalizarTutor().repasos.find(x => "rep:" + x.id === id);
+        if (r) { r.hecho = !!d.hechos[id]; guardar("tutor"); }
+      }
+      if (!d.visto) d.visto = {};
+      if (d.hechos[id]) d.visto[id] = true;
+      guardar("objetivos"); pinta(); return;
+    }
+    if (id === "tarea") { irASeccion("entregas"); return; }
+    if (id === "apunte") { irASeccion("apuntes"); return; }
+    if (id === "vocab") { if (S.vocab.some(v => !v.proximo || v.proximo <= hoyISO())) dlgRepaso(); else irASeccion("ingles"); return; }
+    if (id === "estudio" || id === "riesgo") {
+      const hecho = ob.classList.contains("hecho");
+      if (id === "riesgo") { const mal = S.modulos.find(m => calcModulo(m).est === "riesgo"); if (mal) { T.modId = mal.id; guardarTimer(); pinta(); } }
+      const b = $("#btnTimer"); if (b) { b.scrollIntoView({ block: "center" }); b.focus({ preventScroll: true }); }
+      if (!hecho) aviso("Empieza una sesión con el cronómetro: se marca sola al terminar.");
+      return;
+    }
+    return;
+  }
+  if (t.closest("#btnObjetivos")) { dlgObjetivos(); return; }
+
+  if (t.closest("#btnTimer")) { T.activo ? pausarTimer() : iniciarTimer(); return; }
+  if (t.closest("#btnReset")) { reiniciarTimer(); return; }
+  if (t.closest("#btnManual")) {
+    if (!T.modId) { aviso("Elige antes el módulo."); return; }
+    registrarMinutos(T.modId, 30); aviso("30 minutos apuntados."); pinta(); return;
+  }
+
+  if (t.closest("#btnNuevoMod")) {
+    const m = { id: uid(), cod: "NUEVO", nombre: "Módulo sin nombre", color: S.modulos.length % 7, horas: 100,
+                faltas: 0, objetivo: num(S.config.objetivo, 5), metaSemanal: 2, pesos: PESOS_DEF() };
+    S.modulos.push(m); guardar("ajustes"); pinta(); dlgModulo(m.id); return;
+  }
+  const ed = t.closest("[data-editar-mod]"); if (ed) { dlgModulo(ed.dataset.editarMod); return; }
+  const fa = t.closest("[data-falta]"); if (fa) { const m = modPorId(fa.dataset.falta); m.faltas = num(m.faltas) + 1; guardar("ajustes"); pinta(); return; }
+  const fq = t.closest("[data-quitar-falta]"); if (fq) { const m = modPorId(fq.dataset.quitarFalta); m.faltas = Math.max(0, num(m.faltas) - 1); guardar("ajustes"); pinta(); return; }
+
+  if (t.closest("#btnNuevoApunte")) {
+    const n = { id: uid(), titulo: "", cuerpo: "", modId: (S.modulos[0] && S.modulos[0].id) || "", tags: [],
+                creado: new Date().toISOString(), editado: new Date().toISOString() };
+    S.apuntes[n.id] = n; apunteActivo = n.id; guardarApunte(n); pinta();
+    if ($("#apTitulo")) $("#apTitulo").focus();
+    return;
+  }
+  const ap = t.closest("[data-apunte]"); if (ap) { apunteActivo = ap.dataset.apunte; pinta(); return; }
+  const ba = t.closest("[data-borrar-apunte]");
+  if (ba) {
+    if (!confirm("¿Borrar este apunte?")) return;
+    const id = ba.dataset.borrarApunte;
+    delete S.apuntes[id]; if (db) db.doc("apuntes/" + id).delete().catch(() => {});
+    apunteActivo = null; guardarLocal(); pinta(); return;
+  }
+  const ia = t.closest("[data-ia]");
+  if (ia) {
+    const n = S.apuntes[apunteActivo];
+    if (!n || !n.cuerpo.trim()) { aviso("Escribe algo primero."); return; }
+    const m = modPorId(n.modId);
+    $("#panelIA").classList.remove("oculto");
+    $("#tituloIA").textContent = { resumen: "Resumen", explicar: "Explicación", examen: "Preguntas de examen" }[ia.dataset.ia];
+    await pedirAClaude(PROMPTS[ia.dataset.ia](n.titulo || "sin título", n.cuerpo.slice(0, 12000), m ? m.nombre : "el módulo"), $("#salidaIA"));
+    return;
+  }
+  if (t.closest("#btnCerrarIA")) { $("#panelIA").classList.add("oculto"); return; }
+  if (t.closest("#btnPegarIA")) {
+    const n = S.apuntes[apunteActivo], s = $("#salidaIA").textContent.trim(); if (!n || !s) return;
+    const titIA = $("#tituloIA").textContent;
+    n.html = apunteHtml(n).replace(/(<div><br><\/div>)+$/, "") + "<div><br></div><div><b>" + esc("— " + titIA + " —") + "</b></div>" + textoAHtml(s);
+    n.cuerpo = htmlATexto(n.html);
+    n.editado = new Date().toISOString(); guardarApunte(n); pinta(); aviso("Añadido al apunte."); return;
+  }
+  if (t.closest("#btnExportarApunte")) {
+    const n = S.apuntes[apunteActivo]; if (!n) return;
+    if (!descargas) { aviso("Las descargas no están disponibles en esta vista.", "mal"); return; }
+    const m = modPorId(n.modId);
+    const md = "# " + (n.titulo || "Apunte") + "\n\n" + (m ? "**Módulo:** " + m.nombre + "\n\n" : "") + htmlATexto(apunteHtml(n), true) + "\n";
+    try { await descargas.save({ filename: (n.titulo || "apunte").replace(/[^\w\sáéíóúñÁÉÍÓÚÑ-]/gi, "").trim().slice(0, 40) + ".md", data: md }); }
+    catch (err) { if (err.code !== "declined") aviso("No se pudo descargar (" + err.code + ").", "mal"); }
+    return;
+  }
+
+  if (t.closest("#btnAddTarea")) {
+    const tit = $("#tTitulo").value.trim(); if (!tit) { aviso("Ponle un nombre a la entrega."); return; }
+    S.tareas.push({ id: uid(), titulo: tit, modId: $("#tModulo").value, fecha: $("#tFecha").value || "",
+                    peso: num($("#tPeso").value, 0), hecha: false, creado: new Date().toISOString() });
+    guardar("agenda"); pinta(); $("#tTitulo").focus(); return;
+  }
+  const bt = t.closest("[data-borrar-tarea]");
+  if (bt) { S.tareas = S.tareas.filter(x => x.id !== bt.dataset.borrarTarea); guardar("agenda"); pinta(); return; }
+
+  if (t.closest("#btnElegir")) { $("#inputArchivo").click(); return; }
+  if (t.closest("#btnAddEnlace")) {
+    const tit = $("#dTitulo").value.trim(), url = $("#dUrl").value.trim();
+    if (!tit || !url) { aviso("Hacen falta el título y el enlace."); return; }
+    const id = uid();
+    const doc = { id, titulo: tit, url, modId: $("#dModulo").value, tipo: "enlace", creado: new Date().toISOString() };
+    S.casillero[id] = doc; guardarLocal();
+    if (db) db.doc("casillero/" + id).set(doc).catch(() => {});
+    pinta(); aviso("Enlace guardado."); return;
+  }
+  const vd = t.closest("[data-ver-doc]");
+  if (vd) {
+    const d = S.casillero[vd.dataset.verDoc];
+    let cuerpo;
+    if ((d.mime || "").startsWith("image/")) cuerpo = `<div class="visor"><img src="${esc(d.datos)}" alt="${esc(d.titulo)}"></div>`;
+    else if ((d.mime || "").includes("pdf")) cuerpo = `<div class="visor"><embed src="${esc(d.datos)}" type="application/pdf" style="width:100%; height:60vh; border-radius:8px"></div>`;
+    else { let txt = ""; try { txt = decodeURIComponent(escape(atob((d.datos || "").split(",")[1] || ""))); } catch (err) { txt = "No se puede mostrar este archivo."; }
+           cuerpo = `<div class="visor"><pre>${esc(txt)}</pre></div>`; }
+    abrirDlg(d.titulo, cuerpo, [{ txt: "Cerrar", clase: "btn", accion: () => {} }]); return;
+  }
+  const bd = t.closest("[data-bajar-doc]");
+  if (bd) {
+    const d = S.casillero[bd.dataset.bajarDoc];
+    try {
+      const blob = await (await fetch(d.datos)).blob();
+      const ext = (d.mime || "").includes("pdf") ? ".pdf" : (d.mime || "").startsWith("image/") ? ".jpg" : ".txt";
+      const base = d.titulo.replace(/[^\w\sáéíóúñÁÉÍÓÚÑ.-]/gi, "").trim().slice(0, 40) || "archivo";
+      await descargas.save({ filename: /\.[a-z0-9]{1,5}$/i.test(base) ? base : base + ext, data: blob });
+    } catch (err) { if (err && err.code !== "declined") aviso("No se pudo descargar.", "mal"); }
+    return;
+  }
+  const bdo = t.closest("[data-borrar-doc]");
+  if (bdo) {
+    if (!confirm("¿Borrar este documento del casillero?")) return;
+    const id = bdo.dataset.borrarDoc; delete S.casillero[id]; guardarLocal();
+    if (db) db.doc("casillero/" + id).delete().catch(() => {});
+    pinta(); return;
+  }
+
+  if (t.closest("#btnCambiarDir")) { dirTrad = dirTrad === "es-en" ? "en-es" : "es-en"; pinta(); return; }
+  const accTrad = t.closest("#btnTraducir, #btnGramatica, #btnCorregir");
+  if (accTrad) {
+    const txt = $("#tradEntrada").value.trim();
+    if (!txt) { aviso("Escribe algo que traducir."); return; }
+    const de = dirTrad === "es-en" ? "español" : "inglés", a = dirTrad === "es-en" ? "inglés" : "español";
+    let p;
+    if (accTrad.id === "btnTraducir") p = `Traduce del ${de} al ${a} el texto entre comillas triples.
+Contexto: es para un estudiante español de 1.º de Desarrollo de Aplicaciones Web (FP superior). Si aparecen términos técnicos de informática, tradúcelos como se usan de verdad en el sector, no de forma literal.
+Devuelve SOLO la traducción, sin comillas ni comentarios.
+"""${txt}"""`;
+    else if (accTrad.id === "btnGramatica") p = `Eres profesor de inglés técnico de un ciclo de FP en España.
+Explica en español, en 4-6 puntos breves, la gramática del texto entre comillas triples: qué tiempo verbal usa, por qué, y qué error suele cometer un hispanohablante aquí.
+"""${txt}"""`;
+    else p = `Eres profesor de inglés de FP en España. El alumno ha escrito el texto entre comillas triples.
+Devuelve: (1) la versión corregida en inglés natural, (2) una lista breve en español de los errores y por qué lo son. Si ya está bien, dilo.
+"""${txt}"""`;
+    await pedirAClaude(p, $("#tradSalida"));
+    return;
+  }
+  if (t.closest("#btnGuardarVocab")) {
+    const en = dirTrad === "es-en" ? $("#tradSalida").textContent.trim() : $("#tradEntrada").value.trim();
+    const es = dirTrad === "es-en" ? $("#tradEntrada").value.trim() : $("#tradSalida").textContent.trim();
+    if (!en || !es) { aviso("Traduce algo primero."); return; }
+    if (en.length > 90) { aviso("Guarda palabras o expresiones cortas, no párrafos enteros."); return; }
+    S.vocab.push({ id: uid(), en, es, caja: 1, proximo: hoyISO() });
+    guardar("ingles"); pinta(); aviso("Guardado en tu vocabulario."); return;
+  }
+  if (t.closest("#btnAddVocab")) {
+    const en = $("#vEn").value.trim(), es = $("#vEs").value.trim();
+    if (!en || !es) { aviso("Rellena las dos casillas."); return; }
+    S.vocab.push({ id: uid(), en, es, caja: 1, proximo: hoyISO() }); guardar("ingles"); pinta(); return;
+  }
+  const gl = t.closest("[data-glos-en]");
+  if (gl) {
+    if (S.vocab.some(v => v.en.toLowerCase() === gl.dataset.glosEn.toLowerCase())) { aviso("Ya la tienes guardada."); return; }
+    S.vocab.push({ id: uid(), en: gl.dataset.glosEn, es: gl.dataset.glosEs, caja: 1, proximo: hoyISO() });
+    guardar("ingles"); pinta(); return;
+  }
+  const bv = t.closest("[data-borrar-vocab]");
+  if (bv) { S.vocab = S.vocab.filter(v => v.id !== bv.dataset.borrarVocab); guardar("ingles"); pinta(); return; }
+  if (t.closest("#btnRepasar")) { dlgRepaso(); return; }
+
+  if (t.closest("#btnAjustes")) { dlgAjustes(); return; }
+  if (t.closest("#btnTema")) { cambiarTema(); return; }
+});
+
+document.addEventListener("input", e => {
+  const t = e.target;
+  if (t.id === "postit") { S.config.postit = t.value; clearTimeout(pendientes._p); pendientes._p = setTimeout(() => guardar("ajustes"), 800); }
+  if (t.id === "buscarApuntes") {
+    filtroApuntes = t.value;
+    const s = t.selectionStart; pinta();
+    const n = $("#buscarApuntes"); if (n) { n.focus(); n.setSelectionRange(s, s); }
+  }
+  if (t.id === "selTimer") { T.modId = t.value; guardarTimer(); }
+  if (["apTitulo", "apCuerpo", "apTags", "apModulo"].includes(t.id)) {
+    const n = S.apuntes[apunteActivo]; if (!n) return;
+    if (t.id === "apTitulo") {
+      n.titulo = t.value;
+      /* refresca el nombre en la lista sin repintar, que robaría el foco */
+      const enLista = document.querySelector('[data-apunte="' + n.id + '"] .t');
+      if (enLista) enLista.textContent = t.value || "Sin título";
+    }
+    if (t.id === "apCuerpo") {
+      /* lo que se suelta con el ratón llega con sus estilos: se limpia en el momento */
+      if (e.inputType === "insertFromDrop") t.innerHTML = limpiarHtml(t.innerHTML);
+      /* HTML mínimo para conservar la negrita; texto plano para buscar y para Claude */
+      n.html = limpiarHtml(t.innerHTML); n.cuerpo = htmlATexto(n.html);
+      t.classList.toggle("sin-texto", !n.cuerpo.trim());
+      contarPalabras(); lbAjustar(); lbEstadoNegrita();
+    }
+    if (t.id === "apTags") n.tags = t.value.split(",").map(x => x.trim()).filter(Boolean);
+    if (t.id === "apModulo") n.modId = t.value;
+    n.editado = new Date().toISOString();
+    clearTimeout(pendientes._a); pendientes._a = setTimeout(() => guardarApunte(n), 700);
+  }
+});
+document.addEventListener("change", e => {
+  const t = e.target;
+  if (t.id === "inputArchivo" && t.files[0]) { guardarArchivo(t.files[0]); t.value = ""; }
+  const hc = t.closest("[data-hecha]");
+  if (hc) { const tarea = S.tareas.find(x => x.id === hc.dataset.hecha); if (tarea) { tarea.hecha = hc.checked; tarea.hechaEn = hc.checked ? hoyISO() : null; guardar("agenda"); pinta(); } }
+});
+$("#dlgForm").addEventListener("keydown", e => { if (e.key === "Enter" && e.target.tagName === "INPUT") e.preventDefault(); });
+/* al cerrar cualquier diálogo, la pantalla refleja lo que se haya cambiado dentro */
+$("#dlg").addEventListener("close", () => pinta());
+
+document.addEventListener("dragover", e => { const z = $("#zonaSoltar"); if (!z) return; e.preventDefault(); z.classList.add("encima"); });
+document.addEventListener("dragleave", e => { const z = $("#zonaSoltar"); if (z && !z.contains(e.relatedTarget)) z.classList.remove("encima"); });
+document.addEventListener("drop", e => {
+  const z = $("#zonaSoltar"); if (!z) return;
+  e.preventDefault(); z.classList.remove("encima");
+  const f = e.dataTransfer.files[0]; if (f) guardarArchivo(f);
+});
+
+/* ══════════════════ tema ══════════════════
+   Por defecto se sigue el tema del sistema; el botón fija uno a mano. */
+function temaActual() {
+  const s = document.documentElement.getAttribute("data-theme");
+  if (s) return s;
+  return matchMedia("(prefers-color-scheme: dark)").matches ? "dark" : "light";
+}
+function pintaBotonTema() {
+  const oscuro = temaActual() === "dark", b = $("#btnTema");
+  b.innerHTML = icono(oscuro ? "sol" : "luna");
+  b.setAttribute("aria-label", oscuro ? "Cambiar a modo claro" : "Cambiar a modo oscuro");
+  b.title = oscuro ? "Modo claro" : "Modo oscuro";
+}
+function cambiarTema() {
+  document.documentElement.setAttribute("data-theme", temaActual() === "dark" ? "light" : "dark");
+  guardaLS("tema", temaActual()); pintaBotonTema();
+}
+
+
+/* ══════════════════ el profe ══════════════════
+   Un tutor que se porta como un profesor de verdad: si el tema ya lo tienes
+   en apuntes te da pistas y te hace pensar antes de soltarte la respuesta; si
+   es nuevo, te lo explica de cero. Te escribe él cuando algo se acerca —una
+   entrega, un repaso, un módulo flojo— y esos mensajes salen sin leer en el
+   menú. Puede ponerte repasos, entregas y objetivos él solo, y cada cosa que
+   toca queda escrita en la conversación. */
+function tutorDef() { return { nombre: "Profe", chat: [], repasos: [], temas: [], avisos: {} }; }
+const TUTOR_MAX = 60;      /* mensajes guardados: el documento tiene un tope de tamaño */
+const TUTOR_SUG = ["¿Qué estudio hoy?", "Pregúntame de lo último que vimos", "No lo entiendo", "Ponme un ejercicio", "Dímelo ya"];
+let tutorMod = "", tutorVivo = null, tutorCorta = null, tutorTools = null;
+const tutorElige = a => a[Math.floor(Math.random() * a.length)];
+
+function normalizarTutor() {
+  if (!S.tutor || typeof S.tutor !== "object") S.tutor = tutorDef();
+  const P = S.tutor;
+  if (typeof P.nombre !== "string" || !P.nombre.trim()) P.nombre = "Profe";
+  ["chat", "repasos", "temas"].forEach(k => { if (!Array.isArray(P[k])) P[k] = []; });
+  if (!P.avisos || typeof P.avisos !== "object") P.avisos = {};
+  const av = Object.keys(P.avisos);
+  if (av.length > 80) av.slice(0, av.length - 80).forEach(k => delete P.avisos[k]);
+  return P;
+}
+const tutorNoLeidos = () => normalizarTutor().chat.filter(m => m.r === "profe" && m.nuevo).length;
+function tutorApunta(m) {
+  const P = normalizarTutor();
+  P.chat.push(m);
+  if (P.chat.length > TUTOR_MAX) P.chat.splice(0, P.chat.length - TUTOR_MAX);
+  return m;
+}
+function tutorDice(txt, clave) {
+  const P = normalizarTutor();
+  tutorApunta({ id: uid(), r: "profe", t: txt, h: new Date().toISOString(), nuevo: seccion !== "tutor" });
+  if (clave) P.avisos[clave] = hoyISO();
+  guardar("tutor");
+}
+
+/* lo que le hace escribirte solo. Como mucho dos cosas al día y cada una una
+   sola vez: un profesor pesado se acaba ignorando. */
+function tutorMirar() {
+  const P = normalizarTutor(), hoy = hoyISO();
+  let sitio = 2 - Object.values(P.avisos).filter(f => f === hoy).length;
+  if (sitio <= 0) return;
+  const suelta = (clave, txt) => { if (sitio > 0 && !P.avisos[clave]) { tutorDice(txt, clave); sitio--; } };
+
+  if (!P.chat.length) suelta("hola", "Hola, soy tu profe de DAW. Estoy aquí para cuando te atasques: te doy pistas antes que respuestas, porque así se queda. Cuéntame qué llevas entre manos o pregúntame de cualquier módulo.");
+
+  P.repasos.filter(r => !r.hecho && r.fecha <= hoy).forEach(r => {
+    const m = modPorId(r.modId);
+    suelta("rep:" + r.id, tutorElige([
+      "Toca repasar " + r.tema + (m ? " de " + m.cod : "") + ". ¿Te hago un par de preguntas, a ver qué queda?",
+      "Acuérdate de " + r.tema + (m ? " (" + m.cod + ")" : "") + ": lo dejamos para hoy. ¿Lo miramos cinco minutos?"
+    ]));
+  });
+
+  S.tareas.filter(t => !t.hecha && t.fecha).forEach(t => {
+    const dd = diasEntre(t.fecha, hoy); if (dd < 0 || dd > 2) return;
+    const m = modPorId(t.modId), cuando = dd === 0 ? "es para hoy" : dd === 1 ? "es para mañana" : "es pasado mañana";
+    suelta("ent:" + t.id, "«" + t.titulo + "»" + (m ? " de " + m.cod : "") + " " + cuando + ". ¿Cómo lo llevas? Si te has atascado, dime en qué punto y lo vemos.");
+  });
+
+  S.modulos.forEach(m => {
+    const c = calcModulo(m); if (c.est !== "riesgo") return;
+    suelta("rie:" + m.id + ":" + hoy, m.nombre + " va justa" +
+      (c.necesita !== null && c.necesita !== undefined && !c.imposible ? ": necesitas un " + nota(c.necesita) + " en lo que queda" : "") +
+      ". ¿Le metemos media hora hoy? Dime por dónde vais en clase.");
+  });
+
+  const dias = Object.values(S.horas || {}).flatMap(o => Object.keys(o || {}).filter(k => num(o[k]) > 0)).sort();
+  const sin = dias.length ? -diasEntre(dias[dias.length - 1], hoy) : -1;
+  if (sin >= 3) suelta("vuelta:" + hoy, "Llevas " + sin + " días sin estudiar por aquí. No pasa nada: empezamos suave, quince minutos de lo que menos pereza te dé. ¿Con qué módulo?");
+}
+
+/* ── lo que puede hacer él solo ── */
+function tutorHerramientas(acc) {
+  const modPorTexto = s => {
+    const q = String(s || "").trim().toLowerCase(); if (!q) return null;
+    return S.modulos.find(m => m.cod.toLowerCase() === q) || S.modulos.find(m => m.nombre.toLowerCase().includes(q)) ||
+           S.modulos.find(m => q.includes(m.cod.toLowerCase())) || null;
+  };
+  const dentroDe = d => hoyISO(new Date(Date.now() + clamp(num(d, 3), 1, 60) * 86400000));
+  return [
+    {
+      name: "poner_repaso",
+      description: "Programa un repaso de un tema para dentro de unos días: le sale como objetivo ese día y se lo recuerdas tú. Úsalo cuando acabéis de trabajar un tema. Devuelve la fecha del repaso.",
+      inputSchema: { type: "object", properties: {
+        tema: { type: "string", description: "El tema, en pocas palabras" },
+        modulo: { type: "string", description: "Código del módulo: PRO, BD, SI, LMSGI, ED, FOL o ING" },
+        dias: { type: "number", description: "Dentro de cuántos días (1-30); tres o cuatro es lo normal" } }, required: ["tema"] },
+      execute: i => {
+        const P = normalizarTutor(), m = modPorTexto(i.modulo), tema = String(i.tema || "").trim().slice(0, 80);
+        if (!tema) throw new Error("Dime de qué tema es el repaso.");
+        const r = { id: uid(), tema, modId: m ? m.id : "", fecha: dentroDe(i.dias), hecho: false };
+        P.repasos.push(r);
+        if (!P.temas.some(x => x.tema.toLowerCase() === tema.toLowerCase())) P.temas.push({ tema, modId: r.modId, fecha: hoyISO() });
+        if (P.temas.length > 30) P.temas.splice(0, P.temas.length - 30);
+        acc.push("Repaso de " + tema + " para el " + r.fecha);
+        guardar("tutor");
+        return "Repaso puesto para el " + r.fecha + ".";
+      }
+    },
+    {
+      name: "apuntar_entrega",
+      description: "Apunta una entrega o un examen en su lista de Entregas, con fecha límite y lo que pesa. Úsalo cuando te cuente que le han mandado algo. Devuelve lo que queda apuntado.",
+      inputSchema: { type: "object", properties: {
+        titulo: { type: "string", description: "Qué hay que entregar" },
+        modulo: { type: "string", description: "Código del módulo" },
+        fecha: { type: "string", description: "Fecha límite en formato AAAA-MM-DD" },
+        peso: { type: "number", description: "Porcentaje de la nota, si lo sabes" } }, required: ["titulo"] },
+      execute: i => {
+        const m = modPorTexto(i.modulo), titulo = String(i.titulo || "").trim().slice(0, 120);
+        if (!titulo) throw new Error("Dime qué hay que entregar.");
+        const f = /^\d{4}-\d{2}-\d{2}$/.test(String(i.fecha || "")) ? String(i.fecha) : "";
+        S.tareas.push({ id: uid(), titulo, modId: m ? m.id : (S.modulos[0] ? S.modulos[0].id : ""),
+          fecha: f, peso: i.peso ? clamp(num(i.peso), 0, 100) : null, hecha: false });
+        acc.push("Entrega apuntada: " + titulo + (f ? " · " + f : ""));
+        guardar("agenda"); pintaNav();
+        return "Apuntada en Entregas" + (f ? " para el " + f : " sin fecha") + ".";
+      }
+    },
+    {
+      name: "poner_objetivo",
+      description: "Añade un objetivo suyo del día, de los que marca a mano en el Escritorio. Para un propósito pequeño y concreto. Devuelve el objetivo puesto.",
+      inputSchema: { type: "object", properties: { texto: { type: "string", description: "El objetivo, en pocas palabras" } }, required: ["texto"] },
+      execute: i => {
+        const txt = String(i.texto || "").trim().slice(0, 60);
+        if (!txt) throw new Error("Dime qué objetivo le pongo.");
+        const O = normalizarObjetivos();
+        if (O.propios.length >= 8) throw new Error("Ya tiene muchos objetivos propios, mejor no añadir otro.");
+        O.propios.push({ id: uid(), texto: txt });
+        acc.push("Objetivo del día: " + txt);
+        guardar("objetivos");
+        return "Objetivo añadido a los de hoy.";
+      }
+    }
+  ];
+}
+
+/* lo que se da de verdad en 1.º de DAW. Sin esto contesta en general, y un
+   profesor de este ciclo no habla en general: sabe con qué lenguaje y con qué
+   herramienta se da cada módulo. */
+const DAW_TEMARIO = {
+  PRO: "Programación, en Java: tipos y estructuras de control, arrays y matrices, cadenas, clases y objetos, encapsulación, herencia, polimorfismo, interfaces, colecciones (ArrayList, HashMap), excepciones, ficheros y flujos, acceso a datos con JDBC, pruebas con JUnit y diagramas de clases.",
+  BD: "Bases de datos, con MySQL o MariaDB: modelo entidad-relación y su paso a tablas, normalización hasta la tercera forma normal, DDL (CREATE, ALTER), DML (INSERT, UPDATE, DELETE), SELECT con JOIN, agrupaciones y subconsultas, vistas, índices, usuarios y permisos, transacciones, procedimientos y disparadores, y una introducción a NoSQL.",
+  SI: "Sistemas informáticos: hardware, Windows y Linux, comandos y scripts, usuarios y permisos, sistemas de ficheros, redes (direccionamiento IP, DNS, DHCP), virtualización, servicios como el servidor web o FTP, copias de seguridad y seguridad básica.",
+  LMSGI: "Lenguajes de marcas: HTML5 semántico, CSS (modelo de cajas, flex, grid, responsive), XML con DTD y XSD, XPath y XSLT, JSON, y sistemas de gestión de información como los gestores de contenidos.",
+  ED: "Entornos de desarrollo: IDEs (Eclipse, IntelliJ, VS Code), compilación, depuración paso a paso, refactorización, control de versiones con Git (ramas, fusiones, conflictos), pruebas unitarias, documentación del código y UML.",
+  FOL: "Formación y orientación laboral: contrato de trabajo, nómina y Seguridad Social, jornada y convenios, prevención de riesgos laborales, equipos de trabajo y conflictos, y búsqueda de empleo.",
+  ING: "Inglés técnico: vocabulario de informática, lectura de documentación y de mensajes de error en inglés, y redacción de correos y documentación breve."
+};
+
+/* ── lo que sabe de ti cada vez que le escribes ── */
+function tutorInstrucciones() {
+  const P = normalizarTutor();
+  return `Eres profesor de 1.º de DAW (Desarrollo de Aplicaciones Web, FP de grado superior, España) y además has desarrollado software de verdad: sabes lo que se pregunta en clase y lo que se hace luego en una empresa. Te llamas ${P.nombre} y hablas con tu alumno por el chat de su app de estudio.
+
+CÓMO ENSEÑAS
+- No sueltas la respuesta a la primera. Empiezas por una pista o una pregunta que le haga pensar. Si falla o insiste, das una pista más concreta; luego un ejemplo parecido resuelto; y al final, si hace falta, la explicación entera.
+- Si te dice "dímelo ya", que tiene prisa o que el examen es mañana, se la das entera sin discutir ni sermonear. Un profesor también explica cuando ve que no sale.
+- Si el tema es NUEVO para él (no aparece en sus apuntes ni en lo que habéis trabajado), se lo explicas de cero: nadie adivina lo que no le han enseñado. El modo pistas es para lo que ya ha visto.
+- Le haces trabajar: "escríbeme tú la consulta", "¿qué crees que hace este bucle?". Cuando conteste, corriges señalando dónde está el fallo y por qué, sin reescribírselo todo.
+- Si lleva dos intentos fallidos o te dice que va agobiado, aflojas: menos preguntas, más ayuda. Sin culpa ni discursos de motivación.
+- Si te pregunta qué estudiar, decides tú con sus datos (lo que tiene más cerca, lo que peor lleva) y se lo dices concreto.
+
+CÓMO HABLAS
+- Como una persona por el móvil: de tú, cercano, mensajes cortos de dos a seis líneas. Nada de listas largas, ni de "¡Excelente pregunta!", ni de repetirle lo que acaba de decir.
+- Una sola pregunta por mensaje, para que pueda contestarte.
+- Español de España. Los tecnicismos como se dicen (array, query, commit). El código, en trozos cortos y comentados.
+- Sin markdown: ni asteriscos, ni almohadillas, ni viñetas salvo que sea una lista de verdad de dos o tres cosas.
+
+QUÉ SE DA EN SU CURSO (tu temario)
+${Object.keys(DAW_TEMARIO).map(k => "- " + k + ": " + DAW_TEMARIO[k]).join("\n")}
+Conoces el ciclo por dentro: cada módulo se evalúa por resultados de aprendizaje y criterios de evaluación, con exámenes y prácticas entregables; hay convocatoria ordinaria y extraordinaria, y pasarse de faltas puede costar la evaluación continua. En 2.º llegan desarrollo web en entorno cliente y en servidor, despliegue, diseño de interfaces, el proyecto y la FCT: cuando venga a cuento, le dices para qué le va a servir después lo que está dando ahora.
+
+CÓMO SE ENSEÑA CADA COSA
+- Programación: primero que entienda el problema y lo cuente con sus palabras o en pseudocódigo; después el código. Le haces leer el mensaje de error antes de traducírselo, y depurar paso a paso en vez de llenar el programa de prints.
+- Bases de datos: primero el modelo, las claves y las relaciones; después el SQL. Las consultas por partes: de qué tablas, con qué join, qué filtro, qué agrupación.
+- Lenguajes de marcas: estructura semántica antes que estilos, y que valide.
+- Sistemas y entornos: terminal, permisos y Git desde el primer día, y la documentación oficial antes que el primer foro que salga.
+- Le corriges también la forma —nombres claros, indentación, métodos cortos, commits con sentido—, porque en este ciclo eso también puntúa.
+- Si pregunta por un examen, le dices qué se suele pedir y qué fallos típicos restan nota.
+
+LO QUE PUEDES HACER TÚ
+Tienes herramientas para programarle un repaso, apuntarle una entrega o ponerle un objetivo del día. Úsalas cuando venga a cuento de verdad —acabáis de cerrar un tema, te cuenta que le han mandado algo—, dilo de pasada en tu mensaje y sigue. No pidas permiso cada vez ni las uses en todos los mensajes.
+
+NO TE INVENTES sus notas, sus entregas ni lo que ha estudiado: eso te lo paso aquí abajo. Si algo no lo sabes, pregúntaselo.`;
+}
+function tutorContexto() {
+  const P = normalizarTutor(), hoy = hoyISO(), L = ["SU SITUACIÓN HOY (" + hoy + ")", "", "Módulos:"];
+  S.modulos.forEach(m => {
+    const c = calcModulo(m), p = [c.media === null ? "sin notas todavía" : "media " + nota(c.media)];
+    if (c.yaEsta) p.push("ya aprobado");
+    else if (c.imposible) p.push("ya no le salen los números con lo que queda");
+    else if (c.necesita !== null && c.necesita !== undefined) p.push("necesita " + nota(c.necesita) + " en lo que queda");
+    if (c.faltasPct >= 70) p.push("faltas al " + Math.round(c.faltasPct) + " % del máximo");
+    if (c.est === "riesgo") p.push("EN RIESGO");
+    L.push("- " + m.cod + " " + m.nombre + ": " + p.join(", "));
+  });
+  const pend = S.tareas.filter(t => !t.hecha).sort((a, b) => (a.fecha || "9999").localeCompare(b.fecha || "9999")).slice(0, 8);
+  L.push("", "Entregas pendientes: " + (pend.length ? pend.map(t => {
+    const m = modPorId(t.modId);
+    return "«" + t.titulo + "»" + (m ? " (" + m.cod + ")" : "") + (t.fecha ? " para el " + t.fecha : " sin fecha");
+  }).join("; ") : "ninguna apuntada"));
+  const ap = Object.values(S.apuntes).sort((a, b) => (b.editado || "").localeCompare(a.editado || "")).slice(0, 12);
+  L.push("Temas que YA ha visto (tiene apuntes suyos): " + (ap.length ? ap.map(n => {
+    const m = modPorId(n.modId);
+    return "«" + (n.titulo || "sin título") + "»" + (m ? " (" + m.cod + ")" : "");
+  }).join("; ") : "ninguno todavía"));
+  if (P.temas.length) L.push("Temas que habéis trabajado juntos: " + P.temas.slice(-12).map(t => t.tema).join("; "));
+  const rp = P.repasos.filter(r => !r.hecho).slice(0, 6);
+  if (rp.length) L.push("Repasos que le pusiste: " + rp.map(r => r.tema + " (para el " + r.fecha + ")").join("; "));
+  let min7 = 0; for (let i = 0; i < 7; i++) min7 += totalDia(hoyISO(new Date(Date.now() - i * 86400000)));
+  L.push("Ha estudiado " + horasTxt(min7) + " en los últimos siete días.");
+  L.push("Objetivos de hoy: " + objetivosDeHoy().map(o => o.titulo + (o.hecho ? " (hecho)" : "")).join("; "));
+  const m = tutorMod && modPorId(tutorMod);
+  if (m) L.push("", "Ahora quiere hablar de: " + m.cod + " " + m.nombre + ".");
+  const n = apunteActivo && S.apuntes[apunteActivo];
+  if (n && (n.cuerpo || "").trim()) L.push("", "Apunte que tiene abierto, «" + (n.titulo || "sin título") + "»:", '"""' + n.cuerpo.slice(0, 1200) + '"""');
+  return L.join("\n");
+}
+/* la conversación entera viaja en cada llamada: Claude no recuerda nada entre una y otra */
+function tutorTurnos() {
+  const P = normalizarTutor(), previos = [
+    { role: "user", content: tutorInstrucciones() + "\n\n" + tutorContexto() },
+    { role: "assistant", content: "Entendido. Sigo hablando con él." }
+  ];
+  P.chat.slice(-16).forEach(m => previos.push({ role: m.r === "tu" ? "user" : "assistant", content: m.t }));
+  const out = [];
+  previos.forEach(t => {
+    const u = out[out.length - 1];
+    if (u && u.role === t.role) u.content += "\n\n" + t.content; else out.push({ role: t.role, content: t.content });
+  });
+  if (out[out.length - 1].role !== "user") out.push({ role: "user", content: "(Sigue tú.)" });
+  return out;
+}
+async function tutorPuedeTools() {
+  if (tutorTools !== null) return tutorTools;
+  try { const l = await sample.limits(); tutorTools = !!(l && l.tools); } catch (e) { tutorTools = false; }
+  return tutorTools;
+}
+async function tutorEnviar(texto) {
+  const txt = String(texto || "").trim();
+  if (!txt || tutorVivo) return;
+  /* sin Claude no puede pensar, pero lo que escribes no se pierde ni se queda en el aire */
+  if (!sample) {
+    tutorApunta({ id: uid(), r: "tu", t: txt, h: new Date().toISOString() });
+    tutorApunta({ id: uid(), r: "profe", t: "Aquí no puedo contestarte: esta copia de la página no está conectada con Claude. Ábreme desde tu enlace de Claude y seguimos; lo que me escribas allí sí me llega.", h: new Date().toISOString() });
+    guardar("tutor"); pinta();
+    const c = $("#chatTexto"); if (c) c.focus();
+    return;
+  }
+  tutorApunta({ id: uid(), r: "tu", t: txt, h: new Date().toISOString() });
+  tutorVivo = { t: "" }; guardar("tutor"); pinta();
+  const acc = [], opciones = {
+    onText: ({ text }) => { if (!tutorVivo) return; tutorVivo.t = text; const el = $("#chatVivo"); if (el) { el.textContent = text; chatAbajo(); } }
+  };
+  tutorCorta = new AbortController(); opciones.signal = tutorCorta.signal;
+  const guarda = t => tutorApunta({ id: uid(), r: "profe", t, h: new Date().toISOString(), acc });
+  const pedir = conTools => { if (conTools) opciones.tools = tutorHerramientas(acc); else delete opciones.tools; return sample(tutorTurnos(), opciones); };
+  try {
+    let r;
+    try { r = await pedir(await tutorPuedeTools()); }
+    catch (e) { if (e.code !== "tools_unavailable") throw e; tutorTools = false; r = await pedir(false); }
+    guarda(r.text.trim() || "(Me he quedado en blanco. Pregúntamelo otra vez.)");
+  } catch (e) {
+    const parcial = (e.text || "").trim();
+    if (parcial) guarda(parcial);
+    if (e.code === "cancelled") { /* lo has parado tú: lo que llevaba escrito se queda */ }
+    else if (["not_granted", "sampling_disabled", "not_declared", "capability_disabled", "capability_removed"].includes(e.code)) {
+      sample = null; aviso("El profe no está disponible en esta vista.", "mal");
+    } else if (e.code === "rate_limited") aviso("Demasiadas preguntas seguidas. Espera un poco y sigue.", "mal");
+    else if (!parcial) aviso("Se cortó la respuesta (" + e.code + "). Prueba otra vez.", "mal");
+  } finally {
+    tutorVivo = null; tutorCorta = null; guardar("tutor"); pinta();
+    const ta = $("#chatTexto"); if (ta) ta.focus();
+  }
+}
+
+/* ── la vista ── */
+function chatAbajo() { const c = $("#chat"); if (c) c.scrollTop = c.scrollHeight; }
+function tutorLeido() {
+  const P = normalizarTutor(); let cambio = false;
+  P.chat.forEach(m => { if (m.nuevo) { delete m.nuevo; cambio = true; } });
+  if (cambio) { guardar("tutor"); pintaNav(); }
+}
+const tutorBurbuja = m => `<div class="msg ${m.r === "tu" ? "tu" : "profe"}">
+      <div class="burbuja">${esc(m.t)}</div>
+      ${(m.acc || []).map(a => `<span class="acc">${CHECK}${esc(a)}</span>`).join("")}
+      <time>${esc(String(m.h || "").slice(11, 16))}</time></div>`;
+function vistaTutor() {
+  const P = normalizarTutor(), hoy = hoyISO();
+  const pend = P.repasos.filter(r => !r.hecho).sort((a, b) => (a.fecha || "").localeCompare(b.fecha || ""));
+  const hilo = P.chat.map(tutorBurbuja).join("") +
+    (tutorVivo ? `<div class="msg profe"><div class="burbuja" id="chatVivo">${tutorVivo.t ? esc(tutorVivo.t) : '<span class="puntos"><i></i><i></i><i></i></span>'}</div></div>` : "");
+  return `
+  <header class="cab">
+    <div>
+      <div class="eyebrow">Tu profe</div>
+      <h1 class="titulo">${esc(P.nombre)}</h1>
+      <p class="lead">Un profesor particular de DAW con tus notas, tus entregas y tus apuntes delante. Te da pistas antes que respuestas; si le dices «dímelo ya», te lo dice.</p>
+    </div>
+  </header>
+  <section class="panel chat-panel">
+    <div class="chat" id="chat">${hilo || `<p class="chat-vacio">Pregúntale lo que sea: qué estudiar hoy, una duda de clase, o pásale un ejercicio y que te guíe.</p>`}</div>
+    <div class="chat-sug">${TUTOR_SUG.map(s => `<button type="button" class="sug" data-sug="${esc(s)}">${esc(s)}</button>`).join("")}</div>
+    <form class="chat-barra" id="chatForm" autocomplete="off">
+      <select id="chatMod" aria-label="Módulo del que habláis">
+        <option value="">Sin módulo</option>
+        ${S.modulos.map(m => `<option value="${m.id}"${m.id === tutorMod ? " selected" : ""}>${esc(m.cod)} · ${esc(m.nombre)}</option>`).join("")}
+      </select>
+      <textarea id="chatTexto" rows="1" placeholder="Escríbele… (Intro envía, Mayús+Intro salta de línea)" aria-label="Mensaje para el profe"></textarea>
+      ${tutorVivo ? `<button type="button" class="btn" id="chatParar">Parar</button>`
+                  : `<button type="submit" class="btn primario" id="chatEnviar">Enviar</button>`}
+    </form>
+    ${sample ? "" : `<p class="chat-nota">Esta copia de la página no tiene conexión con Claude. Escríbele igualmente —se guarda—, pero para que te conteste ábrela desde tu enlace de Claude.</p>`}
+  </section>
+  ${pend.length ? `
+  <section class="panel">
+    <div class="grupo-cab"><h2>Repasos que te ha puesto</h2><span class="meta num">${pend.length}</span></div>
+    ${pend.map(r => {
+      const m = modPorId(r.modId), dd = diasEntre(r.fecha, hoy);
+      return `<div class="repaso-fila">
+      <span class="codigo">${m ? esc(m.cod) : "—"}</span>
+      <span class="t">${esc(r.tema)}</span>
+      <span class="meta">${dd < 0 ? "te tocaba hace " + (-dd) + " d" : dd === 0 ? "hoy" : dd === 1 ? "mañana" : "en " + dd + " días"}</span>
+      <button class="btn mini" data-rep-listo="${r.id}">Hecho</button></div>`;
+    }).join("")}
+  </section>` : ""}`;
+}
+
+document.addEventListener("submit", e => {
+  if (e.target.id !== "chatForm") return;
+  e.preventDefault();
+  const ta = $("#chatTexto"), v = ta ? ta.value : "";
+  if (ta) { ta.value = ""; ta.style.height = "auto"; }
+  tutorEnviar(v);
+});
+document.addEventListener("click", e => {
+  const t = e.target;
+  if (t.closest("#chatParar")) { if (tutorCorta) tutorCorta.abort(); return; }
+  const sg = t.closest("[data-sug]"); if (sg) { tutorEnviar(sg.dataset.sug); return; }
+  const rl = t.closest("[data-rep-listo]");
+  if (rl) {
+    const r = normalizarTutor().repasos.find(x => x.id === rl.dataset.repListo);
+    if (r) { r.hecho = true; guardar("tutor"); pinta(); }
+    return;
+  }
+  if (t.closest("#btnPreguntarProfe")) {
+    const n = S.apuntes[apunteActivo]; if (!n) return;
+    tutorMod = n.modId || ""; irASeccion("tutor");
+    const ta = $("#chatTexto");
+    if (ta) { ta.value = "Estoy con «" + (n.titulo || "este apunte") + "», "; ta.focus(); ta.setSelectionRange(ta.value.length, ta.value.length); }
+    return;
+  }
+});
+document.addEventListener("keydown", e => {
+  if (e.target.id !== "chatTexto" || e.key !== "Enter" || e.shiftKey) return;
+  e.preventDefault();
+  const v = e.target.value; e.target.value = ""; e.target.style.height = "auto";
+  tutorEnviar(v);
+});
+document.addEventListener("input", e => {
+  if (e.target.id !== "chatTexto") return;
+  e.target.style.height = "auto";
+  e.target.style.height = Math.min(e.target.scrollHeight, 160) + "px";
+});
+document.addEventListener("change", e => { if (e.target.id === "chatMod") tutorMod = e.target.value; });
+
+/* ══════════════════ arranque ══════════════════ */
+(function inicio() {
+  const tg = leeLS("tema");
+  if (tg === "dark" || tg === "light") document.documentElement.setAttribute("data-theme", tg);
+  $("#btnAjustes").innerHTML = icono("ajustes");
+  pintaBotonTema();
+  matchMedia("(prefers-color-scheme: dark)").addEventListener("change", pintaBotonTema);
+  cargarLocal(); cargarTimer();
+  if (!T.modId && S.modulos[0]) T.modId = S.modulos[0].id;
+  tutorMirar();
+  pinta();
+  setInterval(() => { if (seccion === "escritorio" && !T.activo) pintaReloj(); }, 30000);
+  if (window.claude && typeof claude.use === "function") conectar();
+  else marcaSync("Este dispositivo", false);
+})();
+</script>
