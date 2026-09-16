@@ -437,6 +437,66 @@ dialog::backdrop{background:rgba(0,0,0,.38); backdrop-filter:blur(2px)}
 .repaso-fila{display:flex; align-items:center; gap:10px; padding:9px 0; border-top:1px solid var(--line)}
 .repaso-fila:first-child{border-top:0}
 .repaso-fila .t{flex:1; font:500 13.5px/1.4 var(--sans); color:var(--ink)}
+/* ── verde para texto: el de la app no llega al contraste en letra pequeña ── */
+:root{--verde-texto:#15803D}
+@media (prefers-color-scheme: dark){:root:not([data-theme="light"]){--verde-texto:#4ADE80}}
+:root[data-theme="dark"]{--verde-texto:#4ADE80}
+
+/* ── cronómetro en el menú: se ve en cualquier sección mientras hay sesión ── */
+.mini-reloj{display:flex; align-items:center; gap:8px; margin:16px 2px 0; padding:9px 9px 9px 12px; border-radius:var(--r-l);
+  background:var(--surface); box-shadow:inset 0 0 0 1px var(--line)}
+.mini-reloj[hidden], .mr-btn[hidden], #chatArchivo{display:none}
+.mr-info{flex:1; min-width:0; display:grid; grid-template-columns:auto minmax(0,1fr); align-items:center; gap:4px 7px;
+  padding:0; border:0; background:none; color:inherit; text-align:left; cursor:pointer}
+.mr-fase{font:500 11.5px/1.2 var(--sans); color:var(--ink-3); white-space:nowrap; overflow:hidden; text-overflow:ellipsis}
+.mr-mod{justify-self:start; font:600 10px/1 var(--sans); letter-spacing:.04em; color:var(--ink-3); padding:2px 5px;
+  border-radius:4px; box-shadow:inset 0 0 0 1px var(--line)}
+.mr-mod:empty{display:none}
+.mr-tiempo{grid-column:1 / -1; font:300 25px/1.05 var(--sans); letter-spacing:-.02em; font-variant-numeric:tabular-nums; color:var(--ink)}
+.mr-btns{display:flex; gap:5px; flex:0 0 auto}
+.mr-btn{width:34px; height:34px; border-radius:50%; border:0; display:grid; place-items:center; cursor:pointer;
+  background:var(--ink); color:var(--on-ink); transition:transform .12s, background .12s}
+.mr-btn:hover{transform:scale(1.06)}
+.mr-btn.sec{background:var(--surface-2); color:var(--ink-2)}
+.mr-btn svg{width:15px; height:15px}
+.mini-reloj.hecho{box-shadow:inset 0 0 0 1.5px var(--verde)}
+.mini-reloj.hecho .mr-fase, .mini-reloj.hecho .mr-tiempo{color:var(--verde-texto)}
+.mini-reloj.hecho .mr-fase{font-weight:600}
+.mini-reloj.hecho #mrPlay{background:#15803D; color:#FFFFFF}
+.reloj.hecho{color:var(--verde-texto)}
+@media (max-width:880px){
+  .mini-reloj{position:fixed; left:12px; right:12px; bottom:12px; z-index:50; margin:0;
+    box-shadow:inset 0 0 0 1px var(--line), 0 14px 34px -14px rgba(0,0,0,.45)}
+  .mini-reloj.hecho{box-shadow:inset 0 0 0 1.5px var(--verde), 0 14px 34px -14px rgba(0,0,0,.45)}
+  body.con-mini .principal{padding-bottom:120px}
+}
+
+/* ── la ventana de «bien hecho» ── */
+.bien-hecho{text-align:center; padding:6px 4px 2px}
+.bh-circulo{width:64px; height:64px; margin:2px auto 14px; border-radius:50%; background:var(--verde); display:grid; place-items:center}
+.bh-circulo svg{width:30px; height:30px; fill:none; stroke:#FFFFFF; stroke-width:2; stroke-linecap:round; stroke-linejoin:round}
+.bh-titulo{margin:0 0 6px; font:600 22px/1.2 var(--sans); letter-spacing:-.02em; color:var(--verde-texto)}
+.bh-texto{margin:0 auto; max-width:36ch; font:400 14px/1.6 var(--sans); color:var(--ink-2)}
+.btn.primario.verde{background:#15803D; color:#FFFFFF; border-color:#15803D}
+
+/* ── adjuntos para el profe ── */
+.chat-panel.soltando{box-shadow:inset 0 0 0 2px var(--ink-3)}
+.chat-adj{flex:1 1 100%; display:flex; flex-wrap:wrap; gap:7px}
+.chat-adj:empty{display:none}
+.adj-pend{display:inline-flex; align-items:center; gap:7px; max-width:240px; padding:4px 4px 4px 5px; border-radius:9px;
+  background:var(--surface-2); font:500 12px/1 var(--sans); color:var(--ink-2)}
+.adj-pend img{width:34px; height:26px; object-fit:cover; border-radius:5px; display:block}
+.adj-pend > svg{margin-left:3px}
+.adj-pend .n{min-width:0; overflow:hidden; text-overflow:ellipsis; white-space:nowrap}
+.adj-quitar{width:22px; height:22px; flex:0 0 22px; border:0; border-radius:50%; background:none; color:var(--ink-3); display:grid; place-items:center; cursor:pointer}
+.adj-quitar:hover{background:var(--surface-3); color:var(--ink)}
+.adj-quitar svg{width:11px; height:11px}
+.msg-adj{display:flex; flex-wrap:wrap; gap:6px}
+.msg.tu .msg-adj{justify-content:flex-end}
+.adj-mini{display:block; max-width:220px; max-height:160px; border-radius:10px; box-shadow:0 0 0 1px var(--line)}
+.adj-chip{display:inline-flex; align-items:center; gap:6px; padding:6px 10px; border-radius:9px; background:var(--surface-2);
+  font:500 12px/1 var(--sans); color:var(--ink-2)}
+.adj-chip svg{width:13px; height:13px}
 </style>
 
 <div class="app">
@@ -446,6 +506,16 @@ dialog::backdrop{background:rgba(0,0,0,.38); backdrop-filter:blur(2px)}
       <div class="curso" id="curso">1.º DAW</div>
     </div>
     <nav class="nav" id="nav" role="tablist" aria-label="Secciones"></nav>
+    <div class="mini-reloj" id="miniReloj" role="timer" aria-live="off" hidden>
+      <button class="mr-info" id="mrInfo" type="button" title="Ir al cronómetro">
+        <span class="mr-fase" id="mrFase">Concentración</span><span class="mr-mod" id="mrMod"></span>
+        <span class="mr-tiempo" id="mrTiempo">25:00</span>
+      </button>
+      <div class="mr-btns">
+        <button class="mr-btn" id="mrPlay" type="button" aria-label="Pausar"></button>
+        <button class="mr-btn sec" id="mrCerrar" type="button" aria-label="Terminar la sesión" title="Terminar la sesión"></button>
+      </div>
+    </div>
     <div class="lateral-pie">
       <div class="sync" id="sync" title="Dónde se guardan tus datos"><span class="punto"></span><span id="txtSync">Este dispositivo</span></div>
       <div class="herramientas">
@@ -508,7 +578,13 @@ const ICON = {
   luna: '<path d="M13.2 9.6A5.6 5.6 0 1 1 6.4 2.8a4.4 4.4 0 0 0 6.8 6.8z"/>',
   cambiar: '<path d="M2.5 5.5h10l-2.6-2.6M13.5 10.5h-10l2.6 2.6"/>',
   mas: '<path d="M8 3v10M3 8h10"/>',
-  tutor: '<path d="M8 2.4a2.6 2.6 0 1 0 0 5.2 2.6 2.6 0 0 0 0-5.2z"/><path d="M2.9 13.8a5.1 5.1 0 0 1 10.2 0"/>'
+  tutor: '<path d="M8 2.4a2.6 2.6 0 1 0 0 5.2 2.6 2.6 0 0 0 0-5.2z"/><path d="M2.9 13.8a5.1 5.1 0 0 1 10.2 0"/>',
+  play: '<path d="M5.4 3.3v9.4L12.6 8z"/>',
+  pausa: '<path d="M5.7 3.5v9M10.3 3.5v9"/>',
+  cerrar: '<path d="M4.3 4.3l7.4 7.4M11.7 4.3l-7.4 7.4"/>',
+  clip: '<path d="M12.6 7.6 7.8 12.4a3.1 3.1 0 0 1-4.4-4.4l5.1-5.1a2 2 0 0 1 2.9 2.9L6.3 10.9a.9.9 0 0 1-1.3-1.3l4.4-4.4"/>',
+  imagen: '<rect x="2.5" y="3" width="11" height="10" rx="1.6"/><circle cx="6" cy="6.6" r="1.1"/><path d="M13.5 10.4 10.4 7.4 4.2 13"/>',
+  archivo: '<path d="M4 2.5h5.2L12 5.3v8.2H4z"/><path d="M9 2.5v3h3"/>'
 };
 const icono = (n, cls = "i") => `<svg class="${cls}" viewBox="0 0 16 16" aria-hidden="true">${ICON[n]}</svg>`;
 
@@ -538,7 +614,7 @@ const GLOSARIO = [
 const OBJ_DEF = () => ({ activos: { estudio: true, riesgo: true, descanso: true, tarea: true, vocab: true, apunte: true }, propios: [], dias: {} });
 function estadoInicial() {
   return {
-    config: { curso: "1.º DAW", objetivo: 5, pctFaltas: 15, pomodoro: 25, descanso: 5, postit: "" },
+    config: { curso: "1.º DAW", objetivo: 5, pctFaltas: 15, pomodoro: 25, descanso: 15, descanso15: true, postit: "" },
     modulos: MODULOS_DAW.map(m => ({
       id: uid(), cod: m.cod, nombre: m.nombre, color: m.color, horas: m.horas,
       faltas: 0, objetivo: 5, metaSemanal: Math.max(1, Math.round(m.horas / 32 / 2)), pesos: PESOS_DEF()
@@ -609,7 +685,7 @@ async function conectar() {
       if (!snap.exists) { db.doc("escritorio/" + nd).set(empaqueta(nd)).catch(() => {}); return; }
       const d = snap.data(); let cambio = false;
       DOCS[nd].forEach(k => { if (d[k] !== undefined) { S[k] = clonar(d[k]); cambio = true; } });
-      if (cambio) { guardarLocal(); if (!editando()) pinta(); }
+      if (cambio) { if (nd === "ajustes") migrarConfig(); guardarLocal(); if (!editando()) pinta(); }
     }, () => marcaSync("Este dispositivo", false));
   });
 
@@ -677,33 +753,100 @@ function racha() {
 const modPorId = id => S.modulos.find(m => m.id === id);
 
 /* ══════════════════ cronómetro ══════════════════ */
-const T = { activo: false, fase: "trabajo", fin: 0, modId: null, restante: 0, tick: null };
+const T = { activo: false, fase: "trabajo", fin: 0, modId: null, restante: 0, tick: null, aviso: "" };
 function cargarTimer() {
   const g = leeLS("timer"); if (!g) return;
   Object.assign(T, g, { tick: null });
-  if (T.activo && T.fin > Date.now()) arrancarTick(); else T.activo = false;
+  if (T.activo && T.fin > Date.now()) arrancarTick();
+  /* acabó con la página cerrada: al arrancar se cierra con su ventana, salvo que haga mucho de eso */
+  else if (T.activo && Date.now() - T.fin < 12 * 3600000) T.pendienteFin = true;
+  else T.activo = false;
 }
-const guardarTimer = () => guardaLS("timer", { activo: T.activo, fase: T.fase, fin: T.fin, modId: T.modId, restante: T.restante });
+const guardarTimer = () => guardaLS("timer", { activo: T.activo, fase: T.fase, fin: T.fin, modId: T.modId, restante: T.restante, aviso: T.aviso || "" });
 const segsRestantes = () => T.activo ? Math.max(0, Math.round((T.fin - Date.now()) / 1000)) : T.restante;
 function arrancarTick() { clearInterval(T.tick); T.tick = setInterval(() => { pintaReloj(); if (T.activo && segsRestantes() <= 0) terminarFase(); }, 500); }
 function iniciarTimer() {
   if (!T.modId) { aviso("Elige primero el módulo que vas a estudiar."); return; }
-  const mins = T.fase === "trabajo" ? num(S.config.pomodoro, 25) : num(S.config.descanso, 5);
+  const mins = T.fase === "trabajo" ? num(S.config.pomodoro, 25) : num(S.config.descanso, 15);
   T.fin = Date.now() + (T.restante > 0 ? T.restante : mins * 60) * 1000;
-  T.activo = true; T.restante = 0; guardarTimer(); arrancarTick(); pintaReloj();
+  T.activo = true; T.restante = 0; T.aviso = ""; guardarTimer(); arrancarTick(); pintaReloj();
 }
 function pausarTimer() { T.restante = segsRestantes(); T.activo = false; clearInterval(T.tick); guardarTimer(); pintaReloj(); }
-function reiniciarTimer() { T.activo = false; T.restante = 0; clearInterval(T.tick); guardarTimer(); pintaReloj(); }
+function reiniciarTimer() { T.activo = false; T.restante = 0; T.aviso = ""; clearInterval(T.tick); guardarTimer(); pintaReloj(); }
 function terminarFase() {
-  clearInterval(T.tick); T.activo = false;
+  clearInterval(T.tick); T.activo = false; T.restante = 0;
   if (T.fase === "trabajo") {
-    registrarMinutos(T.modId, num(S.config.pomodoro, 25));
-    const m = modPorId(T.modId);
-    aviso("Sesión guardada: " + num(S.config.pomodoro, 25) + " min de " + (m ? m.nombre : "estudio") + ". Descansa.");
-    T.fase = "descanso";
-  } else { registrarDescanso(num(S.config.descanso, 5)); aviso("Descanso terminado. A por otra."); T.fase = "trabajo"; }
-  T.restante = 0; guardarTimer(); pitido(); pinta();
+    const mins = num(S.config.pomodoro, 25), m = modPorId(T.modId);
+    registrarMinutos(T.modId, mins);
+    /* no arranca el descanso sola: te para y lo empiezas tú */
+    T.fase = "descanso"; T.aviso = "hecho";
+    guardarTimer(); pitido(); pinta();
+    dlgBienHecho(m, mins);
+  } else {
+    registrarDescanso(num(S.config.descanso, 15));
+    T.fase = "trabajo"; T.aviso = "otra";
+    guardarTimer(); pitido(); pinta();
+    aviso("Descanso terminado. Cuando quieras, a por otra.");
+  }
 }
+/* ── el cronómetro, siempre a mano ──
+   Mientras hay una sesión en marcha, en pausa o recién acabada, se ve debajo
+   del menú en cualquier sección y se para o se sigue desde ahí. Al terminar la
+   concentración se pone en verde y te para con una ventana: el descanso lo
+   empiezas tú. */
+const TITULO_PAGINA = document.title;
+function pintaMini() {
+  /* la pestaña avisa mientras la sesión acabada espera su descanso, aunque estés en otra pestaña */
+  const titulo = T.aviso === "hecho" ? "✓ ¡Bien hecho! · " + TITULO_PAGINA : TITULO_PAGINA;
+  if (document.title !== titulo) document.title = titulo;
+  const box = $("#miniReloj"); if (!box) return;
+  const visible = T.activo || T.restante > 0 || !!T.aviso;
+  box.hidden = !visible;
+  document.body.classList.toggle("con-mini", visible);
+  if (!visible) return;
+  const m = modPorId(T.modId), hecho = T.aviso === "hecho", otra = T.aviso === "otra";
+  const s = hecho ? num(S.config.pomodoro, 25) * 60 : otra ? num(S.config.pomodoro, 25) * 60 : segsRestantes();
+  box.classList.toggle("hecho", hecho);
+  $("#mrFase").textContent = hecho ? "¡Bien hecho!" : otra ? "Descanso terminado"
+    : T.fase === "trabajo" ? (T.activo ? "Concentración" : "En pausa") : (T.activo ? "Descanso" : "Descanso en pausa");
+  $("#mrMod").textContent = m ? m.cod : "";
+  $("#mrTiempo").textContent = String(Math.floor(s / 60)).padStart(2, "0") + ":" + String(s % 60).padStart(2, "0");
+  const play = $("#mrPlay"), estado = T.activo ? "pausa" : "play";
+  if (play.dataset.estado !== estado) { play.innerHTML = icono(estado); play.dataset.estado = estado; }
+  const etq = T.activo ? "Pausar" : hecho ? "Empezar descanso de " + num(S.config.descanso, 15) + " min" : otra ? "Empezar otra sesión" : "Seguir";
+  play.setAttribute("aria-label", etq); play.title = etq;
+  const cerrar = $("#mrCerrar");
+  if (!cerrar.firstChild) cerrar.innerHTML = icono("cerrar");
+  cerrar.hidden = T.activo;          /* mientras corre solo se pausa: así no se tira una sesión sin querer */
+}
+function dlgBienHecho(m, mins) {
+  const dlg = $("#dlg"), desc = num(S.config.descanso, 15);
+  if (dlg.open) dlg.close();
+  abrirDlg("Sesión terminada", `
+    <div class="bien-hecho">
+      <span class="bh-circulo">${CHECK}</span>
+      <p class="bh-titulo">¡Bien hecho!</p>
+      <p class="bh-texto">${mins} minutos de ${esc(m ? m.nombre : "estudio")}, guardados. Ahora para de verdad: levántate, estira y bebe agua. Dale cuando vayas a descansar.</p>
+    </div>`,
+    [{ txt: "Ahora no", clase: "btn", izquierda: true, accion: () => {} },
+     { txt: "Empezar descanso · " + desc + " min", clase: "btn primario verde", accion: () => { iniciarTimer(); } }]);
+  setTimeout(() => { const b = dlg.querySelector(".btn.primario"); if (b) b.focus(); }, 30);
+}
+/* el descanso pasa a 15 minutos: se aplica una vez y después manda lo que pongas en Ajustes */
+function migrarConfig() {
+  if (!S.config || S.config.descanso15) return;
+  S.config.descanso = 15; S.config.descanso15 = true;
+  guardar("ajustes");
+}
+document.addEventListener("click", e => {
+  const t = e.target;
+  if (t.closest("#mrPlay")) { if (T.activo) pausarTimer(); else iniciarTimer(); return; }
+  if (t.closest("#mrCerrar")) { T.fase = "trabajo"; reiniciarTimer(); return; }
+  if (t.closest("#mrInfo")) { irASeccion("escritorio"); return; }
+});
+/* con la pestaña en segundo plano el navegador frena los temporizadores: al volver se comprueba en el acto */
+document.addEventListener("visibilitychange", () => { if (!document.hidden && T.activo && segsRestantes() <= 0) terminarFase(); });
+
 function registrarMinutos(modId, mins) {
   if (!modId || !mins) return;
   const iso = hoyISO();
@@ -723,12 +866,16 @@ function pitido() {
   } catch (e) {}
 }
 function pintaReloj() {
+  pintaMini();
   const el = $("#reloj"); if (!el) return;
-  const s = segsRestantes() || (T.fase === "trabajo" ? num(S.config.pomodoro, 25) * 60 : num(S.config.descanso, 5) * 60);
+  const hecho = T.aviso === "hecho";
+  const s = hecho ? num(S.config.pomodoro, 25) * 60
+    : segsRestantes() || (T.fase === "trabajo" ? num(S.config.pomodoro, 25) * 60 : num(S.config.descanso, 15) * 60);
   el.textContent = String(Math.floor(s / 60)).padStart(2, "0") + ":" + String(s % 60).padStart(2, "0");
-  el.classList.toggle("descanso", T.fase === "descanso");
-  const b = $("#btnTimer"); if (b) b.textContent = T.activo ? "Pausar" : (T.restante > 0 ? "Seguir" : "Empezar");
-  const f = $("#faseTimer"); if (f) f.textContent = T.fase === "trabajo" ? "Concentración" : "Descanso";
+  el.classList.toggle("descanso", T.fase === "descanso" && !hecho);
+  el.classList.toggle("hecho", hecho);
+  const b = $("#btnTimer"); if (b) b.textContent = T.activo ? "Pausar" : hecho ? "Empezar descanso" : (T.restante > 0 ? "Seguir" : "Empezar");
+  const f = $("#faseTimer"); if (f) f.textContent = hecho ? "¡Bien hecho!" : T.fase === "trabajo" ? "Concentración" : "Descanso";
 }
 
 /* ══════════════════ Claude ══════════════════ */
@@ -1528,6 +1675,7 @@ function pintaNav() {
     (s.id === "entregas" && urgentes ? `<span class="cuenta" title="Vencen en 3 días o menos">${urgentes}</span>` : "") +
     (s.id === "tutor" && sinLeer ? `<span class="cuenta verde" title="Mensajes del profe sin leer">${sinLeer}</span>` : "") + `</button>`).join("");
   $("#curso").textContent = S.config.curso + " · curso 26–27";
+  pintaMini();
 }
 
 /* ══════════════════ vistas ══════════════════ */
@@ -2051,7 +2199,7 @@ function dlgAjustes() {
       <label class="campo">Nota objetivo<input type="number" id="cObj" value="${num(S.config.objetivo, 5)}" min="1" max="10" step="0.5"></label>
       <label class="campo">% de faltas permitido<input type="number" id="cPct" value="${num(S.config.pctFaltas, 15)}" min="0" max="100"></label>
       <label class="campo">Minutos de concentración<input type="number" id="cPom" value="${num(S.config.pomodoro, 25)}" min="5" max="90"></label>
-      <label class="campo">Minutos de descanso<input type="number" id="cDes" value="${num(S.config.descanso, 5)}" min="1" max="30"></label>
+      <label class="campo">Minutos de descanso<input type="number" id="cDes" value="${num(S.config.descanso, 15)}" min="1" max="30"></label>
     </div>
     <hr class="separador">
     <div class="etq">Copia de seguridad</div>
@@ -2393,7 +2541,9 @@ function cambiarTema() {
 function tutorDef() { return { nombre: "Profe", chat: [], repasos: [], temas: [], avisos: {} }; }
 const TUTOR_MAX = 60;      /* mensajes guardados: el documento tiene un tope de tamaño */
 const TUTOR_SUG = ["¿Qué estudio hoy?", "Pregúntame de lo último que vimos", "No lo entiendo", "Ponme un ejercicio", "Dímelo ya"];
-let tutorMod = "", tutorVivo = null, tutorCorta = null, tutorTools = null;
+let tutorMod = "", tutorVivo = null, tutorCorta = null, tutorTools = null, tutorLim = null, tutorAdj = [], tutorBorrador = "";
+/* lo que adjuntas se guarda entero solo mientras la página está abierta; a la conversación va una versión ligera */
+const tutorCache = new Map();
 const tutorElige = a => a[Math.floor(Math.random() * a.length)];
 
 function normalizarTutor() {
@@ -2411,6 +2561,13 @@ function tutorApunta(m) {
   const P = normalizarTutor();
   P.chat.push(m);
   if (P.chat.length > TUTOR_MAX) P.chat.splice(0, P.chat.length - TUTOR_MAX);
+  /* el documento tiene tope: si pesa mucho, las miniaturas y los archivos más viejos se quedan solo con su nombre */
+  let tam = JSON.stringify(P).length;
+  for (const v of P.chat) {
+    if (tam < 190000) break;
+    (v.adj || []).forEach(a => { delete a.mini; delete a.texto; });
+    tam = JSON.stringify(P).length;
+  }
   return m;
 }
 function tutorDice(txt, clave) {
@@ -2568,6 +2725,9 @@ CÓMO SE ENSEÑA CADA COSA
 LO QUE PUEDES HACER TÚ
 Tienes herramientas para programarle un repaso, apuntarle una entrega o ponerle un objetivo del día. Úsalas cuando venga a cuento de verdad —acabáis de cerrar un tema, te cuenta que le han mandado algo—, dilo de pasada en tu mensaje y sigue. No pidas permiso cada vez ni las uses en todos los mensajes.
 
+CAPTURAS Y CÓDIGO
+Te puede pasar capturas (de su código, de un error, del enunciado) y archivos de código. Léelos de verdad. Cuando corrijas, cita la línea concreta y copia en tu mensaje el trozo del que hablas: las capturas no siempre se vuelven a enviar en los mensajes siguientes, y así no se pierde. Si una captura no se lee bien, díselo y pídele el código pegado como texto.
+
 NO TE INVENTES sus notas, sus entregas ni lo que ha estudiado: eso te lo paso aquí abajo. Si algo no lo sabes, pregúntaselo.`;
 }
 function tutorContexto() {
@@ -2603,49 +2763,114 @@ function tutorContexto() {
   if (n && (n.cuerpo || "").trim()) L.push("", "Apunte que tiene abierto, «" + (n.titulo || "sin título") + "»:", '"""' + n.cuerpo.slice(0, 1200) + '"""');
   return L.join("\n");
 }
-/* la conversación entera viaja en cada llamada: Claude no recuerda nada entre una y otra */
-function tutorTurnos() {
-  const P = normalizarTutor(), previos = [
-    { role: "user", content: tutorInstrucciones() + "\n\n" + tutorContexto() },
-    { role: "assistant", content: "Entendido. Sigo hablando con él." }
-  ];
-  P.chat.slice(-16).forEach(m => previos.push({ role: m.r === "tu" ? "user" : "assistant", content: m.t }));
-  const out = [];
-  previos.forEach(t => {
-    const u = out[out.length - 1];
-    if (u && u.role === t.role) u.content += "\n\n" + t.content; else out.push({ role: t.role, content: t.content });
-  });
-  if (out[out.length - 1].role !== "user") out.push({ role: "user", content: "(Sigue tú.)" });
-  return out;
+/* la conversación entera viaja en cada llamada: Claude no recuerda nada entre una y otra.
+   La plataforma admite unos 64 KB de texto por llamada: si no cabe, se cae lo más
+   antiguo de la conversación antes que tu último mensaje, y solo si ni así cabe
+   se recorta el final de este. */
+const TUTOR_BYTES = 60000, TUTOR_TXT_GUARDA = 24000;
+const bytesUtf8 = s => new TextEncoder().encode(s).length;
+function cortarBytes(s, max) {
+  const b = new TextEncoder().encode(s);
+  return b.length <= max ? s : new TextDecoder().decode(b.slice(0, Math.max(0, max))).replace(/�+$/, "");
 }
-async function tutorPuedeTools() {
-  if (tutorTools !== null) return tutorTools;
-  try { const l = await sample.limits(); tutorTools = !!(l && l.tools); } catch (e) { tutorTools = false; }
-  return tutorTools;
+/* lo que le llega a Claude de un mensaje tuyo: el texto y, debajo, los archivos que adjuntaste */
+function tutorContenido(m) {
+  const cache = tutorCache.get(m.id), partes = [m.t || ""];
+  (m.adj || []).forEach(a => {
+    if (a.tipo !== "txt") return;
+    const lleno = cache && cache.txt.find(x => x.nombre === a.nombre);
+    const texto = lleno ? lleno.texto : a.texto;
+    partes.push(texto
+      ? "Archivo «" + a.nombre + "»" + (!lleno && a.cortado ? " (solo el principio)" : "") + ":\n\"\"\"\n" + texto + "\n\"\"\""
+      : "[Te pasó el archivo «" + a.nombre + "», que ya no se conserva.]");
+  });
+  const n = (m.adj || []).filter(a => a.tipo === "img").length;
+  if (n) partes.push("[Adjuntó " + (n === 1 ? "una captura" : n + " capturas") + ".]");
+  return partes.filter(Boolean).join("\n\n") || "(Te pasa esto.)";
+}
+function tutorTurnos(nota) {
+  const P = normalizarTutor(), cabecera = tutorInstrucciones() + "\n\n" + tutorContexto();
+  const hist = P.chat.slice(-16).map(m => ({ role: m.r === "tu" ? "user" : "assistant", content: m.r === "tu" ? tutorContenido(m) : m.t }));
+  if (nota && hist.length) hist[hist.length - 1].content += "\n\n" + nota;
+  const montar = () => {
+    const out = [];
+    [{ role: "user", content: cabecera }, { role: "assistant", content: "Entendido. Sigo hablando con él." }].concat(hist).forEach(t => {
+      const u = out[out.length - 1];
+      if (u && u.role === t.role) u.content += "\n\n" + t.content; else out.push({ role: t.role, content: t.content });
+    });
+    if (out[out.length - 1].role !== "user") out.push({ role: "user", content: "(Sigue tú.)" });
+    return out;
+  };
+  const peso = ts => ts.reduce((s, t) => s + bytesUtf8(t.content), 0);
+  let turnos = montar();
+  while (peso(turnos) > TUTOR_BYTES && hist.length > 1) { hist.shift(); turnos = montar(); }
+  let recortado = false;
+  if (peso(turnos) > TUTOR_BYTES) {
+    const ult = turnos[turnos.length - 1];
+    ult.content = cortarBytes(ult.content, bytesUtf8(ult.content) - (peso(turnos) - TUTOR_BYTES) - 120) + "\n\n[…recortado: no cabía entero en un mensaje]";
+    recortado = true;
+  }
+  return { turnos, recortado };
+}
+async function tutorLimites() {
+  if (tutorLim) return tutorLim;
+  try { tutorLim = (await sample.limits()) || {}; } catch (e) { tutorLim = {}; }
+  return tutorLim;
 }
 async function tutorEnviar(texto) {
-  const txt = String(texto || "").trim();
-  if (!txt || tutorVivo) return;
+  const txt = String(texto || "").trim(), adj = tutorAdj.slice();
+  if ((!txt && !adj.length) || tutorVivo) return;
+  const ahora = () => new Date().toISOString(), msg = { id: uid(), r: "tu", t: txt, h: ahora() };
+  if (adj.length) {
+    msg.adj = adj.map(a => a.tipo === "img" ? { tipo: "img", nombre: a.nombre, mini: a.mini }
+      : { tipo: "txt", nombre: a.nombre, lineas: a.lineas, texto: a.texto.slice(0, TUTOR_TXT_GUARDA), cortado: a.texto.length > TUTOR_TXT_GUARDA });
+    tutorCache.set(msg.id, { imgs: adj.filter(a => a.tipo === "img").map(a => a.blob),
+      txt: adj.filter(a => a.tipo === "txt").map(a => ({ nombre: a.nombre, texto: a.texto })) });
+  }
+  tutorAdj = []; tutorBorrador = "";
   /* sin Claude no puede pensar, pero lo que escribes no se pierde ni se queda en el aire */
   if (!sample) {
-    tutorApunta({ id: uid(), r: "tu", t: txt, h: new Date().toISOString() });
-    tutorApunta({ id: uid(), r: "profe", t: "Aquí no puedo contestarte: esta copia de la página no está conectada con Claude. Ábreme desde tu enlace de Claude y seguimos; lo que me escribas allí sí me llega.", h: new Date().toISOString() });
+    tutorApunta(msg);
+    tutorApunta({ id: uid(), r: "profe", t: "Aquí no puedo contestarte: esta copia de la página no está conectada con Claude. Ábreme desde tu enlace de Claude y seguimos; lo que me escribas allí sí me llega.", h: ahora() });
     guardar("tutor"); pinta();
     const c = $("#chatTexto"); if (c) c.focus();
     return;
   }
-  tutorApunta({ id: uid(), r: "tu", t: txt, h: new Date().toISOString() });
+  tutorApunta(msg);
   tutorVivo = { t: "" }; guardar("tutor"); pinta();
-  const acc = [], opciones = {
+  const lim = await tutorLimites();
+  const opciones = {
     onText: ({ text }) => { if (!tutorVivo) return; tutorVivo.t = text; const el = $("#chatVivo"); if (el) { el.textContent = text; chatAbajo(); } }
   };
+  /* Claude solo ve las capturas del mensaje en que van: si seguís hablando de ellas, se reenvían las últimas */
+  let nota = "";
+  const conImg = normalizarTutor().chat.filter(m => m.r === "tu").slice(-4).reverse()
+    .find(m => tutorCache.has(m.id) && tutorCache.get(m.id).imgs.length);
+  if (conImg && lim.images) {
+    opciones.images = tutorCache.get(conImg.id).imgs.slice(0, lim.images.maxCount || 1);
+    if (conImg.id !== msg.id) nota = "[Siguen adjuntas las capturas que te pasó unos mensajes antes.]";
+  }
   tutorCorta = new AbortController(); opciones.signal = tutorCorta.signal;
-  const guarda = t => tutorApunta({ id: uid(), r: "profe", t, h: new Date().toISOString(), acc });
-  const pedir = conTools => { if (conTools) opciones.tools = tutorHerramientas(acc); else delete opciones.tools; return sample(tutorTurnos(), opciones); };
+  const acc = [], guarda = t => tutorApunta({ id: uid(), r: "profe", t, h: ahora(), acc });
+  let avisado = false;
+  const pedir = () => {
+    const { turnos, recortado } = tutorTurnos(nota);
+    if (recortado && !avisado) { avisado = true; aviso("Tu mensaje no cabía entero y al profe le llega recortado. Pásale el código por partes."); }
+    if (lim.tools && tutorTools !== false) opciones.tools = tutorHerramientas(acc); else delete opciones.tools;
+    return sample(turnos, opciones);
+  };
   try {
     let r;
-    try { r = await pedir(await tutorPuedeTools()); }
-    catch (e) { if (e.code !== "tools_unavailable") throw e; tutorTools = false; r = await pedir(false); }
+    try { r = await pedir(); }
+    catch (e) {
+      if (e.code === "tools_unavailable") { tutorTools = false; r = await pedir(); }
+      else if ((e.code === "images_unavailable" || e.code === "image_rejected") && opciones.images) {
+        delete opciones.images;
+        nota = "[Intentó pasarte una captura, pero no se ha podido enviar. Pídele que te pegue el código como texto.]";
+        aviso(e.code === "image_rejected" ? "Esa captura no se ha podido mandar (formato o tamaño)." : "En esta vista no se pueden mandar capturas.", "mal");
+        r = await pedir();
+      } else throw e;
+    }
     guarda(r.text.trim() || "(Me he quedado en blanco. Pregúntamelo otra vez.)");
   } catch (e) {
     const parcial = (e.text || "").trim();
@@ -2668,10 +2893,23 @@ function tutorLeido() {
   P.chat.forEach(m => { if (m.nuevo) { delete m.nuevo; cambio = true; } });
   if (cambio) { guardar("tutor"); pintaNav(); }
 }
+/* la hora en la de aquí, no en la universal con la que se guarda */
+function horaMsg(iso) {
+  const d = new Date(iso);
+  return isNaN(d) ? "" : d.toLocaleTimeString("es-ES", { hour: "2-digit", minute: "2-digit" });
+}
+/* las miniaturas vienen de la base de datos, que es compartida: solo se pintan si son de verdad una imagen */
+const miniValida = s => typeof s === "string" && s.length < 120000 && /^data:image\/jpeg;base64,[A-Za-z0-9+/=]+$/.test(s);
+const tutorAdjuntos = m => (m.adj || []).length ? `<div class="msg-adj">${m.adj.map(a => a.tipo === "img"
+    ? (miniValida(a.mini) ? `<img class="adj-mini" src="${a.mini}" alt="Captura${a.nombre ? " " + esc(a.nombre) : ""}">` : `<span class="adj-chip">${icono("imagen")}Captura</span>`)
+    : `<span class="adj-chip">${icono("archivo")}${esc(a.nombre || "archivo")}${a.lineas ? " · " + num(a.lineas) + " líneas" : ""}</span>`).join("")}</div>` : "";
 const tutorBurbuja = m => `<div class="msg ${m.r === "tu" ? "tu" : "profe"}">
-      <div class="burbuja">${esc(m.t)}</div>
+      ${tutorAdjuntos(m)}
+      ${m.t ? `<div class="burbuja">${esc(m.t)}</div>` : ""}
       ${(m.acc || []).map(a => `<span class="acc">${CHECK}${esc(a)}</span>`).join("")}
-      <time>${esc(String(m.h || "").slice(11, 16))}</time></div>`;
+      <time>${esc(horaMsg(m.h))}</time></div>`;
+const tutorPendHTML = () => tutorAdj.map(a => `<span class="adj-pend">${a.tipo === "img" && a.mini ? `<img src="${a.mini}" alt="">` : icono(a.tipo === "img" ? "imagen" : "archivo")}<span class="n">${esc(a.nombre)}</span><button type="button" class="adj-quitar" data-quitar-adj="${a.id}" aria-label="Quitar ${esc(a.nombre)}">${icono("cerrar")}</button></span>`).join("");
+function pintaAdj() { const c = $("#chatAdj"); if (c) c.innerHTML = tutorPendHTML(); }
 function vistaTutor() {
   const P = normalizarTutor(), hoy = hoyISO();
   const pend = P.repasos.filter(r => !r.hecho).sort((a, b) => (a.fecha || "").localeCompare(b.fecha || ""));
@@ -2689,15 +2927,20 @@ function vistaTutor() {
     <div class="chat" id="chat">${hilo || `<p class="chat-vacio">Pregúntale lo que sea: qué estudiar hoy, una duda de clase, o pásale un ejercicio y que te guíe.</p>`}</div>
     <div class="chat-sug">${TUTOR_SUG.map(s => `<button type="button" class="sug" data-sug="${esc(s)}">${esc(s)}</button>`).join("")}</div>
     <form class="chat-barra" id="chatForm" autocomplete="off">
+      <div class="chat-adj" id="chatAdj">${tutorPendHTML()}</div>
       <select id="chatMod" aria-label="Módulo del que habláis">
         <option value="">Sin módulo</option>
         ${S.modulos.map(m => `<option value="${m.id}"${m.id === tutorMod ? " selected" : ""}>${esc(m.cod)} · ${esc(m.nombre)}</option>`).join("")}
       </select>
-      <textarea id="chatTexto" rows="1" placeholder="Escríbele… (Intro envía, Mayús+Intro salta de línea)" aria-label="Mensaje para el profe"></textarea>
+      <button type="button" class="btn" id="chatClip" aria-label="Adjuntar capturas o archivos de código" title="Adjuntar capturas o código">${icono("clip")}</button>
+      <input type="file" id="chatArchivo" multiple hidden accept="image/png,image/jpeg,image/webp,image/gif,.java,.js,.ts,.jsx,.tsx,.html,.htm,.css,.scss,.sql,.xml,.xsd,.dtd,.xsl,.xslt,.json,.txt,.md,.py,.c,.h,.cpp,.cs,.php,.sh,.bat,.ps1,.yml,.yaml,.properties,.kt,.csv,.log,.ini">
+      <textarea id="chatTexto" rows="1" placeholder="Escríbele… (Intro envía, Mayús+Intro salta de línea)" aria-label="Mensaje para el profe">${esc(tutorBorrador)}</textarea>
       ${tutorVivo ? `<button type="button" class="btn" id="chatParar">Parar</button>`
                   : `<button type="submit" class="btn primario" id="chatEnviar">Enviar</button>`}
     </form>
-    ${sample ? "" : `<p class="chat-nota">Esta copia de la página no tiene conexión con Claude. Escríbele igualmente —se guarda—, pero para que te conteste ábrela desde tu enlace de Claude.</p>`}
+    <p class="chat-nota">${sample
+      ? "Pega capturas con Ctrl+V, arrástralas aquí o usa el clip. El código, mejor pegado como texto o en archivo: así lo lee entero y sin errores."
+      : "Esta copia de la página no tiene conexión con Claude. Escríbele igualmente —se guarda—, pero para que te conteste ábrela desde tu enlace de Claude."}</p>
   </section>
   ${pend.length ? `
   <section class="panel">
@@ -2751,6 +2994,71 @@ document.addEventListener("input", e => {
 });
 document.addEventListener("change", e => { if (e.target.id === "chatMod") tutorMod = e.target.value; });
 
+/* ── adjuntar al profe: clip, pegar con Ctrl+V o arrastrar ──
+   Las capturas se mandan tal cual (Claude las reduce a ~1,2 megapíxeles) y en
+   la conversación se queda una miniatura. El código en archivo se lee entero y
+   se guarda con la conversación hasta un tamaño razonable. */
+const TUTOR_CODIGO = /\.(java|js|mjs|cjs|ts|jsx|tsx|html?|css|scss|sql|xml|xsd|dtd|xslt?|json|txt|md|py|c|h|cpp|cs|php|sh|bat|ps1|ya?ml|properties|kt|csv|log|ini)$/i;
+async function tutorMiniatura(blob) {
+  try {
+    const bm = await createImageBitmap(blob), k = Math.min(1, 320 / bm.width);
+    const c = document.createElement("canvas");
+    c.width = Math.max(1, Math.round(bm.width * k)); c.height = Math.max(1, Math.round(bm.height * k));
+    c.getContext("2d").drawImage(bm, 0, 0, c.width, c.height);
+    return c.toDataURL("image/jpeg", .72);
+  } catch (e) { return ""; }
+}
+async function tutorAnadir(lista) {
+  const lim = sample ? await tutorLimites() : {};
+  for (const f of Array.from(lista || [])) {
+    const tipo = f.type || "";
+    if (tipo.startsWith("image/")) {
+      if (!lim.images) { aviso("Aquí no se pueden mandar capturas. Pega el código como texto.", "mal"); continue; }
+      if (lim.images.mediaTypes && !lim.images.mediaTypes.includes(tipo)) { aviso("Ese formato de imagen no vale: PNG, JPG, WebP o GIF.", "mal"); continue; }
+      if (lim.images.maxInputBytes && f.size > lim.images.maxInputBytes) { aviso("«" + (f.name || "La captura") + "» pesa demasiado.", "mal"); continue; }
+      if (tutorAdj.filter(a => a.tipo === "img").length >= (lim.images.maxCount || 1)) { aviso("Como mucho " + (lim.images.maxCount || 1) + " capturas por mensaje.", "mal"); continue; }
+      tutorAdj.push({ id: uid(), tipo: "img", nombre: f.name || "captura.png", blob: f, mini: await tutorMiniatura(f) });
+    } else if (TUTOR_CODIGO.test(f.name || "") || tipo.startsWith("text/")) {
+      if (f.size > 2000000) { aviso("«" + f.name + "» es demasiado grande para leerlo entero.", "mal"); continue; }
+      const texto = await f.text();
+      tutorAdj.push({ id: uid(), tipo: "txt", nombre: f.name, texto, lineas: texto.split("\n").length });
+    } else aviso("«" + (f.name || "Ese archivo") + "»: solo capturas y archivos de código o de texto.", "mal");
+  }
+  pintaAdj();
+}
+document.addEventListener("click", e => {
+  const t = e.target;
+  if (t.closest("#chatClip")) { const i = $("#chatArchivo"); if (i) i.click(); return; }
+  const q = t.closest("[data-quitar-adj]");
+  if (q) { tutorAdj = tutorAdj.filter(a => a.id !== q.dataset.quitarAdj); pintaAdj(); }
+});
+document.addEventListener("change", e => { if (e.target.id === "chatArchivo") { tutorAnadir(e.target.files); e.target.value = ""; } });
+/* lo que llevas escrito sobrevive a los repintados (por ejemplo, cuando acaba el cronómetro) */
+document.addEventListener("input", e => { if (e.target.id === "chatTexto") tutorBorrador = e.target.value; });
+document.addEventListener("paste", e => {
+  if (e.target.id !== "chatTexto") return;
+  const archivos = Array.from((e.clipboardData && e.clipboardData.files) || []);
+  if (!archivos.length) return;          /* el texto se pega tal cual: así el código llega letra a letra */
+  e.preventDefault(); tutorAnadir(archivos);
+});
+/* en la sección del profe, soltar un archivo en cualquier sitio lo adjunta (y no abre la imagen encima de la app) */
+const conArchivos = e => e.dataTransfer && Array.from(e.dataTransfer.types || []).includes("Files");
+document.addEventListener("dragover", e => {
+  if (seccion !== "tutor" || !conArchivos(e)) return;
+  e.preventDefault();
+  const p = $(".chat-panel"); if (p) p.classList.add("soltando");
+});
+document.addEventListener("dragleave", e => {
+  if (seccion !== "tutor" || e.relatedTarget) return;
+  const p = $(".chat-panel"); if (p) p.classList.remove("soltando");
+});
+document.addEventListener("drop", e => {
+  if (seccion !== "tutor" || !conArchivos(e)) return;
+  e.preventDefault();
+  const p = $(".chat-panel"); if (p) p.classList.remove("soltando");
+  tutorAnadir(e.dataTransfer.files);
+});
+
 /* ══════════════════ arranque ══════════════════ */
 (function inicio() {
   const tg = leeLS("tema");
@@ -2758,10 +3066,11 @@ document.addEventListener("change", e => { if (e.target.id === "chatMod") tutorM
   $("#btnAjustes").innerHTML = icono("ajustes");
   pintaBotonTema();
   matchMedia("(prefers-color-scheme: dark)").addEventListener("change", pintaBotonTema);
-  cargarLocal(); cargarTimer();
+  cargarLocal(); cargarTimer(); migrarConfig();
   if (!T.modId && S.modulos[0]) T.modId = S.modulos[0].id;
   tutorMirar();
   pinta();
+  if (T.pendienteFin) { T.pendienteFin = false; terminarFase(); }
   setInterval(() => { if (seccion === "escritorio" && !T.activo) pintaReloj(); }, 30000);
   if (window.claude && typeof claude.use === "function") conectar();
   else marcaSync("Este dispositivo", false);

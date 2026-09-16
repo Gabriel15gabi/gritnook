@@ -18,7 +18,7 @@ Empezar un ciclo es llevar la cuenta de siete módulos a la vez: qué has sacado
 
 ![La libreta](capturas/libreta.png)
 
-**Horas y cronómetro.** Pomodoro por módulo, con el reparto de la semana y la meta semanal de cada uno.
+**Horas y cronómetro.** Pomodoro por módulo que se queda a mano debajo del menú, en cualquier sección, para pararlo o seguir sin moverte. Al acabar la concentración te para con un «bien hecho» y el descanso de 15 minutos lo empiezas tú. Con el reparto de la semana y la meta semanal de cada módulo.
 
 **Entregas.** Fecha límite, cuánto pesa en la nota y aviso de las que vencen en tres días o menos.
 
@@ -28,7 +28,7 @@ Empezar un ciclo es llevar la cuenta de siete módulos a la vez: qué has sacado
 
 **Objetivos del día.** Se cumplen solos con lo que ya haces: estudiar con el cronómetro, tachar una entrega, escribir un apunte, repasar vocabulario. Con su racha de la semana.
 
-**El profe.** Un tutor de DAW que no suelta la respuesta a la primera: pista, pregunta, ejemplo parecido y, si hace falta, la explicación entera. Sabe tus notas, tus entregas y de qué tienes apuntes —así distingue lo que ya has visto de lo que es nuevo—, te escribe él cuando algo se acerca y puede ponerte repasos, entregas y objetivos.
+**El profe.** Un tutor de DAW que no suelta la respuesta a la primera: pista, pregunta, ejemplo parecido y, si hace falta, la explicación entera. Sabe tus notas, tus entregas y de qué tienes apuntes —así distingue lo que ya has visto de lo que es nuevo—, te escribe él cuando algo se acerca y puede ponerte repasos, entregas y objetivos. Se le pueden pasar capturas (pegadas con Ctrl+V o arrastradas) y archivos de código para que los revise.
 
 ![El profe](capturas/profe.png)
 
