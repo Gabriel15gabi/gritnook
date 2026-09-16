@@ -2771,7 +2771,7 @@ const TUTOR_BYTES = 60000, TUTOR_TXT_GUARDA = 24000;
 const bytesUtf8 = s => new TextEncoder().encode(s).length;
 function cortarBytes(s, max) {
   const b = new TextEncoder().encode(s);
-  return b.length <= max ? s : new TextDecoder().decode(b.slice(0, Math.max(0, max))).replace(/�+$/, "");
+  return b.length <= max ? s : new TextDecoder().decode(b.slice(0, Math.max(0, max))).replace(/\uFFFD+$/, "");
 }
 /* lo que le llega a Claude de un mensaje tuyo: el texto y, debajo, los archivos que adjuntaste */
 function tutorContenido(m) {
