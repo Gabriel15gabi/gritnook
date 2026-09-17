@@ -1,7 +1,7 @@
-<title>El Escritorio de DAW</title>
+<title>El Escritorio</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@200;300;400;500;600;700&display=swap">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&display=swap">
 
 <style>
 /* ═══════════════ tokens ═══════════════
@@ -15,7 +15,7 @@
   --verde:#16A34A; --on-verde:#FFFFFF;
   --ring:rgba(10,10,10,.10);
   --sombra-modal:0 28px 70px -28px rgba(0,0,0,.30), 0 2px 10px -2px rgba(0,0,0,.06);
-  --r-s:6px; --r-m:8px; --r-l:12px;
+  --r-s:4px; --r-m:8px; --r-l:14px;
   --sans:"Inter",ui-sans-serif,system-ui,-apple-system,"Segoe UI",Roboto,"Helvetica Neue",Arial,sans-serif;
   color-scheme:light;
 }
@@ -60,7 +60,7 @@ svg.i{width:16px; height:16px; flex:0 0 16px; fill:none; stroke:currentColor; st
 .lateral{position:sticky; top:0; height:100vh; min-width:0; display:flex; flex-direction:column;
   padding:24px 14px 16px; border-right:1px solid var(--line); background:var(--bg)}
 .marca{padding:2px 10px 26px}
-.marca .nombre{font:600 19px/1 var(--sans); letter-spacing:-.022em}
+.marca .nombre{font:500 19px/1 var(--sans); letter-spacing:-.022em}
 .marca .curso{font:400 12px/1 var(--sans); color:var(--ink-3); margin-top:8px}
 
 .nav{display:flex; flex-direction:column; gap:2px}
@@ -104,7 +104,7 @@ svg.i{width:16px; height:16px; flex:0 0 16px; fill:none; stroke:currentColor; st
 /* ═══════════════ cabecera de sección ═══════════════ */
 .cab{display:flex; align-items:flex-end; justify-content:space-between; gap:24px; flex-wrap:wrap; margin-bottom:26px}
 .eyebrow{font:500 12.5px/1 var(--sans); color:var(--ink-3); margin-bottom:12px}
-.titulo{font:600 34px/1.12 var(--sans); letter-spacing:-.03em; text-wrap:balance}
+.titulo{font:500 34px/1.12 var(--sans); letter-spacing:-.03em; text-wrap:balance}
 .titulo em{font-style:normal; color:var(--ink-3)}
 .lead{margin-top:12px; color:var(--ink-2); max-width:62ch; font-size:14.5px; line-height:1.55}
 .cab-datos{display:flex; gap:32px}
@@ -191,7 +191,7 @@ input[type=checkbox]:checked::after{content:""; width:8px; height:4.5px; border-
 .vacio{color:var(--ink-3); font-size:13.5px; padding:18px 0 6px}
 
 /* ═══════════════ escritorio ═══════════════ */
-.reloj{font:200 80px/1 var(--sans); letter-spacing:-.05em; font-variant-numeric:tabular-nums; margin:4px 0 8px}
+.reloj{font:300 80px/1 var(--sans); letter-spacing:-.05em; font-variant-numeric:tabular-nums; margin:4px 0 8px}
 .reloj.descanso{color:var(--ink-3)}
 .fase{font:500 11px/1 var(--sans); color:var(--ink-3); letter-spacing:.08em; text-transform:uppercase}
 
@@ -263,7 +263,7 @@ input[type=checkbox]:checked::after{content:""; width:8px; height:4.5px; border-
 .nota-item .m{font:400 12px/1 var(--sans); font-variant-numeric:tabular-nums; color:var(--ink-3)}
 .editor{padding:26px 30px 22px}
 .editor-titulo{height:auto !important; padding:0 !important; border:0 !important; background:transparent !important;
-  font:600 28px/1.2 var(--sans) !important; letter-spacing:-.026em; box-shadow:none !important}
+  font:500 28px/1.2 var(--sans) !important; letter-spacing:-.026em; box-shadow:none !important}
 .editor-meta{display:grid; grid-template-columns:minmax(0,220px) minmax(0,1fr); gap:10px; margin:18px 0 20px}
 @media (max-width:600px){ .editor{padding:20px 18px 16px} .editor-meta{grid-template-columns:minmax(0,1fr)} .cab-datos{gap:22px} .titulo{font-size:29px} .reloj{font-size:66px} }
 /* ═══════════════ libreta de cuadrícula ═══════════════
@@ -304,7 +304,7 @@ input[type=checkbox]:checked::after{content:""; width:8px; height:4.5px; border-
   color:#1D2126; font:400 15px/24px var(--sans); white-space:pre-wrap; overflow-wrap:anywhere; overflow:hidden;
   outline:none; cursor:text; caret-color:#1D2126}
 .hoja-texto:focus,.hoja-texto:focus-visible{outline:none}
-.hoja-texto b,.hoja-texto strong{font-weight:700}
+.hoja-texto b,.hoja-texto strong{font-weight:600}
 /* un editable no trae texto de ayuda: se pinta sobre la primera línea mientras está vacío */
 .hoja-texto.sin-texto::before{content:attr(data-placeholder); position:absolute; top:24px; left:88px; color:#8A9099; pointer-events:none}
 .lb-btn.lb-negrita svg{stroke-width:2.2}
@@ -324,7 +324,7 @@ input[type=checkbox]:checked::after{content:""; width:8px; height:4.5px; border-
 @media (max-width:1100px){ .form-entrega{grid-template-columns:repeat(2,minmax(0,1fr))} }
 .grupo{margin-top:30px}
 .grupo-cab{display:flex; align-items:baseline; gap:10px; margin-bottom:6px}
-.grupo-cab h2{font:600 17px/1.2 var(--sans); letter-spacing:-.015em}
+.grupo-cab h2{font:500 17px/1.2 var(--sans); letter-spacing:-.015em}
 .fila .fecha{font:400 13px/1 var(--sans); font-variant-numeric:tabular-nums; color:var(--ink-2); white-space:nowrap}
 .tachada .t{text-decoration:line-through; color:var(--ink-3)}
 
@@ -335,7 +335,7 @@ input[type=checkbox]:checked::after{content:""; width:8px; height:4.5px; border-
   min-height:220px; padding:28px; border:1px dashed var(--line-2); border-radius:var(--r-l); background:var(--surface);
   color:var(--ink-2); transition:border-color .15s, background .15s}
 .soltar.encima{border-color:var(--ink); background:var(--surface-2)}
-.soltar strong{font:600 17px/1.3 var(--sans); letter-spacing:-.015em; color:var(--ink)}
+.soltar strong{font:500 17px/1.3 var(--sans); letter-spacing:-.015em; color:var(--ink)}
 .rejilla-docs{display:grid; grid-template-columns:repeat(auto-fill,minmax(min(300px,100%),1fr)); gap:12px; margin-top:16px}
 .doc{display:flex; gap:14px; align-items:flex-start; padding:14px 16px; border:1px solid var(--line); border-radius:var(--r-m); background:var(--surface)}
 .tipo{display:grid; place-items:center; flex:0 0 40px; width:40px; height:50px; border:1px solid var(--line-2); border-radius:4px 10px 4px 4px;
@@ -356,7 +356,7 @@ input[type=checkbox]:checked::after{content:""; width:8px; height:4.5px; border-
 .trad-pie{display:flex; justify-content:space-between; align-items:center; gap:10px; flex-wrap:wrap; margin-top:12px}
 .seccion{margin-top:40px}
 .seccion-cab{display:flex; justify-content:space-between; align-items:baseline; gap:12px; margin-bottom:14px}
-.seccion-cab h2{font:600 20px/1.2 var(--sans); letter-spacing:-.02em}
+.seccion-cab h2{font:500 20px/1.2 var(--sans); letter-spacing:-.02em}
 .form-vocab{display:grid; grid-template-columns:minmax(0,1fr) minmax(0,1fr) auto; gap:10px; align-items:end; margin-bottom:14px}
 @media (max-width:680px){ .form-vocab{grid-template-columns:minmax(0,1fr)} }
 .palabras{display:grid; grid-template-columns:repeat(auto-fill,minmax(min(220px,100%),1fr)); gap:10px}
@@ -383,7 +383,7 @@ dialog{width:min(660px,94vw); padding:0; border:1px solid var(--line); border-ra
   color:var(--ink); box-shadow:var(--sombra-modal)}
 dialog::backdrop{background:rgba(0,0,0,.38); backdrop-filter:blur(2px)}
 .dlg-cab{display:flex; justify-content:space-between; align-items:flex-start; gap:12px; padding:22px 24px 0}
-.dlg-cab h3{font:600 20px/1.25 var(--sans); letter-spacing:-.02em}
+.dlg-cab h3{font:500 20px/1.25 var(--sans); letter-spacing:-.02em}
 .dlg-cuerpo{padding:20px 24px; max-height:66vh; overflow:auto}
 .dlg-pie{display:flex; justify-content:space-between; gap:8px; padding:14px 24px 18px; border-top:1px solid var(--line)}
 .dlg-pie .derecha{display:flex; gap:8px; margin-left:auto}
@@ -475,7 +475,7 @@ dialog::backdrop{background:rgba(0,0,0,.38); backdrop-filter:blur(2px)}
 .bien-hecho{text-align:center; padding:6px 4px 2px}
 .bh-circulo{width:64px; height:64px; margin:2px auto 14px; border-radius:50%; background:var(--verde); display:grid; place-items:center}
 .bh-circulo svg{width:30px; height:30px; fill:none; stroke:#FFFFFF; stroke-width:2; stroke-linecap:round; stroke-linejoin:round}
-.bh-titulo{margin:0 0 6px; font:600 22px/1.2 var(--sans); letter-spacing:-.02em; color:var(--verde-texto)}
+.bh-titulo{margin:0 0 6px; font:500 22px/1.2 var(--sans); letter-spacing:-.02em; color:var(--verde-texto)}
 .bh-texto{margin:0 auto; max-width:36ch; font:400 14px/1.6 var(--sans); color:var(--ink-2)}
 .btn.primario.verde{background:#15803D; color:#FFFFFF; border-color:#15803D}
 
@@ -497,6 +497,167 @@ dialog::backdrop{background:rgba(0,0,0,.38); backdrop-filter:blur(2px)}
 .adj-chip{display:inline-flex; align-items:center; gap:6px; padding:6px 10px; border-radius:9px; background:var(--surface-2);
   font:500 12px/1 var(--sans); color:var(--ink-2)}
 .adj-chip svg{width:13px; height:13px}
+
+/* ── un color por asignatura ──
+   Tonos validados: contraste mínimo de 3:1 contra la superficie y separación
+   suficiente entre los de al lado también para quien no distingue rojos y
+   verdes. El texto nunca lleva el color: el color va en las marcas. */
+:root{
+  --mod-0:#3B82F6; --mod-1:#EA580C; --mod-2:#0891B2; --mod-3:#DB2777;
+  --mod-4:#15803D; --mod-5:#7C3AED; --mod-6:#B45309;
+}
+@media (prefers-color-scheme: dark){:root:not([data-theme="light"]){ --mod-5:#8B5CF6; }}
+:root[data-theme="dark"]{ --mod-5:#8B5CF6; }
+/* el tinte se pinta con una capa a poca opacidad: vale en cualquier navegador */
+.codigo{position:relative; isolation:isolate; border-color:var(--c, var(--line-2))}
+.codigo::before{content:""; position:absolute; inset:0; border-radius:inherit; background:var(--c, transparent); opacity:.17; z-index:-1}
+.panel.modulo{border-top:2px solid var(--c, var(--line))}
+.panel.modulo .medidor > i{background:var(--c, var(--ink-2))}
+.panel.modulo .medidor.faltas > i{background:repeating-linear-gradient(-45deg, var(--ink) 0 2px, transparent 2px 4.5px)}
+.panel.modulo .medidor.faltas.lleno > i{background:var(--ink)}
+
+/* ══════════════════ tokens de El Escritorio (Nocturne) ══════════════════
+   Rampas, reglas y tipografía del sistema: nada de negro ni blanco puros, el
+   acento como línea, borde, texto o relleno teñido —nunca como relleno
+   grande—, y la elevación como un borde de 1 px más oscuridad ambiental. */
+:root{
+  --bg:#e4e7f5; --surface:#f3f5fe; --surface-2:#e4e7f5; --surface-3:#cfd3e5;
+  --line:#cfd3e5; --line-2:#b2b6ca;
+  --ink:#292b31; --ink-2:#3f424d; --ink-3:#595d6c; --ink-4:#75798c;
+  --on-ink:#f3f5fe;
+  --ring:rgba(93,82,148,.35);
+  --acento:#5d5294; --acento-txt:#5d5294; --acento-suave:#e7e5fe; --acento-borde:#d2cefd;
+  --verde:#15803D; --verde-texto:#15803D; --on-verde:#FFFFFF;
+  --elev-md:0 0 0 1px #b2b6ca, 0 6px 18px rgba(41,43,49,.10);
+  --sombra-modal:0 0 0 1px #9397ab, 0 16px 40px rgba(41,43,49,.18);
+  --brillo-acento:none; --brillo-verde:none; --fondo-luz:none;
+}
+@media (prefers-color-scheme: dark){:root:not([data-theme="light"]){
+  --bg:#161826; --surface:#232532; --surface-2:#292b31; --surface-3:#3f424d;
+  --line:#292b31; --line-2:#3f424d;
+  --ink:#e9e9ed; --ink-2:#b2b6ca; --ink-3:#9397ab; --ink-4:#75798c;
+  --on-ink:#161826;
+  --ring:rgba(145,132,217,.45);
+  --acento:#9184d9; --acento-txt:#b5abfc; --acento-suave:#2b2741; --acento-borde:#423a6a;
+  --verde:#16A34A; --verde-texto:#4ADE80; --on-verde:#FFFFFF;
+  --elev-md:0 0 0 1px #595d6c, 0 6px 18px rgba(0,0,0,.55);
+  --sombra-modal:0 0 0 1px #9397ab, 0 16px 40px rgba(0,0,0,.65);
+  --brillo-acento:0 0 34px rgba(145,132,217,.30);
+  --brillo-verde:0 0 40px rgba(22,163,74,.34);
+  --fondo-luz:radial-gradient(1100px 620px at 16% -14%, rgba(76,91,245,.07), transparent 62%);
+  --mod-0:#3B82F6; --mod-5:#8B5CF6;
+}}
+:root[data-theme="dark"]{
+  --bg:#161826; --surface:#232532; --surface-2:#292b31; --surface-3:#3f424d;
+  --line:#292b31; --line-2:#3f424d;
+  --ink:#e9e9ed; --ink-2:#b2b6ca; --ink-3:#9397ab; --ink-4:#75798c;
+  --on-ink:#161826;
+  --ring:rgba(145,132,217,.45);
+  --acento:#9184d9; --acento-txt:#b5abfc; --acento-suave:#2b2741; --acento-borde:#423a6a;
+  --verde:#16A34A; --verde-texto:#4ADE80; --on-verde:#FFFFFF;
+  --elev-md:0 0 0 1px #595d6c, 0 6px 18px rgba(0,0,0,.55);
+  --sombra-modal:0 0 0 1px #9397ab, 0 16px 40px rgba(0,0,0,.65);
+  --brillo-acento:0 0 34px rgba(145,132,217,.30);
+  --brillo-verde:0 0 40px rgba(22,163,74,.34);
+  --fondo-luz:radial-gradient(1100px 620px at 16% -14%, rgba(76,91,245,.07), transparent 62%);
+  --mod-0:#3B82F6; --mod-5:#8B5CF6;
+}
+body{background-image:var(--fondo-luz, none); background-attachment:fixed}
+.panel{border:1px solid var(--line-2); box-shadow:none; padding:22.4px}
+.cab{margin-bottom:22.4px}
+.mini-reloj{box-shadow:var(--elev-md)}
+.mini-reloj.hecho{box-shadow:var(--elev-md), inset 0 0 0 1.5px var(--verde)}
+.hoja-papel{box-shadow:var(--elev-md)}
+.btn.primario{background:transparent; border-color:var(--acento); color:var(--acento-txt)}
+.btn.primario:hover{background:var(--acento-suave); border-color:var(--acento); color:var(--acento-txt); opacity:1}
+.btn.primario.verde{background:transparent; border-color:var(--verde); color:var(--verde-texto)}
+.mr-btn{background:transparent; box-shadow:inset 0 0 0 1px var(--acento); color:var(--acento-txt)}
+.mr-btn.sec{background:transparent; box-shadow:inset 0 0 0 1px var(--line-2); color:var(--ink-3)}
+.mini-reloj.hecho #mrPlay{background:transparent; box-shadow:inset 0 0 0 1px var(--verde); color:var(--verde-texto)}
+.nav-item[aria-selected="true"]{background:var(--surface); box-shadow:inset 0 0 0 1px var(--acento-borde)}
+.nav-item[aria-selected="true"] .i{color:var(--acento-txt)}
+:focus-visible{outline:2px solid var(--acento); outline-offset:2px}
+.msg.tu .burbuja{background:var(--acento-suave); color:var(--acento-txt); box-shadow:inset 0 0 0 1px var(--acento-borde)}
+.sug:hover{color:var(--acento-txt)}
+.dia > i{background:var(--ink-4)}
+.dia:last-child > i{background:var(--acento)}
+.medidor > i{background:var(--ink-2)}
+.reloj{text-shadow:var(--brillo-acento, none)}
+.bh-circulo{box-shadow:var(--brillo-verde, none)}
+
+/* ── pantalla de entrada ── */
+body.en-entrada .app{display:none}
+.entrada{position:fixed; inset:0; z-index:70; overflow-y:auto; background:var(--bg); background-image:var(--fondo-luz, none)}
+.entrada[hidden]{display:none}
+.ent-caja{max-width:820px; margin:0 auto; padding:26px 22px 90px; display:flex; flex-direction:column; min-height:100%}
+.ent-cab{display:flex; align-items:center; gap:16px; margin-bottom:26px}
+.ent-cab .marca{padding:0; flex:1}
+.ent-pasos{display:flex; gap:6px}
+.ent-punto{width:7px; height:7px; border-radius:50%; background:var(--line-2)}
+.ent-punto.hecho{background:var(--acento-txt)}
+.ent-punto.ahora{background:var(--acento); box-shadow:0 0 0 3px var(--acento-suave)}
+.ent-cuerpo{flex:1}
+.ent-tit{font:500 30px/1.2 var(--sans); letter-spacing:-.025em; margin:0 0 10px}
+.ent-lead{font:400 14.5px/1.6 var(--sans); color:var(--ink-2); margin:0 0 22px; max-width:62ch}
+.ent-pie{display:flex; justify-content:space-between; align-items:center; gap:12px; margin-top:30px; padding-top:18px; border-top:1px solid var(--line)}
+.ent-rejilla{display:grid; grid-template-columns:repeat(auto-fill, minmax(min(190px,100%),1fr)); gap:10px}
+.ent-carta{display:flex; flex-direction:column; gap:4px; padding:14px 15px; border-radius:var(--r-l); border:1px solid var(--line-2);
+  background:var(--surface); cursor:pointer; text-align:left; color:var(--ink); transition:border-color .12s}
+.ent-carta:hover{border-color:var(--acento)}
+.ent-carta.sel{border-color:var(--acento); box-shadow:inset 0 0 0 1px var(--acento)}
+.ent-carta .t{font:500 15px/1.3 var(--sans)}
+.ent-carta .s{font:400 12.5px/1.4 var(--sans); color:var(--ink-3)}
+.ent-chips{display:flex; flex-wrap:wrap; gap:8px}
+.sug.sel{background:var(--acento-suave); color:var(--acento-txt); box-shadow:inset 0 0 0 1px var(--acento-borde)}
+.sug.redondo{min-width:38px; padding:6px 0; justify-content:center; text-align:center}
+.ent-acciones{display:flex; flex-wrap:wrap; gap:9px; margin-bottom:14px}
+.ent-aviso{font:400 13px/1.55 var(--sans); color:var(--ink-2); background:var(--surface-2); border-radius:var(--r-m); padding:9px 12px; margin:0 0 14px}
+.ent-asigs{display:flex; flex-direction:column; gap:7px}
+.ent-asig{display:grid; grid-template-columns:34px 80px minmax(0,1fr) 78px 52px 34px; align-items:center; gap:8px;
+  padding:7px 9px; border-radius:var(--r-m); background:var(--surface); border:1px solid var(--line)}
+.ent-asig.off{opacity:.45}
+.ent-check{width:24px; height:24px; border-radius:50%; border:1.5px solid var(--line-2); background:none; cursor:pointer; display:grid; place-items:center}
+.ent-check.on{background:var(--verde); border-color:var(--verde)}
+.ent-check svg{width:12px; height:12px; fill:none; stroke:#FFFFFF; stroke-width:2.4; stroke-linecap:round; stroke-linejoin:round}
+.ent-asig input{height:32px}
+.ent-cod{text-transform:uppercase; font-weight:600}
+.ent-hu{font:400 11px/1 var(--sans); color:var(--ink-4)}
+.ent-linea{display:flex; align-items:flex-start; gap:9px; font:400 13px/1.55 var(--sans); color:var(--ink-2); max-width:70ch}
+.ent-linea input{margin-top:2px; flex:0 0 auto}
+.ent-resumen{display:grid; grid-template-columns:repeat(auto-fit, minmax(min(240px,100%),1fr)); gap:14px}
+.ent-resumen > div{padding:13px 15px; border-radius:var(--r-m); background:var(--surface); border:1px solid var(--line)}
+.ent-resumen p{margin:5px 0 0; font:400 13.5px/1.5 var(--sans)}
+@media (max-width:700px){
+  .ent-asig{grid-template-columns:30px 72px minmax(0,1fr) 30px; row-gap:6px}
+  .ent-asig .ent-h{grid-column:2 / 3}
+  .ent-asig .ent-hu{grid-column:3 / 5}
+  .ent-tit{font-size:25px}
+}
+
+/* ── ajustes ── */
+.aj-tabs{display:flex; flex-wrap:wrap; gap:6px; margin-bottom:18px}
+.aj-tab{padding:7px 13px; border-radius:999px; border:1px solid transparent; background:var(--surface-2); color:var(--ink-2);
+  font:500 13px/1 var(--sans); cursor:pointer}
+.aj-tab:hover{color:var(--ink)}
+.aj-tab[aria-selected="true"]{background:var(--surface); color:var(--ink); border-color:var(--acento-borde)}
+.aj-lista{display:flex; flex-direction:column; gap:8px}
+.aj-fila{display:grid; grid-template-columns:4px 78px minmax(0,1fr) auto auto auto auto; align-items:center; gap:10px;
+  padding:8px 10px; border-radius:var(--r-m); background:var(--surface-2)}
+.aj-tira{width:4px; height:26px; border-radius:2px; background:var(--c, var(--line-2))}
+.aj-cod{text-transform:uppercase; font-weight:600}
+.aj-fila input[type="text"]{height:32px}
+.aj-colores{display:flex; gap:4px; align-items:center}
+.aj-color{width:18px; height:18px; border-radius:50%; border:0; cursor:pointer; background:var(--c, var(--line-2)); padding:0;
+  box-shadow:inset 0 0 0 1px rgba(0,0,0,.25)}
+.aj-color.sel{box-shadow:0 0 0 2px var(--surface-2), 0 0 0 3.5px var(--c, var(--ink))}
+.aj-color.libre{position:relative; overflow:hidden; background:conic-gradient(#EA580C,#DB2777,#8B5CF6,#0891B2,#15803D,#B45309,#EA580C)}
+.aj-color.libre input{position:absolute; inset:0; width:100%; height:100%; opacity:0; border:0; padding:0; cursor:pointer}
+.aj-h{font-variant-numeric:tabular-nums; white-space:nowrap}
+.aj-plantilla{display:flex; flex-wrap:wrap; gap:7px; margin-top:14px}
+@media (max-width:820px){
+  .aj-fila{grid-template-columns:4px 72px minmax(0,1fr); row-gap:8px}
+  .aj-fila .aj-colores, .aj-fila .aj-h, .aj-fila .btn{grid-column:2 / 4}
+}
 </style>
 
 <div class="app">
@@ -529,6 +690,8 @@ dialog::backdrop{background:rgba(0,0,0,.38); backdrop-filter:blur(2px)}
   </main>
 </div>
 
+<div class="entrada" id="entrada" hidden></div>
+
 <dialog id="dlg"><form method="dialog" id="dlgForm">
   <div class="dlg-cab"><h3 id="dlgTit">—</h3>
     <button class="icono-btn" value="cancelar" aria-label="Cerrar"><svg class="i" viewBox="0 0 16 16"><path d="M4 4l8 8M12 4l-8 8"/></svg></button></div>
@@ -544,6 +707,7 @@ dialog::backdrop{background:rgba(0,0,0,.38); backdrop-filter:blur(2px)}
 const $ = (s, r = document) => r.querySelector(s);
 const esc = s => String(s ?? "").replace(/[&<>"']/g, c => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[c]));
 const uid = () => Date.now().toString(36) + Math.random().toString(36).slice(2, 7);
+const cursoAcademico = () => { const d = new Date(), a = d.getMonth() >= 7 ? d.getFullYear() : d.getFullYear() - 1; return String(a).slice(2) + "–" + String(a + 1).slice(2); };
 const hoyISO = (d = new Date()) => new Date(d.getTime() - d.getTimezoneOffset() * 6e4).toISOString().slice(0, 10);
 const num = (v, d = 0) => { const n = parseFloat(String(v).replace(",", ".")); return Number.isFinite(n) ? n : d; };
 const clamp = (n, a, b) => Math.min(b, Math.max(a, n));
@@ -587,6 +751,8 @@ const ICON = {
   archivo: '<path d="M4 2.5h5.2L12 5.3v8.2H4z"/><path d="M9 2.5v3h3"/>'
 };
 const icono = (n, cls = "i") => `<svg class="${cls}" viewBox="0 0 16 16" aria-hidden="true">${ICON[n]}</svg>`;
+/* el color que le toca a una asignatura, listo para meter en un style */
+const colorMod = m => !m ? "" : m.colorHex && /^#[0-9a-f]{6}$/i.test(m.colorHex) ? "--c:" + m.colorHex : "--c:var(--mod-" + (num(m.color) % 7) + ")";
 
 /* ══════════════════ estado ══════════════════ */
 const MODULOS_DAW = [
@@ -619,7 +785,7 @@ function estadoInicial() {
       id: uid(), cod: m.cod, nombre: m.nombre, color: m.color, horas: m.horas,
       faltas: 0, objetivo: 5, metaSemanal: Math.max(1, Math.round(m.horas / 32 / 2)), pesos: PESOS_DEF()
     })),
-    tareas: [], vocab: [], horas: {}, apuntes: {}, casillero: {}, objetivos: OBJ_DEF(), tutor: tutorDef()
+    tareas: [], vocab: [], horas: {}, apuntes: {}, casillero: {}, objetivos: OBJ_DEF(), tutor: tutorDef(), perfil: perfilDef()
   };
 }
 let S = estadoInicial();
@@ -628,7 +794,7 @@ let seccion = "escritorio", apunteActivo = null, filtroApuntes = "";
 /* ══════════════════ almacenamiento ══════════════════
    Mismas claves y mismos documentos que la versión anterior: rediseñar no
    puede costar ni un apunte de lo que ya estuviera guardado. */
-const DOCS = { ajustes: ["config", "modulos"], agenda: ["tareas"], ingles: ["vocab"], horas: ["horas"], objetivos: ["objetivos"], tutor: ["tutor"] };
+const DOCS = { ajustes: ["config", "modulos"], agenda: ["tareas"], ingles: ["vocab"], horas: ["horas"], objetivos: ["objetivos"], tutor: ["tutor"], perfil: ["perfil"] };
 let db = null, sample = null, descargas = null;
 const pendientes = {}, subiendo = new Set();
 
@@ -685,7 +851,12 @@ async function conectar() {
       if (!snap.exists) { db.doc("escritorio/" + nd).set(empaqueta(nd)).catch(() => {}); return; }
       const d = snap.data(); let cambio = false;
       DOCS[nd].forEach(k => { if (d[k] !== undefined) { S[k] = clonar(d[k]); cambio = true; } });
-      if (cambio) { if (nd === "ajustes") migrarConfig(); guardarLocal(); if (!editando()) pinta(); }
+      if (cambio) {
+        if (nd === "ajustes") migrarConfig();
+        /* si en otro dispositivo ya estaba configurado, la pantalla de entrada se cierra sola */
+        if (nd === "perfil" && BV && !BV.reconfig && normalizarPerfil().listo) bvCerrar();
+        guardarLocal(); if (!editando()) pinta();
+      }
     }, () => marcaSync("Este dispositivo", false));
   });
 
@@ -1662,19 +1833,21 @@ const SECCIONES = [
   { id: "apuntes", txt: "Apuntes" }, { id: "entregas", txt: "Entregas" },
   { id: "casillero", txt: "Casillero" }, { id: "ingles", txt: "Inglés" },
   /* aparte y al final: esto es una conversación, no una pantalla más */
-  { id: "tutor", txt: "Tutor", aparte: true }
+  { id: "tutor", txt: "Tutor", aparte: true },
+  { id: "ajustes", txt: "Ajustes", aparte: true }
 ];
 function pintaNav() {
   const urgentes = S.tareas.filter(t => !t.hecha && t.fecha && diasEntre(t.fecha, hoyISO()) <= 3).length;
   const sinLeer = tutorNoLeidos();
   /* tabindex móvil: solo la sección activa entra en el tabulador; las flechas recorren el resto */
-  $("#nav").innerHTML = SECCIONES.map(s =>
-    (s.aparte ? `<hr class="nav-sep">` : "") +
+  const primeraAparte = SECCIONES.findIndex(x => x.aparte);
+  $("#nav").innerHTML = SECCIONES.map((s, i) =>
+    (s.aparte && i === primeraAparte ? `<hr class="nav-sep">` : "") +
     `<button class="nav-item" role="tab" data-sec="${s.id}" aria-controls="principal"
-       aria-selected="${s.id === seccion}" tabindex="${s.id === seccion ? 0 : -1}">${icono(s.id)}<span>${s.txt}</span>` +
+       aria-selected="${s.id === seccion}" tabindex="${s.id === seccion ? 0 : -1}">${icono(s.id)}<span>${s.id === "modulos" ? voc(true, true) : s.txt}</span>` +
     (s.id === "entregas" && urgentes ? `<span class="cuenta" title="Vencen en 3 días o menos">${urgentes}</span>` : "") +
     (s.id === "tutor" && sinLeer ? `<span class="cuenta verde" title="Mensajes del profe sin leer">${sinLeer}</span>` : "") + `</button>`).join("");
-  $("#curso").textContent = S.config.curso + " · curso 26–27";
+  $("#curso").textContent = S.config.curso + " · curso " + cursoAcademico();
   pintaMini();
 }
 
@@ -1741,7 +1914,7 @@ function vistaEscritorio() {
           const m = modPorId(t.modId), dd = diasEntre(t.fecha, hoyISO());
           const cl = dd < 0 ? "riesgo" : dd <= 2 ? "aviso" : "ok";
           const txt = dd < 0 ? "Atrasada " + (-dd) + " d" : dd === 0 ? "Hoy" : dd === 1 ? "Mañana" : "En " + dd + " días";
-          return `<div class="fila"><span class="codigo">${m ? esc(m.cod) : "—"}</span>
+          return `<div class="fila"><span class="codigo" style="${colorMod(m)}">${m ? esc(m.cod) : "—"}</span>
             <span class="principal-fila"><span class="t">${esc(t.titulo)}</span></span>
             <span class="fecha">${t.fecha}</span>
             <span class="estado ${cl}"><span class="dot"></span>${txt}</span></div>`;
@@ -1758,7 +1931,7 @@ function vistaEscritorio() {
         <button class="btn mini fantasma" data-ir="modulos">Ver todos</button></div>
       <div class="lista">${calc.map(({ m, c }) => `
         <button class="fila fila-boton" data-ir="modulos">
-          <span class="codigo">${esc(m.cod)}</span>
+          <span class="codigo" style="${colorMod(m)}">${esc(m.cod)}</span>
           <span class="principal-fila"><span class="t">${esc(m.nombre)}</span></span>
           <span class="num meta">${c.media === null ? "—" : nota(c.media)}</span>
           ${estadoHTML(c)}
@@ -1772,10 +1945,10 @@ function vistaModulos() {
   <header class="cab">
     <div>
       <div class="eyebrow">${esc(S.config.curso)}</div>
-      <h1 class="titulo">Módulos</h1>
-      <p class="lead">Cada módulo te dice la nota que llevas y la mínima que necesitas en lo que queda para llegar a tu objetivo.</p>
+      <h1 class="titulo">${voc(true, true)}</h1>
+      <p class="lead">Cada ${voc()} te dice la nota que llevas y la mínima que necesitas en lo que queda para llegar a tu objetivo.</p>
     </div>
-    <button class="btn primario" id="btnNuevoMod">${icono("mas")}Añadir módulo</button>
+    <button class="btn primario" id="btnNuevoMod">${icono("mas")}Añadir ${voc()}</button>
   </header>
   <div class="rejilla-modulos">
   ${S.modulos.map(m => {
@@ -1786,8 +1959,8 @@ function vistaModulos() {
     else if (c.yaEsta) frase = `Ya tienes el <strong>${nota(c.obj)}</strong> asegurado aunque entregues en blanco lo que queda.`;
     else if (c.necesita === null) frase = `Añade cómo te evalúan para calcular lo que necesitas.`;
     else frase = `Necesitas un <strong>${nota(c.necesita)}</strong> de media en el <strong>${nota(c.restante)} %</strong> que queda.`;
-    return `<article class="panel modulo">
-      <div class="modulo-cab"><span class="codigo">${esc(m.cod)}</span>${estadoHTML(c)}</div>
+    return `<article class="panel modulo" style="${colorMod(m)}">
+      <div class="modulo-cab"><span class="codigo" style="${colorMod(m)}">${esc(m.cod)}</span>${estadoHTML(c)}</div>
       <h2 class="modulo-nombre">${esc(m.nombre)}</h2>
       <div class="modulo-cifras">
         <div><div class="cifra${c.media === null ? " vacia" : ""}">${c.media === null ? "—" : nota(c.media)}</div>
@@ -1970,7 +2143,7 @@ function vistaEntregas() {
     const rel = dd === null ? "" : dd < 0 ? "Atrasada " + (-dd) + " d" : dd === 0 ? "Hoy" : dd === 1 ? "Mañana" : "En " + dd + " días";
     return `<div class="fila${t.hecha ? " tachada" : ""}">
       <input type="checkbox" data-hecha="${t.id}" ${t.hecha ? "checked" : ""} aria-label="Marcar ${esc(t.titulo)} como entregada">
-      <span class="codigo">${m ? esc(m.cod) : "—"}</span>
+      <span class="codigo" style="${colorMod(m)}">${m ? esc(m.cod) : "—"}</span>
       <span class="principal-fila"><span class="t">${esc(t.titulo)}</span>
         ${t.peso ? `<span class="meta">Vale el ${num(t.peso)} % de la nota</span>` : ""}</span>
       ${t.fecha ? `<span class="fecha">${t.fecha}</span>` : ""}
@@ -2241,11 +2414,12 @@ function dlgAjustes() {
 
 /* ══════════════════ pintado ══════════════════ */
 function pinta() {
+  if (BV) { pintaEntrada(); return; }
   evaluarObjetivos();
   pintaNav();
   const c = $("#contenido");
   c.innerHTML = { escritorio: vistaEscritorio, tutor: vistaTutor, modulos: vistaModulos, apuntes: vistaApuntes,
-    entregas: vistaEntregas, casillero: vistaCasillero, ingles: vistaIngles }[seccion]();
+    entregas: vistaEntregas, casillero: vistaCasillero, ingles: vistaIngles, ajustes: vistaAjustes }[seccion]();
   if (seccion === "escritorio") pintaReloj();
   if (seccion === "tutor") { tutorLeido(); chatAbajo(); }
   if (seccion === "apuntes" && apunteActivo && S.apuntes[apunteActivo]) { contarPalabras(); montarLibreta(); }
@@ -2459,7 +2633,7 @@ Devuelve: (1) la versión corregida en inglés natural, (2) una lista breve en e
   if (bv) { S.vocab = S.vocab.filter(v => v.id !== bv.dataset.borrarVocab); guardar("ingles"); pinta(); return; }
   if (t.closest("#btnRepasar")) { dlgRepaso(); return; }
 
-  if (t.closest("#btnAjustes")) { dlgAjustes(); return; }
+  if (t.closest("#btnAjustes")) { irASeccion("ajustes"); return; }
   if (t.closest("#btnTema")) { cambiarTema(); return; }
 });
 
@@ -2580,12 +2754,13 @@ function tutorDice(txt, clave) {
 /* lo que le hace escribirte solo. Como mucho dos cosas al día y cada una una
    sola vez: un profesor pesado se acaba ignorando. */
 function tutorMirar() {
-  const P = normalizarTutor(), hoy = hoyISO();
-  let sitio = 2 - Object.values(P.avisos).filter(f => f === hoy).length;
+  const P = normalizarTutor(), p = normalizarPerfil(), hoy = hoyISO();
+  if (!p.listo) return;          /* antes de montar el curso no tiene nada que decir */
+  let sitio = num(p.profe.avisos, 2) - Object.values(P.avisos).filter(f => f === hoy).length;
   if (sitio <= 0) return;
   const suelta = (clave, txt) => { if (sitio > 0 && !P.avisos[clave]) { tutorDice(txt, clave); sitio--; } };
 
-  if (!P.chat.length) suelta("hola", "Hola, soy tu profe de DAW. Estoy aquí para cuando te atasques: te doy pistas antes que respuestas, porque así se queda. Cuéntame qué llevas entre manos o pregúntame de cualquier módulo.");
+  if (!P.chat.length) suelta("hola", "Hola" + (p.nombre ? ", " + p.nombre : "") + ". Soy " + p.profe.nombre + ", tu profe. Estoy aquí para cuando te atasques: te doy pistas antes que respuestas, porque así se queda. Cuéntame qué llevas entre manos o pregúntame de cualquier " + voc() + ".");
 
   P.repasos.filter(r => !r.hecho && r.fecha <= hoy).forEach(r => {
     const m = modPorId(r.modId);
@@ -2615,6 +2790,8 @@ function tutorMirar() {
 
 /* ── lo que puede hacer él solo ── */
 function tutorHerramientas(acc) {
+  /* si le has quitado el permiso, no tiene con qué tocar tus cosas */
+  if (!normalizarPerfil().profe.puedeCrear) return [];
   const modPorTexto = s => {
     const q = String(s || "").trim().toLowerCase(); if (!q) return null;
     return S.modulos.find(m => m.cod.toLowerCase() === q) || S.modulos.find(m => m.nombre.toLowerCase().includes(q)) ||
@@ -2627,7 +2804,7 @@ function tutorHerramientas(acc) {
       description: "Programa un repaso de un tema para dentro de unos días: le sale como objetivo ese día y se lo recuerdas tú. Úsalo cuando acabéis de trabajar un tema. Devuelve la fecha del repaso.",
       inputSchema: { type: "object", properties: {
         tema: { type: "string", description: "El tema, en pocas palabras" },
-        modulo: { type: "string", description: "Código del módulo: PRO, BD, SI, LMSGI, ED, FOL o ING" },
+        modulo: { type: "string", description: "Código de " + voc() + ", uno de estos: " + S.modulos.map(m => m.cod).join(", ") },
         dias: { type: "number", description: "Dentro de cuántos días (1-30); tres o cuatro es lo normal" } }, required: ["tema"] },
       execute: i => {
         const P = normalizarTutor(), m = modPorTexto(i.modulo), tema = String(i.tema || "").trim().slice(0, 80);
@@ -2646,7 +2823,7 @@ function tutorHerramientas(acc) {
       description: "Apunta una entrega o un examen en su lista de Entregas, con fecha límite y lo que pesa. Úsalo cuando te cuente que le han mandado algo. Devuelve lo que queda apuntado.",
       inputSchema: { type: "object", properties: {
         titulo: { type: "string", description: "Qué hay que entregar" },
-        modulo: { type: "string", description: "Código del módulo" },
+        modulo: { type: "string", description: "Código de " + voc() + ", uno de estos: " + S.modulos.map(m => m.cod).join(", ") },
         fecha: { type: "string", description: "Fecha límite en formato AAAA-MM-DD" },
         peso: { type: "number", description: "Porcentaje de la nota, si lo sabes" } }, required: ["titulo"] },
       execute: i => {
@@ -2691,55 +2868,64 @@ const DAW_TEMARIO = {
   ING: "Inglés técnico: vocabulario de informática, lectura de documentación y de mensajes de error en inglés, y redacción de correos y documentación breve."
 };
 
-/* ── lo que sabe de ti cada vez que le escribes ── */
+/* ── lo que sabe de ti cada vez que le escribes ──
+   Sale entero de tu perfil: qué estudias, con qué asignaturas y su temario, si
+   trabajas, a qué nota vas, qué te cuesta, y con qué tono y cuánta caña le has
+   pedido que te trate. */
 function tutorInstrucciones() {
-  const P = normalizarTutor();
-  return `Eres profesor de 1.º de DAW (Desarrollo de Aplicaciones Web, FP de grado superior, España) y además has desarrollado software de verdad: sabes lo que se pregunta en clase y lo que se hace luego en una empresa. Te llamas ${P.nombre} y hablas con tu alumno por el chat de su app de estudio.
+  const p = normalizarPerfil(), f = p.profe, e = etapaDe(p.etapa);
+  const quien = [e.nombre, p.ciclo, p.rama, p.curso].filter(Boolean).join(" · ") || "sus estudios";
+  const tono = f.tono === "exigente" ? "Exigente pero justo: le aprietas, le señalas sin rodeos lo que está mal y no le das coba."
+    : f.tono === "neutro" ? "Directo y sin adornos: al grano, sin palmaditas."
+    : "Cercano y tranquilo, de tú, como un profesor que se lleva bien con su alumno.";
+  const cana = f.cana === "directo"
+    ? "Te ha pedido ir DIRECTO: explica y resuelve, y como mucho deja una pregunta corta al final para comprobar que lo ha entendido."
+    : f.cana === "mixto"
+    ? "Una pista primero y, si no sale a la primera, la explicación entera. No lo estires más de eso."
+    : "Pistas antes que respuestas: primero una pista o una pregunta que le haga pensar, luego otra más concreta, luego un ejemplo parecido resuelto y, al final, la explicación entera.";
+  const trabajo = p.trabaja === "completa"
+    ? "Trabaja a jornada completa: tiene poco tiempo, así que lo que le propongas tiene que caber en ratos cortos."
+    : p.trabaja === "parcial" ? "Trabaja a media jornada: cuenta con que tiene el día partido." : "Ahora mismo solo estudia.";
+  const meta = p.meta === "matricula" ? "Va a por matrícula de honor." : p.meta === "buena" ? "Quiere buena media, no solo aprobar." : "Su objetivo es aprobar sin dramas.";
+  return `Eres el profesor particular de ${p.nombre || "un estudiante"}, que cursa ${quien} en España. Te llamas ${f.nombre} y le hablas por el chat de su app de estudio. Conoces esos estudios por dentro: qué se da en cada ${voc()}, cómo se evalúa y qué se pregunta en los exámenes.
 
 CÓMO ENSEÑAS
-- No sueltas la respuesta a la primera. Empiezas por una pista o una pregunta que le haga pensar. Si falla o insiste, das una pista más concreta; luego un ejemplo parecido resuelto; y al final, si hace falta, la explicación entera.
-- Si te dice "dímelo ya", que tiene prisa o que el examen es mañana, se la das entera sin discutir ni sermonear. Un profesor también explica cuando ve que no sale.
-- Si el tema es NUEVO para él (no aparece en sus apuntes ni en lo que habéis trabajado), se lo explicas de cero: nadie adivina lo que no le han enseñado. El modo pistas es para lo que ya ha visto.
-- Le haces trabajar: "escríbeme tú la consulta", "¿qué crees que hace este bucle?". Cuando conteste, corriges señalando dónde está el fallo y por qué, sin reescribírselo todo.
+- ${cana}
+- Si te dice "dímelo ya", que tiene prisa o que el examen es mañana, se la das entera sin discutir ni sermonear.
+- Si el tema es NUEVO para él (no aparece en sus apuntes ni en lo que habéis trabajado), se lo explicas de cero: nadie adivina lo que no le han enseñado.
+- Le haces trabajar: que escriba él el ejercicio, la consulta, el esquema. Cuando conteste, corriges señalando dónde está el fallo y por qué, sin rehacérselo todo.
 - Si lleva dos intentos fallidos o te dice que va agobiado, aflojas: menos preguntas, más ayuda. Sin culpa ni discursos de motivación.
-- Si te pregunta qué estudiar, decides tú con sus datos (lo que tiene más cerca, lo que peor lleva) y se lo dices concreto.
+- Si te pregunta qué estudiar, decides tú con sus datos —lo que tiene más cerca, lo que peor lleva— y se lo dices concreto.
+- ${trabajo} ${meta}${p.cuestaMas ? " Dice que lo que más le cuesta es: «" + p.cuestaMas + "»." : ""}${p.motivo ? " Estudia esto para: «" + p.motivo + "»." : ""}
 
 CÓMO HABLAS
-- Como una persona por el móvil: de tú, cercano, mensajes cortos de dos a seis líneas. Nada de listas largas, ni de "¡Excelente pregunta!", ni de repetirle lo que acaba de decir.
-- Una sola pregunta por mensaje, para que pueda contestarte.
-- Español de España. Los tecnicismos como se dicen (array, query, commit). El código, en trozos cortos y comentados.
+- ${tono}
+- Como una persona por el móvil: mensajes cortos, de dos a seis líneas, y una sola pregunta por mensaje.
+- Español de España. Los tecnicismos como se dicen. El código o las fórmulas, en trozos cortos y comentados.
 - Sin markdown: ni asteriscos, ni almohadillas, ni viñetas salvo que sea una lista de verdad de dos o tres cosas.
 
-QUÉ SE DA EN SU CURSO (tu temario)
-${Object.keys(DAW_TEMARIO).map(k => "- " + k + ": " + DAW_TEMARIO[k]).join("\n")}
-Conoces el ciclo por dentro: cada módulo se evalúa por resultados de aprendizaje y criterios de evaluación, con exámenes y prácticas entregables; hay convocatoria ordinaria y extraordinaria, y pasarse de faltas puede costar la evaluación continua. En 2.º llegan desarrollo web en entorno cliente y en servidor, despliegue, diseño de interfaces, el proyecto y la FCT: cuando venga a cuento, le dices para qué le va a servir después lo que está dando ahora.
+CAPTURAS Y ARCHIVOS
+Te puede pasar capturas (de sus apuntes, de un error, del enunciado) y archivos de texto o código. Léelos de verdad: cuando corrijas, cita el punto concreto y copia en tu mensaje el trozo del que hablas, porque las capturas no siempre se reenvían en los mensajes siguientes. Si una captura no se lee bien, díselo y pídele el texto pegado.
 
-CÓMO SE ENSEÑA CADA COSA
-- Programación: primero que entienda el problema y lo cuente con sus palabras o en pseudocódigo; después el código. Le haces leer el mensaje de error antes de traducírselo, y depurar paso a paso en vez de llenar el programa de prints.
-- Bases de datos: primero el modelo, las claves y las relaciones; después el SQL. Las consultas por partes: de qué tablas, con qué join, qué filtro, qué agrupación.
-- Lenguajes de marcas: estructura semántica antes que estilos, y que valide.
-- Sistemas y entornos: terminal, permisos y Git desde el primer día, y la documentación oficial antes que el primer foro que salga.
-- Le corriges también la forma —nombres claros, indentación, métodos cortos, commits con sentido—, porque en este ciclo eso también puntúa.
-- Si pregunta por un examen, le dices qué se suele pedir y qué fallos típicos restan nota.
-
-LO QUE PUEDES HACER TÚ
-Tienes herramientas para programarle un repaso, apuntarle una entrega o ponerle un objetivo del día. Úsalas cuando venga a cuento de verdad —acabáis de cerrar un tema, te cuenta que le han mandado algo—, dilo de pasada en tu mensaje y sigue. No pidas permiso cada vez ni las uses en todos los mensajes.
-
-CAPTURAS Y CÓDIGO
-Te puede pasar capturas (de su código, de un error, del enunciado) y archivos de código. Léelos de verdad. Cuando corrijas, cita la línea concreta y copia en tu mensaje el trozo del que hablas: las capturas no siempre se vuelven a enviar en los mensajes siguientes, y así no se pierde. Si una captura no se lee bien, díselo y pídele el código pegado como texto.
+${f.puedeCrear ? `LO QUE PUEDES HACER TÚ
+Tienes herramientas para programarle un repaso, apuntarle una entrega o ponerle un objetivo del día. Úsalas cuando venga a cuento de verdad —acabáis de cerrar un tema, te cuenta que le han mandado algo—, dilo de pasada y sigue. No pidas permiso cada vez ni las uses en todos los mensajes.` :
+`LO QUE NO PUEDES HACER
+Te ha pedido que no le pongas repasos, entregas ni objetivos por tu cuenta. Propónselos y que los ponga él.`}
 
 NO TE INVENTES sus notas, sus entregas ni lo que ha estudiado: eso te lo paso aquí abajo. Si algo no lo sabes, pregúntaselo.`;
 }
 function tutorContexto() {
-  const P = normalizarTutor(), hoy = hoyISO(), L = ["SU SITUACIÓN HOY (" + hoy + ")", "", "Módulos:"];
+  const P = normalizarTutor(), p = normalizarPerfil(), hoy = hoyISO();
+  const L = ["SU SITUACIÓN HOY (" + hoy + ")", "", voc(true, true) + ":"];
   S.modulos.forEach(m => {
-    const c = calcModulo(m), p = [c.media === null ? "sin notas todavía" : "media " + nota(c.media)];
-    if (c.yaEsta) p.push("ya aprobado");
-    else if (c.imposible) p.push("ya no le salen los números con lo que queda");
-    else if (c.necesita !== null && c.necesita !== undefined) p.push("necesita " + nota(c.necesita) + " en lo que queda");
-    if (c.faltasPct >= 70) p.push("faltas al " + Math.round(c.faltasPct) + " % del máximo");
-    if (c.est === "riesgo") p.push("EN RIESGO");
-    L.push("- " + m.cod + " " + m.nombre + ": " + p.join(", "));
+    const c = calcModulo(m), d = [c.media === null ? "sin notas todavía" : "media " + nota(c.media)];
+    if (c.yaEsta) d.push("ya aprobada");
+    else if (c.imposible) d.push("ya no le salen los números con lo que queda");
+    else if (c.necesita !== null && c.necesita !== undefined) d.push("necesita " + nota(c.necesita) + " en lo que queda");
+    if (c.faltasPct >= 70) d.push("faltas al " + Math.round(c.faltasPct) + " % del máximo");
+    if (c.est === "riesgo") d.push("EN RIESGO");
+    const tem = m.temario || (typeof DAW_TEMARIO !== "undefined" ? DAW_TEMARIO[m.cod] : "") || "";
+    L.push("- " + m.cod + " " + m.nombre + ": " + d.join(", ") + (tem ? ". Temario: " + tem : ""));
   });
   const pend = S.tareas.filter(t => !t.hecha).sort((a, b) => (a.fecha || "9999").localeCompare(b.fecha || "9999")).slice(0, 8);
   L.push("", "Entregas pendientes: " + (pend.length ? pend.map(t => {
@@ -2755,13 +2941,29 @@ function tutorContexto() {
   const rp = P.repasos.filter(r => !r.hecho).slice(0, 6);
   if (rp.length) L.push("Repasos que le pusiste: " + rp.map(r => r.tema + " (para el " + r.fecha + ")").join("; "));
   let min7 = 0; for (let i = 0; i < 7; i++) min7 += totalDia(hoyISO(new Date(Date.now() - i * 86400000)));
-  L.push("Ha estudiado " + horasTxt(min7) + " en los últimos siete días.");
+  L.push("Ha estudiado " + horasTxt(min7) + " en los últimos siete días, de " + num(p.horasSemana) + " h que se ha propuesto.");
+  if (p.diasFuertes.length) L.push("Días en los que dice que puede ponerse: " + p.diasFuertes.join(", ") + ".");
   L.push("Objetivos de hoy: " + objetivosDeHoy().map(o => o.titulo + (o.hecho ? " (hecho)" : "")).join("; "));
   const m = tutorMod && modPorId(tutorMod);
   if (m) L.push("", "Ahora quiere hablar de: " + m.cod + " " + m.nombre + ".");
   const n = apunteActivo && S.apuntes[apunteActivo];
   if (n && (n.cuerpo || "").trim()) L.push("", "Apunte que tiene abierto, «" + (n.titulo || "sin título") + "»:", '"""' + n.cuerpo.slice(0, 1200) + '"""');
   return L.join("\n");
+}
+/* se presenta al terminar la pantalla de entrada, con lo que acabas de contarle */
+function tutorPresentarse() {
+  const P = normalizarTutor(), p = normalizarPerfil(), e = etapaDe(p.etapa);
+  const curso = [p.ciclo || p.rama, p.curso].filter(Boolean).join(" ") || e.nombre;
+  const cuantas = S.modulos.length;
+  const trabajo = p.trabaja === "completa" ? " Y con jornada completa encima, así que iremos a ratos cortos y bien aprovechados."
+    : p.trabaja === "parcial" ? " Con media jornada por medio, así que buscaremos los huecos." : "";
+  tutorApunta({ id: uid(), r: "profe", nuevo: seccion !== "tutor", h: new Date().toISOString(),
+    t: (p.nombre ? "Hola, " + p.nombre + ". " : "Hola. ") + "Soy " + p.profe.nombre + ", tu profe de " + curso + ". Ya tengo tus " + cuantas + " " +
+       voc(true) + " y las " + num(p.horasSemana) + " horas a la semana que te has propuesto." + trabajo +
+       " Cuéntame por dónde vais en clase o pregúntame lo que se te haya atascado" +
+       (p.cuestaMas ? ", empezando por eso de «" + p.cuestaMas + "» si quieres." : ".") });
+  P.avisos.hola = hoyISO();
+  guardar("tutor");
 }
 /* la conversación entera viaja en cada llamada: Claude no recuerda nada entre una y otra.
    La plataforma admite unos 64 KB de texto por llamada: si no cabe, se cae lo más
@@ -2919,8 +3121,8 @@ function vistaTutor() {
   <header class="cab">
     <div>
       <div class="eyebrow">Tu profe</div>
-      <h1 class="titulo">${esc(P.nombre)}</h1>
-      <p class="lead">Un profesor particular de DAW con tus notas, tus entregas y tus apuntes delante. Te da pistas antes que respuestas; si le dices «dímelo ya», te lo dice.</p>
+      <h1 class="titulo">${esc(normalizarPerfil().profe.nombre)}</h1>
+      <p class="lead">Un profesor particular de ${esc([etapaDe(normalizarPerfil().etapa).nombre, normalizarPerfil().ciclo].filter(Boolean).join(" · ") || "lo tuyo")} con tus notas, tus entregas y tus apuntes delante. Te da pistas antes que respuestas; si le dices «dímelo ya», te lo dice.</p>
     </div>
   </header>
   <section class="panel chat-panel">
@@ -2948,7 +3150,7 @@ function vistaTutor() {
     ${pend.map(r => {
       const m = modPorId(r.modId), dd = diasEntre(r.fecha, hoy);
       return `<div class="repaso-fila">
-      <span class="codigo">${m ? esc(m.cod) : "—"}</span>
+      <span class="codigo" style="${colorMod(m)}">${m ? esc(m.cod) : "—"}</span>
       <span class="t">${esc(r.tema)}</span>
       <span class="meta">${dd < 0 ? "te tocaba hace " + (-dd) + " d" : dd === 0 ? "hoy" : dd === 1 ? "mañana" : "en " + dd + " días"}</span>
       <button class="btn mini" data-rep-listo="${r.id}">Hecho</button></div>`;
@@ -3059,6 +3261,876 @@ document.addEventListener("drop", e => {
   tutorAnadir(e.dataTransfer.files);
 });
 
+
+/* ══════════════════ quién eres y qué estudias ══════════════════
+   La app dejó de ser «para 1.º de DAW»: ahora lo primero que pasa es que le
+   cuentas qué estudias y ella se acomoda. De aquí salen tres cosas: las
+   asignaturas que te propone, cómo se llaman (módulo, asignatura, bloque o
+   destreza) y el contexto con el que el profe te habla. */
+function perfilDef() {
+  return {
+    nombre: "", etapa: "", curso: "", rama: "", ciclo: "", centro: "",
+    trabaja: "no", horasSemana: 12, diasFuertes: [],
+    meta: "aprobar", objetivoNota: 5, motivo: "", cuestaMas: "",
+    plantilla: "",
+    profe: { nombre: "Profe", tono: "cercano", cana: "pistas", avisos: 2, puedeCrear: true },
+    listo: false, creado: ""
+  };
+}
+/* las etapas, con la palabra que usa cada una y su plantilla de evaluación */
+const ETAPAS = [
+  { id: "eso",         nombre: "ESO",             pie: "1.º a 4.º de Secundaria",              voc: "asignatura", plantilla: "escolar",   horas: 8 },
+  { id: "bach",        nombre: "Bachillerato",    pie: "Con su modalidad",                     voc: "asignatura", plantilla: "escolar",   horas: 12 },
+  { id: "ciclo-medio", nombre: "Grado medio",     pie: "FP de grado medio",                    voc: "módulo",     plantilla: "fp",        horas: 10 },
+  { id: "ciclo-sup",   nombre: "Grado superior",  pie: "FP de grado superior",                 voc: "módulo",     plantilla: "fp",        horas: 12 },
+  { id: "uni",         nombre: "Universidad",     pie: "Grado o máster",                       voc: "asignatura", plantilla: "uni",       horas: 15 },
+  { id: "oposicion",   nombre: "Oposiciones",     pie: "Por bloques de temario",               voc: "bloque",     plantilla: "oposicion", horas: 20 },
+  { id: "idioma",      nombre: "Idiomas",         pie: "Por destrezas y nivel",                voc: "destreza",   plantilla: "idioma",    horas: 6 },
+  { id: "otro",        nombre: "Otra cosa",       pie: "Cursos, certificados, lo que sea",     voc: "asignatura", plantilla: "escolar",   horas: 8 }
+];
+const etapaDe = id => ETAPAS.find(e => e.id === id) || ETAPAS[ETAPAS.length - 1];
+/* la palabra que toca: se usa en el menú, en los títulos y en lo que dice el profe */
+function voc(plural, mayus) {
+  const p = normalizarPerfil(), v = etapaDe(p.etapa).voc;
+  let t = plural ? (v === "módulo" ? "módulos" : v === "bloque" ? "bloques" : v === "destreza" ? "destrezas" : "asignaturas") : v;
+  return mayus ? t.charAt(0).toUpperCase() + t.slice(1) : t;
+}
+/* cómo se reparte la nota, por defecto y según la etapa. Se cambia por asignatura */
+const PLANTILLAS = {
+  escolar:   [["Exámenes", 70], ["Trabajos y tareas", 20], ["Actitud y participación", 10]],
+  fp:        [["Exámenes", 60], ["Prácticas y ejercicios", 30], ["Actitud y participación", 10]],
+  uni:       [["Examen final", 60], ["Prácticas y laboratorio", 30], ["Participación", 10]],
+  oposicion: [["Test", 50], ["Supuesto práctico", 40], ["Otras pruebas", 10]],
+  idioma:    [["Gramática y vocabulario", 30], ["Comprensión (leer y escuchar)", 35], ["Expresión (hablar y escribir)", 35]]
+};
+/* la plantilla que manda: la que hayas elegido tú o la de tu etapa */
+const plantillaDe = p => PLANTILLAS[p && p.plantilla] ? p.plantilla : etapaDe(p && p.etapa).plantilla;
+const pesosDePlantilla = clave => (PLANTILLAS[clave] || PLANTILLAS.escolar).map(([nombre, peso]) => ({ id: uid(), nombre, peso, nota: null }));
+
+/* ── catálogo ──
+   Son PROPUESTAS: en la pantalla de entrada se marcan, se quitan, se renombran
+   y se añaden a mano. Cada comunidad cambia alguna cosa, así que lo que manda
+   es lo que tú dejes marcado. h = horas del curso; hs = horas por semana. */
+const CAT_ESO = {
+  "1.º": [["LCL", "Lengua Castellana y Literatura", 4], ["MAT", "Matemáticas", 4], ["BYG", "Biología y Geología", 3], ["GEH", "Geografía e Historia", 3],
+          ["ING", "Inglés", 4], ["EF", "Educación Física", 2], ["TEC", "Tecnología y Digitalización", 2], ["EPV", "Educación Plástica y Visual", 2]],
+  "2.º": [["LCL", "Lengua Castellana y Literatura", 4], ["MAT", "Matemáticas", 4], ["FYQ", "Física y Química", 3], ["GEH", "Geografía e Historia", 3],
+          ["ING", "Inglés", 4], ["EF", "Educación Física", 2], ["MUS", "Música", 2], ["TEC", "Tecnología y Digitalización", 2]],
+  "3.º": [["LCL", "Lengua Castellana y Literatura", 4], ["MAT", "Matemáticas", 4], ["FYQ", "Física y Química", 3], ["BYG", "Biología y Geología", 3],
+          ["GEH", "Geografía e Historia", 3], ["ING", "Inglés", 4], ["EF", "Educación Física", 2], ["TEC", "Tecnología", 2]],
+  "4.º": [["LCL", "Lengua Castellana y Literatura", 4], ["MAT", "Matemáticas", 4], ["GEH", "Geografía e Historia", 3], ["ING", "Inglés", 4],
+          ["EF", "Educación Física", 2], ["OPT1", "Optativa de itinerario 1", 3], ["OPT2", "Optativa de itinerario 2", 3]]
+};
+const CAT_BACH = {
+  "1.º·Ciencias y Tecnología": [["LCL", "Lengua Castellana y Literatura I", 4], ["ING", "Inglés I", 3], ["FIL", "Filosofía", 3], ["EF", "Educación Física", 2],
+    ["MAT", "Matemáticas I", 4], ["FYQ", "Física y Química", 4], ["BIO", "Biología, Geología y Ciencias Ambientales", 4]],
+  "1.º·Humanidades y Ciencias Sociales": [["LCL", "Lengua Castellana y Literatura I", 4], ["ING", "Inglés I", 3], ["FIL", "Filosofía", 3], ["EF", "Educación Física", 2],
+    ["HMC", "Historia del Mundo Contemporáneo", 4], ["MCS", "Matemáticas Aplicadas a las CC.SS. I", 4], ["ECO", "Economía", 4]],
+  "1.º·Artes": [["LCL", "Lengua Castellana y Literatura I", 4], ["ING", "Inglés I", 3], ["FIL", "Filosofía", 3], ["EF", "Educación Física", 2],
+    ["FA", "Fundamentos Artísticos", 4], ["DIB", "Dibujo Artístico I", 4], ["PROY", "Proyectos Artísticos", 3]],
+  "2.º·Ciencias y Tecnología": [["HES", "Historia de España", 4], ["LCL", "Lengua Castellana y Literatura II", 4], ["ING", "Inglés II", 3], ["HFI", "Historia de la Filosofía", 3],
+    ["MAT", "Matemáticas II", 4], ["FIS", "Física", 4], ["QUI", "Química", 4]],
+  "2.º·Humanidades y Ciencias Sociales": [["HES", "Historia de España", 4], ["LCL", "Lengua Castellana y Literatura II", 4], ["ING", "Inglés II", 3], ["HFI", "Historia de la Filosofía", 3],
+    ["MCS", "Matemáticas Aplicadas a las CC.SS. II", 4], ["HAR", "Historia del Arte", 4], ["EMP", "Economía de la Empresa", 4]],
+  "2.º·Artes": [["HES", "Historia de España", 4], ["LCL", "Lengua Castellana y Literatura II", 4], ["ING", "Inglés II", 3], ["HFI", "Historia de la Filosofía", 3],
+    ["DIB", "Dibujo Artístico II", 4], ["TEA", "Técnicas de Expresión Gráfico-Plástica", 4], ["CAU", "Cultura Audiovisual", 3]]
+};
+/* FP: los ciclos que más se piden, con sus horas de curso */
+const CAT_FP = {
+  "ciclo-sup": {
+    "DAW · Desarrollo de Aplicaciones Web": {
+      "1.º": [["PRO", "Programación", 256], ["BD", "Bases de Datos", 192], ["SI", "Sistemas Informáticos", 192], ["LMSGI", "Lenguajes de Marcas", 128],
+              ["ED", "Entornos de Desarrollo", 96], ["FOL", "Formación y Orientación Laboral", 96], ["ING", "Inglés Técnico", 64]],
+      "2.º": [["DWEC", "Desarrollo Web en Entorno Cliente", 168], ["DWES", "Desarrollo Web en Entorno Servidor", 168], ["DAW", "Despliegue de Aplicaciones Web", 126],
+              ["DIW", "Diseño de Interfaces Web", 126], ["EIE", "Empresa e Iniciativa Emprendedora", 63], ["PRO2", "Proyecto", 40]]
+    },
+    "DAM · Desarrollo de Aplicaciones Multiplataforma": {
+      "1.º": [["PRO", "Programación", 256], ["BD", "Bases de Datos", 192], ["SI", "Sistemas Informáticos", 192], ["LMSGI", "Lenguajes de Marcas", 128],
+              ["ED", "Entornos de Desarrollo", 96], ["FOL", "Formación y Orientación Laboral", 96]],
+      "2.º": [["AD", "Acceso a Datos", 126], ["DI", "Desarrollo de Interfaces", 126], ["PMDM", "Programación Multimedia y Dispositivos Móviles", 126],
+              ["PSP", "Programación de Servicios y Procesos", 84], ["SGE", "Sistemas de Gestión Empresarial", 84], ["EIE", "Empresa e Iniciativa Emprendedora", 63], ["PRO2", "Proyecto", 40]]
+    },
+    "ASIR · Administración de Sistemas Informáticos en Red": {
+      "1.º": [["ISO", "Implantación de Sistemas Operativos", 224], ["PAR", "Planificación y Administración de Redes", 192], ["FH", "Fundamentos de Hardware", 96],
+              ["GBD", "Gestión de Bases de Datos", 160], ["LMSGI", "Lenguajes de Marcas", 128], ["FOL", "Formación y Orientación Laboral", 96]],
+      "2.º": [["ASO", "Administración de Sistemas Operativos", 126], ["SRI", "Servicios de Red e Internet", 147], ["IAW", "Implantación de Aplicaciones Web", 105],
+              ["ASGBD", "Administración de Sistemas Gestores de Bases de Datos", 84], ["SAD", "Seguridad y Alta Disponibilidad", 105], ["EIE", "Empresa e Iniciativa Emprendedora", 63]]
+    },
+    "AF · Administración y Finanzas": {
+      "1.º": [["GDJE", "Gestión de la Documentación Jurídica y Empresarial", 96], ["RRHH", "Recursos Humanos y Responsabilidad Social", 128],
+              ["OPI", "Ofimática y Proceso de la Información", 224], ["PIAC", "Proceso Integral de la Actividad Comercial", 192],
+              ["CAC", "Comunicación y Atención al Cliente", 160], ["ING", "Inglés", 128], ["FOL", "Formación y Orientación Laboral", 96]],
+      "2.º": [["GF", "Gestión Financiera", 126], ["CF", "Contabilidad y Fiscalidad", 126], ["GRH", "Gestión de Recursos Humanos", 84],
+              ["GLC", "Gestión Logística y Comercial", 84], ["SIM", "Simulación Empresarial", 147], ["PRO2", "Proyecto", 40]]
+    },
+    "EDI · Educación Infantil": {
+      "1.º": [["DEI", "Didáctica de la Educación Infantil", 224], ["APS", "Autonomía Personal y Salud Infantil", 160], ["JUE", "El Juego Infantil y su Metodología", 192],
+              ["EYC", "Expresión y Comunicación", 160], ["DCM", "Desarrollo Cognitivo y Motor", 128], ["FOL", "Formación y Orientación Laboral", 96]],
+      "2.º": [["DSA", "Desarrollo Socioafectivo", 105], ["HAB", "Habilidades Sociales", 105], ["INT", "Intervención con Familias y Atención a Menores", 84],
+              ["PRI", "Primeros Auxilios", 42], ["EIE", "Empresa e Iniciativa Emprendedora", 63], ["PRO2", "Proyecto", 40]]
+    }
+  },
+  "ciclo-medio": {
+    "SMR · Sistemas Microinformáticos y Redes": {
+      "1.º": [["MME", "Montaje y Mantenimiento de Equipos", 224], ["SOM", "Sistemas Operativos Monopuesto", 160], ["AO", "Aplicaciones Ofimáticas", 224],
+              ["RL", "Redes Locales", 192], ["FOL", "Formación y Orientación Laboral", 96]],
+      "2.º": [["SOR", "Sistemas Operativos en Red", 147], ["SRL", "Seguridad Informática", 105], ["SEI", "Servicios en Red", 147],
+              ["AW", "Aplicaciones Web", 84], ["EIE", "Empresa e Iniciativa Emprendedora", 63]]
+    },
+    "GA · Gestión Administrativa": {
+      "1.º": [["TC", "Técnica Contable", 128], ["OAC", "Operaciones Administrativas de Compraventa", 160], ["EA", "Empresa y Administración", 128],
+              ["TII", "Tratamiento Informático de la Información", 224], ["CE", "Comunicación Empresarial", 128], ["FOL", "Formación y Orientación Laboral", 96]],
+      "2.º": [["OART", "Operaciones Administrativas de Recursos Humanos", 105], ["OAF", "Operaciones Auxiliares de Gestión de Tesorería", 126],
+              ["TAC", "Tratamiento de la Documentación Contable", 105], ["IOP", "Inglés", 63], ["EIE", "Empresa e Iniciativa Emprendedora", 63]]
+    },
+    "CUI · Cuidados Auxiliares de Enfermería": {
+      "1.º": [["OAE", "Operaciones Administrativas y Documentación Sanitaria", 96], ["TBE", "Técnicas Básicas de Enfermería", 288],
+              ["HBE", "Higiene del Medio Hospitalario y Limpieza de Material", 192], ["PSI", "Promoción de la Salud y Apoyo Psicológico al Paciente", 128],
+              ["TAB", "Técnicas de Ayuda Odontológica/Estomatológica", 96], ["FOL", "Formación y Orientación Laboral", 64]]
+    }
+  }
+};
+const CAT_IDIOMA = [["GRA", "Gramática", 2], ["VOC", "Vocabulario", 2], ["LIS", "Comprensión oral (listening)", 2], ["REA", "Comprensión escrita (reading)", 2],
+                    ["SPE", "Expresión oral (speaking)", 2], ["WRI", "Expresión escrita (writing)", 2]];
+const CAT_OPOSICION = [["GEN", "Temario general", 8], ["ESP", "Temario específico", 10], ["TEST", "Test y repaso", 4],
+                       ["PRA", "Supuestos prácticos", 4], ["PSI", "Psicotécnicos", 2], ["ORT", "Ortografía y redacción", 2]];
+const CAT_UNI = [["ASIG1", "Asignatura 1", 6], ["ASIG2", "Asignatura 2", 6], ["ASIG3", "Asignatura 3", 6], ["ASIG4", "Asignatura 4", 6], ["ASIG5", "Asignatura 5", 6]];
+
+/* lo que se propone según lo que hayas dicho; devuelve [[cod, nombre, horas o semanales]] */
+function catalogoDe(p) {
+  const e = p.etapa;
+  if (e === "eso") return CAT_ESO[p.curso] || CAT_ESO["1.º"];
+  if (e === "bach") return CAT_BACH[p.curso + "·" + p.rama] || CAT_BACH["1.º·Ciencias y Tecnología"];
+  if (e === "ciclo-sup" || e === "ciclo-medio") {
+    const fam = (CAT_FP[e] || {})[p.ciclo];
+    return (fam && (fam[p.curso] || fam["1.º"])) || [];
+  }
+  if (e === "idioma") return CAT_IDIOMA;
+  if (e === "oposicion") return CAT_OPOSICION;
+  if (e === "uni") return CAT_UNI;
+  return [];
+}
+const ciclosDe = etapa => Object.keys(CAT_FP[etapa] || {});
+/* en FP las horas son del curso entero; en el resto vienen por semana */
+const porSemana = etapa => etapa !== "ciclo-sup" && etapa !== "ciclo-medio";
+const SEMANAS_CURSO = 35;
+
+function normalizarPerfil() {
+  if (!S.perfil || typeof S.perfil !== "object") S.perfil = perfilDef();
+  const p = S.perfil, d = perfilDef();
+  for (const k in d) if (typeof p[k] === "undefined" || p[k] === null) p[k] = d[k];
+  if (!p.profe || typeof p.profe !== "object") p.profe = d.profe;
+  for (const k in d.profe) if (typeof p.profe[k] === "undefined") p.profe[k] = d.profe[k];
+  if (!Array.isArray(p.diasFuertes)) p.diasFuertes = [];
+  return p;
+}
+/* quien ya estaba usando la app no pasa por la pantalla de entrada: se le
+   rellena el perfil con lo que ya tenía */
+function migrarPerfil() {
+  const p = normalizarPerfil();
+  if (p.listo || p.etapa) return;
+  const usada = Object.keys(S.apuntes || {}).length || (S.tareas || []).length ||
+    (S.modulos || []).some(m => (m.pesos || []).some(x => x.nota !== null && x.nota !== undefined && x.nota !== "")) ||
+    Object.keys(S.horas || {}).length;
+  if (!usada) return;                      /* instalación nueva: que pase por la entrada */
+  const curso = String(S.config.curso || "");
+  p.etapa = /DAW|DAM|ASIR|superior/i.test(curso) ? "ciclo-sup" : "otro";
+  p.curso = /2/.test(curso) ? "2.º" : "1.º";
+  p.ciclo = /DAW/i.test(curso) ? "DAW · Desarrollo de Aplicaciones Web" : "";
+  p.objetivoNota = num(S.config.objetivo, 5);
+  p.horasSemana = Math.max(4, Math.round((S.modulos || []).reduce((s, m) => s + num(m.metaSemanal), 0)) || 12);
+  p.listo = true; p.creado = hoyISO();
+  guardar("perfil");
+}
+/* las horas de estudio que se proponen, según si trabajas */
+const horasPropuestas = (etapa, trabaja) => {
+  const base = etapaDe(etapa).horas;
+  return trabaja === "completa" ? Math.max(3, Math.round(base * .4)) : trabaja === "parcial" ? Math.max(4, Math.round(base * .65)) : base;
+};
+/* reparte esas horas entre las asignaturas, a más horas de clase más estudio */
+function repartirMetas(horasSemana) {
+  const mods = S.modulos || []; if (!mods.length) return;
+  const total = mods.reduce((s, m) => s + Math.max(1, num(m.horas)), 0);
+  mods.forEach(m => { m.metaSemanal = Math.max(1, Math.round(horasSemana * Math.max(1, num(m.horas)) / total)); });
+}
+
+/* ══════════════════ la pantalla de entrada ══════════════════
+   Lo primero que ves la primera vez. Siete pasos cortos: quién eres, qué
+   estudias, qué asignaturas llevas, si trabajas, cómo te evalúan, cómo quieres
+   que te trate el profe y listo. Sin Claude funciona igual con el catálogo; con
+   Claude, además, te trae la lista real de tu curso y un resumen del temario de
+   cada asignatura, que es lo que luego hace que el profe sepa de lo tuyo. */
+let BV = null;
+const bvPasos = () => ["Tú", "Curso", voc(true, true), "Tu día a día", "Evaluación", "El profe", "Listo"];
+const DIAS_SEM = [["lun", "L"], ["mar", "M"], ["mie", "X"], ["jue", "J"], ["vie", "V"], ["sab", "S"], ["dom", "D"]];
+
+function bvAbrir(reconfig) {
+  const p = clonar(normalizarPerfil());
+  BV = { paso: 0, p, asigs: [], pesos: null, cargando: false, aviso: "", reconfig: !!reconfig, reemplazar: !reconfig };
+  if (!p.etapa) { p.etapa = ""; p.curso = "1.º"; }
+  pintaEntrada();
+}
+function bvCerrar() { BV = null; $("#entrada").hidden = true; document.body.classList.remove("en-entrada"); pinta(); }
+
+/* las asignaturas que se proponen, del catálogo, cada vez que cambias de curso */
+function bvCargarCatalogo() {
+  const p = BV.p, cat = catalogoDe(p);
+  BV.asigs = cat.map(([cod, nombre, h]) => ({ id: uid(), cod, nombre, horas: h, temario: "", on: true }));
+  if (!BV.pesos) BV.pesos = PLANTILLAS[plantillaDe(p)].map(([nombre, peso]) => ({ nombre, peso }));
+}
+/* y si tienes Claude, la lista de verdad de tu curso, con su temario */
+async function bvPedirAClaude() {
+  if (!sample) { BV.aviso = "Para esto hace falta abrir la página desde tu cuenta de Claude."; pintaEntrada(); return; }
+  const p = BV.p, e = etapaDe(p.etapa);
+  BV.cargando = true; BV.aviso = ""; pintaEntrada();
+  const donde = [e.nombre, p.curso, p.rama, p.ciclo, p.centro].filter(Boolean).join(" · ");
+  const unidad = porSemana(p.etapa) ? "horas de clase por semana (entre 1 y 8)" : "horas del curso completo (entre 40 y 300)";
+  const q = `Eres orientador académico en España y conoces los planes de estudio.
+Un estudiante te dice que cursa: ${donde}.
+Devuelve SOLO este JSON, sin texto alrededor:
+{"asignaturas":[{"cod":"ABC","nombre":"Nombre oficial de la asignatura","horas":4,"temario":"Los contenidos principales en una frase"}]}
+Reglas: entre 4 y 14 asignaturas, las reales de ese curso en España; "cod" de 2 a 6 letras mayúsculas; "horas" son ${unidad}; "temario" en una sola frase con los bloques de contenido más importantes. Si no conoces el plan exacto, pon las asignaturas habituales de ese curso.`;
+  try {
+    const r = await sample.json(q, { modelTier: "default" });
+    const lista = (r && Array.isArray(r.asignaturas) ? r.asignaturas : []).slice(0, 14)
+      .map(a => ({ id: uid(), cod: String(a.cod || "").toUpperCase().replace(/[^A-ZÑ0-9]/g, "").slice(0, 6) || "ASI",
+        nombre: String(a.nombre || "").trim().slice(0, 70), horas: clamp(num(a.horas, 3), 1, 400), temario: String(a.temario || "").trim().slice(0, 300), on: true }))
+      .filter(a => a.nombre);
+    if (!lista.length) throw new Error("vacío");
+    BV.asigs = lista;
+    BV.aviso = "Lista traída por el profe. Repásala: quita, añade o renombra lo que no cuadre.";
+  } catch (err) {
+    BV.aviso = err.code === "rate_limited" ? "Claude está saturado ahora mismo. Prueba en un minuto o sigue a mano."
+      : "No he podido traer la lista. Sigue con la propuesta de abajo y la ajustas a mano.";
+  }
+  BV.cargando = false; pintaEntrada();
+}
+
+/* ── los pasos ── */
+function bvPaso0() {
+  const p = BV.p;
+  return `
+  <h1 class="ent-tit">Vamos a montar tu curso.</h1>
+  <p class="ent-lead">Dos minutos y la app queda a tu medida: tus asignaturas, tus horas y un profe que sabe de lo tuyo.</p>
+  <label class="campo" style="max-width:340px">¿Cómo te llamas?<input type="text" id="bvNombre" value="${esc(p.nombre)}" placeholder="Tu nombre" autocomplete="given-name"></label>
+  <div class="etq" style="margin:24px 0 10px">¿Qué estás estudiando?</div>
+  <div class="ent-rejilla">
+    ${ETAPAS.map(e => `<button type="button" class="ent-carta${p.etapa === e.id ? " sel" : ""}" data-bv-etapa="${e.id}">
+      <span class="t">${esc(e.nombre)}</span><span class="s">${esc(e.pie)}</span></button>`).join("")}
+  </div>`;
+}
+function bvPaso1() {
+  const p = BV.p, e = p.etapa;
+  const cursos = e === "eso" ? ["1.º", "2.º", "3.º", "4.º"] : e === "bach" ? ["1.º", "2.º"] : ["1.º", "2.º"];
+  const selCurso = `<div class="etq" style="margin:0 0 10px">¿En qué curso vas?</div>
+    <div class="ent-chips">${cursos.map(c => `<button type="button" class="sug${p.curso === c ? " sel" : ""}" data-bv-curso="${c}">${c}</button>`).join("")}</div>`;
+  if (e === "eso") return `<h1 class="ent-tit">Cuéntame de tu curso.</h1>${selCurso}`;
+  if (e === "bach") return `<h1 class="ent-tit">Cuéntame de tu curso.</h1>${selCurso}
+    <div class="etq" style="margin:24px 0 10px">¿Qué modalidad?</div>
+    <div class="ent-chips">${["Ciencias y Tecnología", "Humanidades y Ciencias Sociales", "Artes"].map(r =>
+      `<button type="button" class="sug${p.rama === r ? " sel" : ""}" data-bv-rama="${esc(r)}">${esc(r)}</button>`).join("")}</div>`;
+  if (e === "ciclo-sup" || e === "ciclo-medio") return `<h1 class="ent-tit">¿Qué ciclo haces?</h1>
+    <p class="ent-lead">Si el tuyo no está en la lista, escríbelo: el profe te trae las asignaturas.</p>
+    <div class="ent-chips">${ciclosDe(e).map(c => `<button type="button" class="sug${p.ciclo === c ? " sel" : ""}" data-bv-ciclo="${esc(c)}">${esc(c)}</button>`).join("")}</div>
+    <label class="campo" style="max-width:520px; margin-top:16px">O escríbelo tú<input type="text" id="bvCiclo" value="${esc(ciclosDe(e).includes(p.ciclo) ? "" : p.ciclo)}" placeholder="Ej.: Marketing y Publicidad"></label>
+    <div style="margin-top:22px">${selCurso}</div>`;
+  if (e === "uni") return `<h1 class="ent-tit">¿Qué estás cursando?</h1>
+    <div class="rejilla-campos">
+      <label class="campo">Grado o máster<input type="text" id="bvCiclo" value="${esc(p.ciclo)}" placeholder="Ej.: Ingeniería Informática"></label>
+      <label class="campo">Curso<input type="text" id="bvCurso" value="${esc(p.curso)}" placeholder="Ej.: 2.º"></label>
+      <label class="campo">Universidad (opcional)<input type="text" id="bvCentro" value="${esc(p.centro)}" placeholder="Ej.: UNED"></label>
+      <label class="campo">Cuatrimestre (opcional)<input type="text" id="bvRama" value="${esc(p.rama)}" placeholder="Ej.: primer cuatrimestre"></label>
+    </div>`;
+  if (e === "oposicion") return `<h1 class="ent-tit">¿A qué oposición vas?</h1>
+    <div class="rejilla-campos">
+      <label class="campo">Cuerpo o plaza<input type="text" id="bvCiclo" value="${esc(p.ciclo)}" placeholder="Ej.: Auxiliar Administrativo del Estado"></label>
+      <label class="campo">Convocatoria (opcional)<input type="text" id="bvCurso" value="${esc(p.curso)}" placeholder="Ej.: 2027"></label>
+    </div>`;
+  if (e === "idioma") return `<h1 class="ent-tit">¿Qué idioma y a qué nivel?</h1>
+    <div class="rejilla-campos">
+      <label class="campo">Idioma<input type="text" id="bvCiclo" value="${esc(p.ciclo)}" placeholder="Ej.: Inglés"></label>
+      <label class="campo">Nivel al que vas<input type="text" id="bvCurso" value="${esc(p.curso)}" placeholder="Ej.: B2"></label>
+    </div>`;
+  return `<h1 class="ent-tit">¿Qué estás preparando?</h1>
+    <div class="rejilla-campos">
+      <label class="campo">Nombre del curso<input type="text" id="bvCiclo" value="${esc(p.ciclo)}" placeholder="Ej.: Certificado de Community Manager"></label>
+      <label class="campo">Curso o nivel (opcional)<input type="text" id="bvCurso" value="${esc(p.curso)}"></label>
+    </div>`;
+}
+function bvPaso2() {
+  const p = BV.p, marcadas = BV.asigs.filter(a => a.on).length;
+  const hay = (S.modulos || []).length && BV.reconfig;
+  return `
+  <h1 class="ent-tit">Tus ${esc(voc(true))}.</h1>
+  <p class="ent-lead">Esto es una propuesta: desmarca lo que no lleves, cámbiale el nombre a lo que se llame de otra forma y añade lo que falte. Todo se puede tocar después en Ajustes.</p>
+  <div class="ent-acciones">
+    <button type="button" class="btn${sample ? " primario" : ""}" id="bvIA"${BV.cargando ? " disabled" : ""}>
+      ${BV.cargando ? "Preguntándole al profe…" : "Pedirle la lista al profe"}</button>
+    <button type="button" class="btn fantasma" id="bvCat">Volver a la propuesta del catálogo</button>
+    <button type="button" class="btn fantasma" id="bvAddAsig">${icono("mas")}Añadir a mano</button>
+  </div>
+  ${BV.aviso ? `<p class="ent-aviso">${esc(BV.aviso)}</p>` : ""}
+  ${!sample ? `<p class="ent-aviso">Aquí no hay conexión con Claude: la lista sale del catálogo y la ajustas tú.</p>` : ""}
+  <div class="ent-asigs">
+    ${BV.asigs.length ? BV.asigs.map(a => `<div class="ent-asig${a.on ? "" : " off"}" data-asig="${a.id}">
+      <button type="button" class="ent-check${a.on ? " on" : ""}" data-bv-on="${a.id}" aria-pressed="${a.on}" aria-label="${a.on ? "Quitar" : "Poner"} ${esc(a.nombre)}">${a.on ? CHECK : ""}</button>
+      <input type="text" class="ent-cod" value="${esc(a.cod)}" data-bv-campo="cod" data-id="${a.id}" aria-label="Código" maxlength="6">
+      <input type="text" class="ent-nom" value="${esc(a.nombre)}" data-bv-campo="nombre" data-id="${a.id}" aria-label="Nombre">
+      <input type="number" class="ent-h" value="${num(a.horas)}" data-bv-campo="horas" data-id="${a.id}" min="1" max="400" aria-label="${porSemana(p.etapa) ? "Horas por semana" : "Horas del curso"}">
+      <span class="ent-hu">${porSemana(p.etapa) ? "h/sem" : "h/curso"}</span>
+      <button type="button" class="btn borrar mini cuadrado" data-bv-quitar="${a.id}" aria-label="Borrar ${esc(a.nombre)}">×</button>
+    </div>`).join("") : `<p class="vacio">Añade tus ${esc(voc(true))} a mano o pídele la lista al profe.</p>`}
+  </div>
+  <p class="meta" style="margin-top:12px">${marcadas} ${marcadas === 1 ? esc(voc()) : esc(voc(true))} ${marcadas === 1 ? "marcada" : "marcadas"}.</p>
+  ${hay ? `<label class="ent-linea" style="margin-top:16px"><input type="checkbox" id="bvReemplazar"${BV.reemplazar ? " checked" : ""}>
+    <span>Reemplazar las ${esc(voc(true))} que ya tengo (se borran sus notas y sus horas). Si lo dejas sin marcar, solo se añaden las que no tengas.</span></label>` : ""}`;
+}
+function bvPaso3() {
+  const p = BV.p;
+  return `
+  <h1 class="ent-tit">¿Cómo es tu día?</h1>
+  <p class="ent-lead">Con esto la app te pide lo que puedes dar, no lo que sale en un folleto.</p>
+  <div class="etq" style="margin:0 0 10px">¿Trabajas?</div>
+  <div class="ent-chips">
+    ${[["no", "No, solo estudio"], ["parcial", "Sí, a media jornada"], ["completa", "Sí, a jornada completa"]].map(([v, t]) =>
+      `<button type="button" class="sug${p.trabaja === v ? " sel" : ""}" data-bv-trabaja="${v}">${t}</button>`).join("")}
+  </div>
+  <div class="rejilla-campos" style="margin-top:22px">
+    <label class="campo">Horas de estudio a la semana<input type="number" id="bvHoras" value="${num(p.horasSemana)}" min="1" max="60"></label>
+    <label class="campo">Nota a la que apuntas<input type="number" id="bvNota" value="${num(p.objetivoNota, 5)}" min="1" max="10" step="0.5"></label>
+  </div>
+  <div class="etq" style="margin:22px 0 10px">Días en los que sí puedes ponerte</div>
+  <div class="ent-chips">
+    ${DIAS_SEM.map(([id, l]) => `<button type="button" class="sug redondo${p.diasFuertes.includes(id) ? " sel" : ""}" data-bv-dia="${id}" aria-pressed="${p.diasFuertes.includes(id)}">${l}</button>`).join("")}
+  </div>
+  <div class="etq" style="margin:22px 0 10px">¿A qué vas?</div>
+  <div class="ent-chips">
+    ${[["aprobar", "Aprobar y ya"], ["buena", "Buena media"], ["matricula", "A por matrícula"]].map(([v, t]) =>
+      `<button type="button" class="sug${p.meta === v ? " sel" : ""}" data-bv-meta="${v}">${t}</button>`).join("")}
+  </div>
+  <div class="rejilla-campos" style="margin-top:22px">
+    <label class="campo">¿Qué es lo que más te cuesta? (opcional)<input type="text" id="bvCuesta" value="${esc(p.cuestaMas)}" placeholder="Ej.: ponerme, las matemáticas, memorizar"></label>
+    <label class="campo">¿Para qué lo quieres? (opcional)<input type="text" id="bvMotivo" value="${esc(p.motivo)}" placeholder="Ej.: entrar a trabajar de programador"></label>
+  </div>`;
+}
+function bvPaso4() {
+  return `
+  <h1 class="ent-tit">¿Cómo te evalúan?</h1>
+  <p class="ent-lead">Esto es lo que permite decirte «te hace falta un 6,4 en lo que queda». Se aplica a todas tus ${esc(voc(true))} y luego cada una se puede cambiar por separado.</p>
+  <table class="tabla-pesos"><thead><tr><th>Apartado</th><th>Peso %</th><th></th></tr></thead><tbody>
+    ${BV.pesos.map((x, i) => `<tr>
+      <td><input type="text" value="${esc(x.nombre)}" data-bv-peso="nombre" data-i="${i}" aria-label="Nombre del apartado"></td>
+      <td style="width:110px"><input type="number" value="${num(x.peso)}" data-bv-peso="peso" data-i="${i}" min="0" max="100" aria-label="Peso"></td>
+      <td style="width:40px"><button type="button" class="btn borrar mini cuadrado" data-bv-quitapeso="${i}" aria-label="Quitar apartado">×</button></td></tr>`).join("")}
+  </tbody></table>
+  <button type="button" class="btn mini fantasma" id="bvAddPeso" style="margin-top:10px">${icono("mas")}Añadir apartado</button>
+  <p class="meta" style="margin-top:12px">Suman <strong class="num">${nota(BV.pesos.reduce((s, x) => s + num(x.peso), 0))} %</strong>${Math.round(BV.pesos.reduce((s, x) => s + num(x.peso), 0)) === 100 ? "." : " — lo normal es que sumen 100 %."}</p>`;
+}
+function bvPaso5() {
+  const f = BV.p.profe;
+  return `
+  <h1 class="ent-tit">Cómo quieres que te trate.</h1>
+  <p class="ent-lead">El profe no es un buscador: te hace pensar. Aquí decides cuánta caña te mete y cuánto te escribe él por su cuenta.</p>
+  <label class="campo" style="max-width:280px">¿Cómo le llamas?<input type="text" id="bvProfeNombre" value="${esc(f.nombre)}" placeholder="Profe"></label>
+  <div class="etq" style="margin:22px 0 10px">Tono</div>
+  <div class="ent-chips">${[["cercano", "Cercano"], ["neutro", "Al grano"], ["exigente", "Exigente"]].map(([v, t]) =>
+    `<button type="button" class="sug${f.tono === v ? " sel" : ""}" data-bv-tono="${v}">${t}</button>`).join("")}</div>
+  <div class="etq" style="margin:22px 0 10px">Cuánta caña</div>
+  <div class="ent-chips">${[["pistas", "Pistas primero, respuesta al final"], ["mixto", "Una pista y luego la respuesta"], ["directo", "Dímelo directo"]].map(([v, t]) =>
+    `<button type="button" class="sug${f.cana === v ? " sel" : ""}" data-bv-cana="${v}">${t}</button>`).join("")}</div>
+  <div class="etq" style="margin:22px 0 10px">Mensajes que te escribe él al día</div>
+  <div class="ent-chips">${[[0, "Ninguno"], [1, "Uno"], [2, "Hasta dos"], [3, "Hasta tres"]].map(([v, t]) =>
+    `<button type="button" class="sug${num(f.avisos) === v ? " sel" : ""}" data-bv-avisos="${v}">${t}</button>`).join("")}</div>
+  <label class="ent-linea" style="margin-top:22px"><input type="checkbox" id="bvPuedeCrear"${f.puedeCrear ? " checked" : ""}>
+    <span>Dejarle poner repasos, entregas y objetivos por su cuenta. Cada cosa que haga queda escrita en la conversación.</span></label>`;
+}
+function bvPaso6() {
+  const p = BV.p, e = etapaDe(p.etapa), marcadas = BV.asigs.filter(a => a.on);
+  const trabaja = p.trabaja === "no" ? "solo estudias" : p.trabaja === "parcial" ? "trabajas a media jornada" : "trabajas a jornada completa";
+  return `
+  <h1 class="ent-tit">${p.nombre ? esc(p.nombre) + ", esto" : "Esto"} es lo que voy a montar.</h1>
+  <div class="ent-resumen">
+    <div><span class="etq">Curso</span><p>${esc([e.nombre, p.ciclo, p.rama, p.curso].filter(Boolean).join(" · "))}</p></div>
+    <div><span class="etq">${esc(voc(true, true))}</span><p>${marcadas.length} · ${esc(marcadas.slice(0, 6).map(a => a.cod).join(", "))}${marcadas.length > 6 ? "…" : ""}</p></div>
+    <div><span class="etq">Tu situación</span><p>Que ${trabaja}, con ${num(p.horasSemana)} h de estudio a la semana y un ${nota(p.objetivoNota)} como objetivo.</p></div>
+    <div><span class="etq">El profe</span><p>${esc(p.profe.nombre)}, ${p.profe.tono === "exigente" ? "exigente" : p.profe.tono === "neutro" ? "al grano" : "cercano"}, ${p.profe.cana === "directo" ? "directo" : p.profe.cana === "mixto" ? "una pista y luego la respuesta" : "pistas antes que respuestas"}.</p></div>
+  </div>
+  <p class="ent-lead" style="margin-top:20px">Nada de esto queda atado: en Ajustes puedes cambiar ${esc(voc(true))}, colores, pesos, horas y al profe cuando quieras.</p>`;
+}
+
+function pintaEntrada() {
+  const caja = $("#entrada"); if (!caja || !BV) return;
+  const p = BV.p, ultimo = bvPasos().length - 1;
+  const puede = bvPuedeSeguir();
+  caja.hidden = false;
+  document.body.classList.add("en-entrada");
+  caja.innerHTML = `
+  <div class="ent-caja">
+    <div class="ent-cab">
+      <div class="marca"><div class="nombre">El Escritorio</div></div>
+      <div class="ent-pasos">${bvPasos().map((t, i) => `<span class="ent-punto${i === BV.paso ? " ahora" : i < BV.paso ? " hecho" : ""}" title="${esc(t)}"></span>`).join("")}</div>
+      ${BV.reconfig ? `<button type="button" class="btn mini fantasma" id="bvSalir">Dejarlo como estaba</button>` : `<span class="meta">${BV.paso + 1} de ${bvPasos().length}</span>`}
+    </div>
+    <div class="ent-cuerpo">${[bvPaso0, bvPaso1, bvPaso2, bvPaso3, bvPaso4, bvPaso5, bvPaso6][BV.paso]()}</div>
+    <div class="ent-pie">
+      ${BV.paso > 0 ? `<button type="button" class="btn fantasma" id="bvAtras">Atrás</button>` : `<span></span>`}
+      <button type="button" class="btn primario" id="bvSiguiente"${puede ? "" : " disabled"}>${BV.paso === ultimo ? "Empezar" : "Seguir"}</button>
+    </div>
+  </div>`;
+}
+function bvPuedeSeguir() {
+  const p = BV.p;
+  if (BV.paso === 0) return !!p.etapa;
+  if (BV.paso === 1) {
+    if (p.etapa === "bach") return !!p.rama && !!p.curso;
+    if (p.etapa === "ciclo-sup" || p.etapa === "ciclo-medio") return !!p.ciclo;
+    if (["uni", "oposicion", "idioma", "otro"].includes(p.etapa)) return !!String(p.ciclo || "").trim();
+    return !!p.curso;
+  }
+  if (BV.paso === 2) return BV.asigs.some(a => a.on);
+  if (BV.paso === 4) return BV.pesos.length > 0;
+  return true;
+}
+/* guarda lo que hay escrito en los campos antes de cambiar de paso */
+function bvLeerCampos() {
+  const p = BV.p, v = id => { const el = $("#" + id); return el ? el.value : undefined; };
+  if (v("bvNombre") !== undefined) p.nombre = v("bvNombre").trim().slice(0, 40);
+  if (v("bvCiclo") !== undefined && v("bvCiclo").trim()) p.ciclo = v("bvCiclo").trim().slice(0, 80);
+  if (v("bvCurso") !== undefined) p.curso = v("bvCurso").trim().slice(0, 30);
+  if (v("bvCentro") !== undefined) p.centro = v("bvCentro").trim().slice(0, 60);
+  if (v("bvRama") !== undefined && BV.paso === 1 && p.etapa === "uni") p.rama = v("bvRama").trim().slice(0, 40);
+  if (v("bvHoras") !== undefined) p.horasSemana = clamp(num(v("bvHoras"), 10), 1, 60);
+  if (v("bvNota") !== undefined) p.objetivoNota = clamp(num(v("bvNota"), 5), 1, 10);
+  if (v("bvCuesta") !== undefined) p.cuestaMas = v("bvCuesta").trim().slice(0, 120);
+  if (v("bvMotivo") !== undefined) p.motivo = v("bvMotivo").trim().slice(0, 120);
+  if (v("bvProfeNombre") !== undefined) p.profe.nombre = v("bvProfeNombre").trim().slice(0, 20) || "Profe";
+  const pc = $("#bvPuedeCrear"); if (pc) p.profe.puedeCrear = pc.checked;
+  const rp = $("#bvReemplazar"); if (rp) BV.reemplazar = rp.checked;
+}
+function bvIr(d) {
+  bvLeerCampos();
+  const antes = BV.paso;
+  BV.paso = clamp(BV.paso + d, 0, bvPasos().length - 1);
+  /* al entrar en las asignaturas se carga la propuesta que toca */
+  if (BV.paso === 2 && antes < 2 && !BV.asigs.length) bvCargarCatalogo();
+  if (BV.paso === 3 && antes < 3) BV.p.horasSemana = horasPropuestas(BV.p.etapa, BV.p.trabaja);
+  BV.aviso = "";
+  pintaEntrada();
+  const caja = $("#entrada"); if (caja) caja.scrollTop = 0;
+}
+function bvAplicar() {
+  bvLeerCampos();
+  const p = normalizarPerfil(), d = BV.p, marcadas = BV.asigs.filter(a => a.on);
+  ["nombre", "etapa", "curso", "rama", "ciclo", "centro", "trabaja", "horasSemana", "diasFuertes", "meta", "objetivoNota", "motivo", "cuestaMas"]
+    .forEach(k => { p[k] = d[k]; });
+  p.profe = clonar(d.profe);
+  p.listo = true; p.creado = p.creado || hoyISO();
+  S.config.curso = [etapaDe(p.etapa).nombre, p.ciclo || p.rama, p.curso].filter(Boolean).join(" · ").slice(0, 60);
+  S.config.objetivo = p.objetivoNota;
+  const nuevo = a => ({
+    id: uid(), cod: a.cod, nombre: a.nombre, color: 0,
+    horas: porSemana(p.etapa) ? Math.round(clamp(num(a.horas, 3), 1, 12) * SEMANAS_CURSO) : clamp(num(a.horas, 100), 10, 600),
+    faltas: 0, objetivo: p.objetivoNota, metaSemanal: 2, temario: a.temario || "",
+    pesos: BV.pesos.map(x => ({ id: uid(), nombre: x.nombre.trim() || "Apartado", peso: clamp(num(x.peso), 0, 100), nota: null }))
+  });
+  if (BV.reemplazar) {
+    const viejos = S.modulos.map(m => m.id);
+    S.modulos = marcadas.map(nuevo);
+    viejos.forEach(id => { delete S.horas[id]; });
+  } else {
+    marcadas.forEach(a => {
+      const ya = S.modulos.find(m => m.nombre.toLowerCase() === a.nombre.toLowerCase() || m.cod.toLowerCase() === a.cod.toLowerCase());
+      if (ya) { if (!ya.temario && a.temario) ya.temario = a.temario; } else S.modulos.push(nuevo(a));
+    });
+  }
+  /* a cada una su color, sin repetir dos veces el mismo en la lista */
+  S.modulos.forEach((m, i) => { if (!m.colorHex) m.color = i % 7; });
+  repartirMetas(p.horasSemana);
+  guardar("perfil"); guardar("ajustes"); guardar("horas");
+  tutorPresentarse();
+  BV = null; $("#entrada").hidden = true; document.body.classList.remove("en-entrada");
+  seccion = "escritorio"; pinta();
+  aviso("Listo. Tu curso ya está montado.");
+}
+
+/* ── clics y campos de la entrada ── */
+document.addEventListener("click", e => {
+  if (!BV) return;
+  const t = e.target;
+  const et = t.closest("[data-bv-etapa]");
+  if (et) { bvLeerCampos(); BV.p.etapa = et.dataset.bvEtapa; BV.asigs = []; BV.pesos = null; BV.p.horasSemana = horasPropuestas(BV.p.etapa, BV.p.trabaja); pintaEntrada(); return; }
+  const cu = t.closest("[data-bv-curso]"); if (cu) { bvLeerCampos(); BV.p.curso = cu.dataset.bvCurso; BV.asigs = []; pintaEntrada(); return; }
+  const ra = t.closest("[data-bv-rama]"); if (ra) { bvLeerCampos(); BV.p.rama = ra.dataset.bvRama; BV.asigs = []; pintaEntrada(); return; }
+  const ci = t.closest("[data-bv-ciclo]"); if (ci) { bvLeerCampos(); BV.p.ciclo = ci.dataset.bvCiclo; BV.asigs = []; pintaEntrada(); return; }
+  const tr = t.closest("[data-bv-trabaja]");
+  if (tr) { bvLeerCampos(); BV.p.trabaja = tr.dataset.bvTrabaja; BV.p.horasSemana = horasPropuestas(BV.p.etapa, BV.p.trabaja); pintaEntrada(); return; }
+  const di = t.closest("[data-bv-dia]");
+  if (di) { const d = di.dataset.bvDia, f = BV.p.diasFuertes; bvLeerCampos(); const i = f.indexOf(d); i < 0 ? f.push(d) : f.splice(i, 1); pintaEntrada(); return; }
+  const me = t.closest("[data-bv-meta]");
+  if (me) { bvLeerCampos(); BV.p.meta = me.dataset.bvMeta; if (BV.p.meta === "matricula") BV.p.objetivoNota = 9; else if (BV.p.meta === "buena") BV.p.objetivoNota = 7; pintaEntrada(); return; }
+  const to = t.closest("[data-bv-tono]"); if (to) { bvLeerCampos(); BV.p.profe.tono = to.dataset.bvTono; pintaEntrada(); return; }
+  const ca = t.closest("[data-bv-cana]"); if (ca) { bvLeerCampos(); BV.p.profe.cana = ca.dataset.bvCana; pintaEntrada(); return; }
+  const av = t.closest("[data-bv-avisos]"); if (av) { bvLeerCampos(); BV.p.profe.avisos = num(av.dataset.bvAvisos); pintaEntrada(); return; }
+  const on = t.closest("[data-bv-on]");
+  if (on) { const a = BV.asigs.find(x => x.id === on.dataset.bvOn); if (a) a.on = !a.on; pintaEntrada(); return; }
+  const qu = t.closest("[data-bv-quitar]"); if (qu) { BV.asigs = BV.asigs.filter(x => x.id !== qu.dataset.bvQuitar); pintaEntrada(); return; }
+  if (t.closest("#bvAddAsig")) { BV.asigs.push({ id: uid(), cod: "", nombre: "", horas: porSemana(BV.p.etapa) ? 3 : 100, temario: "", on: true }); pintaEntrada(); setTimeout(() => { const c = document.querySelectorAll(".ent-nom"); if (c.length) c[c.length - 1].focus(); }, 30); return; }
+  if (t.closest("#bvCat")) { BV.asigs = []; bvCargarCatalogo(); BV.aviso = ""; pintaEntrada(); return; }
+  if (t.closest("#bvIA")) { bvPedirAClaude(); return; }
+  const qp = t.closest("[data-bv-quitapeso]"); if (qp) { BV.pesos.splice(num(qp.dataset.bvQuitapeso), 1); pintaEntrada(); return; }
+  if (t.closest("#bvAddPeso")) { BV.pesos.push({ nombre: "", peso: 0 }); pintaEntrada(); return; }
+  if (t.closest("#bvAtras")) { bvIr(-1); return; }
+  if (t.closest("#bvSalir")) { bvCerrar(); return; }
+  if (t.closest("#bvSiguiente")) { BV.paso === bvPasos().length - 1 ? bvAplicar() : bvIr(1); return; }
+});
+document.addEventListener("input", e => {
+  if (!BV) return;
+  const t = e.target, campo = t.dataset.bvCampo;
+  if (campo) {
+    const a = BV.asigs.find(x => x.id === t.dataset.id); if (!a) return;
+    a[campo] = campo === "horas" ? num(t.value) : campo === "cod" ? t.value.toUpperCase().slice(0, 6) : t.value;
+    if (campo === "cod" && t.value !== a.cod) t.value = a.cod;
+    return;
+  }
+  if (t.dataset.bvPeso) {
+    const x = BV.pesos[num(t.dataset.i)]; if (!x) return;
+    x[t.dataset.bvPeso] = t.dataset.bvPeso === "peso" ? num(t.value) : t.value;
+  }
+});
+document.addEventListener("keydown", e => {
+  if (!BV || e.key !== "Enter" || e.target.tagName === "TEXTAREA") return;
+  if (e.target.tagName === "INPUT" && e.target.type === "checkbox") return;
+  e.preventDefault();
+  if (bvPuedeSeguir()) BV.paso === bvPasos().length - 1 ? bvAplicar() : bvIr(1);
+});
+
+/* ══════════════════ ajustes ══════════════════
+   Todo lo que antes estaba escondido en un diálogo pequeño, ahora es una
+   sección con pestañas: tu perfil, tus asignaturas con su color, cómo te
+   evalúan, el cronómetro, el profe, el aspecto y tus datos. */
+let ajTab = "perfil";
+/* la pestaña se llama como toque: módulos en FP, asignaturas en el resto */
+const ajTabs = () => [["perfil", "Perfil"], ["asigs", voc(true, true)], ["eval", "Evaluación"], ["crono", "Cronómetro"],
+                      ["profe", "El profe"], ["aspecto", "Aspecto"], ["datos", "Datos"]];
+/* los siete colores del sistema, con su nombre para quien no distinga bien el tono */
+const COLORES_MOD = [["Azul", 0], ["Naranja", 1], ["Turquesa", 2], ["Rosa", 3], ["Verde", 4], ["Violeta", 5], ["Ámbar", 6]];
+
+function vistaAjustes() {
+  const p = normalizarPerfil();
+  return `
+  <header class="cab">
+    <div>
+      <div class="eyebrow">Tu cuenta</div>
+      <h1 class="titulo">Ajustes</h1>
+      <p class="lead">Aquí se cambia todo: lo que estudias, tus ${esc(voc(true))}, sus colores, cómo te evalúan y cuánta caña te mete el profe.</p>
+    </div>
+  </header>
+  <div class="aj-tabs" role="tablist">
+    ${ajTabs().map(([id, t]) => `<button type="button" class="aj-tab" role="tab" aria-selected="${ajTab === id}" data-aj="${id}">${t}</button>`).join("")}
+  </div>
+  ${ajTab === "perfil" ? ajPerfil(p) : ajTab === "asigs" ? ajAsigs(p) : ajTab === "eval" ? ajEval(p)
+    : ajTab === "crono" ? ajCrono() : ajTab === "profe" ? ajProfe(p) : ajTab === "aspecto" ? ajAspecto() : ajDatos()}`;
+}
+
+function ajPerfil(p) {
+  const e = etapaDe(p.etapa);
+  return `
+  <section class="panel">
+    <div class="rejilla-campos">
+      <label class="campo">Tu nombre<input type="text" id="apNombre" value="${esc(p.nombre)}" placeholder="Como quieras que te llame el profe"></label>
+      <label class="campo">Qué estudias
+        <select id="apEtapa">${ETAPAS.map(x => `<option value="${x.id}"${p.etapa === x.id ? " selected" : ""}>${esc(x.nombre)}</option>`).join("")}</select></label>
+      <label class="campo">${p.etapa === "uni" ? "Grado o máster" : p.etapa === "oposicion" ? "Cuerpo o plaza" : p.etapa === "idioma" ? "Idioma" : "Ciclo o estudios"}
+        <input type="text" id="apCiclo" value="${esc(p.ciclo)}"></label>
+      <label class="campo">Curso o nivel<input type="text" id="apCurso" value="${esc(p.curso)}"></label>
+      <label class="campo">Modalidad o rama<input type="text" id="apRama" value="${esc(p.rama)}" placeholder="Opcional"></label>
+      <label class="campo">Centro<input type="text" id="apCentro" value="${esc(p.centro)}" placeholder="Opcional"></label>
+    </div>
+    <hr class="separador">
+    <div class="etq" style="margin-bottom:10px">Tu día a día</div>
+    <div class="ent-chips">
+      ${[["no", "Solo estudio"], ["parcial", "Trabajo a media jornada"], ["completa", "Trabajo a jornada completa"]].map(([v, t]) =>
+        `<button type="button" class="sug${p.trabaja === v ? " sel" : ""}" data-aj-trabaja="${v}">${t}</button>`).join("")}
+    </div>
+    <div class="rejilla-campos" style="margin-top:16px">
+      <label class="campo">Horas de estudio a la semana<input type="number" id="apHoras" value="${num(p.horasSemana)}" min="1" max="60"></label>
+      <label class="campo">Nota a la que apuntas<input type="number" id="apNota" value="${num(p.objetivoNota, 5)}" min="1" max="10" step="0.5"></label>
+      <label class="campo">Qué te cuesta más<input type="text" id="apCuesta" value="${esc(p.cuestaMas)}" placeholder="Opcional: el profe lo tiene en cuenta"></label>
+      <label class="campo">Para qué lo quieres<input type="text" id="apMotivo" value="${esc(p.motivo)}" placeholder="Opcional"></label>
+    </div>
+    <div class="etq" style="margin:20px 0 10px">Días en los que puedes ponerte</div>
+    <div class="ent-chips">${DIAS_SEM.map(([id, l]) =>
+      `<button type="button" class="sug redondo${p.diasFuertes.includes(id) ? " sel" : ""}" data-aj-dia="${id}" aria-pressed="${p.diasFuertes.includes(id)}">${l}</button>`).join("")}</div>
+    <div class="barra-btns" style="margin-top:22px">
+      <button type="button" class="btn primario" id="apGuardarPerfil">Guardar</button>
+      <button type="button" class="btn fantasma" id="apRepartir">Repartir esas horas entre mis ${esc(voc(true))}</button>
+      <button type="button" class="btn fantasma" id="apReconfig">Volver a configurar el curso…</button>
+    </div>
+    <p class="meta" style="margin-top:12px">Ahora mismo: ${esc([e.nombre, p.ciclo, p.rama, p.curso].filter(Boolean).join(" · ") || "sin curso")}.</p>
+  </section>`;
+}
+
+function ajAsigs(p) {
+  return `
+  <section class="panel">
+    <div class="grupo-cab"><h2>Tus ${esc(voc(true))}</h2><span class="meta num">${S.modulos.length}</span></div>
+    <p class="meta" style="margin:0 0 14px">El color se usa en su pastilla, en su ficha y en sus barras. Con «Ajustar» cambias horas, objetivo, faltas y los apartados de la nota.</p>
+    <div class="aj-lista">
+      ${S.modulos.map(m => `<div class="aj-fila" style="${colorMod(m)}">
+        <span class="aj-tira"></span>
+        <input type="text" class="aj-cod" value="${esc(m.cod)}" data-aj-mod="cod" data-id="${m.id}" maxlength="6" aria-label="Código de ${esc(m.nombre)}">
+        <input type="text" class="aj-nom" value="${esc(m.nombre)}" data-aj-mod="nombre" data-id="${m.id}" aria-label="Nombre">
+        <div class="aj-colores">
+          ${COLORES_MOD.map(([n, i]) => `<button type="button" class="aj-color${num(m.color) === i && !m.colorHex ? " sel" : ""}" style="--c:var(--mod-${i})"
+            data-aj-color="${i}" data-id="${m.id}" title="${n}" aria-label="Poner ${esc(m.nombre)} en ${n}"></button>`).join("")}
+          <label class="aj-color libre${m.colorHex ? " sel" : ""}" title="Otro color" style="${m.colorHex ? "--c:" + esc(m.colorHex) : ""}">
+            <input type="color" value="${esc(m.colorHex || "#9184d9")}" data-aj-hex="${m.id}" aria-label="Color a medida para ${esc(m.nombre)}">
+          </label>
+        </div>
+        <span class="meta aj-h">${num(m.horas)} h · ${num(m.metaSemanal)} h/sem</span>
+        <button type="button" class="btn mini" data-aj-ajustar="${m.id}">Ajustar</button>
+        ${sample ? `<button type="button" class="btn mini fantasma" data-aj-temario="${m.id}" title="Que el profe resuma el temario de esta ${esc(voc())}">Temario</button>` : ""}
+      </div>`).join("") || `<p class="vacio">Todavía no tienes ${esc(voc(true))}.</p>`}
+    </div>
+    <div class="barra-btns" style="margin-top:16px">
+      <button type="button" class="btn" id="apAddMod">${icono("mas")}Añadir ${esc(voc())}</button>
+      <button type="button" class="btn fantasma" id="apGuardarAsigs">Guardar nombres</button>
+    </div>
+    ${S.modulos.some(m => m.temario) ? `<hr class="separador">
+    <div class="etq" style="margin-bottom:8px">Temarios que conoce el profe</div>
+    ${S.modulos.filter(m => m.temario).map(m => `<p class="meta" style="margin:6px 0"><strong>${esc(m.cod)}</strong> · ${esc(m.temario)}</p>`).join("")}` : ""}
+  </section>`;
+}
+
+function ajEval(p) {
+  const clave = plantillaDe(p);
+  return `
+  <section class="panel">
+    <div class="etq">Plantilla de evaluación</div>
+    <p class="meta" style="margin:6px 0 14px">Sirve para poner los mismos apartados en todas tus ${esc(voc(true))} de golpe. Cada una se puede ajustar luego por separado.</p>
+    <div class="ent-chips">
+      ${Object.keys(PLANTILLAS).map(k => `<button type="button" class="sug${clave === k ? " sel" : ""}" data-aj-plantilla="${k}">
+        ${k === "escolar" ? "Colegio e instituto" : k === "fp" ? "FP" : k === "uni" ? "Universidad" : k === "oposicion" ? "Oposición" : "Idiomas"}</button>`).join("")}
+    </div>
+    <div class="aj-plantilla">
+      ${PLANTILLAS[clave].map(([n, w]) => `<span class="adj-chip">${esc(n)} · ${w} %</span>`).join("")}
+    </div>
+    <div class="barra-btns" style="margin-top:18px">
+      <button type="button" class="btn" id="apAplicarPlantilla">Aplicar a todas mis ${esc(voc(true))}</button>
+    </div>
+    <p class="meta" style="margin-top:10px">Ojo: al aplicarla se reemplazan los apartados de todas y <strong>se pierden las notas ya puestas</strong>. Te lo vuelvo a preguntar antes.</p>
+    <hr class="separador">
+    <div class="rejilla-campos">
+      <label class="campo">% de faltas que te permiten<input type="number" id="apPct" value="${num(S.config.pctFaltas, 15)}" min="0" max="100"></label>
+      <label class="campo">Nota mínima para aprobar<input type="number" id="apMin" value="${num(S.config.objetivo, 5)}" min="1" max="10" step="0.5"></label>
+    </div>
+    <button type="button" class="btn primario" id="apGuardarEval" style="margin-top:16px">Guardar</button>
+  </section>`;
+}
+
+function ajCrono() {
+  return `
+  <section class="panel">
+    <div class="rejilla-campos">
+      <label class="campo">Minutos de concentración<input type="number" id="apPom" value="${num(S.config.pomodoro, 25)}" min="5" max="90"></label>
+      <label class="campo">Minutos de descanso<input type="number" id="apDes" value="${num(S.config.descanso, 15)}" min="1" max="45"></label>
+    </div>
+    <p class="meta" style="margin-top:12px">Al terminar la concentración el cronómetro para en verde y el descanso lo empiezas tú. Mientras hay sesión, se queda a mano debajo del menú.</p>
+    <button type="button" class="btn primario" id="apGuardarCrono" style="margin-top:16px">Guardar</button>
+  </section>`;
+}
+
+function ajProfe(p) {
+  const f = p.profe;
+  return `
+  <section class="panel">
+    <label class="campo" style="max-width:300px">Cómo se llama<input type="text" id="apProfeNombre" value="${esc(f.nombre)}"></label>
+    <div class="etq" style="margin:20px 0 10px">Tono</div>
+    <div class="ent-chips">${[["cercano", "Cercano"], ["neutro", "Al grano"], ["exigente", "Exigente"]].map(([v, t]) =>
+      `<button type="button" class="sug${f.tono === v ? " sel" : ""}" data-aj-tono="${v}">${t}</button>`).join("")}</div>
+    <div class="etq" style="margin:20px 0 10px">Cuánta caña</div>
+    <div class="ent-chips">${[["pistas", "Pistas primero"], ["mixto", "Una pista y la respuesta"], ["directo", "Directo"]].map(([v, t]) =>
+      `<button type="button" class="sug${f.cana === v ? " sel" : ""}" data-aj-cana="${v}">${t}</button>`).join("")}</div>
+    <div class="etq" style="margin:20px 0 10px">Mensajes suyos al día</div>
+    <div class="ent-chips">${[[0, "Ninguno"], [1, "Uno"], [2, "Hasta dos"], [3, "Hasta tres"]].map(([v, t]) =>
+      `<button type="button" class="sug${num(f.avisos) === v ? " sel" : ""}" data-aj-avisos="${v}">${t}</button>`).join("")}</div>
+    <label class="ent-linea" style="margin-top:20px"><input type="checkbox" id="apPuedeCrear"${f.puedeCrear ? " checked" : ""}>
+      <span>Dejarle poner repasos, entregas y objetivos por su cuenta.</span></label>
+    <div class="barra-btns" style="margin-top:22px">
+      <button type="button" class="btn primario" id="apGuardarProfe">Guardar</button>
+      <button type="button" class="btn borrar fantasma" id="apBorrarChat">Borrar la conversación</button>
+    </div>
+    <p class="meta" style="margin-top:12px">La conversación tiene ${normalizarTutor().chat.length} mensajes guardados y ${normalizarTutor().repasos.filter(r => !r.hecho).length} repasos pendientes.</p>
+  </section>`;
+}
+
+function ajAspecto() {
+  const t = leeLS("tema") || "auto";
+  return `
+  <section class="panel">
+    <div class="etq" style="margin-bottom:10px">Tema</div>
+    <div class="ent-chips">
+      ${[["auto", "Como el sistema"], ["light", "Claro"], ["dark", "Oscuro"]].map(([v, n]) =>
+        `<button type="button" class="sug${t === v ? " sel" : ""}" data-aj-tema="${v}">${n}</button>`).join("")}
+    </div>
+    <p class="meta" style="margin-top:14px">Los colores, las rampas y la tipografía vienen del sistema de El Escritorio: fondo azul noche en oscuro, papel en claro, acento blurple como línea y borde. El color de cada ${esc(voc())} se cambia en la pestaña de ${esc(voc(true, true))}.</p>
+  </section>`;
+}
+
+function ajDatos() {
+  const tam = Math.round(JSON.stringify(S).length / 1024);
+  return `
+  <section class="panel">
+    <div class="etq">Copia de seguridad</div>
+    <p class="meta" style="margin:6px 0 14px">Un curso entero de apuntes merece una copia. El archivo se puede volver a cargar aquí mismo.</p>
+    <div class="barra-btns">
+      <button type="button" class="btn" id="apExportar">Descargar copia (.json)</button>
+      <button type="button" class="btn fantasma" id="apImportar">Cargar una copia</button>
+      <input type="file" id="apInputImportar" accept="application/json,.json" class="oculto">
+    </div>
+    <hr class="separador">
+    <div class="etq">Dónde están tus datos</div>
+    <p class="meta" style="margin:6px 0 0">${db ? "En tu cuenta de Claude: los ves igual desde el móvil y desde cualquier ordenador." : "Solo en este navegador. Para que te sigan entre dispositivos, abre la app desde tu enlace de Claude."}</p>
+    <p class="meta" style="margin:6px 0 0">Ocupan ${tam} KB, con ${Object.keys(S.apuntes || {}).length} apuntes y ${Object.keys(S.casillero || {}).length} documentos.</p>
+    <hr class="separador">
+    <div class="etq">Empezar de cero</div>
+    <p class="meta" style="margin:6px 0 14px">Borra el perfil, las ${esc(voc(true))}, las notas, las horas, las entregas, los apuntes y la conversación con el profe. No se puede deshacer.</p>
+    <button type="button" class="btn borrar" id="apBorrarTodo">Borrar todo y volver a empezar</button>
+  </section>`;
+}
+
+/* ── guardar y botones ── */
+function ajLeerPerfil() {
+  const p = normalizarPerfil(), v = id => { const el = $("#" + id); return el ? el.value : undefined; };
+  if (v("apNombre") !== undefined) p.nombre = v("apNombre").trim().slice(0, 40);
+  if (v("apEtapa") !== undefined) p.etapa = v("apEtapa");
+  if (v("apCiclo") !== undefined) p.ciclo = v("apCiclo").trim().slice(0, 80);
+  if (v("apCurso") !== undefined) p.curso = v("apCurso").trim().slice(0, 30);
+  if (v("apRama") !== undefined) p.rama = v("apRama").trim().slice(0, 40);
+  if (v("apCentro") !== undefined) p.centro = v("apCentro").trim().slice(0, 60);
+  if (v("apHoras") !== undefined) p.horasSemana = clamp(num(v("apHoras"), 10), 1, 60);
+  if (v("apNota") !== undefined) p.objetivoNota = clamp(num(v("apNota"), 5), 1, 10);
+  if (v("apCuesta") !== undefined) p.cuestaMas = v("apCuesta").trim().slice(0, 120);
+  if (v("apMotivo") !== undefined) p.motivo = v("apMotivo").trim().slice(0, 120);
+  S.config.curso = [etapaDe(p.etapa).nombre, p.ciclo || p.rama, p.curso].filter(Boolean).join(" · ").slice(0, 60);
+}
+document.addEventListener("click", async e => {
+  const t = e.target;
+  const tab = t.closest("[data-aj]"); if (tab) { ajTab = tab.dataset.aj; pinta(); return; }
+  if (seccion !== "ajustes") return;
+
+  const tr = t.closest("[data-aj-trabaja]");
+  if (tr) { ajLeerPerfil(); const p = normalizarPerfil(); p.trabaja = tr.dataset.ajTrabaja; p.horasSemana = horasPropuestas(p.etapa, p.trabaja); guardar("perfil"); pinta(); return; }
+  const di = t.closest("[data-aj-dia]");
+  if (di) { ajLeerPerfil(); const f = normalizarPerfil().diasFuertes, d = di.dataset.ajDia, i = f.indexOf(d); i < 0 ? f.push(d) : f.splice(i, 1); guardar("perfil"); pinta(); return; }
+  if (t.closest("#apGuardarPerfil")) { ajLeerPerfil(); guardar("perfil"); guardar("ajustes"); aviso("Perfil guardado."); pinta(); return; }
+  if (t.closest("#apRepartir")) { ajLeerPerfil(); repartirMetas(normalizarPerfil().horasSemana); guardar("perfil"); guardar("ajustes"); aviso("Horas repartidas entre tus " + voc(true) + "."); pinta(); return; }
+  if (t.closest("#apReconfig")) { bvAbrir(true); return; }
+
+  const col = t.closest("[data-aj-color]");
+  if (col) { const m = modPorId(col.dataset.id); if (m) { m.color = num(col.dataset.ajColor); delete m.colorHex; guardar("ajustes"); pinta(); } return; }
+  const aj = t.closest("[data-aj-ajustar]"); if (aj) { dlgModulo(aj.dataset.ajAjustar); return; }
+  if (t.closest("#apGuardarAsigs")) { guardar("ajustes"); aviso("Guardado."); pinta(); return; }
+  if (t.closest("#apAddMod")) {
+    const p = normalizarPerfil();
+    S.modulos.push({ id: uid(), cod: "NUEVA", nombre: "Sin nombre", color: S.modulos.length % 7,
+      horas: porSemana(p.etapa) ? 3 * SEMANAS_CURSO : 100, faltas: 0, objetivo: p.objetivoNota, metaSemanal: 2, temario: "",
+      pesos: pesosDePlantilla(plantillaDe(p)) });
+    guardar("ajustes"); pinta(); return;
+  }
+  const tem = t.closest("[data-aj-temario]");
+  if (tem) {
+    const m = modPorId(tem.dataset.ajTemario); if (!m || !sample) return;
+    tem.disabled = true; tem.textContent = "Preguntando…";
+    const p = normalizarPerfil();
+    try {
+      const r = await sample(`Eres profesor en España. Resume en UNA frase (máximo 40 palabras) los contenidos principales de la asignatura "${m.nombre}" en ${[etapaDe(p.etapa).nombre, p.ciclo, p.curso].filter(Boolean).join(" · ")}. Solo la frase, sin introducción.`, { modelTier: "quick" });
+      m.temario = (r.text || "").trim().slice(0, 300);
+      guardar("ajustes"); aviso("Temario guardado: el profe ya lo tiene en cuenta."); pinta();
+    } catch (err) { aviso("No se ha podido (" + (err.code || "error") + ").", "mal"); tem.disabled = false; tem.textContent = "Temario"; }
+    return;
+  }
+
+  const pl = t.closest("[data-aj-plantilla]");
+  if (pl) { normalizarPerfil().plantilla = pl.dataset.ajPlantilla; guardar("perfil"); pinta(); return; }
+  if (t.closest("#apAplicarPlantilla")) {
+    const clave = plantillaDe(normalizarPerfil());
+    if (!confirm("Esto pone los apartados de «" + clave + "» en todas tus " + voc(true) + " y borra las notas ya puestas. ¿Sigo?")) return;
+    S.modulos.forEach(m => { m.pesos = pesosDePlantilla(clave); });
+    guardar("ajustes"); aviso("Plantilla aplicada."); pinta(); return;
+  }
+  if (t.closest("#apGuardarEval")) {
+    S.config.pctFaltas = clamp(num($("#apPct").value, 15), 0, 100);
+    S.config.objetivo = clamp(num($("#apMin").value, 5), 1, 10);
+    guardar("ajustes"); aviso("Guardado."); pinta(); return;
+  }
+  if (t.closest("#apGuardarCrono")) {
+    S.config.pomodoro = clamp(num($("#apPom").value, 25), 5, 90);
+    S.config.descanso = clamp(num($("#apDes").value, 15), 1, 45);
+    guardar("ajustes"); aviso("Guardado."); pinta(); return;
+  }
+
+  const to = t.closest("[data-aj-tono]"); if (to) { normalizarPerfil().profe.tono = to.dataset.ajTono; guardar("perfil"); pinta(); return; }
+  const ca = t.closest("[data-aj-cana]"); if (ca) { normalizarPerfil().profe.cana = ca.dataset.ajCana; guardar("perfil"); pinta(); return; }
+  const av = t.closest("[data-aj-avisos]"); if (av) { normalizarPerfil().profe.avisos = num(av.dataset.ajAvisos); guardar("perfil"); pinta(); return; }
+  if (t.closest("#apGuardarProfe")) {
+    const p = normalizarPerfil();
+    p.profe.nombre = ($("#apProfeNombre").value || "Profe").trim().slice(0, 20) || "Profe";
+    p.profe.puedeCrear = $("#apPuedeCrear").checked;
+    guardar("perfil"); aviso("Guardado."); pinta(); return;
+  }
+  if (t.closest("#apBorrarChat")) {
+    if (!confirm("¿Borrar la conversación con el profe? Los repasos que te puso se quedan.")) return;
+    const P = normalizarTutor(); P.chat = []; P.avisos = {}; guardar("tutor"); aviso("Conversación borrada."); pinta(); return;
+  }
+
+  const te = t.closest("[data-aj-tema]");
+  if (te) { const v = te.dataset.ajTema; if (v === "auto") { document.documentElement.removeAttribute("data-theme"); guardaLS("tema", "auto"); } else { document.documentElement.setAttribute("data-theme", v); guardaLS("tema", v); } pintaBotonTema(); pinta(); return; }
+
+  if (t.closest("#apExportar")) {
+    if (!descargas) { aviso("Las descargas no están disponibles en esta vista.", "mal"); return; }
+    try { await descargas.save({ filename: "el-escritorio-" + hoyISO() + ".json", data: JSON.stringify(S, null, 2) }); aviso("Copia descargada."); }
+    catch (err) { if (err.code !== "declined") aviso("No se pudo descargar (" + err.code + ").", "mal"); }
+    return;
+  }
+  if (t.closest("#apImportar")) { $("#apInputImportar").click(); return; }
+  if (t.closest("#apBorrarTodo")) {
+    if (!confirm("Se borra TODO: perfil, " + voc(true) + ", notas, horas, entregas, apuntes, documentos y la conversación. ¿Seguro?")) return;
+    if (!confirm("Última vez: esto no se puede deshacer.")) return;
+    S = estadoInicial(); guardarLocal();
+    ["ajustes", "agenda", "ingles", "horas", "objetivos", "tutor", "perfil"].forEach(nd => guardar(nd));
+    Object.keys(S.apuntes).forEach(k => delete S.apuntes[k]);
+    aviso("Todo borrado.");
+    bvAbrir(false); return;
+  }
+});
+document.addEventListener("change", async e => {
+  const t = e.target;
+  if (t.dataset.ajHex) { const m = modPorId(t.dataset.ajHex); if (m) { m.colorHex = t.value; guardar("ajustes"); pinta(); } return; }
+  if (t.id === "apEtapa") { ajLeerPerfil(); guardar("perfil"); pinta(); return; }
+  if (t.id === "apInputImportar") {
+    const f = t.files[0]; if (!f) return;
+    try {
+      const datos = JSON.parse(await f.text());
+      if (!datos || typeof datos !== "object" || !Array.isArray(datos.modulos)) throw new Error("formato");
+      if (!confirm("Esto reemplaza lo que tengas ahora por el contenido de la copia. ¿Sigo?")) { t.value = ""; return; }
+      S = datos; normalizarPerfil(); normalizarObjetivos(); normalizarTutor(); guardarLocal();
+      ["ajustes", "agenda", "ingles", "horas", "objetivos", "tutor", "perfil"].forEach(nd => guardar(nd));
+      Object.values(S.apuntes || {}).forEach(n => guardarApunte(n));
+      aviso("Copia cargada."); pinta();
+    } catch (err) { aviso("Ese archivo no parece una copia de El Escritorio.", "mal"); }
+    t.value = ""; return;
+  }
+});
+document.addEventListener("input", e => {
+  const t = e.target;
+  if (!t.dataset.ajMod) return;
+  const m = modPorId(t.dataset.id); if (!m) return;
+  m[t.dataset.ajMod] = t.dataset.ajMod === "cod" ? t.value.toUpperCase().slice(0, 6) : t.value;
+  if (t.dataset.ajMod === "cod" && t.value !== m.cod) t.value = m.cod;
+  clearTimeout(pendientes._aj); pendientes._aj = setTimeout(() => guardar("ajustes"), 700);
+});
+
 /* ══════════════════ arranque ══════════════════ */
 (function inicio() {
   const tg = leeLS("tema");
@@ -3066,11 +4138,13 @@ document.addEventListener("drop", e => {
   $("#btnAjustes").innerHTML = icono("ajustes");
   pintaBotonTema();
   matchMedia("(prefers-color-scheme: dark)").addEventListener("change", pintaBotonTema);
-  cargarLocal(); cargarTimer(); migrarConfig();
+  cargarLocal(); cargarTimer(); migrarConfig(); migrarPerfil();
   if (!T.modId && S.modulos[0]) T.modId = S.modulos[0].id;
   tutorMirar();
   pinta();
   if (T.pendienteFin) { T.pendienteFin = false; terminarFase(); }
+  /* primera vez: se monta el curso antes de nada */
+  if (!normalizarPerfil().listo) bvAbrir(false);
   setInterval(() => { if (seccion === "escritorio" && !T.activo) pintaReloj(); }, 30000);
   if (window.claude && typeof claude.use === "function") conectar();
   else marcaSync("Este dispositivo", false);
