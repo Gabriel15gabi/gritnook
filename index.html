@@ -986,13 +986,14 @@ details.ls-grupo > summary{cursor:pointer}
 .tutor-carta.nueva .tc-hora{color:var(--verde-texto); font-weight:500}
 
 /* la marca: las o de «Nook» son anillas de libreta y de la segunda cuelga el marcapáginas */
-.marca-palabra{display:block; height:26px; width:auto; flex:0 0 auto; overflow:visible}
+.marca-palabra{display:block; height:40px; width:auto; flex:0 0 auto; overflow:visible}
 .ml-letras{fill:var(--ink)}
 .ml-anilla{fill:none; stroke:var(--acento-txt)}
 .ml-cinta{fill:var(--cinta)}
 .lateral .marca{align-items:flex-start}
-.lateral .marca .curso{margin-top:-2px}
-.ent-cab .marca-palabra{height:30px}
+.lateral .marca .curso{margin-top:2px; min-width:0; overflow:hidden; text-overflow:ellipsis}
+.ent-cab .marca-palabra{height:44px}
+@media (max-width:880px){ .lateral .marca-palabra{height:34px; margin-top:12px} .lateral .marca .curso{margin-top:13px} }
 </style>
 </head>
 <body>
