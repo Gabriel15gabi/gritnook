@@ -1,4 +1,4 @@
-# GritNook
+<h1><picture><source media="(prefers-color-scheme: dark)" srcset="marca/gritnook-oscuro.svg"><img src="marca/gritnook-claro.svg" alt="GritNook" height="56"></picture></h1>
 
 App de estudio que se acomoda a lo que estudies: le dices si vas a la ESO, a Bachillerato, a un ciclo de FP, a la universidad, a una oposición o a un idioma, y monta tus asignaturas, tus horas y un tutor que sabe de lo tuyo. Con apuntes en libreta de cuadrícula donde se escribe **y se dibuja**, notas de cada asignatura con lo que falta para aprobar, control de horas, entregas, documentos e inglés.
 
