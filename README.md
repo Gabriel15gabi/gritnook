@@ -26,7 +26,7 @@ Quien ya tenía datos no pasa por ahí: el perfil se rellena con lo que había y
 
 ## Qué hace
 
-**Asignaturas y notas.** Cada una con sus apartados y su peso. Calcula la media ponderada y, sobre todo, **qué nota necesitas en lo que queda** para llegar a tu objetivo. Avisa cuando ya no salen los números y lleva la cuenta de las faltas contra el máximo permitido. Cada asignatura tiene su color, y se cambia en Ajustes.
+**Asignaturas y notas.** Un resumen del curso —tu media, cuántas van bien y las horas de la semana— y una **ficha por asignatura**: un anillo con la nota que llevas y la marca de tu objetivo, una frase que dice qué te toca («Toca apretar: necesitas un 7,25 de media en el 40 % que queda»), las notas de cada apartado con lo que aporta cada uno, las faltas contra el máximo permitido y el estudio de la semana. Calcula la media ponderada y, sobre todo, **qué nota necesitas en lo que queda**. Todo se guarda mientras escribes. Cada asignatura tiene su color.
 
 **Apuntes en libreta de verdad.** Papel de cuadrícula con su margen rojo. Escribes con negrita y dibujas encima con bolígrafo, rotulador, subrayador y formas (línea, flecha, rectángulo, círculo), con imán a la cuadrícula. La goma **corta el trazo por donde pasa** en vez de borrarlo entero, como una goma de verdad. Deshacer y rehacer sin límite.
 
@@ -50,6 +50,8 @@ Quien ya tenía datos no pasa por ahí: el perfil se rellena con lo que había y
 
 ![El profe](capturas/profe.png)
 
+**Menú.** En el ordenador, un riel con cada sección y su nombre, siempre en el mismo sitio, y al lado un panel con lo que hay dentro de la sección en la que estás: tus apuntes con buscador, lo pendiente de la agenda agrupado por fechas, tus asignaturas con su estado… En el móvil, una barra de pestañas abajo y un «Más» con el resto de secciones y su dato al día. Las confirmaciones (borrar algo, cargar una copia) son ventanas de la propia app, nunca las del navegador.
+
 **Ajustes.** Perfil, asignaturas con su color, plantilla de evaluación, cronómetro, el tutor, tema y copia de seguridad en JSON.
 
 ## Cómo está hecho
@@ -60,6 +62,7 @@ Un solo archivo HTML. **Sin frameworks, sin dependencias, sin proceso de compila
 - **La goma que corta.** Cada trazo se remuestrea, se quitan los puntos que caen bajo la goma y cada tramo que sobrevive pasa a ser un trazo nuevo, conservando sus vértices originales. Las formas se convierten a su contorno para poder cortarlas igual.
 - **Texto con formato mínimo.** El apunte se guarda dos veces: en HTML reducido (solo negrita y saltos) para mostrarlo y en texto plano para buscar y para la IA. Lo que se pega entra limpio, sin estilos de la web de origen.
 - **Sistema de diseño en tokens.** Rampas de neutros y de acento, el acento siempre como línea o borde, elevación de 1 px más oscuridad ambiental, y un color por asignatura validado: contraste mínimo de 3:1 contra la superficie y separación suficiente entre tonos vecinos también para quien no distingue rojos y verdes.
+- **Logotipo e iconos.** El logotipo sale de los trazos de Inter con las dos «o» cambiadas por anillas de libreta ([marca/generar.js](marca/generar.js)), así que se ve igual aunque la fuente no cargue. Los iconos del menú son de Phosphor, copiados dentro del archivo. Créditos y licencias en [CREDITOS.md](CREDITOS.md).
 - **Accesible.** Contraste AA comprobado en los dos temas, navegación por teclado, roles ARIA y respeto a `prefers-reduced-motion`.
 
 ## Probarla en local
@@ -97,4 +100,4 @@ Lo que falta para poder venderla —cuentas, cobro y lo legal— está en [CUENT
 
 ## Licencia
 
-MIT — ver [LICENSE](LICENSE).
+MIT — ver [LICENSE](LICENSE). Las piezas de terceros y sus licencias están en [CREDITOS.md](CREDITOS.md).

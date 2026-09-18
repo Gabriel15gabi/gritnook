@@ -994,16 +994,311 @@ details.ls-grupo > summary{cursor:pointer}
 .lateral .marca .curso{margin-top:2px; min-width:0; overflow:hidden; text-overflow:ellipsis}
 .ent-cab .marca-palabra{height:44px}
 @media (max-width:880px){ .lateral .marca-palabra{height:34px; margin-top:12px} .lateral .marca .curso{margin-top:13px} }
+
+/* ══════════════ estados con color (además de la forma del punto) ══════════════ */
+:root{--aviso:#D97706; --aviso-txt:#B45309; --riesgo:#DC2626; --riesgo-txt:#B91C1C}
+@media (prefers-color-scheme: dark){:root:not([data-theme="light"]){--aviso:#F59E0B; --aviso-txt:#FBBF24; --riesgo:#EF4444; --riesgo-txt:#F87171}}
+:root[data-theme="dark"]{--aviso:#F59E0B; --aviso-txt:#FBBF24; --riesgo:#EF4444; --riesgo-txt:#F87171}
+.estado.ok{color:var(--verde-texto); border-color:color-mix(in srgb, var(--verde) 45%, transparent)}
+.estado.aviso{color:var(--aviso-txt); border-color:color-mix(in srgb, var(--aviso) 50%, transparent)}
+.estado.riesgo{background:color-mix(in srgb, var(--riesgo) 14%, transparent); border-color:color-mix(in srgb, var(--riesgo) 55%, transparent); color:var(--riesgo-txt)}
+.estado.neutro{color:var(--ink-3); border-color:var(--line-2)}
+.estado.neutro .dot{border-style:dashed}
+
+/* ══════════════ módulos: resumen del curso ══════════════ */
+.resumen-mod{display:grid; grid-template-columns:repeat(auto-fit,minmax(min(230px,100%),1fr)); gap:14px; margin:0 0 18px}
+.panel.rm-tile{padding:16px 18px 15px}
+.rm-etq{font:500 12.5px/1.2 var(--sans); color:var(--ink-3)}
+.rm-cifra{font:300 34px/1.1 var(--sans); letter-spacing:-.03em; margin:8px 0 6px; font-variant-numeric:tabular-nums}
+.rm-cifra.vacia{color:var(--ink-4)}
+.rm-cifra small{font:400 13.5px/1 var(--sans); letter-spacing:0; color:var(--ink-3); margin-left:8px}
+.rm-sub{font:400 12.5px/1.35 var(--sans); color:var(--ink-3)}
+.rm-medidor{height:6px; margin:10px 0 9px}
+.rm-barra{display:flex; gap:3px; height:6px; margin:10px 0 9px; border-radius:99px; overflow:hidden}
+.rm-barra i, .rm-leyenda i{display:block; border-radius:99px}
+.rm-ok{background:var(--verde)}
+.rm-aviso{background:var(--aviso)}
+.rm-riesgo{background:var(--riesgo)}
+.rm-vacio{background:var(--surface-3)}
+.rm-leyenda{display:flex; flex-wrap:wrap; gap:4px 12px; font:400 12px/1.3 var(--sans); color:var(--ink-3)}
+.rm-leyenda span{display:inline-flex; align-items:center; gap:6px}
+.rm-leyenda i{width:8px; height:8px; flex:0 0 8px}
+@media (max-width:560px){ .resumen-mod{grid-template-columns:1fr 1fr; gap:10px} .resumen-mod .rm-tile:last-child{grid-column:1 / -1} .panel.rm-tile{padding:14px 14px 13px} .rm-cifra{font-size:28px} .rm-cifra small{display:block; margin:4px 0 0; font-size:12.5px} }
+
+/* ══════════════ módulos: tarjetas limpias ══════════════ */
+.rejilla-modulos{grid-template-columns:repeat(auto-fill,minmax(min(320px,100%),1fr)); gap:14px}
+.panel.modulo.mod2{padding:18px 18px 14px}
+.m2-cab{display:flex; align-items:center; justify-content:space-between; gap:10px}
+.m2-nombre{display:flex; align-items:center; gap:10px; min-width:0; padding:0; border:0; background:none; color:var(--ink); cursor:pointer; text-align:left; font:inherit}
+.m2-nombre .codigo{flex:0 0 auto}
+.m2-t{font:600 15.5px/1.3 var(--sans); letter-spacing:-.01em; overflow:hidden; text-overflow:ellipsis; white-space:nowrap}
+.m2-nombre:hover .m2-t{text-decoration:underline; text-decoration-color:var(--ink-4); text-underline-offset:3px}
+.m2-cab .estado{flex:0 0 auto}
+.m2-centro{display:flex; align-items:center; gap:16px; margin:18px 0 16px}
+.m2-anillo{position:relative; width:78px; height:78px; flex:0 0 78px}
+.m2-anillo svg{width:100%; height:100%; display:block}
+.an-fondo{fill:none; stroke:var(--surface-3); stroke-width:7}
+.an-valor{fill:none; stroke:var(--c, var(--acento)); stroke-width:7; stroke-linecap:round}
+.an-obj{stroke:var(--ink); stroke-width:2.5; stroke-linecap:round}
+.an-num{position:absolute; inset:0; display:grid; place-items:center; font:500 21px/1 var(--sans); letter-spacing:-.02em; font-variant-numeric:tabular-nums}
+.an-num.sin{color:var(--ink-4)}
+.m2-frase{margin:0; font:400 13.5px/1.5 var(--sans); color:var(--ink-2)}
+.m2-frase strong{display:block; margin-bottom:3px; color:var(--ink); font:600 15px/1.3 var(--sans)}
+.m2-semana{display:grid; grid-template-columns:1fr auto; gap:7px 10px; align-items:baseline; font:400 12.5px/1.2 var(--sans); color:var(--ink-3)}
+.m2-semana .num{color:var(--ink-2)}
+.m2-semana .medidor{grid-column:1 / -1; height:4px}
+.m2-acciones{display:flex; align-items:center; gap:8px; margin-top:14px; padding-top:12px; border-top:1px solid var(--line)}
+.m2-faltas{font:400 12.5px/1 var(--sans); color:var(--ink-3)}
+.m2-faltas.ojo{color:var(--aviso-txt); font-weight:500}
+.m2-faltas.limite{color:var(--riesgo-txt); font-weight:600}
+.m2-acciones .btn.mini{margin-left:auto}
+.m2-acciones .paso .num{min-width:58px}
+
+/* ══════════════ confirmaciones dentro de la app ══════════════ */
+dialog.dlg-confirmar{width:min(400px, calc(100vw - 32px)); padding:0; border:1px solid var(--line-2); border-radius:var(--r-l); background:var(--surface); color:var(--ink); box-shadow:var(--sombra-modal)}
+.cf{padding:22px 22px 18px}
+.cf-icono{width:40px; height:40px; border-radius:12px; display:grid; place-items:center; margin-bottom:14px; background:var(--acento-suave); color:var(--acento-txt)}
+.cf-icono.peligro{background:color-mix(in srgb, var(--riesgo) 15%, transparent); color:var(--riesgo-txt)}
+.cf-icono svg.i{width:20px; height:20px; flex:0 0 20px}
+.cf-tit{font:600 17px/1.3 var(--sans); letter-spacing:-.01em; margin:0 0 6px}
+.cf-txt{font:400 14px/1.5 var(--sans); color:var(--ink-2); margin:0}
+.cf-btns{display:flex; justify-content:flex-end; gap:8px; margin-top:22px}
+.btn.peligro{background:#DC2626; border-color:#DC2626; color:#FFFFFF}
+.btn.peligro:hover{filter:brightness(1.08)}
+@media (max-width:560px){ .cf-btns{flex-direction:column-reverse} .cf-btns .btn{width:100%; height:42px} }
+
+/* ══════════════ módulos: la tarjeta entera abre la ficha ══════════════ */
+.panel.modulo.mod2{position:relative; transition:border-color .15s, transform .15s}
+.panel.modulo.mod2:hover{border-color:color-mix(in srgb, var(--c) 55%, var(--line-2))}
+.m2-nombre::after{content:""; position:absolute; inset:0; border-radius:inherit}
+.m2-nombre:focus-visible{outline:none}
+.panel.modulo.mod2:has(.m2-nombre:focus-visible){outline:2px solid var(--acento); outline-offset:2px}
+.m2-cab .estado, .m2-aviso{position:relative; z-index:1}
+.m2-pie{display:flex; align-items:center; justify-content:space-between; gap:10px; margin-top:12px; font:400 12.5px/1.2 var(--sans); color:var(--ink-3)}
+.m2-abrir{display:inline-flex; align-items:center; gap:4px; color:var(--ink-3); transition:color .15s, gap .15s}
+.m2-abrir svg.i{width:14px; height:14px; flex:0 0 14px}
+.panel.modulo.mod2:hover .m2-abrir{color:var(--ink); gap:7px}
+.m2-faltas.bien{color:var(--verde-texto); font-weight:500}
+
+/* ══════════════ ficha de una asignatura ══════════════ */
+.ficha-mod{display:flex; flex-direction:column; gap:16px}
+.md-migas{display:flex; align-items:center; gap:8px; font:400 13px/1 var(--sans); color:var(--ink-4); min-width:0}
+.md-volver{display:inline-flex; align-items:center; gap:4px; padding:6px 8px 6px 4px; margin-left:-4px; border:0; border-radius:8px; background:none;
+  color:var(--ink-3); font:500 13px/1 var(--sans); cursor:pointer}
+.md-volver:hover{background:var(--surface); color:var(--ink)}
+.md-volver svg.i{width:15px; height:15px; flex:0 0 15px}
+.md-miga-actual{color:var(--ink-3); overflow:hidden; text-overflow:ellipsis; white-space:nowrap}
+.md-cab{display:flex; align-items:center; gap:12px; flex-wrap:wrap; margin:-4px 0 2px}
+.md-cab .codigo{height:26px; min-width:52px; font-size:12px}
+.md-tit{margin:0; font-size:30px}
+.md-estado{margin-left:auto}
+
+.panel.md-hero{display:flex; align-items:center; gap:26px; padding:22px 26px; border-top:3px solid var(--c)}
+.md-hero .m2-anillo{width:118px; height:118px; flex:0 0 118px}
+.md-hero .an-fondo, .md-hero .an-valor{stroke-width:6}
+.md-hero .an-num{font-size:30px}
+.md-hero-txt{flex:1; min-width:0; display:flex; flex-direction:column; gap:16px}
+.md-frase{font-size:14.5px}
+.md-frase strong{font-size:18px; margin-bottom:4px}
+.md-cifras{display:grid; grid-template-columns:repeat(4,minmax(0,1fr)); gap:10px; margin:0; padding-top:14px; border-top:1px solid var(--line)}
+.md-cifras div{min-width:0}
+.md-cifras dt{font:400 12px/1.3 var(--sans); color:var(--ink-3)}
+.md-cifras dd{margin:4px 0 0; font:400 22px/1.1 var(--sans); letter-spacing:-.02em; color:var(--ink)}
+
+.md-cuerpo{display:grid; grid-template-columns:minmax(0,1.7fr) minmax(260px,1fr); gap:16px; align-items:start}
+.md-lado{display:flex; flex-direction:column; gap:16px}
+.panel.md-notas{padding:20px 22px 16px}
+.md-sec-cab h2, .md-caja-cab h2{font:600 15.5px/1.2 var(--sans); letter-spacing:-.01em; margin:0}
+.md-sec-cab .meta{margin:4px 0 0}
+.md-filas-cab{display:grid; grid-template-columns:minmax(0,1fr) 84px 84px 32px; gap:10px; margin:18px 0 6px; padding:0 2px;
+  font:500 11px/1 var(--sans); letter-spacing:.05em; text-transform:uppercase; color:var(--ink-4)}
+.md-filas-cab span:nth-child(2), .md-filas-cab span:nth-child(3){text-align:center}
+.md-filas{display:flex; flex-direction:column}
+.md-fila{display:grid; grid-template-columns:minmax(0,1fr) 84px 84px 32px; gap:6px 10px; align-items:center; padding:10px 0; border-top:1px solid var(--line)}
+.md-fila:first-child{border-top:0}
+.md-apartado{height:36px; padding:0 10px; border:1px solid transparent; border-radius:var(--r-m); background:none; color:var(--ink);
+  font:500 14px/1 var(--sans); min-width:0}
+.md-apartado:hover{border-color:var(--line-2)}
+.md-apartado:focus{border-color:var(--acento); background:var(--surface-2); outline:none}
+.md-peso{position:relative; display:block}
+.md-peso input{width:100%; height:36px; padding:0 24px 0 10px; text-align:center; font:500 14px/1 var(--sans)}
+.md-peso span{position:absolute; right:10px; top:50%; transform:translateY(-50%); font:400 12.5px/1 var(--sans); color:var(--ink-3); pointer-events:none}
+.md-nota{height:36px; text-align:center; font:600 16px/1 var(--sans); font-variant-numeric:tabular-nums}
+.md-nota:placeholder-shown{font-weight:400; color:var(--ink-4)}
+.md-quitar{width:32px; height:32px; display:grid; place-items:center; padding:0; border:0; border-radius:8px; background:none; color:var(--ink-4); cursor:pointer}
+.md-quitar:hover{background:var(--surface-2); color:var(--ink)}
+.md-quitar svg.i{width:14px; height:14px; flex:0 0 14px}
+.md-aporte{grid-column:1 / -1; display:flex; align-items:center; gap:10px; padding:0 2px}
+.md-barra{flex:1; height:4px; border-radius:99px; background:var(--surface-3); overflow:hidden}
+.md-barra i{display:block; height:100%; border-radius:99px; background:var(--c)}
+.md-aporta{flex:0 0 auto; min-width:118px; text-align:right; font:400 12px/1 var(--sans); color:var(--ink-3); font-variant-numeric:tabular-nums}
+.md-notas-pie{display:flex; align-items:center; justify-content:space-between; gap:12px; flex-wrap:wrap; margin-top:10px; padding-top:12px; border-top:1px solid var(--line)}
+.md-suma{font:400 12.5px/1.3 var(--sans); color:var(--ink-3)}
+.md-suma.mal{color:var(--aviso-txt); font-weight:500}
+.md-sin{margin:10px 2px}
+
+.panel.md-caja{padding:18px 20px}
+.md-caja-cab{display:flex; align-items:center; justify-content:space-between; gap:10px}
+.md-grande{display:flex; flex-direction:column; gap:4px; margin:14px 0 12px}
+.md-grande b{font:300 32px/1.05 var(--sans); letter-spacing:-.03em}
+.md-grande span{font:400 12.5px/1.35 var(--sans); color:var(--ink-3)}
+.md-caja .medidor{height:6px}
+.md-caja .medidor > i{background:var(--c)}
+.md-caja .medidor.faltas > i{background:repeating-linear-gradient(-45deg, var(--ink-2) 0 2px, transparent 2px 4.5px)}
+.md-caja .medidor.faltas.lleno > i{background:var(--riesgo)}
+.md-caja-pie{display:flex; align-items:center; justify-content:space-between; gap:10px; flex-wrap:wrap; margin-top:14px}
+.md-caja-pie .btn svg.i{width:13px; height:13px; flex:0 0 13px; fill:currentColor; stroke:none}
+
+.panel.md-datos{padding:0}
+.md-datos > summary{display:flex; align-items:baseline; gap:12px; padding:16px 22px; cursor:pointer; list-style:none; border-radius:inherit}
+.md-datos > summary::-webkit-details-marker{display:none}
+.md-datos > summary::before{content:""; width:7px; height:7px; flex:0 0 7px; margin-right:2px; border-right:1.5px solid var(--ink-3); border-bottom:1.5px solid var(--ink-3);
+  transform:translateY(-2px) rotate(-45deg); transition:transform .15s}
+.md-datos[open] > summary::before{transform:translateY(-4px) rotate(45deg)}
+.md-datos > summary:hover{background:var(--surface-2)}
+.md-datos-tit{font:600 15px/1.2 var(--sans); color:var(--ink)}
+.md-datos-cuerpo{padding:4px 22px 18px}
+.md-colores{display:flex; align-items:center; gap:8px; flex-wrap:wrap; margin-top:16px}
+.md-colores .etq{margin-right:6px}
+.md-color{width:26px; height:26px; padding:0; border-radius:50%; border:2px solid transparent; background:var(--c); cursor:pointer; box-shadow:inset 0 0 0 2px var(--surface)}
+.md-color[aria-pressed="true"]{border-color:var(--ink)}
+.md-datos-pie{display:flex; justify-content:flex-end; margin-top:18px; padding-top:14px; border-top:1px solid var(--line)}
+.md-datos-pie .btn.borrar:hover{color:var(--riesgo-txt); background:color-mix(in srgb, var(--riesgo) 10%, transparent)}
+
+@media (max-width:980px){ .md-cuerpo{grid-template-columns:minmax(0,1fr)} .md-lado{display:grid; grid-template-columns:repeat(auto-fit,minmax(min(260px,100%),1fr))} }
+@media (max-width:640px){
+  .md-tit{font-size:24px}
+  .md-estado{margin-left:0}
+  .panel.md-hero{flex-direction:column; align-items:stretch; gap:16px; padding:18px}
+  .md-hero .m2-anillo{align-self:center; width:104px; height:104px; flex-basis:104px}
+  .md-cifras{grid-template-columns:repeat(2,minmax(0,1fr)); gap:14px 10px}
+  .panel.md-notas{padding:16px}
+  .md-filas-cab{display:none}
+  .md-fila{grid-template-columns:minmax(0,1fr) 72px 72px; gap:8px}
+  .md-fila .md-apartado{grid-column:1 / -1; padding:0 6px}
+  .md-quitar{grid-column:3; grid-row:1; justify-self:end}
+  .md-fila .md-apartado{grid-column:1 / 3; grid-row:1}
+  .md-fila .md-peso{grid-column:1; grid-row:2}
+  .md-fila .md-nota{grid-column:2 / 4; grid-row:2}
+  .md-aporta{min-width:0}
+  .md-datos > summary{flex-wrap:wrap; padding:14px 16px}
+  .md-datos-cuerpo{padding:4px 16px 16px}
+  .md-campos{grid-template-columns:repeat(2,minmax(0,1fr))}
+}
+/* ══════════════ riel y panel (ordenador) ══════════════ */
+.riel{display:none}
+@media (min-width:881px){
+  .app{grid-template-columns:80px 264px minmax(0,1fr)}
+  .riel{position:sticky; top:0; height:100vh; display:flex; flex-direction:column; align-items:center; gap:2px;
+    padding:16px 0 14px; background:var(--bg); border-right:1px solid var(--line); overflow-y:auto; scrollbar-width:none}
+  .riel::-webkit-scrollbar{display:none}
+  .riel-item{position:relative; width:68px; flex:0 0 auto; display:flex; flex-direction:column; align-items:center; gap:5px; padding:8px 2px 7px;
+    border:0; border-radius:12px; background:none; color:var(--ink-3); font:500 11px/1.1 var(--sans); cursor:pointer;
+    transition:background .12s, color .12s}
+  .riel-item svg.i{width:20px; height:20px; flex:0 0 20px}
+  .riel-item svg.ri{width:22px; height:22px; flex:0 0 22px}
+  .riel-item[aria-current="page"] svg.ri{color:var(--acento-txt)}
+  .riel-item:hover{color:var(--ink); background:var(--surface)}
+  .riel-item:focus-visible{outline:2px solid var(--acento); outline-offset:1px}
+  .riel-item[aria-current="page"]{color:var(--ink); background:var(--acento-suave)}
+  .riel-item[aria-current="page"] svg.i{color:var(--acento-txt)}
+  .riel-item[aria-current="page"]::before{content:""; position:absolute; left:-6px; top:12px; bottom:12px; width:3px; border-radius:0 3px 3px 0; background:var(--acento)}
+  .riel-item .rt{max-width:100%; overflow:hidden; text-overflow:ellipsis; white-space:nowrap}
+  .riel-cuenta{position:absolute; top:3px; left:calc(50% + 4px); min-width:17px; height:17px; padding:0 5px; box-sizing:border-box; border-radius:99px;
+    background:var(--ink); color:var(--on-ink); font:600 10.5px/17px var(--sans); text-align:center; box-shadow:0 0 0 2px var(--bg)}
+  .riel-cuenta.verde{background:#15803D; color:#FFFFFF}
+  .riel-hueco{flex:1; min-height:12px}
+  .riel-av{width:30px; height:30px; border-radius:50%; display:grid; place-items:center; font:600 12.5px/1 var(--sans);
+    color:var(--acento-txt); background:var(--acento-suave); box-shadow:inset 0 0 0 1.5px var(--acento-borde)}
+  .riel-item.nuevo .riel-av{box-shadow:inset 0 0 0 2px var(--verde)}
+
+  /* el panel: lo que hay dentro de la sección en la que estás */
+  .lateral{background:color-mix(in srgb, var(--surface) 40%, var(--bg)); padding:22px 14px 14px; overflow:hidden}
+  .lateral .nav{flex:1; min-height:0; overflow-y:auto; margin:0 -8px; padding:0 8px 8px; scrollbar-width:thin}
+  .lateral .nav-pie{display:none}
+  .pn-cab{display:flex; align-items:flex-start; justify-content:space-between; gap:8px; margin:0 2px 10px}
+  .pn-tit{font:500 17px/1.2 var(--sans); letter-spacing:-.01em; margin:0; color:var(--ink)}
+  .pn-sub{font:400 12px/1.35 var(--sans); color:var(--ink-3); margin-top:3px}
+  .pn-accion{width:30px; height:30px; flex:0 0 30px; display:grid; place-items:center; padding:0; border:1px solid var(--line-2); border-radius:var(--r-m);
+    background:var(--surface); color:var(--acento-txt); cursor:pointer}
+  .pn-accion:hover{border-color:var(--acento)}
+  .pn-grupo{font:500 11px/1 var(--sans); letter-spacing:.05em; text-transform:uppercase; color:var(--ink-4); margin:16px 8px 6px}
+  .pn-fila{display:flex; align-items:flex-start; gap:10px; width:100%; padding:7px 8px; border:0; border-radius:8px; background:none;
+    color:var(--ink); text-align:left; cursor:pointer; font:inherit}
+  .pn-fila[hidden]{display:none}
+  .pn-fila:hover{background:var(--surface)}
+  .pn-fila:focus-visible{outline:2px solid var(--acento); outline-offset:-2px}
+  .pn-fila[aria-current="true"]{background:var(--acento-suave); box-shadow:inset 0 0 0 1px var(--acento-borde)}
+  .pn-dot{width:8px; height:8px; flex:0 0 8px; border-radius:50%; background:var(--c); margin-top:5px}
+  .pn-txt{flex:1; min-width:0; display:flex; flex-direction:column; gap:2px}
+  .pn-t{display:block; font:500 13px/1.3 var(--sans); overflow:hidden; text-overflow:ellipsis; white-space:nowrap}
+  .pn-m{display:block; font:400 11.5px/1.3 var(--sans); color:var(--ink-3); overflow:hidden; text-overflow:ellipsis; white-space:nowrap}
+  .pn-vacio{font:400 12.5px/1.45 var(--sans); color:var(--ink-3); margin:4px 8px}
+  .pn-buscar{width:100%; box-sizing:border-box; height:34px; padding:0 10px; margin:0 0 6px; border:1px solid var(--line-2); border-radius:var(--r-m);
+    background:var(--surface); color:var(--ink); font:400 13px var(--sans)}
+  .pn-dato{display:flex; justify-content:space-between; gap:8px; padding:7px 8px; font:400 12.5px/1.3 var(--sans); color:var(--ink-3)}
+  .pn-dato b{font-weight:500; color:var(--ink)}
+  .pn-barra{display:block; height:3px; border-radius:2px; background:var(--line-2); margin-top:4px; overflow:hidden}
+  .pn-barra i{display:block; height:100%; background:var(--c)}
+  .lateral .nav .tutor-carta{margin-top:2px}
+  /* apuntes: la lista vive en el panel y la página se queda entera para escribir */
+  .notas{grid-template-columns:minmax(0,1fr)}
+  .notas > div:first-child{display:none}
+}
+@media (min-width:881px) and (prefers-color-scheme: dark){ :root:not([data-theme="light"]) .riel-cuenta.verde{background:#22C55E; color:#07130C} }
+@media (min-width:881px){ :root[data-theme="dark"] .riel-cuenta.verde{background:#22C55E; color:#07130C} }
+
+/* ══════════════ cabecera del menú: el logo completo encima del riel y el panel ══════════════ */
+.cabeza-menu{display:none}
+@media (min-width:881px){
+  .cabeza-menu{position:fixed; top:0; left:0; z-index:6; width:344px; height:76px; box-sizing:border-box; display:flex; align-items:center;
+    justify-content:space-between; gap:10px; padding:0 16px 0 20px; background:var(--bg); border-right:1px solid var(--line); border-bottom:1px solid var(--line)}
+  .cabeza-menu .cm-logo{display:block; padding:0; margin-top:16px; border:0; background:none; cursor:pointer; border-radius:8px}
+  .cabeza-menu .cm-logo:focus-visible{outline:2px solid var(--acento); outline-offset:4px}
+  .cabeza-menu .marca-palabra{height:40px}
+  .cabeza-menu .curso{padding:4px 7px; border-radius:6px; background:var(--surface-2); color:var(--ink-2); font:500 11px/1 var(--sans); white-space:nowrap}
+  .riel{padding-top:92px}
+  .lateral{padding-top:94px}
+  .lateral .marca{display:none}
+}
+
+/* ══════════════ móvil: la hoja de «Más» en filas con su dato ══════════════ */
+@media (max-width:880px){
+  .hm-lista{display:flex; flex-direction:column; gap:2px}
+  .hm-fila{display:flex; align-items:center; gap:14px; width:100%; min-height:58px; padding:8px 10px; border:0; border-radius:12px;
+    background:none; color:var(--ink); text-align:left; font:inherit; cursor:pointer}
+  .hm-fila:active, .hm-fila[aria-current="page"]{background:var(--acento-suave)}
+  .hm-fila > svg:first-child{width:22px; height:22px; flex:0 0 22px; color:var(--ink-2)}
+  .hm-fila[aria-current="page"] > svg:first-child{color:var(--acento-txt)}
+  .hm-txt{flex:1; min-width:0; display:flex; flex-direction:column; gap:3px}
+  .hm-t{font:500 15px/1.2 var(--sans)}
+  .hm-m{font:400 12.5px/1.3 var(--sans); color:var(--ink-3); overflow:hidden; text-overflow:ellipsis; white-space:nowrap}
+  .hm-cuenta{min-width:20px; height:20px; padding:0 6px; box-sizing:border-box; border-radius:99px; background:var(--ink); color:var(--on-ink);
+    font:600 11px/20px var(--sans); text-align:center}
+  .hm-chev{width:16px; height:16px; flex:0 0 16px; color:var(--ink-4)}
+  .bm-item svg.ri{width:22px; height:22px}
+}
+
+/* ══════════════ móvil: barra de arriba con el curso a la izquierda y el logo en el centro ══════════════ */
+@media (max-width:880px){
+  .lateral{display:grid; grid-template-columns:minmax(0,1fr) auto minmax(0,1fr); align-items:center; gap:10px}
+  .lateral .marca{display:contents}
+  .lateral .marca .curso{grid-column:1; grid-row:1; justify-self:start; margin:0; max-width:100%}
+  .lateral .marca-palabra{grid-column:2; grid-row:1; justify-self:center}
+  .lateral-pie{grid-column:3; grid-row:1; justify-self:end}
+}
 </style>
 </head>
 <body>
 <div class="app">
+  <div class="cabeza-menu"><button type="button" class="cm-logo" aria-label="GritNook: ir a Hoy"><svg class="marca-palabra" viewBox="3.22 -48.78 263.01 82.06" aria-hidden="true"><path class="ml-letras" d="M24.78 0.63L24.78 0.63Q18.34 0.63 13.50-2.28Q8.66-5.19 5.94-10.53Q3.22-15.88 3.22-23.22L3.22-23.22Q3.22-30.75 6.02-36.11Q8.81-41.47 13.63-44.33Q18.44-47.19 24.53-47.19L24.53-47.19Q28.38-47.19 31.70-46.06Q35.03-44.94 37.64-42.86Q40.25-40.78 41.92-37.94Q43.59-35.09 44.13-31.69L44.13-31.69L35.59-31.69Q35.03-33.56 34.05-35.03Q33.06-36.50 31.67-37.56Q30.28-38.63 28.52-39.17Q26.75-39.72 24.63-39.72L24.63-39.72Q20.88-39.72 17.92-37.81Q14.97-35.91 13.28-32.25Q11.59-28.59 11.59-23.28L11.59-23.28Q11.59-18.03 13.28-14.36Q14.97-10.69 17.94-8.77Q20.91-6.84 24.81-6.84L24.81-6.84Q28.38-6.84 30.98-8.22Q33.59-9.59 35.03-12.13L35.03-12.13Q36.38-14.53 36.44-17.78L36.44-17.78L25.69-17.78L25.69-24.34L44.53-24.34L44.53-18.75Q44.53-12.78 41.98-8.42Q39.44-4.06 34.98-1.72Q30.53 0.63 24.78 0.63ZM59.09 0L50.97 0L50.97-34.94L58.84-34.94L58.84-29.09L59.22-29.09Q60.16-32.13 62.50-33.77Q64.84-35.41 67.84-35.41L67.84-35.41Q68.53-35.41 69.38-35.34Q70.22-35.28 70.81-35.19L70.81-35.19L70.81-27.72Q70.31-27.88 69.19-28Q68.06-28.13 66.97-28.13L66.97-28.13Q64.72-28.13 62.92-27.16Q61.13-26.19 60.11-24.48Q59.09-22.78 59.09-20.56L59.09-20.56L59.09 0ZM83.22 0L75.10 0L75.10-34.94L83.22-34.94L83.22 0ZM79.16-39.88L79.16-39.88Q77.22-39.88 75.83-41.19Q74.44-42.50 74.44-44.31L74.44-44.31Q74.44-46.19 75.83-47.48Q77.22-48.78 79.16-48.78L79.16-48.78Q81.13-48.78 82.52-47.48Q83.91-46.19 83.91-44.34L83.91-44.34Q83.91-42.50 82.52-41.19Q81.13-39.88 79.16-39.88ZM99.97-34.94L106.72-34.94L106.72-28.56L99.97-28.56L99.97-9.84Q99.97-7.94 100.78-7.05Q101.60-6.16 103.44-6.16L103.44-6.16Q104.00-6.16 104.93-6.30Q105.85-6.44 106.41-6.56L106.41-6.56L107.69-0.28Q106.35 0.13 104.94 0.30Q103.53 0.47 102.25 0.47L102.25 0.47Q97.22 0.47 94.53-2.03Q91.85-4.53 91.85-9.16L91.85-9.16L91.85-28.56L86.88-28.56L86.88-34.94L91.85-34.94L91.85-43.25L99.97-43.25L99.97-34.94ZM120.75 0L112.25 0L112.25-46.56L121.69-46.56L137.79-20.91Q138.79-19.31 139.91-17.30Q141.04-15.28 142.25-12.81L142.25-12.81Q142.88-11.50 143.50-10.09L143.50-10.09Q143.41-11.38 143.35-12.69L143.35-12.69Q143.16-15.44 143.08-17.92Q143.00-20.41 143.00-22.13L143.00-22.13L143.00-46.56L151.47-46.56L151.47 0L142.00 0L127.47-23.09Q126.10-25.31 124.88-27.47Q123.66-29.63 122.25-32.34L122.25-32.34Q121.35-34.13 120.16-36.34L120.16-36.34Q120.29-34.34 120.38-32.47L120.38-32.47Q120.54-29.41 120.65-27Q120.75-24.59 120.75-23.13L120.75-23.13L120.75 0ZM242.70 0L234.57 0L234.57-46.56L242.70-46.56L242.70-20.84L243.29-20.84L255.88-34.94L265.41-34.94L251.85-19.81L266.23 0L256.48 0L245.73-14.97L242.70-11.75L242.70 0Z"/><path class="ml-cinta" d="M205.97 -4.59H218.13V33.28L212.05 28.48L205.97 33.28Z"/><ellipse class="ml-anilla" cx="174.37" cy="-17.33" rx="12.91" ry="14.25" stroke-width="7.59"/><ellipse class="ml-anilla" cx="212.05" cy="-17.33" rx="12.91" ry="14.25" stroke-width="7.59"/></svg></button><span class="curso" id="cursoRiel"></span></div>
+  <nav class="riel" id="riel" aria-label="Secciones"></nav>
   <aside class="lateral">
     <div class="marca">
       <svg class="marca-palabra" viewBox="3.22 -48.78 263.01 82.06" role="img" aria-label="GritNook"><path class="ml-letras" d="M24.78 0.63L24.78 0.63Q18.34 0.63 13.50-2.28Q8.66-5.19 5.94-10.53Q3.22-15.88 3.22-23.22L3.22-23.22Q3.22-30.75 6.02-36.11Q8.81-41.47 13.63-44.33Q18.44-47.19 24.53-47.19L24.53-47.19Q28.38-47.19 31.70-46.06Q35.03-44.94 37.64-42.86Q40.25-40.78 41.92-37.94Q43.59-35.09 44.13-31.69L44.13-31.69L35.59-31.69Q35.03-33.56 34.05-35.03Q33.06-36.50 31.67-37.56Q30.28-38.63 28.52-39.17Q26.75-39.72 24.63-39.72L24.63-39.72Q20.88-39.72 17.92-37.81Q14.97-35.91 13.28-32.25Q11.59-28.59 11.59-23.28L11.59-23.28Q11.59-18.03 13.28-14.36Q14.97-10.69 17.94-8.77Q20.91-6.84 24.81-6.84L24.81-6.84Q28.38-6.84 30.98-8.22Q33.59-9.59 35.03-12.13L35.03-12.13Q36.38-14.53 36.44-17.78L36.44-17.78L25.69-17.78L25.69-24.34L44.53-24.34L44.53-18.75Q44.53-12.78 41.98-8.42Q39.44-4.06 34.98-1.72Q30.53 0.63 24.78 0.63ZM59.09 0L50.97 0L50.97-34.94L58.84-34.94L58.84-29.09L59.22-29.09Q60.16-32.13 62.50-33.77Q64.84-35.41 67.84-35.41L67.84-35.41Q68.53-35.41 69.38-35.34Q70.22-35.28 70.81-35.19L70.81-35.19L70.81-27.72Q70.31-27.88 69.19-28Q68.06-28.13 66.97-28.13L66.97-28.13Q64.72-28.13 62.92-27.16Q61.13-26.19 60.11-24.48Q59.09-22.78 59.09-20.56L59.09-20.56L59.09 0ZM83.22 0L75.10 0L75.10-34.94L83.22-34.94L83.22 0ZM79.16-39.88L79.16-39.88Q77.22-39.88 75.83-41.19Q74.44-42.50 74.44-44.31L74.44-44.31Q74.44-46.19 75.83-47.48Q77.22-48.78 79.16-48.78L79.16-48.78Q81.13-48.78 82.52-47.48Q83.91-46.19 83.91-44.34L83.91-44.34Q83.91-42.50 82.52-41.19Q81.13-39.88 79.16-39.88ZM99.97-34.94L106.72-34.94L106.72-28.56L99.97-28.56L99.97-9.84Q99.97-7.94 100.78-7.05Q101.60-6.16 103.44-6.16L103.44-6.16Q104.00-6.16 104.93-6.30Q105.85-6.44 106.41-6.56L106.41-6.56L107.69-0.28Q106.35 0.13 104.94 0.30Q103.53 0.47 102.25 0.47L102.25 0.47Q97.22 0.47 94.53-2.03Q91.85-4.53 91.85-9.16L91.85-9.16L91.85-28.56L86.88-28.56L86.88-34.94L91.85-34.94L91.85-43.25L99.97-43.25L99.97-34.94ZM120.75 0L112.25 0L112.25-46.56L121.69-46.56L137.79-20.91Q138.79-19.31 139.91-17.30Q141.04-15.28 142.25-12.81L142.25-12.81Q142.88-11.50 143.50-10.09L143.50-10.09Q143.41-11.38 143.35-12.69L143.35-12.69Q143.16-15.44 143.08-17.92Q143.00-20.41 143.00-22.13L143.00-22.13L143.00-46.56L151.47-46.56L151.47 0L142.00 0L127.47-23.09Q126.10-25.31 124.88-27.47Q123.66-29.63 122.25-32.34L122.25-32.34Q121.35-34.13 120.16-36.34L120.16-36.34Q120.29-34.34 120.38-32.47L120.38-32.47Q120.54-29.41 120.65-27Q120.75-24.59 120.75-23.13L120.75-23.13L120.75 0ZM242.70 0L234.57 0L234.57-46.56L242.70-46.56L242.70-20.84L243.29-20.84L255.88-34.94L265.41-34.94L251.85-19.81L266.23 0L256.48 0L245.73-14.97L242.70-11.75L242.70 0Z"/><path class="ml-cinta" d="M205.97 -4.59H218.13V33.28L212.05 28.48L205.97 33.28Z"/><ellipse class="ml-anilla" cx="174.37" cy="-17.33" rx="12.91" ry="14.25" stroke-width="7.59"/><ellipse class="ml-anilla" cx="212.05" cy="-17.33" rx="12.91" ry="14.25" stroke-width="7.59"/></svg>
       <span class="curso" id="curso"></span>
     </div>
-    <nav class="nav" id="nav" aria-label="Secciones"></nav>
+    <nav class="nav" id="nav" aria-label="Dentro de la sección"></nav>
     <div class="mini-reloj" id="miniReloj" role="timer" aria-live="off" hidden>
       <button class="mr-info" id="mrInfo" type="button" title="Ir al cronómetro">
         <span class="mr-fase" id="mrFase">Concentración</span><span class="mr-mod" id="mrMod"></span>
@@ -1030,6 +1325,7 @@ details.ls-grupo > summary{cursor:pointer}
 </div>
 
 <div class="entrada" id="entrada" hidden></div>
+<dialog id="dlgConfirmar" class="dlg-confirmar" aria-labelledby="cfTit" aria-describedby="cfTxt"></dialog>
 
 <dialog id="dlg"><form method="dialog" id="dlgForm">
   <div class="dlg-cab"><h3 id="dlgTit">—</h3>
@@ -2243,7 +2539,8 @@ function tutorCarta(c) {
 }
 function pintaNav() {
   const c = cuentasNav(), fichas = SECCIONES.filter(s => !s.aparte && !s.pie).map(s => s.id);
-  $("#nav").innerHTML = `<div class="teselas">${fichas.map(id => tesela(id, c)).join("")}</div>${tutorCarta(c)}`;
+  $("#nav").innerHTML = panelHTML(c);
+  pintaRiel(c);
   const aj = $("#btnAjustes");
   if (aj) { aj.innerHTML = icono("ajustes") + "<span>Ajustes</span>"; aj.setAttribute("aria-current", seccion === "ajustes" ? "page" : "false"); }
   const cu = $("#curso");
@@ -2256,7 +2553,7 @@ function pintaBarraMovil() {
   const c = cuentasNav(), enMas = !EN_BARRA.includes(seccion), abierta = h && !h.hidden;
   const deMas = SECCIONES.map(s => s.id).filter(id => !EN_BARRA.includes(id)).reduce((s, id) => s + (c[id] || 0), 0);
   b.innerHTML = EN_BARRA.map(id => `<button type="button" class="bm-item" data-sec="${id}" aria-current="${seccion === id ? "page" : "false"}">
-      ${icono(id)}<span>${esc(id === "escritorio" ? "Hoy" : nombreSec(id))}</span>${c[id] ? `<b class="bm-cuenta${id === "tutor" ? " verde" : ""}">${c[id]}</b>` : ""}</button>`).join("") +
+      ${iconoRiel(id, seccion === id)}<span>${esc(id === "escritorio" ? "Hoy" : nombreSec(id))}</span>${c[id] ? `<b class="bm-cuenta${id === "tutor" ? " verde" : ""}">${c[id]}</b>` : ""}</button>`).join("") +
     `<button type="button" class="bm-item" id="bmMas" aria-expanded="${abierta}" aria-current="${enMas && !abierta ? "page" : "false"}">
       ${icono("masmenu")}<span>Más</span>${deMas ? `<b class="bm-cuenta">${deMas}</b>` : ""}</button>`;
 }
@@ -2265,12 +2562,12 @@ function abrirHojaMas() {
   h.innerHTML = `<div class="hm-fondo" data-hm-cerrar></div>
     <div class="hm-panel" role="dialog" aria-label="Más secciones">
       <div class="hm-asa" aria-hidden="true"></div>
-      <div class="teselas tres">${ids.map(id => tesela(id, c)).join("")}</div>
+      <div class="hm-lista">${ids.map(id => filaMas(id, c)).join("")}</div>
       <div class="hm-pie"><span class="sync${db ? " ok" : ""}"><span class="punto"></span><span>${esc($("#txtSync").textContent)}</span></span>
         <span class="meta" title="${esc(S.config.curso)}">${esc(etiquetaCorta())} · curso ${cursoAcademico()}</span></div>
     </div>`;
   h.hidden = false; pintaBarraMovil();
-  const primero = h.querySelector(".tesela"); if (primero) primero.focus({ preventScroll: true });
+  const primero = h.querySelector(".hm-fila"); if (primero) primero.focus({ preventScroll: true });
 }
 function cerrarHojaMas() { const h = $("#hojaMas"); if (h && !h.hidden) { h.hidden = true; h.innerHTML = ""; pintaBarraMovil(); } }
 document.addEventListener("click", e => {
@@ -2372,120 +2669,276 @@ function vistaEscritorio() {
   </div>`;
 }
 
+/* ── módulos, de un vistazo ──
+   Arriba, cómo va el curso entero en tres datos. Debajo, una tarjeta por
+   asignatura con lo único que importa: la nota que llevas en un anillo (con la
+   marca de tu objetivo) y una frase que dice qué te toca. Las faltas y las horas
+   de la semana, en pequeño. La lógica de riesgo no cambia: solo cómo se enseña. */
+function anilloNota(c) {
+  const R = 30, L = 2 * Math.PI * R, v = c.media === null ? 0 : clamp(c.media / 10, 0, 1);
+  const a = (clamp(c.obj / 10, 0, 1) * 360 - 90) * Math.PI / 180;
+  const p = r => (40 + r * Math.cos(a)).toFixed(1) + " " + (40 + r * Math.sin(a)).toFixed(1);
+  const etq = (c.media === null ? "Sin notas todavía" : "Llevas un " + nota(c.media) + " de 10") + "; tu objetivo es un " + nota(c.obj);
+  return `<div class="m2-anillo" role="img" aria-label="${esc(etq)}">
+    <svg viewBox="0 0 80 80" aria-hidden="true"><circle cx="40" cy="40" r="${R}" class="an-fondo"/>
+      ${c.media === null ? "" : `<circle cx="40" cy="40" r="${R}" class="an-valor" stroke-dasharray="${(v * L).toFixed(1)} ${L.toFixed(1)}" transform="rotate(-90 40 40)"/>`}
+      <path d="M${p(R - 7.5)}L${p(R + 7.5)}" class="an-obj"/></svg>
+    <span class="an-num${c.media === null ? " sin" : ""}">${c.media === null ? "—" : nota(c.media)}</span>
+  </div>`;
+}
+function fraseModulo(c) {
+  const f = (t, r) => `<strong>${t}</strong>${r}`;
+  if (c.imposible) return f("Toca recuperación.", `Con lo que queda no llegas al ${nota(c.obj)}: habla con tu profesor y prepárala con tiempo.`);
+  if (c.yaEsta && c.restante <= 0.001) return f(`Cerrado con un ${nota(c.acumulado)}.`, "Buen trabajo.");
+  if (c.yaEsta) return f("¡Aprobado asegurado!", `Ya tienes el ${nota(c.obj)} aunque lo que queda salga mal.`);
+  if (c.necesita === null) return f("Falta saber cómo te evalúan.", "Añádelo en «Notas y pesos» y te digo lo que necesitas.");
+  if (c.media === null) return f("Todo por jugar.", `Con un ${nota(c.necesita)} de media llegas a tu ${nota(c.obj)}.`);
+  const resto = ` de media en el ${nota(c.restante)} % que queda.`;
+  if (c.necesita <= 5) return f("Vas bien.", `Te basta un ${nota(c.necesita)}${resto}`);
+  if (c.necesita > 7) return f("Toca apretar.", `Necesitas un ${nota(c.necesita)}${resto}`);
+  return f("A por ello.", `Necesitas un ${nota(c.necesita)}${resto}`);
+}
+const estadoModulo = c => c.media === null && !c.imposible && c.faltasPct < 0.7
+  ? `<span class="estado neutro"><span class="dot"></span>Sin notas aún</span>` : estadoHTML(c);
+
 function vistaModulos() {
+  const abierta = modAbierto && modPorId(modAbierto);
+  if (abierta) return vistaFichaModulo(abierta);
+  const filas = S.modulos.map(m => ({ m, c: calcModulo(m), semana: minutosSemana(m.id), meta: num(m.metaSemanal) * 60 }));
+  const conNota = filas.filter(f => f.c.media !== null);
+  const media = conNota.length ? conNota.reduce((s, f) => s + f.c.media, 0) / conNota.length : null;
+  const cuenta = est => filas.filter(f => f.c.media !== null && f.c.est === est).length;
+  const n = { ok: cuenta("ok"), aviso: cuenta("aviso"), riesgo: filas.filter(f => f.c.est === "riesgo").length };
+  n.vacio = filas.length - n.ok - n.aviso - n.riesgo;
+  const hecho = filas.reduce((s, f) => s + f.semana, 0), metaT = filas.reduce((s, f) => s + f.meta, 0);
+  const cods = l => l.map(f => f.m.cod).join(", ").replace(/, ([^,]*)$/, " y $1");
+
+  let lead;
+  if (!filas.length) lead = `Añade tus ${voc(true)} para empezar.`;
+  else if (!conNota.length) lead = `Aún no hay notas. En cuanto pongas la primera, aquí verás lo que te hace falta para aprobar cada ${voc()}.`;
+  else if (n.riesgo) lead = `Vas bien en ${n.ok} de ${filas.length}. Esta semana, prioridad: <strong>${esc(cods(filas.filter(f => f.c.est === "riesgo")))}</strong>.`;
+  else if (n.aviso) lead = `Vas bien en ${n.ok} de ${filas.length}. Ojo con <strong>${esc(cods(filas.filter(f => f.c.media !== null && f.c.est === "aviso")))}</strong>.`;
+  else lead = `Todo en verde. Sigue así.`;
+
+  const trozo = (k, v) => v ? `<i class="rm-${k}" style="flex:${v}"></i>` : "";
+  const leyenda = [["ok", n.ok, "bien"], ["aviso", n.aviso, "ojo"], ["riesgo", n.riesgo, "en riesgo"], ["vacio", n.vacio, "sin notas"]]
+    .filter(x => x[1]).map(([k, v, t]) => `<span><i class="rm-${k}"></i>${v} ${t}</span>`).join("");
+
   return `
   <header class="cab">
     <div>
       <div class="eyebrow">${esc(S.config.curso)}</div>
       <h1 class="titulo">${voc(true, true)}</h1>
-      <p class="lead">Cada ${voc()} te dice la nota que llevas y la mínima que necesitas en lo que queda para llegar a tu objetivo.</p>
+      <p class="lead">${lead}</p>
     </div>
     <button class="btn primario" id="btnNuevoMod">${icono("mas")}Añadir ${voc()}</button>
   </header>
+  ${filas.length ? `<div class="resumen-mod">
+    <div class="panel rm-tile"><div class="rm-etq">Media de tus notas</div>
+      <div class="rm-cifra${media === null ? " vacia" : ""}">${media === null ? "—" : nota(media)}</div>
+      <div class="rm-sub">${conNota.length ? conNota.length + " de " + filas.length + " con notas" : "Todavía sin notas"}</div></div>
+    <div class="panel rm-tile"><div class="rm-etq">Cómo vas</div>
+      <div class="rm-cifra">${n.ok}<small>de ${filas.length} van bien</small></div>
+      <div class="rm-barra" aria-hidden="true">${trozo("ok", n.ok)}${trozo("aviso", n.aviso)}${trozo("riesgo", n.riesgo)}${trozo("vacio", n.vacio)}</div>
+      <div class="rm-leyenda">${leyenda}</div></div>
+    <div class="panel rm-tile"><div class="rm-etq">Estudio esta semana</div>
+      <div class="rm-cifra">${horasTxt(hecho)}${metaT ? `<small>de ${horasTxt(metaT)}</small>` : ""}</div>
+      ${metaT ? `<div class="medidor rm-medidor"><i style="width:${clamp(hecho / metaT * 100, 0, 100)}%"></i></div>` : ""}
+      <div class="rm-sub">${!metaT ? "Ponte una meta en cada " + voc() : hecho >= metaT ? "¡Meta de la semana cumplida!" : "Te faltan " + horasTxt(metaT - hecho) + " para tu meta"}</div></div>
+  </div>` : ""}
   <div class="rejilla-modulos">
-  ${S.modulos.map(m => {
-    const c = calcModulo(m), semana = minutosSemana(m.id), meta = num(m.metaSemanal) * 60;
-    let frase;
-    if (c.imposible) frase = `Con lo que queda no llegas al <strong>${nota(c.obj)}</strong>: prepara la recuperación y habla con el profesor.`;
-    else if (c.yaEsta && c.restante <= 0.001) frase = `Módulo cerrado con un <strong>${nota(c.acumulado)}</strong>.`;
-    else if (c.yaEsta) frase = `Ya tienes el <strong>${nota(c.obj)}</strong> asegurado aunque entregues en blanco lo que queda.`;
-    else if (c.necesita === null) frase = `Añade cómo te evalúan para calcular lo que necesitas.`;
-    else frase = `Necesitas un <strong>${nota(c.necesita)}</strong> de media en el <strong>${nota(c.restante)} %</strong> que queda.`;
-    return `<article class="panel modulo" style="${colorMod(m)}">
-      <div class="modulo-cab"><span class="codigo" style="${colorMod(m)}">${esc(m.cod)}</span>${estadoHTML(c)}</div>
-      <h2 class="modulo-nombre">${esc(m.nombre)}</h2>
-      <div class="modulo-cifras">
-        <div><div class="cifra${c.media === null ? " vacia" : ""}">${c.media === null ? "—" : nota(c.media)}</div>
-          <div class="meta">Nota actual · ${nota(c.pesoEval)} % evaluado</div></div>
-        <div><div class="cifra${c.necesita === null || c.yaEsta ? " vacia" : ""}">${c.necesita === null || c.yaEsta ? "—" : nota(c.necesita)}</div>
-          <div class="meta">Necesitas en lo que falta</div></div>
+  ${filas.map(({ m, c, semana, meta }) => {
+    const faltas = c.faltasPct >= 1 ? ["limite", "Límite de faltas superado"] : c.faltasPct >= 0.7 ? ["ojo", "Faltas cerca del límite"]
+      : ["", "Faltas: " + num(m.faltas) + " de " + c.faltasMax + " h"];
+    return `<article class="panel modulo mod2" style="${colorMod(m)}">
+      <div class="m2-cab">
+        <button type="button" class="m2-nombre" data-editar-mod="${m.id}" aria-label="Abrir ${esc(m.nombre)}"><span class="codigo" style="${colorMod(m)}">${esc(m.cod)}</span><span class="m2-t">${esc(m.nombre)}</span></button>
+        ${estadoModulo(c)}
       </div>
-      <p class="modulo-frase">${frase}</p>
-      <div class="barra-fila"><span>Estudio esta semana</span><span class="num">${horasTxt(semana)} / ${num(m.metaSemanal)} h</span></div>
-      <div class="medidor"><i style="width:${meta ? clamp(semana / meta * 100, 0, 100) : 0}%"></i></div>
-      <div class="barra-fila"><span>Faltas de asistencia</span><span class="num">${num(m.faltas)} / ${c.faltasMax} h</span></div>
-      <div class="medidor faltas${c.faltasPct >= 1 ? " lleno" : ""}"><i style="width:${clamp(c.faltasPct * 100, 0, 100)}%"></i></div>
-      <p class="meta" style="margin-top:8px">Pierdes la evaluación continua al pasar de ${c.faltasMax} h (${nota(c.pct)} % de ${num(m.horas)} h).</p>
-      <div class="modulo-acciones">
-        <button class="btn mini" data-editar-mod="${m.id}">Notas y pesos</button>
-        <span class="paso" role="group" aria-label="Faltas de ${esc(m.nombre)}">
-          <button class="btn fantasma" data-quitar-falta="${m.id}" aria-label="Quitar una hora de falta">−</button>
-          <span class="num">${num(m.faltas)} h</span>
-          <button class="btn fantasma" data-falta="${m.id}" aria-label="Añadir una hora de falta">+</button>
-        </span>
-      </div>
+      <div class="m2-centro">${anilloNota(c)}<p class="m2-frase">${fraseModulo(c)}</p></div>
+      <div class="m2-semana"><span>Esta semana</span><span class="num">${horasTxt(semana)}${meta ? " de " + num(m.metaSemanal) + " h" : ""}</span>
+        ${meta ? `<div class="medidor"><i style="width:${clamp(semana / meta * 100, 0, 100)}%"></i></div>` : ""}</div>
+      <div class="m2-pie"><span class="m2-faltas ${faltas[0]}" title="Pierdes la evaluación continua al pasar de ${c.faltasMax} h (${nota(c.pct)} % de ${num(m.horas)} h).">${faltas[1]}</span>
+        <span class="m2-abrir" aria-hidden="true">Ver ficha<svg class="i" viewBox="0 0 16 16"><path d="M6 3.5 10.5 8 6 12.5"/></svg></span></div>
     </article>`;
   }).join("")}
   </div>`;
 }
 
-function dlgModulo(id) {
-  const m = modPorId(id); if (!m) return;
-  const pintaResumen = () => {
-    const c = calcModulo(m), suma = m.pesos.reduce((s, p) => s + num(p.peso), 0);
-    $("#resumenPesos").innerHTML =
-      `<p class="meta">Los pesos suman <strong class="num">${nota(suma)} %</strong>${Math.round(suma) === 100 ? "." : " — deberían sumar 100 %."}</p>
-       <p style="margin-top:6px">${c.media === null ? "Aún no hay notas puestas." :
-        c.imposible ? `Llevas un <strong>${nota(c.media)}</strong>. Con el ${nota(c.restante)} % que queda ya no se llega al ${nota(c.obj)}.` :
-        c.yaEsta ? `Llevas un <strong>${nota(c.media)}</strong>: el ${nota(c.obj)} ya está asegurado.` :
-        `Llevas un <strong>${nota(c.media)}</strong>. Te hace falta un <strong>${nota(c.necesita)}</strong> de media en el ${nota(c.restante)} % restante.`}</p>`;
-  };
-  const pintaTabla = () => {
-    $("#tablaPesos").innerHTML = m.pesos.map(p => `<tr data-p="${p.id}">
-      <td><input type="text" value="${esc(p.nombre)}" data-campo="nombre" aria-label="Nombre del apartado"></td>
-      <td style="width:96px"><input type="number" min="0" max="100" step="1" value="${num(p.peso)}" data-campo="peso" aria-label="Peso en porcentaje"></td>
-      <td style="width:96px"><input type="number" min="0" max="10" step="0.01" value="${p.nota === null || p.nota === undefined ? "" : p.nota}" data-campo="nota" placeholder="—" aria-label="Nota obtenida"></td>
-      <td style="width:36px"><button type="button" class="btn borrar mini cuadrado" data-borrar-peso="${p.id}" aria-label="Quitar apartado">×</button></td></tr>`).join("");
-    pintaResumen();
-  };
-  abrirDlg(esc(m.cod) + " · " + esc(m.nombre), `
-    <label class="campo" style="margin-bottom:14px">Nombre del módulo<input type="text" id="mNombre" value="${esc(m.nombre)}"></label>
-    <div class="rejilla-campos">
-      <label class="campo">Código<input type="text" id="mCod" value="${esc(m.cod)}"></label>
-      <label class="campo">Horas del curso<input type="number" id="mHoras" value="${num(m.horas)}" min="0"></label>
-      <label class="campo">Nota objetivo<input type="number" id="mObj" value="${num(m.objetivo, 5)}" min="1" max="10" step="0.5"></label>
-      <label class="campo">Estudio a la semana (h)<input type="number" id="mMeta" value="${num(m.metaSemanal)}" min="0"></label>
-      <label class="campo">Faltas acumuladas (h)<input type="number" id="mFaltas" value="${num(m.faltas)}" min="0"></label>
-      <label class="campo">% de faltas permitido<input type="number" id="mPct" value="${num(m.pctFaltas === undefined ? S.config.pctFaltas : m.pctFaltas)}" min="0" max="100"></label>
-    </div>
-    <hr class="separador">
-    <div class="etq" style="margin-bottom:6px">Cómo te evalúan</div>
-    <table class="tabla-pesos"><thead><tr><th>Apartado</th><th>Peso %</th><th>Nota</th><th></th></tr></thead>
-      <tbody id="tablaPesos"></tbody></table>
-    <button type="button" class="btn mini fantasma" id="btnAddPeso" style="margin-top:10px">${icono("mas")}Añadir apartado</button>
-    <div class="resumen" id="resumenPesos"></div>`,
-    [{ txt: "Borrar módulo", clase: "btn borrar", izquierda: true, accion: () => {
-        if (!confirm("¿Borrar " + m.nombre + " y sus horas registradas?")) return true;
-        S.modulos = S.modulos.filter(x => x.id !== id); delete S.horas[id];
-        guardar("ajustes"); guardar("horas"); pinta();
-      } },
-     { txt: "Listo", clase: "btn primario", accion: () => { guardar("ajustes"); registrarProgreso(); pinta(); } }]);
-
-  pintaTabla();
-  /* cerrar con la X también guarda lo tocado: antes solo lo hacía «Listo» */
-  $("#dlg").addEventListener("close", () => guardar("ajustes"), { once: true });
-  const leerCab = () => {
-    m.cod = $("#mCod").value.trim() || m.cod; m.nombre = $("#mNombre").value.trim() || m.nombre;
-    m.horas = num($("#mHoras").value, m.horas); m.objetivo = clamp(num($("#mObj").value, 5), 0, 10);
-    m.metaSemanal = num($("#mMeta").value, 0); m.faltas = Math.max(0, num($("#mFaltas").value, 0));
-    m.pctFaltas = clamp(num($("#mPct").value, 15), 0, 100);
-    pintaResumen();
-  };
-  ["mCod", "mNombre", "mHoras", "mObj", "mMeta", "mFaltas", "mPct"].forEach(k => $("#" + k).addEventListener("input", leerCab));
-  $("#btnAddPeso").addEventListener("click", () => { m.pesos.push({ id: uid(), nombre: "Nuevo apartado", peso: 0, nota: null }); pintaTabla(); });
-  $("#tablaPesos").addEventListener("input", e => {
-    const tr = e.target.closest("tr"), p = m.pesos.find(x => x.id === tr.dataset.p); if (!p) return;
-    const campo = e.target.dataset.campo;
-    if (campo === "nombre") p.nombre = e.target.value;
-    else if (campo === "peso") p.peso = clamp(num(e.target.value, 0), 0, 100);
-    else p.nota = e.target.value === "" ? null : clamp(num(e.target.value, 0), 0, 10);
-    pintaResumen();
-  });
-  $("#tablaPesos").addEventListener("click", e => {
-    const b = e.target.closest("[data-borrar-peso]"); if (!b) return;
-    m.pesos = m.pesos.filter(x => x.id !== b.dataset.borrarPeso); pintaTabla();
-  });
+/* ══════════════════ ficha de una asignatura ══════════════════
+   Al entrar en un módulo ya no se abre una ventana con todo junto: se abre su
+   ficha, a pantalla completa y por partes. Arriba, cómo vas; en el centro, las
+   notas de cada apartado (lo que más se toca); a un lado, faltas y estudio de
+   la semana; y los datos de la asignatura, plegados al final. Todo se guarda
+   solo mientras escribes. */
+let modAbierto = null, fichaNueva = false, fichaT = null;
+const guardaFicha = () => { clearTimeout(fichaT); fichaT = setTimeout(() => guardar("ajustes"), 350); };
+function abrirFicha(id, nueva) {
+  if (!modPorId(id)) return;
+  if (seccion !== "modulos") irASeccion("modulos");
+  modAbierto = id; fichaNueva = !!nueva; pinta(); window.scrollTo({ top: 0 });
+  if (nueva) setTimeout(() => { const n = $("#mdNombreIn"); if (n) { n.focus(); n.select(); } }, 40);
+  else $("#principal").focus({ preventScroll: true });
 }
+function nuevoModulo() {
+  const m = { id: uid(), cod: "NUEVO", nombre: mayus(voc()) + " sin nombre", color: S.modulos.length % 7, horas: 100,
+              faltas: 0, objetivo: num(S.config.objetivo, 5), metaSemanal: 2, pesos: PESOS_DEF() };
+  S.modulos.push(m); guardar("ajustes"); abrirFicha(m.id, true);
+}
+const delMod = () => voc() === "asignatura" ? "de la asignatura" : "del " + voc();
+const puntosDe = p => p.nota === null || p.nota === undefined || p.nota === "" ? null : num(p.nota) * num(p.peso) / 100;
+const ICO_X = '<svg class="i" viewBox="0 0 16 16" aria-hidden="true"><path d="M4.5 4.5l7 7M11.5 4.5l-7 7"/></svg>';
+const ICO_ATRAS = '<svg class="i" viewBox="0 0 16 16" aria-hidden="true"><path d="M10 3.5 5.5 8l4.5 4.5"/></svg>';
+
+function mdHero(m, c) {
+  return `${anilloNota(c)}
+    <div class="md-hero-txt"><p class="m2-frase md-frase">${fraseModulo(c)}</p>
+      <dl class="md-cifras">
+        <div><dt>Nota actual</dt><dd class="num">${c.media === null ? "—" : nota(c.media)}</dd></div>
+        <div><dt>Evaluado</dt><dd class="num">${nota(c.pesoEval)} %</dd></div>
+        <div><dt>Necesitas en lo que queda</dt><dd class="num">${c.necesita === null || c.yaEsta || c.imposible ? "—" : nota(c.necesita)}</dd></div>
+        <div><dt>Tu objetivo</dt><dd class="num">${nota(c.obj)}</dd></div>
+      </dl></div>`;
+}
+function mdTotal(m) {
+  const suma = m.pesos.reduce((s, p) => s + num(p.peso), 0), ok = Math.round(suma) === 100;
+  return `<span class="md-suma${ok ? "" : " mal"}">${ok ? "Los pesos suman 100 %" : "Los pesos suman " + nota(suma) + " %: deberían sumar 100 %"}</span>`;
+}
+function mdAporte(p) {
+  const pt = puntosDe(p), max = num(p.peso) / 10;
+  return `<div class="md-barra"><i style="width:${max && pt !== null ? clamp(pt / max * 100, 0, 100) : 0}%"></i></div>
+    <span class="md-aporta">${pt === null ? "Vale " + nota(max) + (max === 1 ? " punto" : " puntos") : "Aporta " + nota(pt) + " de " + nota(max)}</span>`;
+}
+const mdFila = p => `<div class="md-fila" data-p="${p.id}">
+    <input type="text" class="md-apartado" value="${esc(p.nombre)}" data-campo="nombre" aria-label="Nombre del apartado">
+    <label class="md-peso" title="Cuánto cuenta en la nota final"><input type="number" min="0" max="100" step="1" inputmode="numeric" value="${num(p.peso)}" data-campo="peso" aria-label="Peso de ${esc(p.nombre)} en porcentaje"><span aria-hidden="true">%</span></label>
+    <input type="number" class="md-nota" min="0" max="10" step="0.01" inputmode="decimal" value="${p.nota === null || p.nota === undefined ? "" : p.nota}" data-campo="nota" placeholder="—" aria-label="Nota de ${esc(p.nombre)}">
+    <button type="button" class="md-quitar" data-md-quitar="${p.id}" aria-label="Quitar ${esc(p.nombre)}" title="Quitar apartado">${ICO_X}</button>
+    <div class="md-aporte">${mdAporte(p)}</div>
+  </div>`;
+function mdFaltasHTML(m, c) {
+  const est = c.faltasPct >= 1 ? ["limite", "Límite superado"] : c.faltasPct >= 0.7 ? ["ojo", "Cerca del límite"] : ["", "Vas bien"];
+  return `<div class="md-caja-cab"><h2>Asistencia</h2><span class="m2-faltas ${est[0]}">${est[1]}</span></div>
+    <div class="md-grande"><b class="num">${num(m.faltas)} h</b><span>de ${c.faltasMax} h de faltas permitidas</span></div>
+    <div class="medidor faltas${c.faltasPct >= 1 ? " lleno" : ""}"><i style="width:${clamp(c.faltasPct * 100, 0, 100)}%"></i></div>
+    <div class="md-caja-pie">
+      <span class="paso" role="group" aria-label="Faltas de ${esc(m.nombre)}">
+        <button class="btn fantasma" data-quitar-falta="${m.id}" aria-label="Quitar una hora de falta">−</button>
+        <span class="num">${num(m.faltas)} h</span>
+        <button class="btn fantasma" data-falta="${m.id}" aria-label="Añadir una hora de falta">+</button>
+      </span>
+      <span class="meta">Límite: ${nota(c.pct)} % de ${num(m.horas)} h</span>
+    </div>`;
+}
+function mdSemanaHTML(m) {
+  const semana = minutosSemana(m.id), meta = num(m.metaSemanal) * 60;
+  return `<div class="md-caja-cab"><h2>Estudio esta semana</h2>${meta && semana >= meta ? `<span class="m2-faltas bien">Meta cumplida</span>` : ""}</div>
+    <div class="md-grande"><b class="num">${horasTxt(semana)}</b><span>${meta ? "de " + horasTxt(meta) + " que te propusiste" : "Sin meta semanal"}</span></div>
+    ${meta ? `<div class="medidor"><i style="width:${clamp(semana / meta * 100, 0, 100)}%"></i></div>` : ""}
+    <div class="md-caja-pie"><button type="button" class="btn mini" data-plan-empezar="${m.id}">${icono("play")}Empezar a estudiar</button></div>`;
+}
+const mdCampo = (k, txt, tipo, v, extra) => `<label class="campo">${txt}<input type="${tipo}" data-md-dato="${k}" value="${esc(String(v))}"${k === "nombre" ? ' id="mdNombreIn"' : ""}${extra || ""}></label>`;
+
+function vistaFichaModulo(m) {
+  const c = calcModulo(m);
+  return `<div class="ficha-mod" style="${colorMod(m)}">
+  <nav class="md-migas" aria-label="Estás en">
+    <button type="button" class="md-volver" data-md-volver>${ICO_ATRAS}${esc(voc(true, true))}</button>
+    <span aria-hidden="true">/</span><span class="md-miga-actual" id="mdMiga">${esc(m.nombre)}</span>
+  </nav>
+  <header class="md-cab">
+    <span class="codigo" style="${colorMod(m)}" id="mdCod">${esc(m.cod)}</span>
+    <h1 class="titulo md-tit" id="mdTit">${esc(m.nombre)}</h1>
+    <span class="md-estado" id="mdEstado">${estadoModulo(c)}</span>
+  </header>
+  <section class="panel md-hero" id="mdHero" aria-label="Cómo vas">${mdHero(m, c)}</section>
+  <div class="md-cuerpo">
+    <section class="panel md-notas" aria-labelledby="mdNotasTit">
+      <div class="md-sec-cab"><h2 id="mdNotasTit">Notas</h2><p class="meta">Cómo te evalúan y lo que llevas en cada parte. Se guarda solo.</p></div>
+      <div class="md-filas-cab" aria-hidden="true"><span>Apartado</span><span>Peso</span><span>Nota</span></div>
+      <div class="md-filas" id="mdFilas">${m.pesos.length ? m.pesos.map(mdFila).join("") : `<p class="pn-vacio md-sin">Añade los apartados con los que te evalúan: exámenes, prácticas, actitud…</p>`}</div>
+      <div class="md-notas-pie"><button type="button" class="btn mini fantasma" data-md-add>${icono("mas")}Añadir apartado</button><span id="mdTotal">${mdTotal(m)}</span></div>
+    </section>
+    <div class="md-lado">
+      <section class="panel md-caja" id="mdFaltas" aria-label="Asistencia">${mdFaltasHTML(m, c)}</section>
+      <section class="panel md-caja" id="mdSemana" aria-label="Estudio esta semana">${mdSemanaHTML(m)}</section>
+    </div>
+  </div>
+  <details class="panel md-datos"${fichaNueva ? " open" : ""}>
+    <summary><span class="md-datos-tit">Datos ${delMod()}</span><span class="meta">Nombre, código, horas, objetivo y color</span></summary>
+    <div class="md-datos-cuerpo">
+      <div class="rejilla-campos md-campos">
+        ${mdCampo("nombre", "Nombre", "text", m.nombre, ' autocomplete="off"')}
+        ${mdCampo("cod", "Código", "text", m.cod, ' maxlength="8" autocomplete="off"')}
+        ${mdCampo("horas", "Horas del curso", "number", num(m.horas), ' min="0"')}
+        ${mdCampo("objetivo", "Nota objetivo", "number", num(m.objetivo, 5), ' min="1" max="10" step="0.5"')}
+        ${mdCampo("metaSemanal", "Estudio a la semana (h)", "number", num(m.metaSemanal), ' min="0" step="0.5"')}
+        ${mdCampo("pctFaltas", "% de faltas permitido", "number", num(m.pctFaltas === undefined ? S.config.pctFaltas : m.pctFaltas), ' min="0" max="100"')}
+      </div>
+      <div class="md-colores" role="group" aria-label="Color">
+        <span class="etq">Color</span>
+        ${COLORES_MOD.map(([nom, i]) => `<button type="button" class="md-color" data-md-color="${i}" style="--c:var(--mod-${i})" aria-label="${nom}" aria-pressed="${!m.colorHex && num(m.color) % 7 === i}" title="${nom}"></button>`).join("")}
+      </div>
+      <div class="md-datos-pie"><button type="button" class="btn borrar" data-md-borrar>${'<svg class="i" viewBox="0 0 16 16" aria-hidden="true"><path d="M3 4.5h10M6.5 4.5V3h3v1.5M4.6 4.5l.7 8.3a1 1 0 0 0 1 .9h3.4a1 1 0 0 0 1-.9l.7-8.3"/></svg>'}Borrar ${voc()}</button></div>
+    </div>
+  </details>
+</div>`;
+}
+function refrescaFicha(m) {
+  const c = calcModulo(m);
+  const pon = (id, html) => { const el = $("#" + id); if (el) el.innerHTML = html; };
+  pon("mdHero", mdHero(m, c)); pon("mdEstado", estadoModulo(c)); pon("mdTotal", mdTotal(m)); pon("mdFaltas", mdFaltasHTML(m, c)); pon("mdSemana", mdSemanaHTML(m));
+  m.pesos.forEach(p => { const a = document.querySelector('.md-fila[data-p="' + p.id + '"] .md-aporte'); if (a) a.innerHTML = mdAporte(p); });
+}
+
+/* escribir en la ficha: se actualiza lo calculado sin tocar lo que estás escribiendo */
+document.addEventListener("input", e => {
+  const t = e.target, m = modAbierto && modPorId(modAbierto); if (!m || !t.closest(".ficha-mod")) return;
+  if (t.dataset.campo) {
+    const p = m.pesos.find(x => x.id === t.closest(".md-fila").dataset.p); if (!p) return;
+    if (t.dataset.campo === "nombre") p.nombre = t.value;
+    else if (t.dataset.campo === "peso") p.peso = clamp(num(t.value, 0), 0, 100);
+    else p.nota = t.value === "" ? null : clamp(num(t.value, 0), 0, 10);
+  } else if (t.dataset.mdDato) {
+    const k = t.dataset.mdDato, v = t.value;
+    if (k === "nombre") { m.nombre = v.trim() || m.nombre; $("#mdTit").textContent = m.nombre; $("#mdMiga").textContent = m.nombre; }
+    else if (k === "cod") { m.cod = v.trim().toUpperCase() || m.cod; $("#mdCod").textContent = m.cod; }
+    else if (k === "horas") m.horas = Math.max(0, num(v, m.horas));
+    else if (k === "objetivo") m.objetivo = clamp(num(v, 5), 0, 10);
+    else if (k === "metaSemanal") m.metaSemanal = Math.max(0, num(v, 0));
+    else if (k === "pctFaltas") m.pctFaltas = clamp(num(v, 15), 0, 100);
+  } else return;
+  refrescaFicha(m); guardaFicha();
+});
+/* al soltar un campo: lo guardado queda firme y el menú se pone al día */
+document.addEventListener("change", e => {
+  if (!modAbierto || !e.target.closest(".ficha-mod") || !(e.target.dataset.campo || e.target.dataset.mdDato)) return;
+  clearTimeout(fichaT); guardar("ajustes"); registrarProgreso(); pintaNav();
+});
+document.addEventListener("click", async e => {
+  const t = e.target, m = modAbierto && modPorId(modAbierto);
+  if (t.closest("[data-md-nuevo]")) { nuevoModulo(); return; }
+  if (!m || !t.closest(".ficha-mod")) return;
+  if (t.closest("[data-md-volver]")) { modAbierto = null; pinta(); window.scrollTo({ top: 0 }); return; }
+  if (t.closest("[data-md-add]")) {
+    const p = { id: uid(), nombre: "Nuevo apartado", peso: 0, nota: null }; m.pesos.push(p); guardar("ajustes"); pinta();
+    const f = document.querySelector('.md-fila[data-p="' + p.id + '"] .md-apartado'); if (f) { f.focus(); f.select(); }
+    return;
+  }
+  const q = t.closest("[data-md-quitar]");
+  if (q) { m.pesos = m.pesos.filter(x => x.id !== q.dataset.mdQuitar); guardar("ajustes"); pinta(); return; }
+  const col = t.closest("[data-md-color]");
+  if (col) { m.color = +col.dataset.mdColor; delete m.colorHex; guardar("ajustes"); fichaNueva = !!t.closest("details[open]"); pinta(); return; }
+  if (t.closest("[data-md-borrar]")) {
+    const ok = await confirmar("Se borra «" + m.nombre + "» con sus notas y las horas que llevas registradas.",
+      { titulo: "¿Borrar " + (voc() === "asignatura" ? "esta " : "este ") + voc() + "?", si: "Borrar" });
+    if (!ok) return;
+    S.modulos = S.modulos.filter(x => x.id !== m.id); delete S.horas[m.id];
+    modAbierto = null; guardar("ajustes"); guardar("horas"); pinta(); aviso("Borrado."); return;
+  }
+});
+/* el desplegable de datos recuerda si lo dejaste abierto */
+document.addEventListener("toggle", e => { if (e.target.classList && e.target.classList.contains("md-datos")) fichaNueva = e.target.open; }, true);
 
 function vistaApuntes() {
   const lista = Object.values(S.apuntes).sort((a, b) => (b.editado || "").localeCompare(a.editado || ""));
@@ -2782,6 +3235,33 @@ function dlgRepaso() {
 }
 
 /* ══════════════════ diálogo ══════════════════ */
+/* ── confirmar dentro de la app ──
+   Nada de la ventanita del navegador: una tarjeta propia, con el botón de
+   borrar en rojo y «Cancelar» como opción segura por defecto. Devuelve una
+   promesa que se resuelve a true solo si se pulsa el botón de aceptar; Esc,
+   «Cancelar» o un clic fuera de la tarjeta la resuelven a false. */
+function confirmar(texto, { titulo = "¿Seguro?", si = "Aceptar", no = "Cancelar", peligro = true } = {}) {
+  return new Promise(resolver => {
+    const d = $("#dlgConfirmar");
+    let hecho = false;
+    const fin = v => { if (hecho) return; hecho = true; if (d.open) d.close(); resolver(v); };
+    const icon = peligro
+      ? '<path d="M3 4.5h10M6.5 4.5V3h3v1.5M4.6 4.5l.7 8.3a1 1 0 0 0 1 .9h3.4a1 1 0 0 0 1-.9l.7-8.3"/>'
+      : '<circle cx="8" cy="8" r="6"/><path d="M8 7.3v3.6M8 5.2v.1"/>';
+    d.innerHTML = `<div class="cf">
+      <div class="cf-icono${peligro ? " peligro" : ""}" aria-hidden="true"><svg class="i" viewBox="0 0 16 16">${icon}</svg></div>
+      <h3 class="cf-tit" id="cfTit">${esc(titulo)}</h3>
+      <p class="cf-txt" id="cfTxt">${esc(texto)}</p>
+      <div class="cf-btns"><button type="button" class="btn" data-cf="no">${esc(no)}</button><button type="button" class="btn ${peligro ? "peligro" : "primario"}" data-cf="si">${esc(si)}</button></div>
+    </div>`;
+    d.onclick = e => { const b = e.target.closest("[data-cf]"); if (b) fin(b.dataset.cf === "si"); else if (e.target === d) fin(false); };
+    d.oncancel = e => { e.preventDefault(); fin(false); };
+    d.onclose = () => fin(false);
+    d.showModal();
+    d.querySelector('[data-cf="no"]').focus();
+  });
+}
+
 function abrirDlg(titulo, html, botones) {
   $("#dlgTit").textContent = titulo;
   const cuerpoDlg = $("#dlgCuerpo");
@@ -2836,7 +3316,7 @@ function dlgAjustes() {
     try {
       const d = JSON.parse(await f.text());
       if (!d.modulos) throw new Error("formato");
-      if (!confirm("Esto sustituye lo que tienes ahora por la copia. ¿Seguimos?")) return;
+      if (!(await confirmar("Lo que tienes ahora se sustituye por lo que hay en la copia.", { titulo: "¿Cargar la copia?", si: "Cargar copia" }))) return;
       S = Object.assign(estadoInicial(), d);
       Object.keys(DOCS).forEach(guardar);
       Object.values(S.apuntes).forEach(guardarApunte);
@@ -2865,25 +3345,16 @@ function contarPalabras() {
 }
 function irASeccion(id, foco) {
   cerrarHojaMas();
+  modAbierto = null;
   seccion = id; pinta();
   window.scrollTo({ top: 0 });
-  if (foco === "nav") { const b = $('.nav-item[data-sec="' + id + '"]'); if (b) b.focus(); }
+  if (foco === "nav") { const b = $('.riel-item[data-sec="' + id + '"]') || $('.nav-item[data-sec="' + id + '"]'); if (b) b.focus(); }
   else $("#principal").focus({ preventScroll: true });
 }
 
 /* ══════════════════ eventos ══════════════════ */
 $("#nav").addEventListener("click", e => {
   const b = e.target.closest("[data-sec]"); if (b) irASeccion(b.dataset.sec);
-});
-/* las fichas van en dos columnas: izquierda y derecha se mueven de una en una; arriba y abajo, de fila en fila */
-$("#nav").addEventListener("keydown", e => {
-  const orden = SECCIONES.filter(s => !s.pie).map(s => s.id);
-  const mov = { ArrowRight: 1, ArrowLeft: -1, ArrowDown: 2, ArrowUp: -2, Home: "inicio", End: "fin" }[e.key];
-  if (mov === undefined) return;
-  e.preventDefault();
-  const i = Math.max(0, orden.indexOf(seccion));
-  const d = mov === "inicio" ? 0 : mov === "fin" ? orden.length - 1 : clamp(i + mov, 0, orden.length - 1);
-  irASeccion(orden[d], "nav");
 });
 
 document.addEventListener("click", async e => {
@@ -2928,12 +3399,8 @@ document.addEventListener("click", async e => {
     registrarMinutos(T.modId, 30); aviso("30 minutos apuntados."); pinta(); return;
   }
 
-  if (t.closest("#btnNuevoMod")) {
-    const m = { id: uid(), cod: "NUEVO", nombre: "Módulo sin nombre", color: S.modulos.length % 7, horas: 100,
-                faltas: 0, objetivo: num(S.config.objetivo, 5), metaSemanal: 2, pesos: PESOS_DEF() };
-    S.modulos.push(m); guardar("ajustes"); pinta(); dlgModulo(m.id); return;
-  }
-  const ed = t.closest("[data-editar-mod]"); if (ed) { dlgModulo(ed.dataset.editarMod); return; }
+  if (t.closest("#btnNuevoMod")) { nuevoModulo(); return; }
+  const ed = t.closest("[data-editar-mod]"); if (ed) { abrirFicha(ed.dataset.editarMod); return; }
   const fa = t.closest("[data-falta]"); if (fa) { const m = modPorId(fa.dataset.falta); m.faltas = num(m.faltas) + 1; guardar("ajustes"); pinta(); return; }
   const fq = t.closest("[data-quitar-falta]"); if (fq) { const m = modPorId(fq.dataset.quitarFalta); m.faltas = Math.max(0, num(m.faltas) - 1); guardar("ajustes"); pinta(); return; }
 
@@ -2947,7 +3414,7 @@ document.addEventListener("click", async e => {
   const ap = t.closest("[data-apunte]"); if (ap) { apunteActivo = ap.dataset.apunte; pinta(); return; }
   const ba = t.closest("[data-borrar-apunte]");
   if (ba) {
-    if (!confirm("¿Borrar este apunte?")) return;
+    if (!(await confirmar("Se borra con su texto y sus dibujos. No se puede deshacer.", { titulo: "¿Borrar este apunte?", si: "Borrar" }))) return;
     const id = ba.dataset.borrarApunte;
     delete S.apuntes[id]; if (db) db.doc("apuntes/" + id).delete().catch(() => {});
     apunteActivo = null; guardarLocal(); pinta(); return;
@@ -3022,7 +3489,7 @@ document.addEventListener("click", async e => {
   }
   const bdo = t.closest("[data-borrar-doc]");
   if (bdo) {
-    if (!confirm("¿Borrar este documento del casillero?")) return;
+    if (!(await confirmar("Se quita del casillero y no se puede deshacer.", { titulo: "¿Borrar este documento?", si: "Borrar" }))) return;
     const id = bdo.dataset.borrarDoc; delete S.casillero[id]; guardarLocal();
     if (db) db.doc("casillero/" + id).delete().catch(() => {});
     pinta(); return;
@@ -4519,7 +4986,7 @@ document.addEventListener("click", async e => {
 
   const col = t.closest("[data-aj-color]");
   if (col) { const m = modPorId(col.dataset.id); if (m) { m.color = num(col.dataset.ajColor); delete m.colorHex; guardar("ajustes"); pinta(); } return; }
-  const aj = t.closest("[data-aj-ajustar]"); if (aj) { dlgModulo(aj.dataset.ajAjustar); return; }
+  const aj = t.closest("[data-aj-ajustar]"); if (aj) { abrirFicha(aj.dataset.ajAjustar); return; }
   if (t.closest("#apGuardarAsigs")) { guardar("ajustes"); aviso("Guardado."); pinta(); return; }
   if (t.closest("#apAddMod")) {
     const p = normalizarPerfil();
@@ -4545,7 +5012,7 @@ document.addEventListener("click", async e => {
   if (pl) { normalizarPerfil().plantilla = pl.dataset.ajPlantilla; guardar("perfil"); pinta(); return; }
   if (t.closest("#apAplicarPlantilla")) {
     const clave = plantillaDe(normalizarPerfil());
-    if (!confirm("Esto pone los apartados de «" + clave + "» en todas tus " + voc(true) + " y borra las notas ya puestas. ¿Sigo?")) return;
+    if (!(await confirmar("Se ponen los apartados de «" + clave + "» en todas tus " + voc(true) + " y se borran las notas que ya habías puesto.", { titulo: "¿Aplicar esta evaluación a todo?", si: "Aplicar" }))) return;
     S.modulos.forEach(m => { m.pesos = pesosDePlantilla(clave); });
     guardar("ajustes"); aviso("Plantilla aplicada."); pinta(); return;
   }
@@ -4570,7 +5037,7 @@ document.addEventListener("click", async e => {
     guardar("perfil"); aviso("Guardado."); pinta(); return;
   }
   if (t.closest("#apBorrarChat")) {
-    if (!confirm("¿Borrar la conversación con el profe? Los repasos que te puso se quedan.")) return;
+    if (!(await confirmar("Los repasos y las tareas que te puso se quedan.", { titulo: "¿Borrar la conversación con el profe?", si: "Borrar conversación" }))) return;
     const P = normalizarTutor(); P.chat = []; P.avisos = {}; guardar("tutor"); aviso("Conversación borrada."); pinta(); return;
   }
 
@@ -4585,8 +5052,8 @@ document.addEventListener("click", async e => {
   }
   if (t.closest("#apImportar")) { $("#apInputImportar").click(); return; }
   if (t.closest("#apBorrarTodo")) {
-    if (!confirm("Se borra TODO: perfil, " + voc(true) + ", notas, horas, entregas, apuntes, documentos y la conversación. ¿Seguro?")) return;
-    if (!confirm("Última vez: esto no se puede deshacer.")) return;
+    if (!(await confirmar("Se borra todo: perfil, " + voc(true) + ", notas, horas, entregas, apuntes, documentos y la conversación.", { titulo: "¿Borrar todos tus datos?", si: "Borrar todo" }))) return;
+    if (!(await confirmar("Esto no se puede deshacer. Si quieres guardar algo, descarga antes una copia desde aquí mismo.", { titulo: "¿Seguro del todo?", si: "Sí, borrar todo" }))) return;
     S = estadoInicial(); guardarLocal();
     ["ajustes", "agenda", "ingles", "horas", "objetivos", "tutor", "perfil"].forEach(nd => guardar(nd));
     Object.keys(S.apuntes).forEach(k => delete S.apuntes[k]);
@@ -4603,7 +5070,7 @@ document.addEventListener("change", async e => {
     try {
       const datos = JSON.parse(await f.text());
       if (!datos || typeof datos !== "object" || !Array.isArray(datos.modulos)) throw new Error("formato");
-      if (!confirm("Esto reemplaza lo que tengas ahora por el contenido de la copia. ¿Sigo?")) { t.value = ""; return; }
+      if (!(await confirmar("Lo que tienes ahora se reemplaza por el contenido de la copia.", { titulo: "¿Cargar la copia?", si: "Cargar copia" }))) { t.value = ""; return; }
       S = datos; normalizarPerfil(); normalizarObjetivos(); normalizarTutor(); guardarLocal();
       ["ajustes", "agenda", "ingles", "horas", "objetivos", "tutor", "perfil"].forEach(nd => guardar(nd));
       Object.values(S.apuntes || {}).forEach(n => guardarApunte(n));
@@ -5104,7 +5571,7 @@ function cambiarTipo(e, nuevo) {
 }
 
 /* ── botones, teclado y arrastrar ── */
-document.addEventListener("click", e => {
+document.addEventListener("click", async e => {
   const t = e.target;
   const tab = t.closest("[data-ag]"); if (tab) { agTab = tab.dataset.ag; agPeek = null; pinta(); return; }
   const ir = t.closest("[data-ir-agenda]"); if (ir) { agTab = ir.dataset.irAgenda; agPeek = null; irASeccion("entregas"); return; }
@@ -5143,7 +5610,7 @@ document.addEventListener("click", e => {
   if (qs && agPeek) { const tk = S.tareas.find(x => x.id === agPeek.id); if (tk) { tk.sub = tk.sub.filter(y => y.id !== qs.dataset.pkQuitasub); guardar("agenda"); pinta(); } return; }
   if (t.closest("[data-pk-borrar]") && agPeek) {
     const el = elemento(agPeek.tipo, agPeek.id); if (!el) return;
-    if (!confirm("¿Borrar «" + (el.titulo || "esto") + "»?")) return;
+    if (!(await confirmar(el.tipo === "examen" ? "El examen y su plan de estudio se quitan de la agenda." : "Se quita de la agenda con sus pasos y notas.", { titulo: "¿Borrar «" + (el.titulo || "esto") + "»?", si: "Borrar" }))) return;
     if (el.tipo === "examen") S.examenes = S.examenes.filter(x => x.id !== el.id); else S.tareas = S.tareas.filter(x => x.id !== el.id);
     guardar("agenda"); agPeek = null; pinta(); aviso("Borrado."); return;
   }
@@ -5577,6 +6044,183 @@ document.addEventListener("mousemove", e => {
   pon("meta", { name: "theme-color", content: "#161826" });
   window.addEventListener("load", () => navigator.serviceWorker.register("sw.js").catch(() => {}));
 })();
+
+/* ══════════════════ riel y panel ══════════════════
+   En el ordenador el menú son dos piezas: el riel, fijo, con cada sección y su
+   nombre debajo del icono; y el panel, que enseña lo que hay dentro de la
+   sección en la que estás (tus apuntes, tus asignaturas, lo próximo…). En el
+   móvil no cambia nada: sigue la barra de pestañas de abajo. */
+const RIEL_TXT = { escritorio: "Hoy" };
+/* los iconos del menú (riel, barra del móvil y «Más»): Phosphor Icons en duotono.
+   MIT License, Copyright (c) 2023 Phosphor Icons (https://phosphoricons.com); texto
+   completo en CREDITOS.md. El resto de la app sigue con sus iconos de trazo. */
+const ICON_RIEL = {"escritorio":"<path d=\"M184,128a56,56,0,1,1-56-56A56,56,0,0,1,184,128Z\" opacity=\"0.2\"/><path d=\"M120,40V16a8,8,0,0,1,16,0V40a8,8,0,0,1-16,0Zm72,88a64,64,0,1,1-64-64A64.07,64.07,0,0,1,192,128Zm-16,0a48,48,0,1,0-48,48A48.05,48.05,0,0,0,176,128ZM58.34,69.66A8,8,0,0,0,69.66,58.34l-16-16A8,8,0,0,0,42.34,53.66Zm0,116.68-16,16a8,8,0,0,0,11.32,11.32l16-16a8,8,0,0,0-11.32-11.32ZM192,72a8,8,0,0,0,5.66-2.34l16-16a8,8,0,0,0-11.32-11.32l-16,16A8,8,0,0,0,192,72Zm5.66,114.34a8,8,0,0,0-11.32,11.32l16,16a8,8,0,0,0,11.32-11.32ZM48,128a8,8,0,0,0-8-8H16a8,8,0,0,0,0,16H40A8,8,0,0,0,48,128Zm80,80a8,8,0,0,0-8,8v24a8,8,0,0,0,16,0V216A8,8,0,0,0,128,208Zm112-88H216a8,8,0,0,0,0,16h24a8,8,0,0,0,0-16Z\"/>","modulos":"<path d=\"M48,72h64V184H48ZM190.64,38.39a8,8,0,0,0-9.5-6.21l-46.81,10a8.07,8.07,0,0,0-6.15,9.57L139.79,107l62.46-13.42Z\" opacity=\"0.2\"/><path d=\"M231.65,194.55,198.46,36.75a16,16,0,0,0-19-12.39L132.65,34.42a16.08,16.08,0,0,0-12.3,19l33.19,157.8A16,16,0,0,0,169.16,224a16.25,16.25,0,0,0,3.38-.36l46.81-10.06A16.09,16.09,0,0,0,231.65,194.55ZM136,50.15c0-.06,0-.09,0-.09l46.8-10,3.33,15.87L139.33,66Zm6.62,31.47,46.82-10.05,3.34,15.9L146,97.53Zm6.64,31.57,46.82-10.06,13.3,63.24-46.82,10.06ZM216,197.94l-46.8,10-3.33-15.87L212.67,182,216,197.85C216,197.91,216,197.94,216,197.94ZM104,32H56A16,16,0,0,0,40,48V208a16,16,0,0,0,16,16h48a16,16,0,0,0,16-16V48A16,16,0,0,0,104,32ZM56,48h48V64H56Zm0,32h48v96H56Zm48,128H56V192h48v16Z\"/>","entregas":"<path d=\"M216,48V88H40V48a8,8,0,0,1,8-8H208A8,8,0,0,1,216,48Z\" opacity=\"0.2\"/><path d=\"M208,32H184V24a8,8,0,0,0-16,0v8H88V24a8,8,0,0,0-16,0v8H48A16,16,0,0,0,32,48V208a16,16,0,0,0,16,16H208a16,16,0,0,0,16-16V48A16,16,0,0,0,208,32ZM72,48v8a8,8,0,0,0,16,0V48h80v8a8,8,0,0,0,16,0V48h24V80H48V48ZM208,208H48V96H208V208Z\"/>","apuntes":"<path d=\"M80,40V216H48a8,8,0,0,1-8-8V48a8,8,0,0,1,8-8Z\" opacity=\"0.2\"/><path d=\"M184,112a8,8,0,0,1-8,8H112a8,8,0,0,1,0-16h64A8,8,0,0,1,184,112Zm-8,24H112a8,8,0,0,0,0,16h64a8,8,0,0,0,0-16Zm48-88V208a16,16,0,0,1-16,16H48a16,16,0,0,1-16-16V48A16,16,0,0,1,48,32H208A16,16,0,0,1,224,48ZM48,208H72V48H48Zm160,0V48H88V208H208Z\"/>","repaso":"<path d=\"M192,88V200a8,8,0,0,1-8,8H40a8,8,0,0,1-8-8V88a8,8,0,0,1,8-8H184A8,8,0,0,1,192,88Z\" opacity=\"0.2\"/><path d=\"M184,72H40A16,16,0,0,0,24,88V200a16,16,0,0,0,16,16H184a16,16,0,0,0,16-16V88A16,16,0,0,0,184,72Zm0,128H40V88H184V200ZM232,56V176a8,8,0,0,1-16,0V56H64a8,8,0,0,1,0-16H216A16,16,0,0,1,232,56Z\"/>","progreso":"<path d=\"M224,64V208H32V48H208A16,16,0,0,1,224,64Z\" opacity=\"0.2\"/><path d=\"M232,208a8,8,0,0,1-8,8H32a8,8,0,0,1-8-8V48a8,8,0,0,1,16,0V156.69l50.34-50.35a8,8,0,0,1,11.32,0L128,132.69,180.69,80H160a8,8,0,0,1,0-16h40a8,8,0,0,1,8,8v40a8,8,0,0,1-16,0V91.31l-58.34,58.35a8,8,0,0,1-11.32,0L96,123.31l-56,56V200H224A8,8,0,0,1,232,208Z\"/>","casillero":"<path d=\"M216,96v96a8,8,0,0,1-8,8H48a8,8,0,0,1-8-8V96Z\" opacity=\"0.2\"/><path d=\"M224,48H32A16,16,0,0,0,16,64V88a16,16,0,0,0,16,16v88a16,16,0,0,0,16,16H208a16,16,0,0,0,16-16V104a16,16,0,0,0,16-16V64A16,16,0,0,0,224,48ZM208,192H48V104H208ZM224,88H32V64H224V88ZM96,136a8,8,0,0,1,8-8h48a8,8,0,0,1,0,16H104A8,8,0,0,1,96,136Z\"/>","ingles":"<path d=\"M224,184H144l40-80ZM96,127.56h0A95.78,95.78,0,0,0,128,56H64A95.78,95.78,0,0,0,96,127.56Z\" opacity=\"0.2\"/><path d=\"M247.15,212.42l-56-112a8,8,0,0,0-14.31,0l-21.71,43.43A88,88,0,0,1,108,126.93,103.65,103.65,0,0,0,135.69,64H160a8,8,0,0,0,0-16H104V32a8,8,0,0,0-16,0V48H32a8,8,0,0,0,0,16h87.63A87.7,87.7,0,0,1,96,116.35a87.74,87.74,0,0,1-19-31,8,8,0,1,0-15.08,5.34A103.63,103.63,0,0,0,84,127a87.55,87.55,0,0,1-52,17,8,8,0,0,0,0,16,103.46,103.46,0,0,0,64-22.08,104.18,104.18,0,0,0,51.44,21.31l-26.6,53.19a8,8,0,0,0,14.31,7.16L148.94,192h70.11l13.79,27.58A8,8,0,0,0,240,224a8,8,0,0,0,7.15-11.58ZM156.94,176,184,121.89,211.05,176Z\"/>","ajustes":"<path d=\"M230.1,108.76,198.25,90.62c-.64-1.16-1.31-2.29-2-3.41l-.12-36A104.61,104.61,0,0,0,162,32L130,49.89c-1.34,0-2.69,0-4,0L94,32A104.58,104.58,0,0,0,59.89,51.25l-.16,36c-.7,1.12-1.37,2.26-2,3.41l-31.84,18.1a99.15,99.15,0,0,0,0,38.46l31.85,18.14c.64,1.16,1.31,2.29,2,3.41l.12,36A104.61,104.61,0,0,0,94,224l32-17.87c1.34,0,2.69,0,4,0L162,224a104.58,104.58,0,0,0,34.08-19.25l.16-36c.7-1.12,1.37-2.26,2-3.41l31.84-18.1A99.15,99.15,0,0,0,230.1,108.76ZM128,168a40,40,0,1,1,40-40A40,40,0,0,1,128,168Z\" opacity=\"0.2\"/><path d=\"M128,80a48,48,0,1,0,48,48A48.05,48.05,0,0,0,128,80Zm0,80a32,32,0,1,1,32-32A32,32,0,0,1,128,160Zm109.94-52.79a8,8,0,0,0-3.89-5.4l-29.83-17-.12-33.62a8,8,0,0,0-2.83-6.08,111.91,111.91,0,0,0-36.72-20.67,8,8,0,0,0-6.46.59L128,41.85,97.88,25a8,8,0,0,0-6.47-.6A111.92,111.92,0,0,0,54.73,45.15a8,8,0,0,0-2.83,6.07l-.15,33.65-29.83,17a8,8,0,0,0-3.89,5.4,106.47,106.47,0,0,0,0,41.56,8,8,0,0,0,3.89,5.4l29.83,17,.12,33.63a8,8,0,0,0,2.83,6.08,111.91,111.91,0,0,0,36.72,20.67,8,8,0,0,0,6.46-.59L128,214.15,158.12,231a7.91,7.91,0,0,0,3.9,1,8.09,8.09,0,0,0,2.57-.42,112.1,112.1,0,0,0,36.68-20.73,8,8,0,0,0,2.83-6.07l.15-33.65,29.83-17a8,8,0,0,0,3.89-5.4A106.47,106.47,0,0,0,237.94,107.21Zm-15,34.91-28.57,16.25a8,8,0,0,0-3,3c-.58,1-1.19,2.06-1.81,3.06a7.94,7.94,0,0,0-1.22,4.21l-.15,32.25a95.89,95.89,0,0,1-25.37,14.3L134,199.13a8,8,0,0,0-3.91-1h-.19c-1.21,0-2.43,0-3.64,0a8.1,8.1,0,0,0-4.1,1l-28.84,16.1A96,96,0,0,1,67.88,201l-.11-32.2a8,8,0,0,0-1.22-4.22c-.62-1-1.23-2-1.8-3.06a8.09,8.09,0,0,0-3-3.06l-28.6-16.29a90.49,90.49,0,0,1,0-28.26L61.67,97.63a8,8,0,0,0,3-3c.58-1,1.19-2.06,1.81-3.06a7.94,7.94,0,0,0,1.22-4.21l.15-32.25a95.89,95.89,0,0,1,25.37-14.3L122,56.87a8,8,0,0,0,4.1,1c1.21,0,2.43,0,3.64,0a8,8,0,0,0,4.1-1l28.84-16.1A96,96,0,0,1,188.12,55l.11,32.2a8,8,0,0,0,1.22,4.22c.62,1,1.23,2,1.8,3.06a8.09,8.09,0,0,0,3,3.06l28.6,16.29A90.49,90.49,0,0,1,222.9,142.12Z\"/>"};
+function iconoRiel(id) {
+  const d = ICON_RIEL[id];
+  return d ? '<svg class="ri" viewBox="0 0 256 256" fill="currentColor" aria-hidden="true">' + d + "</svg>" : icono(id);
+}
+function pintaRiel(c) {
+  const r = $("#riel"); if (!r) return;
+  const nombre = normalizarPerfil().profe.nombre || "Profe";
+  const item = (id, txt, dentro, extra) => `<button type="button" class="riel-item${extra || ""}" data-sec="${id}"
+    aria-current="${seccion === id ? "page" : "false"}" tabindex="${seccion === id ? 0 : -1}"
+    aria-label="${esc(txt + (c[id] ? ", " + c[id] + " " + (TITULO_CUENTA[id] || "").toLowerCase() : ""))}">${dentro}<span class="rt" aria-hidden="true">${esc(txt)}</span>${c[id] ? `<b class="riel-cuenta${id === "tutor" ? " verde" : ""}" aria-hidden="true">${c[id]}</b>` : ""}</button>`;
+  const cr = $("#cursoRiel"); if (cr) { cr.textContent = etiquetaCorta(); cr.title = S.config.curso + " · curso " + cursoAcademico(); }
+  r.innerHTML = SECCIONES.filter(s => !s.aparte && !s.pie).map(s => item(s.id, RIEL_TXT[s.id] || nombreSec(s.id), iconoRiel(s.id, seccion === s.id))).join("")
+    + `<span class="riel-hueco"></span>`
+    + item("tutor", nombre, `<span class="riel-av" aria-hidden="true">${esc(nombre.charAt(0).toUpperCase())}</span>`, c.tutor ? " nuevo" : "")
+    + item("ajustes", "Ajustes", iconoRiel("ajustes", seccion === "ajustes"));
+}
+
+/* ── móvil: la hoja de «Más» en filas, con su dato al día como el panel ── */
+const CHEVRON = '<svg class="i hm-chev" viewBox="0 0 16 16" aria-hidden="true"><path d="M6 3.5 10.5 8 6 12.5"/></svg>';
+function metaMas(id, c) {
+  const hoy = hoyISO();
+  if (id === "modulos") return S.modulos.length + " este curso" + (c.modulos ? " · " + c.modulos + " en riesgo" : "");
+  if (id === "repaso") return (S.tarjetas || []).length ? (c.repaso || 0) + " para hoy" : "Sin tarjetas todavía";
+  if (id === "progreso") return horasTxt(S.modulos.reduce((t, m) => t + minutosSemana(m.id), 0)) + " esta semana · racha de " + racha() + (racha() === 1 ? " día" : " días");
+  if (id === "casillero") { const n = Object.keys(S.casillero).length; return n ? n + (n === 1 ? " documento" : " documentos") : "Nada guardado todavía"; }
+  if (id === "ingles") { const v = S.vocab || []; return v.length ? v.filter(x => !x.proximo || x.proximo <= hoy).length + " palabras para hoy" : "Sin palabras todavía"; }
+  if (id === "ajustes") return "Perfil, colores, profe y datos";
+  return "";
+}
+const filaMas = (id, c) => `<button type="button" class="hm-fila" data-sec="${id}" aria-current="${seccion === id ? "page" : "false"}">
+  ${iconoRiel(id, seccion === id)}<span class="hm-txt"><span class="hm-t">${esc(nombreSec(id))}</span><span class="hm-m">${esc(metaMas(id, c))}</span></span>
+  ${c[id] ? `<b class="hm-cuenta">${c[id]}</b>` : ""}${CHEVRON}</button>`;
+
+/* piezas del panel */
+const pnCab = (tit, sub, accion) => `<div class="pn-cab"><div><h2 class="pn-tit">${esc(tit)}</h2>${sub ? `<div class="pn-sub">${esc(sub)}</div>` : ""}</div>${accion || ""}</div>`;
+const pnAccion = (sel, txt) => `<button type="button" class="pn-accion" data-pn-clic="${sel}" aria-label="${esc(txt)}" title="${esc(txt)}">${icono("mas")}</button>`;
+const pnGrupo = t => `<div class="pn-grupo">${esc(t)}</div>`;
+const pnVacio = t => `<p class="pn-vacio">${esc(t)}</p>`;
+const pnDot = m => `<span class="pn-dot" style="${m ? colorMod(m) : "--c:var(--ink-4)"}" aria-hidden="true"></span>`;
+const pnFila = (attrs, izq, t, m, activo, texto) => `<button type="button" class="pn-fila"${attrs}${activo ? ' aria-current="true"' : ""}${texto ? ` data-pn-texto="${esc(sinTildes(texto))}"` : ""}>${izq}<span class="pn-txt"><span class="pn-t">${esc(t)}</span>${m ? `<span class="pn-m">${esc(m)}</span>` : ""}</span></button>`;
+const pnDato = (k, v) => `<div class="pn-dato"><span>${esc(k)}</span><b>${esc(v)}</b></div>`;
+const pnCuando = e => e.fecha ? cuandoTxt(diasEntre(e.fecha, hoyISO())) : "Sin fecha";
+function pnElemento(e) {
+  const m = modPorId(e.modId);
+  const meta = [e.tipo === "examen" ? "Examen" : "Entrega", m && m.cod, mayus(pnCuando(e)) + (e.hora ? " a las " + e.hora : "")].filter(Boolean).join(" · ");
+  return pnFila(` data-pn-peek="${e.tipo}:${e.id}"`, pnDot(m), e.titulo || (e.tipo === "examen" ? "Examen" : "Sin título"), meta);
+}
+
+function panelHTML(c) {
+  const hoy = hoyISO();
+  const pend = () => elementos().filter(e => e.estado !== "hecha")
+    .sort((a, b) => (a.fecha || "9999").localeCompare(b.fecha || "9999") || (a.hora || "").localeCompare(b.hora || ""));
+
+  if (seccion === "escritorio") {
+    const prox = pend().filter(e => e.fecha).slice(0, 5);
+    const clases = clasesDe(diaDe(hoy));
+    return pnCab("Hoy", fechaCorta(hoy))
+      + pnGrupo("Lo próximo") + (prox.length ? prox.map(pnElemento).join("") : pnVacio("Nada a la vista. Apunta entregas y exámenes en la Agenda."))
+      + (clases.length ? pnGrupo("Clases de hoy") + clases.map(b => { const m = modPorId(b.modId); return pnFila(' data-sec="entregas"', pnDot(m), m ? m.nombre : (b.titulo || "Clase"), b.ini + (b.fin ? " – " + b.fin : "")); }).join("") : "")
+      + pnGrupo("Tu tutor") + tutorCarta(c);
+  }
+  if (seccion === "modulos") {
+    return pnCab(voc(true, true), S.modulos.length + " este curso" + (c.modulos ? " · " + c.modulos + " en riesgo" : ""),
+        `<button type="button" class="pn-accion" data-md-nuevo aria-label="Añadir ${voc()}" title="Añadir ${voc()}">${icono("mas")}</button>`)
+      + (modAbierto ? pnFila(" data-md-lista", "", "Todas", "Resumen del curso") : "")
+      + (S.modulos.length ? S.modulos.map(m => { const k = calcModulo(m);
+          return pnFila(` data-editar-mod="${m.id}"`, pnDot(m), m.nombre, [m.cod, k.media === null ? "" : "Media " + nota(k.media), k.txt].filter(Boolean).join(" · "), m.id === modAbierto); }).join("")
+        : pnVacio("Aún no hay " + voc(true) + "."));
+  }
+  if (seccion === "entregas") {
+    const p = pend(), en7 = sumaDias(hoy, 6);
+    const grupos = [["Atrasado", p.filter(e => e.fecha && e.fecha < hoy)], ["Esta semana", p.filter(e => e.fecha >= hoy && e.fecha <= en7)],
+      ["Más adelante", p.filter(e => e.fecha > en7)], ["Sin fecha", p.filter(e => !e.fecha)]].filter(g => g[1].length);
+    return pnCab("Agenda", p.length ? p.length + (p.length === 1 ? " cosa pendiente" : " cosas pendientes") : "Todo al día", pnAccion("#agRapido", "Añadir a la agenda"))
+      + (grupos.length ? grupos.map(([t, l]) => pnGrupo(t) + l.slice(0, 8).map(pnElemento).join("")).join("") : pnVacio("No tienes nada pendiente."));
+  }
+  if (seccion === "apuntes") {
+    const lista = Object.values(S.apuntes).sort((a, b) => (b.editado || "").localeCompare(a.editado || ""));
+    return pnCab("Apuntes", lista.length + (lista.length === 1 ? " apunte" : " apuntes"), pnAccion("#btnNuevoApunte", "Nuevo apunte"))
+      + (lista.length ? `<input type="search" class="pn-buscar" id="pnBuscar" placeholder="Buscar apunte" aria-label="Buscar apunte" autocomplete="off">` : "")
+      + (lista.length ? lista.map(n => { const m = modPorId(n.modId);
+          return pnFila(` data-apunte="${n.id}"`, pnDot(m), n.titulo || "Sin título", [m && m.cod, n.editado ? fechaCorta(n.editado.slice(0, 10)) : ""].filter(Boolean).join(" · "),
+            n.id === apunteActivo, (n.titulo || "") + " " + (m ? m.cod + " " + m.nombre : "") + " " + (n.tags || []).join(" ")); }).join("")
+          + `<p class="pn-vacio" id="pnSinResultados" hidden>Nada coincide con esa búsqueda.</p>`
+        : pnVacio("Todavía no hay apuntes. Crea el primero con el botón +."));
+  }
+  if (seccion === "repaso") {
+    const tj = S.tarjetas || [];
+    const porMod = S.modulos.map(m => ({ m, total: tj.filter(t => t.modId === m.id).length, hoy: tj.filter(t => t.modId === m.id && t.proximo <= hoy).length })).filter(x => x.total);
+    return pnCab("Repaso", tj.length ? (c.repaso || 0) + " para hoy · " + tj.length + " tarjetas" : "Sin tarjetas todavía")
+      + (porMod.length ? pnGrupo("Por " + voc()) + porMod.map(x => pnFila(' data-sec="repaso"', pnDot(x.m), x.m.nombre, (x.hoy ? x.hoy + " para hoy · " : "") + x.total + (x.total === 1 ? " tarjeta" : " tarjetas"))).join("")
+        : pnVacio("Crea tarjetas desde un apunte o pídeselas al profe: cada día te toca repasar solo las que estás a punto de olvidar."));
+  }
+  if (seccion === "progreso") {
+    const filas = S.modulos.map(m => ({ m, hecho: minutosSemana(m.id), meta: num(m.metaSemanal) * 60 }));
+    const hecho = filas.reduce((s, f) => s + f.hecho, 0), meta = filas.reduce((s, f) => s + f.meta, 0);
+    return pnCab("Progreso", "Esta semana")
+      + pnDato("Estudiado", horasTxt(hecho) + (meta ? " de " + horasTxt(meta) : "")) + pnDato("Racha", racha() + (racha() === 1 ? " día" : " días"))
+      + pnGrupo("Por " + voc()) + filas.map(f => `<button type="button" class="pn-fila" data-sec="progreso">${pnDot(f.m)}<span class="pn-txt"><span class="pn-t">${esc(f.m.nombre)}</span>
+          <span class="pn-m">${esc(horasTxt(f.hecho) + (f.meta ? " de " + horasTxt(f.meta) : ""))}</span>
+          ${f.meta ? `<span class="pn-barra" style="${colorMod(f.m)}"><i style="width:${Math.min(100, Math.round(f.hecho / f.meta * 100))}%"></i></span>` : ""}</span></button>`).join("");
+  }
+  if (seccion === "casillero") {
+    const docs = Object.values(S.casillero).sort((a, b) => (b.creado || "").localeCompare(a.creado || ""));
+    return pnCab("Casillero", docs.length + (docs.length === 1 ? " documento" : " documentos"))
+      + (docs.length ? pnGrupo("Lo último") + docs.slice(0, 12).map(d => { const m = modPorId(d.modId); return pnFila(' data-sec="casillero"', pnDot(m), d.titulo || "Documento", [m && m.cod, d.url ? "Enlace" : d.tipo ? String(d.tipo).split("/").pop().toUpperCase() : ""].filter(Boolean).join(" · ")); }).join("")
+        : pnVacio("Guarda aquí lo que te dan en clase: PDF, fotos de la pizarra o enlaces."));
+  }
+  if (seccion === "ingles") {
+    const v = S.vocab || [], rep = v.filter(x => !x.proximo || x.proximo <= hoy).length;
+    return pnCab("Inglés", v.length + (v.length === 1 ? " palabra" : " palabras"))
+      + pnDato("Para repasar hoy", String(rep))
+      + (v.length ? pnGrupo("Las últimas") + v.slice(-8).reverse().map(x => pnFila(' data-sec="ingles"', "", x.en || "—", x.es || "")).join("") : pnVacio("Apunta las palabras técnicas que te encuentres y repásalas aquí."));
+  }
+  if (seccion === "tutor") {
+    const pr = normalizarPerfil(), nombre = pr.profe.nombre || "Profe";
+    const pedir = ["Explícame lo que dimos hoy", "Hazme un test rápido de lo que peor llevo", "Revisa mi código", "¿Qué me toca estudiar esta semana?"];
+    return pnCab(nombre, "Tu tutor de " + (S.config.curso || "tu curso"))
+      + pnVacio("Te da pistas antes que la respuesta, sabe lo que ya has visto y puede ponerte repasos y tareas.")
+      + pnGrupo("Pídele") + pedir.map(t => pnFila(` data-pn-pedir="${esc(t)}"`, "", t, "")).join("");
+  }
+  if (seccion === "ajustes") {
+    return pnCab("Ajustes", "")
+      + ajTabs().map(([id, t]) => pnFila(` data-pn-aj="${id}"`, "", t, "", ajTab === id)).join("");
+  }
+  return "";
+}
+
+/* acciones del panel */
+document.addEventListener("click", e => {
+  const t = e.target;
+  if (t.closest(".cm-logo")) { irASeccion("escritorio"); return; }
+  const pk = t.closest("[data-pn-peek]"); if (pk) { const [tipo, id] = pk.dataset.pnPeek.split(":"); abrirPeek(tipo, id); return; }
+  const cl = t.closest("[data-pn-clic]");
+  if (cl) { const el = $(cl.dataset.pnClic); if (el) { if (el.matches("input, textarea")) { el.focus(); el.scrollIntoView({ block: "center" }); } else el.click(); } return; }
+  if (t.closest("[data-md-lista]")) { modAbierto = null; pinta(); window.scrollTo({ top: 0 }); return; }
+  const aj = t.closest("[data-pn-aj]"); if (aj) { ajTab = aj.dataset.pnAj; pinta(); return; }
+  const pd = t.closest("[data-pn-pedir]");
+  if (pd) { const ta = $("#chatTexto"); if (ta) { ta.value = pd.dataset.pnPedir; ta.focus(); ta.dispatchEvent(new Event("input", { bubbles: true })); } return; }
+});
+document.addEventListener("input", e => {
+  if (e.target.id !== "pnBuscar") return;
+  const q = sinTildes(e.target.value.trim());
+  let vistos = 0;
+  document.querySelectorAll("#nav [data-pn-texto]").forEach(f => { f.hidden = !!q && !f.dataset.pnTexto.includes(q); if (!f.hidden) vistos++; });
+  const sr = $("#pnSinResultados"); if (sr) sr.hidden = vistos > 0;
+});
+$("#riel").addEventListener("click", e => { const b = e.target.closest("[data-sec]"); if (b) irASeccion(b.dataset.sec); });
+/* en el riel, arriba y abajo recorren las secciones */
+$("#riel").addEventListener("keydown", e => {
+  const orden = SECCIONES.map(s => s.id);
+  const mov = { ArrowDown: 1, ArrowUp: -1, Home: "inicio", End: "fin" }[e.key];
+  if (mov === undefined) return;
+  e.preventDefault();
+  const i = Math.max(0, orden.indexOf(seccion));
+  const d = mov === "inicio" ? 0 : mov === "fin" ? orden.length - 1 : clamp(i + mov, 0, orden.length - 1);
+  irASeccion(orden[d], "nav");
+});
+/* enlaces directos: #sec=entregas abre esa sección y #mas la hoja de «Más» del móvil */
+function irAlEnlace() {
+  const h = decodeURIComponent(location.hash.slice(1));
+  if (h.startsWith("sec=") && SECCIONES.some(x => x.id === h.slice(4))) irASeccion(h.slice(4));
+  else if (h === "mas" && getComputedStyle($("#barraMovil")).display !== "none") setTimeout(abrirHojaMas, 60);
+}
+window.addEventListener("hashchange", irAlEnlace);
+setTimeout(irAlEnlace, 0);
 
 /* ══════════════════ arranque ══════════════════ */
 (function inicio() {
