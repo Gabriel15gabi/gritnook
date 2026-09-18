@@ -16,7 +16,7 @@ La primera vez no hay una app vacía esperando que la rellenes: hay siete pasos.
 
 1. **Quién eres y qué estudias** — ESO, Bachillerato, grado medio, grado superior, universidad, oposiciones, idiomas u otra cosa.
 2. **Tu curso** — el curso y la modalidad, el ciclo, el grado o la plaza.
-3. **Tus asignaturas** — propuestas del catálogo (ESO y Bachillerato por modalidad, DAW, DAM, ASIR, Administración y Finanzas, Educación Infantil, SMR, Gestión Administrativa, Cuidados Auxiliares de Enfermería…) y, si abres la app desde Claude, la lista real de tu curso con un resumen del temario de cada una. Todo editable: quita, añade, renombra.
+3. **Tus asignaturas** — propuestas del catálogo (ESO y Bachillerato por modalidad, DAW, DAM, ASIR, Administración y Finanzas, Educación Infantil, SMR, Gestión Administrativa, Cuidados Auxiliares de Enfermería…, ya con los módulos comunes de la FP nueva del curso 24/25) y, si abres la app desde Claude, la lista real de tu curso con un resumen del temario de cada una. Todo editable: quita, añade, renombra.
 4. **Si trabajas** — y cuántas horas puedes estudiar de verdad a la semana. Las horas se reparten entre las asignaturas según su peso.
 5. **Cómo te evalúan** — plantilla por etapa (colegio, FP, universidad, oposición, idiomas) y ajustable asignatura por asignatura.
 6. **Cómo quieres que te trate el tutor** — tono, cuánta caña, cuántos mensajes al día y si puede ponerte cosas por su cuenta.
@@ -34,13 +34,17 @@ Quien ya tenía datos no pasa por ahí: el perfil se rellena con lo que había y
 
 **Horas y cronómetro.** Pomodoro por asignatura que se queda a mano debajo del menú, en cualquier sección, para pararlo o seguir sin moverte. Al acabar la concentración te para con un «bien hecho» y el descanso lo empiezas tú. Con el reparto de la semana y la meta semanal de cada una.
 
-**Entregas.** Fecha límite, cuánto pesa en la nota y aviso de las que vencen en tres días o menos.
+**Agenda.** Entregas con su fecha y su peso; exámenes con cuenta atrás y un plan de estudio hacia atrás, automático o hecho por el tutor; tu horario de clases; y el **plan de la semana**, que sale solo de tus horas, tus días libres, tus exámenes y lo que peor llevas, y se va tachando al estudiar con el cronómetro. El Escritorio te dice cada día qué te toca.
 
 **Casillero.** PDFs, imágenes y apuntes de clase guardados dentro de la propia app.
 
 **Inglés.** Traductor a mano, vocabulario propio y repaso espaciado de las palabras que te tocan.
 
-**Objetivos del día.** Se cumplen solos con lo que ya haces: estudiar con el cronómetro, tachar una entrega, escribir un apunte, repasar vocabulario. Con su racha de la semana.
+**Objetivos del día.** Se cumplen solos con lo que ya haces: estudiar con el cronómetro, tachar una entrega, escribir un apunte, repasar tarjetas. Con su racha de la semana.
+
+**Repaso.** Tarjetas con repaso espaciado —vuelven justo cuando estás a punto de olvidarlas— y tests tipo examen, a mano o sacados de tus apuntes por el tutor. Lo que fallas en un test pasa a tarjetas.
+
+**Progreso.** Horas por semana y asignatura, la nota de cada una contra tu objetivo y cómo ha ido cambiando, y los exámenes hechos.
 
 **El tutor.** Un profesor particular de lo que estudies: no suelta la respuesta a la primera —pista, pregunta, ejemplo parecido y, si hace falta, la explicación entera—, conoce el temario de tus asignaturas, tus notas, tus entregas y de qué tienes apuntes, te escribe él cuando algo se acerca y puede ponerte repasos, entregas y objetivos. Se le pueden pasar capturas (pegadas con Ctrl+V o arrastradas) y archivos de código o texto para que los revise.
 
@@ -70,6 +74,10 @@ node servidor.js
 
 Y abre http://localhost:4173
 
+## Instalarla en el móvil
+
+Desde GitHub Pages, o en local con `node servidor.js`, la app se instala como una más: en el móvil, menú del navegador → *Añadir a pantalla de inicio*; en el ordenador, el icono de instalar de la barra de direcciones. Funciona sin conexión.
+
 ## Dos versiones, una base
 
 El mismo archivo corre en dos sitios con capacidades distintas:
@@ -78,9 +86,14 @@ El mismo archivo corre en dos sitios con capacidades distintas:
 |---|---|---|
 | Apuntes, libreta, notas, horas, entregas, ajustes | Sí | Sí |
 | Dónde se guarda | En ese navegador | En tu cuenta, sincronizado entre dispositivos |
-| Tutor, lista de asignaturas por IA, traductor | No | Sí |
+| Tutor, lista de asignaturas por IA, tarjetas y tests del tutor, traductor | No | Sí |
+| Instalable y sin conexión | Sí | No |
 
 La versión pública es para verla y probarla. La de Claude usa sus capacidades de sincronización e IA, que solo existen cuando la página se abre desde allí; el código detecta si están disponibles y, si no, esconde o explica lo que no puede funcionar en vez de fallar.
+
+## Cuentas de usuario
+
+Lo que falta para poder venderla —cuentas, cobro y lo legal— está en [CUENTAS.md](CUENTAS.md).
 
 ## Licencia
 

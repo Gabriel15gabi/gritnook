@@ -1,17 +1,19 @@
 /* Servidor estático mínimo para ver la app en local, sin dependencias.
    No hace falta para usarla: index.html se abre con doble clic. Esto es
-   por comodidad, para tenerla en http://localhost:4173 mientras se toca.
+   por comodidad, y para probar que se instala como app (eso necesita http).
 
-   node servidor.js  */
+   node servidor.js          → http://localhost:4173
+   node servidor.js 4174     → en otro puerto */
 const http = require("http");
 const fs = require("fs");
 const path = require("path");
 
-const PUERTO = process.env.PORT || 4173;
+const PUERTO = Number(process.argv[2]) || Number(process.env.PORT) || 4173;
 const RAIZ = __dirname;
 const TIPOS = {
   ".html": "text/html; charset=utf-8", ".js": "text/javascript; charset=utf-8",
   ".css": "text/css; charset=utf-8", ".json": "application/json; charset=utf-8",
+  ".webmanifest": "application/manifest+json; charset=utf-8",
   ".png": "image/png", ".jpg": "image/jpeg", ".svg": "image/svg+xml", ".ico": "image/x-icon"
 };
 
@@ -26,4 +28,4 @@ http.createServer((req, res) => {
     res.writeHead(200, { "Content-Type": TIPOS[path.extname(archivo).toLowerCase()] || "application/octet-stream" });
     res.end(datos);
   });
-}).listen(PUERTO, () => console.log("El Escritorio de DAW en http://localhost:" + PUERTO));
+}).listen(PUERTO, () => console.log("El Escritorio en http://localhost:" + PUERTO));

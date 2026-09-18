@@ -1,0 +1,17 @@
+{
+  "name": "El Escritorio",
+  "short_name": "Escritorio",
+  "description": "Tu curso en una pantalla: asignaturas, notas, horas, exámenes, apuntes y un tutor.",
+  "lang": "es",
+  "start_url": "./",
+  "scope": "./",
+  "display": "standalone",
+  "orientation": "any",
+  "background_color": "#161826",
+  "theme_color": "#161826",
+  "icons": [
+    { "src": "iconos/icono-192.png", "sizes": "192x192", "type": "image/png" },
+    { "src": "iconos/icono-512.png", "sizes": "512x512", "type": "image/png" },
+    { "src": "iconos/icono-maskable-512.png", "sizes": "512x512", "type": "image/png", "purpose": "maskable" }
+  ]
+}
