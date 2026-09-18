@@ -1,8 +1,8 @@
-/* Lo que deja usar El Escritorio sin conexión y la hace instalable.
+/* Lo que deja usar GritNook sin conexión y la hace instalable.
    La página va primero a la red, para que las versiones nuevas lleguen en
    cuanto las hay, y tira de la copia guardada si no hay conexión. Los iconos
    y la tipografía, al revés: primero la copia, que no cambian. */
-const CACHE = "el-escritorio-v1";
+const CACHE = "gritnook-v1";
 const BASE = ["./", "index.html", "manifest.webmanifest", "iconos/icono-192.png", "iconos/icono-512.png"];
 
 self.addEventListener("install", e => {

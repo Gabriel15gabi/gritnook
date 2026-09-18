@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-<title>El Escritorio</title>
+<title>GritNook</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&display=swap">
@@ -521,7 +521,7 @@ dialog::backdrop{background:rgba(0,0,0,.38); backdrop-filter:blur(2px)}
 .panel.modulo .medidor.faltas > i{background:repeating-linear-gradient(-45deg, var(--ink) 0 2px, transparent 2px 4.5px)}
 .panel.modulo .medidor.faltas.lleno > i{background:var(--ink)}
 
-/* ══════════════════ tokens de El Escritorio (Nocturne) ══════════════════
+/* ══════════════════ tokens de GritNook (Nocturne) ══════════════════
    Rampas, reglas y tipografía del sistema: nada de negro ni blanco puros, el
    acento como línea, borde, texto o relleno teñido —nunca como relleno
    grande—, y la elevación como un borde de 1 px más oscuridad ambiental. */
@@ -985,6 +985,10 @@ details.ls-grupo > summary{cursor:pointer}
 .tutor-carta.nueva .tc-nombre{font-weight:600}
 .tutor-carta.nueva .tc-ultimo{color:var(--ink)}
 .tutor-carta.nueva .tc-hora{color:var(--verde-texto); font-weight:500}
+
+/* la marca: «Grit» en tinta y «Nook» en el acento, mismo peso */
+.marca .nombre, .lateral .marca .nombre{font-weight:600; letter-spacing:-.025em}
+.marca .nombre b{font-weight:inherit; color:var(--acento-txt)}
 </style>
 </head>
 <body>
@@ -994,7 +998,7 @@ details.ls-grupo > summary{cursor:pointer}
       <svg class="marca-logo" viewBox="0 0 32 32" aria-hidden="true"><rect class="fondo" x="1" y="1" width="30" height="30" rx="9"/>
         <rect x="9.5" y="7" width="13" height="18" rx="2.4" fill="#f3f5fe"/><path d="M12.7 7v18" stroke="#DC2626" stroke-opacity=".7"/>
         <path d="M14.9 12h5.1M14.9 15.4h4.1M14.9 18.8h5.1" stroke="#796cbf" stroke-width="1.6" stroke-linecap="round"/></svg>
-      <span class="nombre">Escritorio</span>
+      <span class="nombre" aria-label="GritNook">Grit<b>Nook</b></span>
       <span class="curso" id="curso"></span>
     </div>
     <nav class="nav" id="nav" aria-label="Secciones"></nav>
@@ -2821,7 +2825,7 @@ function dlgAjustes() {
 
   $("#btnExportar").onclick = async () => {
     if (!descargas) { aviso("Las descargas no están disponibles en esta vista.", "mal"); return; }
-    try { await descargas.save({ filename: "escritorio-daw-" + hoyISO() + ".json", data: JSON.stringify(S, null, 2) }); aviso("Copia descargada."); }
+    try { await descargas.save({ filename: "gritnook-" + hoyISO() + ".json", data: JSON.stringify(S, null, 2) }); aviso("Copia descargada."); }
     catch (e) { if (e.code !== "declined") aviso("No se pudo descargar (" + e.code + ").", "mal"); }
   };
   $("#btnImportar").onclick = () => $("#inputImportar").click();
@@ -4151,7 +4155,7 @@ function pintaEntrada() {
   caja.innerHTML = `
   <div class="ent-caja">
     <div class="ent-cab">
-      <div class="marca"><div class="nombre">El Escritorio</div></div>
+      <div class="marca"><div class="nombre" aria-label="GritNook">Grit<b>Nook</b></div></div>
       <div class="ent-pasos">${bvPasos().map((t, i) => `<span class="ent-punto${i === BV.paso ? " ahora" : i < BV.paso ? " hecho" : ""}" title="${esc(t)}"></span>`).join("")}</div>
       ${BV.reconfig ? `<button type="button" class="btn mini fantasma" id="bvSalir">Dejarlo como estaba</button>` : `<span class="meta">${BV.paso + 1} de ${bvPasos().length}</span>`}
     </div>
@@ -4457,7 +4461,7 @@ function ajAspecto() {
       ${[["auto", "Como el sistema"], ["light", "Claro"], ["dark", "Oscuro"]].map(([v, n]) =>
         `<button type="button" class="sug${t === v ? " sel" : ""}" data-aj-tema="${v}">${n}</button>`).join("")}
     </div>
-    <p class="meta" style="margin-top:14px">Los colores, las rampas y la tipografía vienen del sistema de El Escritorio: fondo azul noche en oscuro, papel en claro, acento blurple como línea y borde. El color de cada ${esc(voc())} se cambia en la pestaña de ${esc(voc(true, true))}.</p>
+    <p class="meta" style="margin-top:14px">Los colores, las rampas y la tipografía vienen del sistema de GritNook: fondo azul noche en oscuro, papel en claro, acento blurple como línea y borde. El color de cada ${esc(voc())} se cambia en la pestaña de ${esc(voc(true, true))}.</p>
   </section>`;
 }
 
@@ -4573,7 +4577,7 @@ document.addEventListener("click", async e => {
 
   if (t.closest("#apExportar")) {
     if (!descargas) { aviso("Las descargas no están disponibles en esta vista.", "mal"); return; }
-    try { await descargas.save({ filename: "el-escritorio-" + hoyISO() + ".json", data: JSON.stringify(S, null, 2) }); aviso("Copia descargada."); }
+    try { await descargas.save({ filename: "gritnook-" + hoyISO() + ".json", data: JSON.stringify(S, null, 2) }); aviso("Copia descargada."); }
     catch (err) { if (err.code !== "declined") aviso("No se pudo descargar (" + err.code + ").", "mal"); }
     return;
   }
@@ -4602,7 +4606,7 @@ document.addEventListener("change", async e => {
       ["ajustes", "agenda", "ingles", "horas", "objetivos", "tutor", "perfil"].forEach(nd => guardar(nd));
       Object.values(S.apuntes || {}).forEach(n => guardarApunte(n));
       aviso("Copia cargada."); pinta();
-    } catch (err) { aviso("Ese archivo no parece una copia de El Escritorio.", "mal"); }
+    } catch (err) { aviso("Ese archivo no parece una copia de GritNook.", "mal"); }
     t.value = ""; return;
   }
 });

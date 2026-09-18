@@ -28,4 +28,4 @@ http.createServer((req, res) => {
     res.writeHead(200, { "Content-Type": TIPOS[path.extname(archivo).toLowerCase()] || "application/octet-stream" });
     res.end(datos);
   });
-}).listen(PUERTO, () => console.log("El Escritorio en http://localhost:" + PUERTO));
+}).listen(PUERTO, () => console.log("GritNook en http://localhost:" + PUERTO));

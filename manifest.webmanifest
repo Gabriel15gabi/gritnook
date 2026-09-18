@@ -1,6 +1,6 @@
 {
-  "name": "El Escritorio",
-  "short_name": "Escritorio",
+  "name": "GritNook",
+  "short_name": "GritNook",
   "description": "Tu curso en una pantalla: asignaturas, notas, horas, exámenes, apuntes y un tutor.",
   "lang": "es",
   "start_url": "./",

@@ -1,10 +1,10 @@
-# El Escritorio
+# GritNook
 
 App de estudio que se acomoda a lo que estudies: le dices si vas a la ESO, a Bachillerato, a un ciclo de FP, a la universidad, a una oposición o a un idioma, y monta tus asignaturas, tus horas y un tutor que sabe de lo tuyo. Con apuntes en libreta de cuadrícula donde se escribe **y se dibuja**, notas de cada asignatura con lo que falta para aprobar, control de horas, entregas, documentos e inglés.
 
-**[Probarla en vivo →](https://gabriel15gabi.github.io/escritorio-daw/)**
+**[Probarla en vivo →](https://gabriel15gabi.github.io/gritnook/)**
 
-![El escritorio](capturas/escritorio.png)
+![GritNook](capturas/escritorio.png)
 
 ## Por qué
 
@@ -34,7 +34,7 @@ Quien ya tenía datos no pasa por ahí: el perfil se rellena con lo que había y
 
 **Horas y cronómetro.** Pomodoro por asignatura que se queda a mano debajo del menú, en cualquier sección, para pararlo o seguir sin moverte. Al acabar la concentración te para con un «bien hecho» y el descanso lo empiezas tú. Con el reparto de la semana y la meta semanal de cada una.
 
-**Agenda.** Entregas y exámenes en una sola base de datos que se ve como **calendario**, **tablero** (pendiente, en curso, hecho) o **lista**. Se añade escribiendo normal —«Examen de BD el jueves a las 10»— y la app entiende el tipo, la asignatura, el día y la hora; se mueve arrastrando; y cada cosa se abre en un panel lateral para editarla sin botón de guardar, con sus pasos y sus notas. Los exámenes llevan cuenta atrás y un plan de estudio hacia atrás, automático o hecho por el tutor. Más tu horario de clases y el **plan de la semana**, que sale solo de tus horas, tus días libres, tus exámenes y lo que peor llevas, y se va tachando al estudiar con el cronómetro. El Escritorio te dice cada día qué te toca.
+**Agenda.** Entregas y exámenes en una sola base de datos que se ve como **calendario**, **tablero** (pendiente, en curso, hecho) o **lista**. Se añade escribiendo normal —«Examen de BD el jueves a las 10»— y la app entiende el tipo, la asignatura, el día y la hora; se mueve arrastrando; y cada cosa se abre en un panel lateral para editarla sin botón de guardar, con sus pasos y sus notas. Los exámenes llevan cuenta atrás y un plan de estudio hacia atrás, automático o hecho por el tutor. Más tu horario de clases y el **plan de la semana**, que sale solo de tus horas, tus días libres, tus exámenes y lo que peor llevas, y se va tachando al estudiar con el cronómetro. GritNook te dice cada día qué te toca.
 
 **Casillero.** PDFs, imágenes y apuntes de clase guardados dentro de la propia app.
 
