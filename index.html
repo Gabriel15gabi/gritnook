@@ -974,6 +974,17 @@ details.ls-grupo > summary{cursor:pointer}
 .pg-tabla table{min-width:max-content}
 /* en la hoja de «Más» sí se lee dónde se guardan los datos */
 .hm-pie .sync span:last-child{display:inline}
+/* el tutor como un chat: con mensajes nuevos se enciende en verde */
+.tc-avatar{position:relative}
+.tc-punto{position:absolute; top:-1px; right:-1px; width:10px; height:10px; border-radius:50%; background:var(--verde); box-shadow:0 0 0 2px var(--surface)}
+.tc-fila{display:flex; align-items:center; justify-content:space-between; gap:8px; min-width:0}
+.tc-fila .tc-ultimo{flex:1; min-width:0}
+.tc-hora{flex:0 0 auto; font:400 11px/1 var(--sans); color:var(--ink-4); font-variant-numeric:tabular-nums}
+.tutor-carta .tc-fila .cuenta{flex:0 0 auto; margin:0}
+.nav-item.tutor-carta.nueva{border-color:var(--verde)}
+.tutor-carta.nueva .tc-nombre{font-weight:600}
+.tutor-carta.nueva .tc-ultimo{color:var(--ink)}
+.tutor-carta.nueva .tc-hora{color:var(--verde-texto); font-weight:500}
 </style>
 </head>
 <body>
@@ -1068,7 +1079,7 @@ const ICON = {
   progreso: '<path d="M2.5 13.5h11"/><path d="M4.2 11V8.4M7.2 11V5.2M10.2 11V6.8M13 11V3.5"/>',
   casillero: '<rect x="2" y="2.8" width="12" height="3.2" rx="1"/><path d="M3 6v6.2a1 1 0 0 0 1 1h8a1 1 0 0 0 1-1V6"/><path d="M6.5 8.8h3"/>',
   ingles: '<path d="M2 4.2h6.5M5.2 2.4v1.8M3.6 4.2c.6 2.4 2 4 4 5M7 4.2c-.4 2.1-1.9 4.1-4.4 5.3"/><path d="M8.8 13.8l2.5-6 2.5 6M9.6 11.8h3.4"/>',
-  ajustes: '<path d="M2.5 5h11M2.5 11h11"/><circle cx="6" cy="5" r="1.7"/><circle cx="10" cy="11" r="1.7"/>',
+  ajustes: '<path d="M6.36 3.23L6.97 1.48L9.03 1.48L9.64 3.23L10.21 3.46L11.88 2.66L13.34 4.12L12.54 5.79L12.77 6.36L14.52 6.97L14.52 9.03L12.77 9.64L12.54 10.21L13.34 11.88L11.88 13.34L10.21 12.54L9.64 12.77L9.03 14.52L6.97 14.52L6.36 12.77L5.79 12.54L4.12 13.34L2.66 11.88L3.46 10.21L3.23 9.64L1.48 9.03L1.48 6.97L3.23 6.36L3.46 5.79L2.66 4.12L4.12 2.66L5.79 3.46Z"/><circle cx="8" cy="8" r="2.1"/>',
   sol: '<circle cx="8" cy="8" r="2.8"/><path d="M8 1.6v1.5M8 12.9v1.5M1.6 8h1.5M12.9 8h1.5M3.5 3.5l1 1M11.5 11.5l1 1M3.5 12.5l1-1M11.5 4.5l1-1"/>',
   luna: '<path d="M13.2 9.6A5.6 5.6 0 1 1 6.4 2.8a4.4 4.4 0 0 0 6.8 6.8z"/>',
   cambiar: '<path d="M2.5 5.5h10l-2.6-2.6M13.5 10.5h-10l2.6 2.6"/>',
@@ -2202,14 +2213,27 @@ function cuentasNav() {
 const TITULO_CUENTA = { entregas: "Para los próximos tres días o atrasado", modulos: "En riesgo", repaso: "Tarjetas que tocan hoy", tutor: "Mensajes sin leer" };
 const tesela = (id, c) => `<button type="button" class="nav-item tesela" data-sec="${id}" aria-current="${seccion === id ? "page" : "false"}"
   tabindex="${seccion === id ? 0 : -1}">${icono(id)}<span>${esc(nombreSec(id))}</span>${c[id] ? `<span class="cuenta${id === "tutor" ? " verde" : ""}" title="${TITULO_CUENTA[id]}">${c[id]}</span>` : ""}</button>`;
+/* la hora del último mensaje, como en un chat: la hora si es de hoy, «Ayer», el día de la semana o la fecha */
+function horaChat(iso) {
+  const d = new Date(iso); if (isNaN(d)) return "";
+  const hace = diasEntre(hoyISO(), hoyISO(d));
+  if (hace <= 0) return d.toLocaleTimeString("es-ES", { hour: "2-digit", minute: "2-digit" });
+  if (hace === 1) return "Ayer";
+  if (hace < 7) return mayus(d.toLocaleDateString("es-ES", { weekday: "short" }).replace(".", ""));
+  return d.toLocaleDateString("es-ES", { day: "numeric", month: "numeric" });
+}
+/* el tutor como una conversación: cuando te escribe, se enciende en verde con cuántos mensajes tienes */
 function tutorCarta(c) {
   const P = normalizarTutor(), nombre = normalizarPerfil().profe.nombre || "Profe";
-  const ult = P.chat.filter(m => m.r === "profe").pop();
-  return `<button type="button" class="nav-item tutor-carta" data-sec="tutor" aria-current="${seccion === "tutor" ? "page" : "false"}" tabindex="${seccion === "tutor" ? 0 : -1}">
-    <span class="tc-avatar" aria-hidden="true">${esc(nombre.charAt(0).toUpperCase())}</span>
-    <span class="tc-txt"><span class="tc-nombre">${esc(nombre)}<small>Tutor</small></span>
-      <span class="tc-ultimo">${esc(ult ? ult.t.replace(/\s+/g, " ") : "Pregúntale lo que sea")}</span></span>
-    ${c.tutor ? `<span class="cuenta verde" title="Mensajes sin leer">${c.tutor}</span>` : ""}</button>`;
+  const ult = P.chat.filter(m => m.r === "profe").pop(), nuevos = c.tutor;
+  const etiqueta = nombre + ", tu tutor" + (nuevos ? ": " + nuevos + (nuevos === 1 ? " mensaje nuevo" : " mensajes nuevos") : "");
+  return `<button type="button" class="nav-item tutor-carta${nuevos ? " nueva" : ""}" data-sec="tutor" aria-current="${seccion === "tutor" ? "page" : "false"}"
+    tabindex="${seccion === "tutor" ? 0 : -1}" aria-label="${esc(etiqueta)}">
+    <span class="tc-avatar" aria-hidden="true">${esc(nombre.charAt(0).toUpperCase())}${nuevos ? `<i class="tc-punto"></i>` : ""}</span>
+    <span class="tc-txt" aria-hidden="true">
+      <span class="tc-fila"><span class="tc-nombre">${esc(nombre)}<small>Tutor</small></span><span class="tc-hora">${ult ? esc(horaChat(ult.h)) : ""}</span></span>
+      <span class="tc-fila"><span class="tc-ultimo">${esc(ult ? ult.t.replace(/\s+/g, " ") : "Pregúntale lo que sea")}</span>${nuevos ? `<span class="cuenta verde">${nuevos}</span>` : ""}</span>
+    </span></button>`;
 }
 function pintaNav() {
   const c = cuentasNav(), fichas = SECCIONES.filter(s => !s.aparte && !s.pie).map(s => s.id);
@@ -4718,13 +4742,13 @@ function planSemana(desde) {
     const c = calcModulo(m), ex = exs.find(x => x.modId === m.id);
     const dd = ex ? diasEntre(ex.fecha, hoy) : 99;
     let w = Math.max(.5, num(m.metaSemanal, 1)), motivo = "";
-    if (dd <= 3) { w *= 2.5; motivo = "examen " + cuandoTxt(dd); }
-    else if (dd <= 7) { w *= 1.8; motivo = "examen " + cuandoTxt(dd); }
-    else if (dd <= 14) { w *= 1.3; motivo = "examen " + cuandoTxt(dd); }
-    if (c.est === "riesgo") { w *= 1.5; motivo = motivo || "vas justo"; }
-    else if (c.est === "aviso") { w *= 1.2; motivo = motivo || "hay que apretar"; }
-    if (c.yaEsta) { w *= .5; motivo = motivo || "ya lo tienes, repaso suave"; }
-    return { m, w, motivo: motivo || "lo que toca", examen: ex && dd <= 14 ? ex : null };
+    if (dd <= 3) { w *= 2.5; motivo = "Examen " + cuandoTxt(dd); }
+    else if (dd <= 7) { w *= 1.8; motivo = "Examen " + cuandoTxt(dd); }
+    else if (dd <= 14) { w *= 1.3; motivo = "Examen " + cuandoTxt(dd); }
+    if (c.est === "riesgo") { w *= 1.5; motivo = motivo || "Vas justo"; }
+    else if (c.est === "aviso") { w *= 1.2; motivo = motivo || "Hay que apretar"; }
+    if (c.yaEsta) { w *= .5; motivo = motivo || "Ya lo tienes, repaso suave"; }
+    return { m, w, motivo: motivo || "Lo que toca", examen: ex && dd <= 14 ? ex : null };
   });
   const sumaW = pesos.reduce((s, x) => s + x.w, 0) || 1, cola = [];
   pesos.forEach(x => { const n = Math.max(x.w > .4 ? 1 : 0, Math.round(total * x.w / sumaW / bloque)); for (let i = 0; i < n; i++) cola.push(x); });
@@ -4739,7 +4763,7 @@ function planSemana(desde) {
       if (x.examen && d.fecha >= x.examen.fecha) continue;
       if (d.bloques.filter(b => b.modId === x.m.id).length >= 3) continue;
       const clase = clasesDe(d.dia).some(c => c.modId === x.m.id);
-      d.bloques.push({ modId: x.m.id, min: bloque, motivo: clase && !x.examen ? "tienes clase: repasa lo de hoy" : x.motivo });
+      d.bloques.push({ modId: x.m.id, min: bloque, motivo: clase && !x.examen ? "Tienes clase: repasa lo de hoy" : x.motivo });
       k = (k + intento + 1) % libres.length;
       return;
     }
@@ -5155,7 +5179,9 @@ document.addEventListener("keydown", e => {
     const d = entenderFrase(t.value), r = crearElemento(d);
     t.value = ""; pintaEntiende();
     const m = modPorId(d.modId || agFiltro.modId || (S.modulos[0] && S.modulos[0].id));
-    aviso((d.tipo === "examen" ? "Examen" : "Entrega") + " apuntado" + (m ? " en " + m.cod : "") + (d.fecha ? " para " + cuandoTxt(diasEntre(d.fecha, hoyISO())) : "") + ".");
+    const dd = d.fecha ? diasEntre(d.fecha, hoyISO()) : null;
+    aviso((d.tipo === "examen" ? "Examen apuntado" : "Entrega apuntada") + (m ? " en " + m.cod : "") +
+      (dd === null ? "" : dd === 0 ? " para hoy" : dd === 1 ? " para mañana" : " para el " + fechaCorta(d.fecha).toLowerCase()) + ".");
     if (d.fecha && agTab === "calendario") agMes = d.fecha.slice(0, 7) + "-01";
     pinta();
     setTimeout(() => { const i = $("#agRapido"); if (i) i.focus(); }, 20);
