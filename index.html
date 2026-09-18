@@ -1,3 +1,8 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <title>El Escritorio</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -887,15 +892,101 @@ details.ls-grupo > summary{cursor:pointer}
   .ls-props .pill-tipo{display:none}
   .pp{grid-template-columns:110px minmax(0,1fr)}
 }
-</style>
 
+/* ══════════════ menú: marca, fichas, tutor y pie ══════════════ */
+.lateral{overflow-y:auto; scrollbar-width:thin; gap:0}
+.lateral .marca{display:flex; align-items:center; gap:10px; padding:0 4px 22px}
+.marca-logo{width:30px; height:30px; flex:0 0 30px; display:block}
+.marca-logo .fondo{fill:var(--acento-suave); stroke:var(--acento-borde)}
+.lateral .marca .nombre{font:500 16.5px/1 var(--sans); letter-spacing:-.02em; color:var(--ink)}
+.lateral .marca .curso{margin:0 0 0 auto; padding:4px 7px; border-radius:6px; background:var(--surface-2); color:var(--ink-2);
+  font:500 11px/1 var(--sans); letter-spacing:.01em; white-space:nowrap}
+.nav{display:block}
+.teselas{display:grid; grid-template-columns:repeat(2,minmax(0,1fr)); gap:8px}
+.teselas.tres{grid-template-columns:repeat(3,minmax(0,1fr))}
+.nav-item.tesela{position:relative; display:flex; flex-direction:column; justify-content:space-between; align-items:flex-start; gap:14px;
+  width:auto; height:auto; min-height:74px; padding:11px 11px 10px; border-radius:var(--r-l); border:1px solid var(--line-2);
+  background:var(--surface); color:var(--ink-2); text-align:left; font:500 13px/1.15 var(--sans);
+  transition:border-color .12s, color .12s, background .12s}
+.tesela > span:not(.cuenta){overflow:hidden; text-overflow:ellipsis; white-space:nowrap; max-width:100%}
+.tesela svg{width:18px; height:18px; flex:0 0 18px}
+.nav-item.tesela:hover{border-color:var(--ink-4); color:var(--ink); background:var(--surface)}
+.nav-item.tesela[aria-current="page"]{border-color:var(--acento); background:var(--acento-suave); color:var(--ink); box-shadow:none}
+.nav-item.tesela[aria-current="page"] svg{color:var(--acento-txt)}
+.tesela .cuenta{position:absolute; top:8px; right:8px; margin:0}
+.nav-item.tutor-carta{display:flex; align-items:center; gap:11px; width:100%; height:auto; margin-top:12px; padding:11px 12px;
+  border-radius:var(--r-l); border:1px solid var(--line-2); background:var(--surface); color:var(--ink); text-align:left}
+.nav-item.tutor-carta:hover{border-color:var(--ink-4); background:var(--surface)}
+.nav-item.tutor-carta[aria-current="page"]{border-color:var(--acento); background:var(--acento-suave); box-shadow:none}
+.tc-avatar{width:34px; height:34px; flex:0 0 34px; border-radius:50%; display:grid; place-items:center; font:600 14px/1 var(--sans);
+  color:var(--acento-txt); background:var(--acento-suave); box-shadow:inset 0 0 0 1.5px var(--acento-borde)}
+.tc-txt{flex:1; min-width:0; display:flex; flex-direction:column; gap:4px}
+.tc-nombre{font:500 13.5px/1.1 var(--sans)}
+.tc-nombre small{font:400 11.5px/1 var(--sans); color:var(--ink-3); margin-left:6px}
+.tc-ultimo{font:400 12px/1.25 var(--sans); color:var(--ink-3); overflow:hidden; text-overflow:ellipsis; white-space:nowrap}
+.tutor-carta .cuenta{margin:0; align-self:flex-start}
+.lateral-pie{flex-direction:column; align-items:stretch; gap:8px; padding:14px 0 0; margin-top:auto; border-top:0}
+.nav-item.nav-pie{height:38px; padding:0 10px; gap:10px; color:var(--ink-2)}
+.nav-item.nav-pie[aria-current="page"]{background:var(--surface); color:var(--ink); box-shadow:inset 0 0 0 1px var(--acento-borde)}
+.nav-item.nav-pie[aria-current="page"] svg{color:var(--acento-txt)}
+.pie-fila{display:flex; align-items:center; justify-content:space-between; gap:8px; padding:10px 4px 0 10px; border-top:1px solid var(--line)}
+
+/* ══════════════ móvil: barra de pestañas y hoja de «Más» ══════════════ */
+.barra-movil{display:none}
+.hoja-mas[hidden]{display:none}
+@media (max-width:880px){
+  .lateral{position:sticky; top:0; z-index:40; height:56px; flex-direction:row; flex-wrap:nowrap; align-items:center; gap:10px;
+    padding:0 12px 0 16px; overflow:visible; border-right:0; border-bottom:1px solid var(--line); background:var(--bg)}
+  .lateral .marca{padding:0; flex:1; min-width:0}
+  .lateral .marca .curso{display:inline-block; margin-left:4px}
+  .lateral .nav, .lateral .nav-pie, .lateral .sync{display:none}
+  .lateral-pie{margin:0; padding:0; flex:0 0 auto}
+  .pie-fila{padding:0; border:0}
+  .barra-movil{display:grid; grid-template-columns:repeat(5,minmax(0,1fr)); position:fixed; left:0; right:0; bottom:0; z-index:45;
+    padding:6px 6px calc(6px + env(safe-area-inset-bottom)); background:var(--surface); border-top:1px solid var(--line-2)}
+  .bm-item{position:relative; display:flex; flex-direction:column; align-items:center; gap:4px; padding:7px 2px 5px; border:0;
+    border-radius:10px; background:none; color:var(--ink-3); font:500 10.5px/1 var(--sans); cursor:pointer; min-width:0}
+  .bm-item span{max-width:100%; overflow:hidden; text-overflow:ellipsis; white-space:nowrap}
+  .bm-item svg{width:21px; height:21px}
+  .bm-item[aria-current="page"]{color:var(--ink)}
+  .bm-item[aria-current="page"] svg{color:var(--acento-txt)}
+  .bm-item[aria-current="page"]::before{content:""; position:absolute; top:-7px; left:32%; right:32%; height:2px; border-radius:2px; background:var(--acento)}
+  .bm-cuenta{position:absolute; top:1px; left:calc(50% + 5px); min-width:16px; height:16px; padding:0 4px; border-radius:99px;
+    background:var(--ink); color:var(--on-ink); font:600 10px/16px var(--sans); text-align:center}
+  .bm-cuenta.verde{background:#15803D; color:#FFFFFF}
+  .principal{padding:22px 16px 112px}
+  body.con-mini .principal{padding-bottom:184px}
+  .mini-reloj{bottom:calc(74px + env(safe-area-inset-bottom))}
+  .hoja-mas{position:fixed; inset:0; z-index:70}
+  .hm-fondo{position:absolute; inset:0; background:rgba(8,10,20,.45)}
+  .hm-panel{position:absolute; left:0; right:0; bottom:0; padding:8px 16px calc(18px + env(safe-area-inset-bottom));
+    border-radius:20px 20px 0 0; background:var(--surface); box-shadow:var(--sombra-modal); animation:hmSube .2s ease-out}
+  @keyframes hmSube{from{transform:translateY(24px); opacity:.7}}
+  .hm-asa{width:38px; height:4px; border-radius:2px; background:var(--line-2); margin:4px auto 16px}
+  .hm-panel .nav-item.tesela{min-height:78px}
+  .hm-pie{display:flex; justify-content:space-between; align-items:center; gap:10px; margin-top:14px; padding-top:12px; border-top:1px solid var(--line)}
+  .hm-pie .sync{display:flex}
+}
+@media (max-width:880px) and (prefers-color-scheme: dark){ :root:not([data-theme="light"]) .bm-cuenta.verde{background:#22C55E; color:#07130C} }
+@media (max-width:880px){ :root[data-theme="dark"] .bm-cuenta.verde{background:#22C55E; color:#07130C} }
+/* la tabla de horas se desliza de lado si no cabe, en vez de cortarse */
+.pg-tabla{overflow-x:auto}
+.pg-tabla table{min-width:max-content}
+/* en la hoja de «Más» sí se lee dónde se guardan los datos */
+.hm-pie .sync span:last-child{display:inline}
+</style>
+</head>
+<body>
 <div class="app">
   <aside class="lateral">
     <div class="marca">
-      <div class="nombre">Escritorio</div>
-      <div class="curso" id="curso">1.º DAW</div>
+      <svg class="marca-logo" viewBox="0 0 32 32" aria-hidden="true"><rect class="fondo" x="1" y="1" width="30" height="30" rx="9"/>
+        <rect x="9.5" y="7" width="13" height="18" rx="2.4" fill="#f3f5fe"/><path d="M12.7 7v18" stroke="#DC2626" stroke-opacity=".7"/>
+        <path d="M14.9 12h5.1M14.9 15.4h4.1M14.9 18.8h5.1" stroke="#796cbf" stroke-width="1.6" stroke-linecap="round"/></svg>
+      <span class="nombre">Escritorio</span>
+      <span class="curso" id="curso"></span>
     </div>
-    <nav class="nav" id="nav" role="tablist" aria-label="Secciones"></nav>
+    <nav class="nav" id="nav" aria-label="Secciones"></nav>
     <div class="mini-reloj" id="miniReloj" role="timer" aria-live="off" hidden>
       <button class="mr-info" id="mrInfo" type="button" title="Ir al cronómetro">
         <span class="mr-fase" id="mrFase">Concentración</span><span class="mr-mod" id="mrMod"></span>
@@ -907,13 +998,15 @@ details.ls-grupo > summary{cursor:pointer}
       </div>
     </div>
     <div class="lateral-pie">
-      <div class="sync" id="sync" title="Dónde se guardan tus datos"><span class="punto"></span><span id="txtSync">Este dispositivo</span></div>
-      <div class="herramientas">
+      <button class="nav-item nav-pie" id="btnAjustes" data-sec="ajustes" type="button"></button>
+      <div class="pie-fila">
+        <div class="sync" id="sync" title="Dónde se guardan tus datos"><span class="punto"></span><span id="txtSync">Este dispositivo</span></div>
         <button class="icono-btn" id="btnTema" type="button"></button>
-        <button class="icono-btn" id="btnAjustes" type="button" aria-label="Ajustes" title="Ajustes"></button>
       </div>
     </div>
   </aside>
+  <nav class="barra-movil" id="barraMovil" aria-label="Secciones"></nav>
+  <div class="hoja-mas" id="hojaMas" hidden></div>
   <main class="principal" id="principal" role="tabpanel" tabindex="-1">
     <div class="contenedor" id="contenido"></div>
   </main>
@@ -980,6 +1073,7 @@ const ICON = {
   luna: '<path d="M13.2 9.6A5.6 5.6 0 1 1 6.4 2.8a4.4 4.4 0 0 0 6.8 6.8z"/>',
   cambiar: '<path d="M2.5 5.5h10l-2.6-2.6M13.5 10.5h-10l2.6 2.6"/>',
   mas: '<path d="M8 3v10M3 8h10"/>',
+  masmenu: '<circle cx="3.4" cy="8" r=".9"/><circle cx="8" cy="8" r=".9"/><circle cx="12.6" cy="8" r=".9"/>',
   tutor: '<path d="M8 2.4a2.6 2.6 0 1 0 0 5.2 2.6 2.6 0 0 0 0-5.2z"/><path d="M2.9 13.8a5.1 5.1 0 0 1 10.2 0"/>',
   play: '<path d="M5.4 3.3v9.4L12.6 8z"/>',
   pausa: '<path d="M5.7 3.5v9M10.3 3.5v9"/>',
@@ -2078,22 +2172,85 @@ const SECCIONES = [
   { id: "casillero", txt: "Casillero" }, { id: "ingles", txt: "Inglés" },
   /* aparte y al final: esto es una conversación, no una pantalla más */
   { id: "tutor", txt: "Tutor", aparte: true },
-  { id: "ajustes", txt: "Ajustes", aparte: true }
+  { id: "ajustes", txt: "Ajustes", pie: true }
 ];
+/* ══════════════════ menú ══════════════════
+   En el ordenador: fichas en dos columnas con su dato al día, el tutor como
+   una tarjeta propia con su último mensaje, y los ajustes abajo del todo. En el
+   móvil: una barra de pestañas abajo con lo que más se usa y un «Más» que sube
+   una hoja con el resto. Arriba solo va la marca y el curso en corto. */
+const EN_BARRA = ["escritorio", "entregas", "apuntes", "tutor"];
+const nombreSec = id => id === "modulos" ? voc(true, true) : (SECCIONES.find(s => s.id === id) || { txt: id }).txt;
+/* el curso en pocas letras: «DAW · 1.º», «ESO · 3.º», «Bach · 2.º», «B2» */
+function etiquetaCorta() {
+  const p = normalizarPerfil();
+  const fp = p.etapa === "ciclo-sup" || p.etapa === "ciclo-medio";
+  const base = fp ? (String(p.ciclo || "").split(" · ")[0].trim() || "FP")
+    : ({ eso: "ESO", bach: "Bach", uni: "Uni", oposicion: "Opos", idioma: String(p.ciclo || "Idioma").split(" ")[0] })[p.etapa] || "";
+  const curso = /^\d/.test(String(p.curso || "")) || p.etapa === "idioma" ? String(p.curso || "") : "";
+  return [base, curso].filter(Boolean).join(" · ").slice(0, 16) || "Mi curso";
+}
+function cuentasNav() {
+  const hoy = hoyISO(), en3 = sumaDias(hoy, 3);
+  return {
+    entregas: elementos().filter(e => e.estado !== "hecha" && e.fecha && e.fecha <= en3).length,
+    modulos: S.modulos.filter(m => calcModulo(m).est === "riesgo").length,
+    repaso: (S.tarjetas || []).filter(c => c.proximo <= hoy).length,
+    tutor: tutorNoLeidos()
+  };
+}
+const TITULO_CUENTA = { entregas: "Para los próximos tres días o atrasado", modulos: "En riesgo", repaso: "Tarjetas que tocan hoy", tutor: "Mensajes sin leer" };
+const tesela = (id, c) => `<button type="button" class="nav-item tesela" data-sec="${id}" aria-current="${seccion === id ? "page" : "false"}"
+  tabindex="${seccion === id ? 0 : -1}">${icono(id)}<span>${esc(nombreSec(id))}</span>${c[id] ? `<span class="cuenta${id === "tutor" ? " verde" : ""}" title="${TITULO_CUENTA[id]}">${c[id]}</span>` : ""}</button>`;
+function tutorCarta(c) {
+  const P = normalizarTutor(), nombre = normalizarPerfil().profe.nombre || "Profe";
+  const ult = P.chat.filter(m => m.r === "profe").pop();
+  return `<button type="button" class="nav-item tutor-carta" data-sec="tutor" aria-current="${seccion === "tutor" ? "page" : "false"}" tabindex="${seccion === "tutor" ? 0 : -1}">
+    <span class="tc-avatar" aria-hidden="true">${esc(nombre.charAt(0).toUpperCase())}</span>
+    <span class="tc-txt"><span class="tc-nombre">${esc(nombre)}<small>Tutor</small></span>
+      <span class="tc-ultimo">${esc(ult ? ult.t.replace(/\s+/g, " ") : "Pregúntale lo que sea")}</span></span>
+    ${c.tutor ? `<span class="cuenta verde" title="Mensajes sin leer">${c.tutor}</span>` : ""}</button>`;
+}
 function pintaNav() {
-  const urgentes = S.tareas.filter(t => !t.hecha && t.fecha && diasEntre(t.fecha, hoyISO()) <= 3).length;
-  const sinLeer = tutorNoLeidos();
-  /* tabindex móvil: solo la sección activa entra en el tabulador; las flechas recorren el resto */
-  const primeraAparte = SECCIONES.findIndex(x => x.aparte);
-  $("#nav").innerHTML = SECCIONES.map((s, i) =>
-    (s.aparte && i === primeraAparte ? `<hr class="nav-sep">` : "") +
-    `<button class="nav-item" role="tab" data-sec="${s.id}" aria-controls="principal"
-       aria-selected="${s.id === seccion}" tabindex="${s.id === seccion ? 0 : -1}">${icono(s.id)}<span>${s.id === "modulos" ? voc(true, true) : s.txt}</span>` +
-    (s.id === "entregas" && urgentes ? `<span class="cuenta" title="Vencen en 3 días o menos">${urgentes}</span>` : "") +
-    (s.id === "tutor" && sinLeer ? `<span class="cuenta verde" title="Mensajes del profe sin leer">${sinLeer}</span>` : "") + `</button>`).join("");
-  $("#curso").textContent = S.config.curso + " · curso " + cursoAcademico();
+  const c = cuentasNav(), fichas = SECCIONES.filter(s => !s.aparte && !s.pie).map(s => s.id);
+  $("#nav").innerHTML = `<div class="teselas">${fichas.map(id => tesela(id, c)).join("")}</div>${tutorCarta(c)}`;
+  const aj = $("#btnAjustes");
+  if (aj) { aj.innerHTML = icono("ajustes") + "<span>Ajustes</span>"; aj.setAttribute("aria-current", seccion === "ajustes" ? "page" : "false"); }
+  const cu = $("#curso");
+  if (cu) { cu.textContent = etiquetaCorta(); cu.title = S.config.curso + " · curso " + cursoAcademico(); }
+  pintaBarraMovil();
   pintaMini();
 }
+function pintaBarraMovil() {
+  const b = $("#barraMovil"), h = $("#hojaMas"); if (!b) return;
+  const c = cuentasNav(), enMas = !EN_BARRA.includes(seccion), abierta = h && !h.hidden;
+  const deMas = SECCIONES.map(s => s.id).filter(id => !EN_BARRA.includes(id)).reduce((s, id) => s + (c[id] || 0), 0);
+  b.innerHTML = EN_BARRA.map(id => `<button type="button" class="bm-item" data-sec="${id}" aria-current="${seccion === id ? "page" : "false"}">
+      ${icono(id)}<span>${esc(id === "escritorio" ? "Hoy" : nombreSec(id))}</span>${c[id] ? `<b class="bm-cuenta${id === "tutor" ? " verde" : ""}">${c[id]}</b>` : ""}</button>`).join("") +
+    `<button type="button" class="bm-item" id="bmMas" aria-expanded="${abierta}" aria-current="${enMas && !abierta ? "page" : "false"}">
+      ${icono("masmenu")}<span>Más</span>${deMas ? `<b class="bm-cuenta">${deMas}</b>` : ""}</button>`;
+}
+function abrirHojaMas() {
+  const h = $("#hojaMas"), c = cuentasNav(), ids = SECCIONES.map(s => s.id).filter(id => !EN_BARRA.includes(id));
+  h.innerHTML = `<div class="hm-fondo" data-hm-cerrar></div>
+    <div class="hm-panel" role="dialog" aria-label="Más secciones">
+      <div class="hm-asa" aria-hidden="true"></div>
+      <div class="teselas tres">${ids.map(id => tesela(id, c)).join("")}</div>
+      <div class="hm-pie"><span class="sync${db ? " ok" : ""}"><span class="punto"></span><span>${esc($("#txtSync").textContent)}</span></span>
+        <span class="meta" title="${esc(S.config.curso)}">${esc(etiquetaCorta())} · curso ${cursoAcademico()}</span></div>
+    </div>`;
+  h.hidden = false; pintaBarraMovil();
+  const primero = h.querySelector(".tesela"); if (primero) primero.focus({ preventScroll: true });
+}
+function cerrarHojaMas() { const h = $("#hojaMas"); if (h && !h.hidden) { h.hidden = true; h.innerHTML = ""; pintaBarraMovil(); } }
+document.addEventListener("click", e => {
+  const t = e.target;
+  if (t.closest("#bmMas")) { $("#hojaMas").hidden ? abrirHojaMas() : cerrarHojaMas(); return; }
+  if (t.closest("[data-hm-cerrar]")) { cerrarHojaMas(); return; }
+  const s = t.closest("#barraMovil [data-sec], #hojaMas [data-sec]");
+  if (s) { cerrarHojaMas(); irASeccion(s.dataset.sec); }
+});
+document.addEventListener("keydown", e => { if (e.key === "Escape" && $("#hojaMas") && !$("#hojaMas").hidden) { e.preventDefault(); cerrarHojaMas(); } });
 
 /* ══════════════════ vistas ══════════════════ */
 function vistaEscritorio() {
@@ -2115,9 +2272,9 @@ function vistaEscritorio() {
       <h1 class="titulo">${saludo}<em>.</em></h1>
     </div>
     <div class="cab-datos">
-      <div class="cab-dato"><span class="cifra">${racha()}</span><span class="meta">días seguidos</span></div>
-      <div class="cab-dato"><span class="cifra">${pendientesTot}</span><span class="meta">entregas pendientes</span></div>
-      <div class="cab-dato"><span class="cifra">${enRiesgo}</span><span class="meta">${esc(voc(true))} en riesgo</span></div>
+      <div class="cab-dato"><span class="cifra">${racha()}</span><span class="meta">Días seguidos</span></div>
+      <div class="cab-dato"><span class="cifra">${pendientesTot}</span><span class="meta">Entregas pendientes</span></div>
+      <div class="cab-dato"><span class="cifra">${enRiesgo}</span><span class="meta">${esc(voc(true, true))} en riesgo</span></div>
     </div>
   </header>
 
@@ -2148,7 +2305,7 @@ function vistaEscritorio() {
       <div class="dias" role="img" aria-label="Minutos de estudio de los últimos catorce días">
         ${dias.map(x => `<span class="dia${x.min ? "" : " sin"}" title="${mayus(x.d.toLocaleDateString("es-ES", { weekday: "long", day: "numeric", month: "short" }))}: ${x.min ? horasTxt(x.min) : "sin estudiar"}"><i style="height:${x.min ? Math.max(6, x.min / maxDia * 100) : 3}%"></i></span>`).join("")}
       </div>
-      <div class="dias-eje"><span>hace 14 días</span><span>hoy</span></div>
+      <div class="dias-eje"><span>Hace 14 días</span><span>Hoy</span></div>
     </section>
 
     <div class="c-7 pila">
@@ -2209,9 +2366,9 @@ function vistaModulos() {
       <h2 class="modulo-nombre">${esc(m.nombre)}</h2>
       <div class="modulo-cifras">
         <div><div class="cifra${c.media === null ? " vacia" : ""}">${c.media === null ? "—" : nota(c.media)}</div>
-          <div class="meta">nota actual · ${nota(c.pesoEval)} % evaluado</div></div>
+          <div class="meta">Nota actual · ${nota(c.pesoEval)} % evaluado</div></div>
         <div><div class="cifra${c.necesita === null || c.yaEsta ? " vacia" : ""}">${c.necesita === null || c.yaEsta ? "—" : nota(c.necesita)}</div>
-          <div class="meta">necesitas en lo que falta</div></div>
+          <div class="meta">Necesitas en lo que falta</div></div>
       </div>
       <p class="modulo-frase">${frase}</p>
       <div class="barra-fila"><span>Estudio esta semana</span><span class="num">${horasTxt(semana)} / ${num(m.metaSemanal)} h</span></div>
@@ -2552,7 +2709,7 @@ function vistaIngles() {
   <section class="seccion">
     <div class="seccion-cab"><h2>Chuleta de DAW</h2><span class="meta">Inglés que sale en clase</span></div>
     <div class="tabla-scroll"><table><thead><tr><th>Inglés</th><th>En clase significa</th><th></th></tr></thead><tbody>
-      ${GLOSARIO.map(([en, es]) => `<tr><td class="termino">${esc(en)}</td><td>${esc(es)}</td>
+      ${GLOSARIO.map(([en, es]) => `<tr><td class="termino">${esc(en)}</td><td>${esc(mayus(es))}</td>
         <td style="width:110px; text-align:right"><button class="btn mini fantasma" data-glos-en="${esc(en)}" data-glos-es="${esc(es)}">Añadir</button></td></tr>`).join("")}
     </tbody></table></div>
   </section>`;
@@ -2677,6 +2834,7 @@ function contarPalabras() {
   $("#contadorPalabras").textContent = p + (p === 1 ? " palabra" : " palabras");
 }
 function irASeccion(id, foco) {
+  cerrarHojaMas();
   seccion = id; pinta();
   window.scrollTo({ top: 0 });
   if (foco === "nav") { const b = $('.nav-item[data-sec="' + id + '"]'); if (b) b.focus(); }
@@ -2687,13 +2845,15 @@ function irASeccion(id, foco) {
 $("#nav").addEventListener("click", e => {
   const b = e.target.closest("[data-sec]"); if (b) irASeccion(b.dataset.sec);
 });
+/* las fichas van en dos columnas: izquierda y derecha se mueven de una en una; arriba y abajo, de fila en fila */
 $("#nav").addEventListener("keydown", e => {
-  const mov = { ArrowDown: 1, ArrowRight: 1, ArrowUp: -1, ArrowLeft: -1, Home: "inicio", End: "fin" }[e.key];
+  const orden = SECCIONES.filter(s => !s.pie).map(s => s.id);
+  const mov = { ArrowRight: 1, ArrowLeft: -1, ArrowDown: 2, ArrowUp: -2, Home: "inicio", End: "fin" }[e.key];
   if (mov === undefined) return;
   e.preventDefault();
-  const i = SECCIONES.findIndex(s => s.id === seccion);
-  const d = mov === "inicio" ? 0 : mov === "fin" ? SECCIONES.length - 1 : (i + mov + SECCIONES.length) % SECCIONES.length;
-  irASeccion(SECCIONES[d].id, "nav");
+  const i = Math.max(0, orden.indexOf(seccion));
+  const d = mov === "inicio" ? 0 : mov === "fin" ? orden.length - 1 : clamp(i + mov, 0, orden.length - 1);
+  irASeccion(orden[d], "nav");
 });
 
 document.addEventListener("click", async e => {
@@ -3438,7 +3598,7 @@ function vistaTutor() {
       return `<div class="repaso-fila">
       <span class="codigo" style="${colorMod(m)}">${m ? esc(m.cod) : "—"}</span>
       <span class="t">${esc(r.tema)}</span>
-      <span class="meta">${dd < 0 ? "te tocaba hace " + (-dd) + " d" : dd === 0 ? "hoy" : dd === 1 ? "mañana" : "en " + dd + " días"}</span>
+      <span class="meta">${dd < 0 ? "Te tocaba hace " + (-dd) + " d" : dd === 0 ? "Hoy" : dd === 1 ? "Mañana" : "En " + dd + " días"}</span>
       <button class="btn mini" data-rep-listo="${r.id}">Hecho</button></div>`;
     }).join("")}
   </section>` : ""}`;
@@ -4446,7 +4606,7 @@ const ESTADOS = [["pendiente", "Pendiente"], ["curso", "En curso"], ["hecha", "H
 const diaDe = iso => DIAS_ORDEN[(new Date(iso + "T12:00:00").getDay() + 6) % 7];
 const sumaDias = (iso, n) => { const d = new Date(iso + "T12:00:00"); d.setDate(d.getDate() + n); return hoyISO(d); };
 const lunesDe = iso => sumaDias(iso, -DIAS_ORDEN.indexOf(diaDe(iso)));
-const fechaCorta = iso => new Date(iso + "T12:00:00").toLocaleDateString("es-ES", { weekday: "short", day: "numeric", month: "short" });
+const fechaCorta = iso => mayus(new Date(iso + "T12:00:00").toLocaleDateString("es-ES", { weekday: "short", day: "numeric", month: "short" }));
 const cuandoTxt = dd => dd < 0 ? "hace " + (-dd) + " d" : dd === 0 ? "hoy" : dd === 1 ? "mañana" : "en " + dd + " días";
 
 function normalizarAgenda() {
@@ -4651,7 +4811,7 @@ function pillFecha(f, est, hora) {
 const optsMods = sel => S.modulos.map(m => `<option value="${m.id}"${m.id === sel ? " selected" : ""}>${esc(m.cod)} · ${esc(m.nombre)}</option>`).join("");
 const tarjetaAg = e => { const m = modPorId(e.modId); return `<div class="ag-tarjeta${e.estado === "hecha" ? " hecha" : ""}" draggable="true" data-el="${e.tipo}|${e.id}" style="${colorMod(m)}" tabindex="0">
   <div class="ag-t-tit">${esc(e.titulo)}</div>
-  <div class="ag-t-props">${pillTipo(e.tipo)}${pillMod(m)}${pillFecha(e.fecha, e.estado, e.hora)}${e.tipo === "entrega" && e.ref.sub.length ? `<span class="meta">${e.ref.sub.filter(x => x.hecho).length}/${e.ref.sub.length}</span>` : ""}${e.tipo === "examen" && e.ref.plan.length ? `<span class="meta">plan ${e.ref.plan.filter(x => x.hecho).length}/${e.ref.plan.length}</span>` : ""}</div></div>`; };
+  <div class="ag-t-props">${pillTipo(e.tipo)}${pillMod(m)}${pillFecha(e.fecha, e.estado, e.hora)}${e.tipo === "entrega" && e.ref.sub.length ? `<span class="meta">${e.ref.sub.filter(x => x.hecho).length}/${e.ref.sub.length}</span>` : ""}${e.tipo === "examen" && e.ref.plan.length ? `<span class="meta">Plan ${e.ref.plan.filter(x => x.hecho).length}/${e.ref.plan.length}</span>` : ""}</div></div>`; };
 
 /* ── la sección ── */
 function vistaAgenda() {
@@ -4784,7 +4944,7 @@ function peekHTML() {
       <div class="peek-bcab"><span class="etq">Plan hasta el examen</span><span class="meta num">${r.plan.filter(t => t.hecho).length}/${r.plan.length}</span></div>
       ${r.plan.length ? `<ul class="ex-lista">${r.plan.map(t => `<li class="${t.hecho ? "hecho" : ""}${t.fecha === hoy ? " hoy" : ""}">
         <button type="button" class="ex-check${t.hecho ? " on" : ""}" data-pk-plan="${t.id}" aria-pressed="${t.hecho}" aria-label="${esc(t.txt)}">${t.hecho ? CHECK : ""}</button>
-        <span class="meta ex-f">${t.fecha === hoy ? "hoy" : fechaCorta(t.fecha)}</span><span>${esc(t.txt)}</span></li>`).join("")}</ul>` : `<p class="meta">${r.fecha ? "Sin plan todavía." : "Ponle fecha y te hago el plan."}</p>`}
+        <span class="meta ex-f">${t.fecha === hoy ? "Hoy" : fechaCorta(t.fecha)}</span><span>${esc(t.txt)}</span></li>`).join("")}</ul>` : `<p class="meta">${r.fecha ? "Sin plan todavía." : "Ponle fecha y te hago el plan."}</p>`}
       <div class="barra-btns" style="margin-top:10px">
         <button type="button" class="btn mini" data-pk-auto${r.fecha ? "" : " disabled"}>${r.plan.length ? "Rehacer" : "Plan automático"}</button>
         ${sample ? `<button type="button" class="btn mini primario" data-pk-ia${r.fecha ? "" : " disabled"}>Plan del profe</button>` : ""}
@@ -4849,7 +5009,7 @@ function agPlan() {
       <div class="ho-cab">${DIAS_NOMBRE[d.dia].slice(0, 3)} <span class="meta">${new Date(d.fecha + "T12:00:00").getDate()}</span></div>
       ${d.bloques.map(b => { const m = modPorId(b.modId); return `<div class="pl-bloque${b.hecho ? " hecho" : ""}" style="${colorMod(m)}">
         <span class="pl-m">${m ? esc(m.cod) : "—"} <span class="meta">${b.min} min</span></span>
-        <span class="meta pl-por">${esc(b.motivo)}</span>
+        <span class="meta pl-por">${esc(mayus(b.motivo))}</span>
         ${d.fecha === hoy && !b.hecho ? `<button type="button" class="btn mini" data-plan-empezar="${b.modId}">Empezar</button>` : b.hecho ? `<span class="pl-ok">${CHECK}</span>` : ""}
       </div>`; }).join("") || `<p class="meta ho-vacio">${d.libre ? "Descanso" : "No es día tuyo"}</p>`}
     </div>`).join("")}
@@ -4879,7 +5039,7 @@ function panelHoy() {
       </div>
       <div class="hoy-examen">
         <div class="meta hoy-t">Próximo examen</div>
-        ${ex ? `<div class="hoy-cuenta${dd <= 3 ? " cerca" : ""}"><span class="cifra">${dd}</span><span class="meta">${dd === 0 ? "es hoy" : dd === 1 ? "día" : "días"}</span></div>
+        ${ex ? `<div class="hoy-cuenta${dd <= 3 ? " cerca" : ""}"><span class="cifra">${dd}</span><span class="meta">${dd === 0 ? "Es hoy" : dd === 1 ? "Día" : "Días"}</span></div>
           <p><button class="enlace-sin" data-abrir-el="examen|${ex.id}">${pillMod(exM)} ${esc(ex.titulo)}</button></p>
           ${ex.plan.length ? `<p class="meta">Plan: ${ex.plan.filter(t => t.hecho).length} de ${ex.plan.length} hechas</p>` : `<p class="meta">Sin plan. <button class="enlace" data-abrir-el="examen|${ex.id}">Hacerlo</button></p>`}`
           : `<p class="meta">Ninguno apuntado. <button class="enlace" data-ir-agenda="calendario">Apuntar uno</button></p>`}
@@ -5133,7 +5293,7 @@ function vistaRepaso() {
   <div class="rejilla-12">
     <section class="panel c-5 rp-hoy">
       <div class="etq">Hoy te tocan</div>
-      <div class="rp-cifra"><span class="cifra">${hoy.length}</span><span class="meta">${hoy.length === 1 ? "tarjeta" : "tarjetas"}</span></div>
+      <div class="rp-cifra"><span class="cifra">${hoy.length}</span><span class="meta">${hoy.length === 1 ? "Tarjeta" : "Tarjetas"}</span></div>
       <div class="barra-btns">
         <button type="button" class="btn primario" id="rpEmpezar"${hoy.length ? "" : " disabled"}>${hoy.length ? "Empezar el repaso" : "Nada pendiente"}</button>
       </div>
@@ -5165,7 +5325,7 @@ function vistaRepaso() {
       <div class="etq" style="margin-bottom:10px">Por ${esc(voc())}</div>
       ${porMod.map(x => `<div class="fila"><span class="codigo" style="${colorMod(x.m)}">${esc(x.m.cod)}</span>
         <span class="principal-fila"><span class="t">${esc(x.m.nombre)}</span><span class="meta">${x.total} tarjetas · ${x.dominadas} dominadas</span></span>
-        ${x.hoy ? `<button type="button" class="btn mini" data-rp-mod="${x.m.id}">Repasar ${x.hoy}</button>` : `<span class="meta">al día</span>`}</div>`).join("")}
+        ${x.hoy ? `<button type="button" class="btn mini" data-rp-mod="${x.m.id}">Repasar ${x.hoy}</button>` : `<span class="meta">Al día</span>`}</div>`).join("")}
     </section>` : ""}
   </div>`;
 }
@@ -5312,7 +5472,7 @@ function vistaProgreso() {
     const tramos = S.modulos.filter(m => f.porMod[m.id]).map(m => {
       const h = Math.max(2, f.porMod[m.id] / maxMin * (alto - 8)); y -= h;
       const r = `<rect x="${x.toFixed(1)}" y="${(y + 1).toFixed(1)}" width="${barra.toFixed(1)}" height="${Math.max(1, h - 2).toFixed(1)}" rx="2" fill="var(--c)" style="${colorMod(m)}"
-        data-tip="${esc(m.cod + " · " + horasTxt(f.porMod[m.id]) + " · semana del " + fechaCorta(f.ini))}"></rect>`;
+        data-tip="${esc(m.cod + " · " + horasTxt(f.porMod[m.id]) + " · semana del " + fechaCorta(f.ini).toLowerCase())}"></rect>`;
       return r;
     }).join("");
     return tramos + `<text x="${(x + barra / 2).toFixed(1)}" y="${alto + 16}" text-anchor="middle" class="pg-eje">${new Date(f.ini + "T12:00:00").getDate()}/${new Date(f.ini + "T12:00:00").getMonth() + 1}</text>`;
@@ -5326,15 +5486,15 @@ function vistaProgreso() {
     </div>
   </header>
   <div class="pg-datos">
-    <div class="panel"><span class="cifra">${horasTxt(totalCurso)}</span><span class="meta">estudiadas en total</span></div>
-    <div class="panel"><span class="cifra">${mediaGeneral === null ? "—" : nota(mediaGeneral)}</span><span class="meta">media de lo que tiene nota</span></div>
-    <div class="panel"><span class="cifra">${racha()}</span><span class="meta">días seguidos</span></div>
-    <div class="panel"><span class="cifra">${exHechos.length}</span><span class="meta">exámenes hechos</span></div>
-    <div class="panel"><span class="cifra">${T2.filter(c => c.caja >= 4).length}</span><span class="meta">tarjetas dominadas</span></div>
+    <div class="panel"><span class="cifra">${horasTxt(totalCurso)}</span><span class="meta">Estudiadas en total</span></div>
+    <div class="panel"><span class="cifra">${mediaGeneral === null ? "—" : nota(mediaGeneral)}</span><span class="meta">Media de lo que tiene nota</span></div>
+    <div class="panel"><span class="cifra">${racha()}</span><span class="meta">Días seguidos</span></div>
+    <div class="panel"><span class="cifra">${exHechos.length}</span><span class="meta">Exámenes hechos</span></div>
+    <div class="panel"><span class="cifra">${T2.filter(c => c.caja >= 4).length}</span><span class="meta">Tarjetas dominadas</span></div>
   </div>
   <div class="rejilla-12">
     <section class="panel c-7">
-      <div class="panel-cab"><h2 class="etq">Horas por semana</h2><span class="meta">últimas 8</span></div>
+      <div class="panel-cab"><h2 class="etq">Horas por semana</h2><span class="meta">Últimas 8</span></div>
       ${filas.some(f => f.total) ? `<div class="pg-grafico" id="pgGrafico"><svg viewBox="0 0 ${ancho} ${alto + 22}" role="img" aria-label="Horas de estudio por semana y ${esc(voc())}">${barras}</svg><div class="pg-tip" id="pgTip" hidden></div></div>
       <div class="pg-leyenda">${S.modulos.filter(m => filas.some(f => f.porMod[m.id])).map(m => `<span style="${colorMod(m)}"><i></i>${esc(m.cod)}</span>`).join("")}</div>
       <details class="pg-tabla"><summary class="meta">Ver como tabla</summary><table><thead><tr><th>Semana</th>${S.modulos.map(m => `<th>${esc(m.cod)}</th>`).join("")}<th>Total</th></tr></thead>
@@ -5390,7 +5550,6 @@ document.addEventListener("mousemove", e => {
 (function inicio() {
   const tg = leeLS("tema");
   if (tg === "dark" || tg === "light") document.documentElement.setAttribute("data-theme", tg);
-  $("#btnAjustes").innerHTML = icono("ajustes");
   pintaBotonTema();
   matchMedia("(prefers-color-scheme: dark)").addEventListener("change", pintaBotonTema);
   cargarLocal(); cargarTimer(); migrarConfig(); migrarPerfil();
@@ -5406,3 +5565,6 @@ document.addEventListener("mousemove", e => {
   else marcaSync("Este dispositivo", false);
 })();
 </script>
+
+</body>
+</html>
