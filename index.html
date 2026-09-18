@@ -756,6 +756,137 @@ body.en-entrada .app{display:none}
   .horario, .plan-semana{grid-template-columns:repeat(auto-fill,minmax(150px,1fr))}
 }
 @media (max-width:600px){ .form-examen, .form-horario, .form-tarjeta{grid-template-columns:minmax(0,1fr)} }
+
+/* ── agenda al estilo Notion ── */
+.ag-vistas{display:flex; flex-wrap:wrap; gap:2px; margin-bottom:14px; border-bottom:1px solid var(--line)}
+.ag-vista{display:inline-flex; align-items:center; gap:7px; padding:9px 12px; border:0; background:none; color:var(--ink-3);
+  font:500 13.5px/1 var(--sans); cursor:pointer; border-bottom:2px solid transparent; margin-bottom:-1px}
+.ag-vista:hover{color:var(--ink)}
+.ag-vista[aria-selected="true"]{color:var(--ink); border-bottom-color:var(--acento)}
+.ag-vista svg{width:15px; height:15px}
+.ag-rapido{position:relative; display:flex; flex-wrap:wrap; align-items:center; gap:8px 10px; padding:10px 14px; margin-bottom:10px;
+  border-radius:var(--r-l); background:var(--surface); border:1px solid var(--line-2); transition:border-color .12s}
+.ag-rapido:focus-within{border-color:var(--acento)}
+.ag-mas{color:var(--ink-3); display:grid}
+.ag-rapido input{flex:1 1 300px; border:0; background:none; padding:4px 0; height:auto; font:400 14.5px/1.4 var(--sans); color:var(--ink); box-shadow:none}
+.ag-rapido input:focus{outline:none; box-shadow:none}
+.ag-entiende{flex:1 1 100%; display:flex; flex-wrap:wrap; align-items:center; gap:6px}
+.ag-entiende:empty{display:none}
+.ag-intro{margin-left:auto}
+.ag-filtros{display:flex; flex-wrap:wrap; align-items:center; gap:6px; margin-bottom:16px}
+.ag-filtro{display:inline-flex; align-items:center; gap:6px; padding:5px 10px; border-radius:99px; border:1px solid transparent;
+  background:none; color:var(--ink-3); font:500 12.5px/1 var(--sans); cursor:pointer}
+.ag-filtro:hover{background:var(--surface-2); color:var(--ink)}
+.ag-filtro.sel{background:var(--surface); color:var(--ink); border-color:var(--acento-borde)}
+.ag-filtro i{width:8px; height:8px; border-radius:50%; background:var(--c, var(--line-2))}
+.ag-sep{width:1px; height:16px; background:var(--line-2); margin:0 4px}
+/* las propiedades */
+.pill-tipo, .pill-fecha, .pill-estado{display:inline-flex; align-items:center; gap:5px; height:22px; padding:0 8px; border-radius:5px;
+  font:500 11.5px/1 var(--sans); color:var(--ink-2); background:var(--surface-2); white-space:nowrap}
+.pill-tipo svg{width:12px; height:12px}
+.pill-tipo.examen{color:var(--acento-txt); background:var(--acento-suave)}
+.pill-fecha.cerca{color:var(--acento-txt); box-shadow:inset 0 0 0 1px var(--acento-borde); background:none}
+.pill-fecha.atrasada{background:var(--ink); color:var(--on-ink)}
+.pill-fecha.vacia{color:var(--ink-4); background:none; box-shadow:inset 0 0 0 1px var(--line)}
+.pill-estado{box-shadow:inset 0 0 0 1px var(--line-2); background:none}
+/* calendario */
+.cal-cab{display:flex; justify-content:space-between; align-items:center; gap:12px; margin-bottom:10px}
+.cal-mes{font:500 20px/1.2 var(--sans); letter-spacing:-.015em; margin:0}
+.cal{display:grid; grid-template-columns:repeat(7,minmax(0,1fr)); border-top:1px solid var(--line); border-left:1px solid var(--line); border-radius:var(--r-m); overflow:hidden}
+.cal-dsem{padding:8px 10px; font:500 11.5px/1 var(--sans); color:var(--ink-3); border-right:1px solid var(--line); border-bottom:1px solid var(--line); background:var(--surface)}
+.cal-dia{min-height:112px; padding:6px 6px 8px; border-right:1px solid var(--line); border-bottom:1px solid var(--line); background:var(--surface);
+  display:flex; flex-direction:column; gap:4px; min-width:0; transition:background .12s}
+.cal-dia.otro{background:var(--bg)}
+.cal-dia.otro .cal-num span{color:var(--ink-4)}
+.cal-dia.soltar-aqui{background:var(--acento-suave)}
+.cal-num{display:flex; justify-content:space-between; align-items:center; font:500 12.5px/1 var(--sans); color:var(--ink-2); padding:2px 2px 4px}
+.cal-dia.hoy .cal-num span{display:inline-grid; place-items:center; min-width:22px; height:22px; border-radius:50%; background:var(--acento); color:var(--bg)}
+.cal-add{width:20px; height:20px; border:0; border-radius:5px; background:none; color:var(--ink-3); cursor:pointer; display:grid; place-items:center; padding:0; opacity:0; transition:opacity .12s}
+.cal-add svg{width:12px; height:12px}
+.cal-dia:hover .cal-add, .cal-add:focus-visible{opacity:1}
+.cal-add:hover{background:var(--surface-3); color:var(--ink)}
+.cal-el{position:relative; display:flex; align-items:center; gap:5px; padding:3px 6px 3px 9px; border-radius:4px; background:var(--surface-2);
+  font:500 11.5px/1.3 var(--sans); color:var(--ink); cursor:pointer; overflow:hidden; min-width:0}
+.cal-el::before{content:""; position:absolute; left:0; top:0; bottom:0; width:3px; background:var(--c, var(--line-2))}
+.cal-el span{overflow:hidden; text-overflow:ellipsis; white-space:nowrap}
+.cal-el svg{width:11px; height:11px; flex:0 0 11px; color:var(--acento-txt)}
+.cal-el.hecha{opacity:.5}
+.cal-el.hecha span{text-decoration:line-through}
+.cal-el:hover{background:var(--surface-3)}
+.cal-mas{border:0; background:none; padding:0 4px; text-align:left; font:500 11px/1.4 var(--sans); color:var(--ink-3); cursor:pointer}
+.cal-mas:hover{color:var(--ink)}
+/* tablero */
+.tablero{display:grid; grid-template-columns:repeat(3,minmax(250px,1fr)); gap:14px; overflow-x:auto; padding-bottom:4px}
+.tb-col{display:flex; flex-direction:column; gap:8px; padding:10px; border-radius:var(--r-l); background:var(--surface-2); min-height:220px; transition:background .12s}
+.tb-col.soltar-aqui{background:var(--acento-suave)}
+.tb-cab{display:flex; align-items:center; gap:8px; padding:2px 4px 6px; font:500 13px/1 var(--sans); color:var(--ink-2)}
+.tb-cab .meta{margin-left:auto}
+.tb-punto{width:8px; height:8px; border-radius:50%; border:1.5px solid var(--ink-3)}
+.tb-punto.curso{background:linear-gradient(90deg, var(--ink-3) 50%, transparent 50%)}
+.tb-punto.hecha{background:var(--verde); border-color:var(--verde)}
+.tb-lista{display:flex; flex-direction:column; gap:8px; flex:1}
+.tb-vacio{padding:10px 4px; margin:0}
+.tb-nuevo{display:inline-flex; align-items:center; gap:6px; padding:7px 6px; border:0; border-radius:var(--r-s); background:none; color:var(--ink-3);
+  font:500 12.5px/1 var(--sans); cursor:pointer; text-align:left}
+.tb-nuevo:hover{background:var(--surface-3); color:var(--ink)}
+.tb-nuevo svg{width:13px; height:13px}
+.ag-tarjeta{position:relative; padding:10px 11px 10px 13px; border-radius:var(--r-m); background:var(--surface); box-shadow:var(--elev-sm, 0 0 0 1px var(--line-2));
+  cursor:grab; overflow:hidden; transition:box-shadow .12s, transform .12s}
+.ag-tarjeta::before{content:""; position:absolute; left:0; top:0; bottom:0; width:3px; background:var(--c, var(--line-2))}
+.ag-tarjeta:hover{box-shadow:var(--elev-md, 0 0 0 1px var(--line-2))}
+.ag-tarjeta.arrastrando{opacity:.4}
+.ag-tarjeta.hecha .ag-t-tit{text-decoration:line-through; color:var(--ink-3)}
+.ag-t-tit{font:500 13.5px/1.35 var(--sans); margin-bottom:8px; overflow-wrap:anywhere}
+.ag-t-props{display:flex; flex-wrap:wrap; align-items:center; gap:5px}
+/* lista */
+.lista-ag{display:flex; flex-direction:column; gap:18px}
+.ls-cab{display:flex; align-items:center; gap:8px; padding:0 4px 6px; font:500 13px/1 var(--sans); color:var(--ink-2); border-bottom:1px solid var(--line); cursor:default; list-style:none}
+.ls-cab::-webkit-details-marker{display:none}
+details.ls-grupo > summary{cursor:pointer}
+.ls-fila{display:flex; align-items:center; gap:10px; padding:8px 6px; border-bottom:1px solid var(--line); border-radius:var(--r-s); cursor:pointer; min-width:0}
+.ls-fila:hover{background:var(--surface-2)}
+.ls-fila.hecha .ls-tit{text-decoration:line-through; color:var(--ink-3)}
+.ls-tit{flex:1; min-width:0; font:400 14px/1.4 var(--sans); overflow:hidden; text-overflow:ellipsis; white-space:nowrap}
+.ls-props{display:flex; align-items:center; gap:6px; flex:0 0 auto}
+.ex-check.on{background:var(--verde); border-color:var(--verde)}
+/* el panel lateral */
+.peek-fondo{position:fixed; inset:0; z-index:55; background:rgba(8,10,20,.35)}
+.peek{position:fixed; top:0; right:0; bottom:0; z-index:56; width:min(480px,100%); overflow-y:auto; padding:18px 24px 30px;
+  background:var(--surface); box-shadow:var(--sombra-modal); border-left:1px solid var(--line-2); display:flex; flex-direction:column; gap:14px}
+.peek::before{content:""; position:absolute; left:0; right:0; top:0; height:3px; background:var(--c, var(--line-2))}
+.peek-cab{display:flex; justify-content:space-between; align-items:center}
+.peek-tipo{display:inline-flex; padding:3px; gap:3px; border-radius:var(--r-m); background:var(--surface-2)}
+.peek-tipo button{display:inline-flex; align-items:center; gap:6px; padding:6px 10px; border:0; border-radius:6px; background:none; color:var(--ink-3); font:500 12.5px/1 var(--sans); cursor:pointer}
+.peek-tipo button svg{width:13px; height:13px}
+.peek-tipo button.sel{background:var(--surface); color:var(--ink); box-shadow:0 0 0 1px var(--line-2)}
+.peek-tit{border:0; background:none; padding:4px 0; height:auto; font:500 24px/1.25 var(--sans); letter-spacing:-.015em; color:var(--ink); box-shadow:none}
+.peek-tit:focus{outline:none; box-shadow:inset 0 -1px 0 var(--acento)}
+.peek-props{display:flex; flex-direction:column; gap:2px; padding-bottom:10px; border-bottom:1px solid var(--line)}
+.pp{display:grid; grid-template-columns:130px minmax(0,1fr); align-items:center; gap:10px; padding:4px 0; margin:0}
+.pp > span{font:400 13px/1 var(--sans); color:var(--ink-3)}
+.pp input, .pp select{height:32px; border-color:transparent; background:none}
+.pp input:hover, .pp select:hover{background:var(--surface-2)}
+.pk-estados{display:flex; gap:4px; flex-wrap:wrap}
+.pk-estados button{padding:5px 9px; border-radius:99px; border:1px solid var(--line-2); background:none; color:var(--ink-3); font:500 12px/1 var(--sans); cursor:pointer}
+.pk-estados button.sel{border-color:var(--acento-borde); background:var(--acento-suave); color:var(--acento-txt)}
+.peek-bloque{display:flex; flex-direction:column; gap:8px}
+.peek-bloque textarea{resize:vertical; min-height:70px}
+.peek-bcab{display:flex; justify-content:space-between; align-items:center}
+.pk-nuevo{height:32px; border-style:dashed}
+.ex-lista li{position:relative}
+.pk-quita{position:static; opacity:0}
+.ex-lista li:hover .pk-quita{opacity:1}
+.peek-pie{display:flex; justify-content:space-between; align-items:center; margin-top:auto; padding-top:12px; border-top:1px solid var(--line)}
+.enlace-sin{border:0; background:none; padding:0; color:var(--ink); cursor:pointer; font:inherit; display:inline-flex; align-items:center; gap:8px; text-align:left}
+.enlace-sin:hover{text-decoration:underline; text-underline-offset:3px}
+@media (max-width:760px){
+  .cal-dia{min-height:74px; padding:4px 3px}
+  .cal-el{padding:2px 3px 2px 6px; font-size:10.5px}
+  .cal-el svg{display:none}
+  .tablero{grid-template-columns:repeat(3,minmax(240px,82vw))}
+  .ls-props .pill-tipo{display:none}
+  .pp{grid-template-columns:110px minmax(0,1fr)}
+}
 </style>
 
 <div class="app">
@@ -832,6 +963,13 @@ const ICON = {
   escritorio: '<rect x="2.5" y="2.5" width="4.5" height="4.5" rx="1"/><rect x="9" y="2.5" width="4.5" height="4.5" rx="1"/><rect x="2.5" y="9" width="4.5" height="4.5" rx="1"/><rect x="9" y="9" width="4.5" height="4.5" rx="1"/>',
   modulos: '<path d="M8 2.2 13.8 5 8 7.8 2.2 5Z"/><path d="M2.2 8 8 10.8 13.8 8"/><path d="M2.2 11 8 13.8 13.8 11"/>',
   apuntes: '<path d="M3 13.2l.8-3.1 7.4-7.4a1.4 1.4 0 0 1 2 2l-7.4 7.4z"/><path d="M9.8 4.2l2 2"/>',
+  entrega: '<rect x="3" y="2.5" width="10" height="11" rx="1.8"/><path d="M5.7 6h4.6M5.7 8.6h4.6M5.7 11.2h2.6"/>',
+  examen: '<path d="M4 2.5h8a1 1 0 0 1 1 1v9a1 1 0 0 1-1 1H4a1 1 0 0 1-1-1v-9a1 1 0 0 1 1-1z"/><path d="M5.5 6.2l1.3 1.3 2.4-2.4M5.5 10.4h5"/>',
+  calendario: '<rect x="2.5" y="3.2" width="11" height="10.3" rx="2"/><path d="M2.5 6.6h11M5.6 1.9v2.6M10.4 1.9v2.6"/>',
+  tablero: '<rect x="2.5" y="2.5" width="3.2" height="11" rx="1"/><rect x="6.4" y="2.5" width="3.2" height="7.5" rx="1"/><rect x="10.3" y="2.5" width="3.2" height="9" rx="1"/>',
+  lista: '<path d="M6 4h7.5M6 8h7.5M6 12h7.5"/><circle cx="3.2" cy="4" r=".7"/><circle cx="3.2" cy="8" r=".7"/><circle cx="3.2" cy="12" r=".7"/>',
+  reloj: '<circle cx="8" cy="8" r="5.6"/><path d="M8 4.8V8l2.2 1.4"/>',
+  plan: '<path d="M3 4.5h6M3 8h10M3 11.5h7"/><path d="M11.2 3.2l1.2 1.2 2-2"/>',
   entregas: '<rect x="2.5" y="3.2" width="11" height="10.3" rx="2"/><path d="M2.5 6.6h11M5.6 1.9v2.6M10.4 1.9v2.6"/><path d="M5.6 9.6l1.5 1.5 3-3"/>',
   repaso: '<rect x="2.3" y="4.6" width="9" height="8.6" rx="1.6"/><path d="M5 2.8h7.1a1.6 1.6 0 0 1 1.6 1.6v6.6"/><path d="M4.8 8.9h4"/>',
   progreso: '<path d="M2.5 13.5h11"/><path d="M4.2 11V8.4M7.2 11V5.2M10.2 11V6.8M13 11V3.5"/>',
@@ -2578,7 +2716,7 @@ document.addEventListener("click", async e => {
       if (d.hechos[id]) d.visto[id] = true;
       guardar("objetivos"); pinta(); return;
     }
-    if (id === "tarea") { agTab = "entregas"; irASeccion("entregas"); return; }
+    if (id === "tarea") { agTab = "lista"; irASeccion("entregas"); return; }
     if (id === "tarjetas") { irASeccion("repaso"); return; }
     if (id === "apunte") { irASeccion("apuntes"); return; }
     if (id === "vocab") { if (S.vocab.some(v => !v.proximo || v.proximo <= hoyISO())) dlgRepaso(); else irASeccion("ingles"); return; }
@@ -4294,14 +4432,17 @@ document.addEventListener("input", e => {
 });
 
 
-/* ══════════════════ agenda: exámenes, horario y plan ══════════════════
-   Todo lo que tiene fecha vive aquí. Los exámenes llevan su cuenta atrás y un
-   plan hacia atrás; el horario dice qué clase tienes cada día; y con eso, más
-   tus horas y lo que peor llevas, sale solo el plan de la semana: qué toca
-   estudiar hoy y por qué. */
-let agTab = "entregas";
+/* ══════════════════ agenda ══════════════════
+   Una sola base de datos —entregas y exámenes— con tres formas de verla:
+   calendario, tablero y lista. Se añade escribiendo normal («Examen de BD el
+   jueves»), se mueve arrastrando y cada cosa se abre en un panel lateral donde
+   se edita todo sin botón de guardar. Además, el horario de clases y el plan de
+   la semana, que sale solo. */
+let agTab = "calendario", agMes = "", agPeek = null, agFiltro = { modId: "", tipo: "" };
 const DIAS_ORDEN = ["lun", "mar", "mie", "jue", "vie", "sab", "dom"];
 const DIAS_NOMBRE = { lun: "Lunes", mar: "Martes", mie: "Miércoles", jue: "Jueves", vie: "Viernes", sab: "Sábado", dom: "Domingo" };
+const MESES = ["enero", "febrero", "marzo", "abril", "mayo", "junio", "julio", "agosto", "septiembre", "octubre", "noviembre", "diciembre"];
+const ESTADOS = [["pendiente", "Pendiente"], ["curso", "En curso"], ["hecha", "Hecho"]];
 const diaDe = iso => DIAS_ORDEN[(new Date(iso + "T12:00:00").getDay() + 6) % 7];
 const sumaDias = (iso, n) => { const d = new Date(iso + "T12:00:00"); d.setDate(d.getDate() + n); return hoyISO(d); };
 const lunesDe = iso => sumaDias(iso, -DIAS_ORDEN.indexOf(diaDe(iso)));
@@ -4312,15 +4453,100 @@ function normalizarAgenda() {
   if (!Array.isArray(S.examenes)) S.examenes = [];
   if (!Array.isArray(S.horario)) S.horario = [];
   S.examenes.forEach(x => { if (!Array.isArray(x.plan)) x.plan = []; });
+  S.tareas.forEach(t => { if (!Array.isArray(t.sub)) t.sub = []; });
 }
-const examenesPendientes = () => { normalizarAgenda(); const hoy = hoyISO(); return S.examenes.filter(x => x.fecha >= hoy && (x.nota === null || x.nota === undefined)).sort((a, b) => a.fecha.localeCompare(b.fecha)); };
+/* el estado de cada cosa: una entrega hecha es la marcada; un examen, el que ya tiene nota o marcaste */
+function estadoDe(ref, tipo) {
+  if (tipo === "entrega") return ref.hecha ? "hecha" : ref.estado === "curso" ? "curso" : "pendiente";
+  if (ref.estado === "hecha" || (ref.nota !== null && ref.nota !== undefined && ref.nota !== "")) return "hecha";
+  return ref.estado === "curso" ? "curso" : "pendiente";
+}
+function elementos() {
+  normalizarAgenda();
+  return S.tareas.map(t => ({ tipo: "entrega", id: t.id, ref: t, titulo: t.titulo, modId: t.modId, fecha: t.fecha || "", hora: t.hora || "", estado: estadoDe(t, "entrega") }))
+    .concat(S.examenes.map(x => ({ tipo: "examen", id: x.id, ref: x, titulo: x.titulo, modId: x.modId, fecha: x.fecha || "", hora: x.hora || "", estado: estadoDe(x, "examen") })));
+}
+const elemento = (tipo, id) => elementos().find(e => e.tipo === tipo && e.id === id);
+const filtrados = () => elementos().filter(e => (!agFiltro.modId || e.modId === agFiltro.modId) && (!agFiltro.tipo || e.tipo === agFiltro.tipo));
+const examenesPendientes = () => { const hoy = hoyISO(); return elementos().filter(e => e.tipo === "examen" && e.fecha >= hoy && e.estado !== "hecha").map(e => e.ref).sort((a, b) => a.fecha.localeCompare(b.fecha)); };
 const clasesDe = dia => { normalizarAgenda(); return S.horario.filter(b => b.dia === dia).sort((a, b) => a.ini.localeCompare(b.ini)); };
+function ponEstado(el, est) {
+  el.ref.estado = est;
+  if (el.tipo === "entrega") { el.ref.hecha = est === "hecha"; el.ref.hechaEn = el.ref.hecha ? hoyISO() : ""; }
+  guardar("agenda");
+}
+function ponFecha(el, fecha) { el.ref.fecha = fecha; guardar("agenda"); }
 
-/* ── el plan de la semana ──
-   Reparte tus horas entre asignaturas según su meta y según lo que aprieta:
-   un examen cerca pesa mucho, ir en riesgo pesa, tener ya aprobado pesa poco.
-   Después coloca bloques del tamaño del cronómetro en los días que puedes, con
-   los de cada examen antes de su fecha y como mucho tres bloques iguales al día. */
+/* ── añadir escribiendo normal ──
+   «Examen de BD el jueves a las 10», «entregar práctica 3 de programación
+   mañana», «trabajo de LMSGI en 5 días». Se reconoce si es examen, de qué
+   asignatura, el día y la hora; el resto se queda como título. */
+const reVoz = s => new RegExp("(?<![\\p{L}\\d])(?:" + s + ")(?![\\p{L}\\d])", "iu");
+const sinTildes = s => s.normalize("NFD").replace(/[\u0300-\u036f]/g, "").toLowerCase();
+const DIA_TXT = { lunes: 0, martes: 1, miercoles: 2, jueves: 3, viernes: 4, sabado: 5, domingo: 6 };
+function entenderFrase(txt, base) {
+  const hoy = base || hoyISO();
+  let t = " " + String(txt || "") + " ", fecha = "", hora = "", tipo = "entrega", modId = "";
+  const tomar = (re, fn) => { const m = t.match(re); if (!m) return false; const r = fn(m); if (r === false) return false; t = t.replace(m[0], " "); return true; };
+  /* la hora, antes que las fechas para no confundir «10:30» con un día */
+  tomar(reVoz("a las (\\d{1,2})(?:[:.](\\d{2}))?(?:\\s*h)?"), m => { hora = String(clamp(num(m[1]), 0, 23)).padStart(2, "0") + ":" + (m[2] || "00"); }) ||
+  tomar(reVoz("(\\d{1,2})[:.](\\d{2})\\s*h?"), m => { if (num(m[1]) > 23 || num(m[2]) > 59) return false; hora = m[1].padStart(2, "0") + ":" + m[2]; });
+  const conAño = (d, mes, año) => {
+    let y = año ? (String(año).length === 2 ? 2000 + num(año) : num(año)) : new Date(hoy + "T12:00:00").getFullYear();
+    let f = y + "-" + String(mes).padStart(2, "0") + "-" + String(d).padStart(2, "0");
+    if (!año && f < hoy) f = (y + 1) + f.slice(4);
+    return isNaN(new Date(f + "T12:00:00")) ? "" : f;
+  };
+  const mesesRe = MESES.join("|") + "|ene|feb|mar|abr|may|jun|jul|ago|sep|sept|oct|nov|dic";
+  tomar(reVoz("(?:el |para el )?(\\d{1,2})\\s+de\\s+(" + mesesRe + ")(?:\\s+de\\s+(\\d{4}))?"), m => {
+    const i = MESES.findIndex(x => x.startsWith(sinTildes(m[2]).slice(0, 3)));
+    fecha = i < 0 ? "" : conAño(num(m[1]), i + 1, m[3]);
+  }) ||
+  tomar(reVoz("(?:el |para el )?(\\d{1,2})[/-](\\d{1,2})(?:[/-](\\d{2,4}))?"), m => {
+    if (num(m[2]) < 1 || num(m[2]) > 12 || num(m[1]) < 1 || num(m[1]) > 31) return false;
+    fecha = conAño(num(m[1]), num(m[2]), m[3]);
+  }) ||
+  tomar(reVoz("(?:para )?pasado mañana"), () => { fecha = sumaDias(hoy, 2); }) ||
+  tomar(reVoz("(?:para )?mañana"), () => { fecha = sumaDias(hoy, 1); }) ||
+  tomar(reVoz("(?:para )?hoy"), () => { fecha = hoy; }) ||
+  tomar(reVoz("(?:en|dentro de) (\\d{1,3}) d[ií]as"), m => { fecha = sumaDias(hoy, clamp(num(m[1]), 0, 365)); }) ||
+  tomar(reVoz("(?:en|dentro de) una semana|la semana que viene|la pr[oó]xima semana"), () => { fecha = sumaDias(hoy, 7); }) ||
+  tomar(reVoz("(?:para )?(?:el |este |el pr[oó]ximo |pr[oó]ximo )?(lunes|martes|mi[eé]rcoles|jueves|viernes|s[aá]bado|domingo)"), m => {
+    const quiero = DIA_TXT[sinTildes(m[1])], hoyN = DIAS_ORDEN.indexOf(diaDe(hoy));
+    let d = (quiero - hoyN + 7) % 7; if (d === 0) d = 7;
+    fecha = sumaDias(hoy, d);
+  });
+  if (reVoz("examen|parcial|control|test|prueba|final|recuperaci[oó]n|global").test(t)) tipo = "examen";
+  /* la asignatura: por su código o por su nombre, y se queda en el título */
+  const plano = sinTildes(t);
+  let mejor = 0;
+  S.modulos.forEach(m => {
+    const cands = [m.cod, m.nombre].concat(m.nombre.split(/\s+/).filter(w => w.length >= 6));
+    cands.forEach(c => {
+      const cc = sinTildes(c).trim(); if (cc.length < 2) return;
+      if (reVoz(cc.replace(/[.*+?^${}()|[\]\\]/g, "\\$&")).test(plano) && cc.length > mejor) { mejor = cc.length; modId = m.id; }
+    });
+  });
+  /* lo que sobra es el título, sin las palabras sueltas que unían la fecha */
+  let titulo = t.replace(/\s+/g, " ").trim();
+  for (let i = 0; i < 3; i++) titulo = titulo.replace(/\s+(el|para el|para|de|del|a|en|y)$/i, "").trim();
+  titulo = titulo.charAt(0).toUpperCase() + titulo.slice(1);
+  return { titulo, tipo, modId, fecha, hora };
+}
+function crearElemento(e) {
+  normalizarAgenda();
+  const modId = e.modId || (agFiltro.modId || (S.modulos[0] && S.modulos[0].id) || "");
+  if (e.tipo === "examen") {
+    const ex = { id: uid(), modId, titulo: (e.titulo || "Examen").slice(0, 120), fecha: e.fecha || "", hora: e.hora || "", peso: null, temas: "", nota: null, estado: e.estado || "pendiente", plan: [] };
+    if (ex.fecha) ex.plan = planExamenLocal(ex);
+    S.examenes.push(ex); guardar("agenda"); return { tipo: "examen", id: ex.id };
+  }
+  const t = { id: uid(), titulo: (e.titulo || "Sin título").slice(0, 120), modId, fecha: e.fecha || "", hora: e.hora || "", peso: null,
+    hecha: e.estado === "hecha", hechaEn: e.estado === "hecha" ? hoyISO() : "", estado: e.estado || "pendiente", notas: "", sub: [] };
+  S.tareas.push(t); guardar("agenda"); return { tipo: "entrega", id: t.id };
+}
+
+/* ── el plan de la semana ── */
 function planSemana(desde) {
   normalizarAgenda();
   const p = normalizarPerfil(), hoy = hoyISO(), lunes = lunesDe(desde || hoy);
@@ -4340,20 +4566,14 @@ function planSemana(desde) {
     if (c.yaEsta) { w *= .5; motivo = motivo || "ya lo tienes, repaso suave"; }
     return { m, w, motivo: motivo || "lo que toca", examen: ex && dd <= 14 ? ex : null };
   });
-  const sumaW = pesos.reduce((s, x) => s + x.w, 0) || 1;
-  const cola = [];
-  pesos.forEach(x => {
-    const n = Math.max(x.w > .4 ? 1 : 0, Math.round(total * x.w / sumaW / bloque));
-    for (let i = 0; i < n; i++) cola.push(x);
-  });
-  /* primero lo más urgente, para que ocupe los primeros días */
+  const sumaW = pesos.reduce((s, x) => s + x.w, 0) || 1, cola = [];
+  pesos.forEach(x => { const n = Math.max(x.w > .4 ? 1 : 0, Math.round(total * x.w / sumaW / bloque)); for (let i = 0; i < n; i++) cola.push(x); });
   cola.sort((a, b) => b.w - a.w);
   const semana = DIAS_ORDEN.map((d, i) => ({ dia: d, fecha: sumaDias(lunes, i), libre: dias.includes(d), bloques: [] }));
   const libres = semana.filter(d => d.libre);
   if (!libres.length) return semana;
   let k = 0;
   cola.forEach(x => {
-    /* el hueco que toca: un día libre, antes del examen si lo hay, sin pasar de tres bloques iguales */
     for (let intento = 0; intento < libres.length; intento++) {
       const d = libres[(k + intento) % libres.length];
       if (x.examen && d.fecha >= x.examen.fecha) continue;
@@ -4364,7 +4584,6 @@ function planSemana(desde) {
       return;
     }
   });
-  /* lo estudiado de verdad ese día y en esa asignatura va tachando los bloques */
   semana.forEach(d => {
     const hechos = {};
     d.bloques.forEach(b => {
@@ -4377,26 +4596,21 @@ function planSemana(desde) {
 }
 const planDeHoy = () => { const hoy = hoyISO(); return (planSemana(hoy).find(d => d.fecha === hoy) || { bloques: [] }).bloques; };
 
-/* ── el plan hacia atrás de un examen, sin IA ──
-   Un tema por sesión en los días que puedes, el penúltimo día dudas y el
-   último un simulacro. Con el profe se puede pedir uno a medida. */
+/* ── el plan hacia atrás de un examen ── */
 function planExamenLocal(ex) {
   const p = normalizarPerfil(), hoy = hoyISO();
+  if (!ex.fecha) return [];
   const dias = p.diasFuertes.length ? p.diasFuertes : DIAS_ORDEN.slice(0, 6);
   const fechas = [];
   for (let f = hoy; f < ex.fecha && fechas.length < 30; f = sumaDias(f, 1)) if (dias.includes(diaDe(f))) fechas.push(f);
   if (!fechas.length) return [{ id: uid(), fecha: hoy, txt: "Repaso general y un simulacro", hecho: false }];
-  const temas = String(ex.temas || "").split(/\n|;|,(?=\s*[A-ZÁÉÍÓÚ0-9])/).map(t => t.trim()).filter(Boolean);
-  const tareas = (temas.length ? temas.map(t => "Estudiar y hacer ejercicios: " + t) : ["Leer y subrayar la teoría", "Esquema de todo el temario", "Ejercicios del tema más largo", "Ejercicios del resto"]);
+  const temas = String(ex.temas || "").split(/\n|;/).map(t => t.trim()).filter(Boolean);
+  const tareas = temas.length ? temas.map(t => "Estudiar y hacer ejercicios: " + t) : ["Leer y subrayar la teoría", "Esquema de todo el temario", "Ejercicios del tema más largo", "Ejercicios del resto"];
   if (fechas.length >= 3) { tareas.push("Resolver dudas con el profe"); tareas.push("Simulacro de examen con tiempo"); }
   else tareas.push("Repaso general y un simulacro");
-  /* se reparten las tareas en las fechas: si hay más tareas que días, se juntan */
   const plan = [], porDia = Math.max(1, Math.ceil(tareas.length / fechas.length));
   let i = 0;
-  fechas.slice(-Math.ceil(tareas.length / porDia)).forEach(f => {
-    const trozo = tareas.slice(i, i + porDia); i += porDia;
-    trozo.forEach(txt => plan.push({ id: uid(), fecha: f, txt, hecho: false }));
-  });
+  fechas.slice(-Math.ceil(tareas.length / porDia)).forEach(f => { tareas.slice(i, i + porDia).forEach(txt => plan.push({ id: uid(), fecha: f, txt, hecho: false })); i += porDia; });
   return plan;
 }
 async function planExamenIA(ex, boton) {
@@ -4425,80 +4639,186 @@ Reglas: solo fechas entre hoy y el día antes del examen, solo en los días que 
   }
 }
 
-/* ── las pestañas ── */
+/* ── piezas que se repiten: las propiedades como pastillas ── */
+const pillMod = m => `<span class="codigo" style="${colorMod(m)}">${m ? esc(m.cod) : "—"}</span>`;
+const pillTipo = tipo => `<span class="pill-tipo ${tipo}">${icono(tipo === "examen" ? "examen" : "entrega")}${tipo === "examen" ? "Examen" : "Entrega"}</span>`;
+function pillFecha(f, est, hora) {
+  if (!f) return `<span class="pill-fecha vacia">Sin fecha</span>`;
+  const dd = diasEntre(f, hoyISO()), cls = est === "hecha" ? "" : dd < 0 ? " atrasada" : dd <= 2 ? " cerca" : "";
+  const txt = dd === 0 ? "Hoy" : dd === 1 ? "Mañana" : dd === -1 ? "Ayer" : fechaCorta(f);
+  return `<span class="pill-fecha${cls}">${txt}${hora ? " · " + esc(hora) : ""}</span>`;
+}
+const optsMods = sel => S.modulos.map(m => `<option value="${m.id}"${m.id === sel ? " selected" : ""}>${esc(m.cod)} · ${esc(m.nombre)}</option>`).join("");
+const tarjetaAg = e => { const m = modPorId(e.modId); return `<div class="ag-tarjeta${e.estado === "hecha" ? " hecha" : ""}" draggable="true" data-el="${e.tipo}|${e.id}" style="${colorMod(m)}" tabindex="0">
+  <div class="ag-t-tit">${esc(e.titulo)}</div>
+  <div class="ag-t-props">${pillTipo(e.tipo)}${pillMod(m)}${pillFecha(e.fecha, e.estado, e.hora)}${e.tipo === "entrega" && e.ref.sub.length ? `<span class="meta">${e.ref.sub.filter(x => x.hecho).length}/${e.ref.sub.length}</span>` : ""}${e.tipo === "examen" && e.ref.plan.length ? `<span class="meta">plan ${e.ref.plan.filter(x => x.hecho).length}/${e.ref.plan.length}</span>` : ""}</div></div>`; };
+
+/* ── la sección ── */
 function vistaAgenda() {
   normalizarAgenda();
-  const tabs = [["entregas", "Entregas"], ["examenes", "Exámenes"], ["horario", "Horario"], ["plan", "Plan de la semana"]];
-  const cuerpo = agTab === "examenes" ? agExamenes() : agTab === "horario" ? agHorario() : agTab === "plan" ? agPlan()
-    : vistaEntregas().replace(/<header class="cab">[\s\S]*?<\/header>/, "");
+  if (!agMes) agMes = hoyISO().slice(0, 7) + "-01";
+  const vistas = [["calendario", "Calendario", "calendario"], ["tablero", "Tablero", "tablero"], ["lista", "Lista", "lista"], ["horario", "Horario", "reloj"], ["plan", "Plan de la semana", "plan"]];
+  const conDatos = ["calendario", "tablero", "lista"].includes(agTab);
+  const cuerpo = agTab === "tablero" ? agTablero() : agTab === "lista" ? agLista() : agTab === "horario" ? agHorario() : agTab === "plan" ? agPlan() : agCalendario();
   return `
   <header class="cab">
     <div>
       <div class="eyebrow">Lo que tiene fecha</div>
       <h1 class="titulo">Agenda</h1>
-      <p class="lead">Entregas, exámenes con su cuenta atrás, tu horario de clases y el plan de estudio de la semana, que sale solo.</p>
     </div>
   </header>
-  <div class="aj-tabs" role="tablist">${tabs.map(([id, t]) => `<button type="button" class="aj-tab" role="tab" aria-selected="${agTab === id}" data-ag="${id}">${t}</button>`).join("")}</div>
-  ${cuerpo}`;
+  <div class="ag-vistas" role="tablist">${vistas.map(([id, t, ic]) => `<button type="button" class="ag-vista" role="tab" aria-selected="${agTab === id}" data-ag="${id}">${icono(ic)}${t}</button>`).join("")}</div>
+  ${conDatos ? `
+  <div class="ag-rapido">
+    <span class="ag-mas">${icono("mas")}</span>
+    <input type="text" id="agRapido" placeholder="Añade algo escribiendo normal: «Examen de BD el jueves», «entregar la práctica 3 mañana»…" autocomplete="off" aria-label="Añadir a la agenda">
+    <div class="ag-entiende" id="agEntiende" aria-live="polite"></div>
+  </div>
+  <div class="ag-filtros">
+    <button type="button" class="ag-filtro${!agFiltro.modId ? " sel" : ""}" data-ag-fmod="">Todas</button>
+    ${S.modulos.map(m => `<button type="button" class="ag-filtro${agFiltro.modId === m.id ? " sel" : ""}" data-ag-fmod="${m.id}" style="${colorMod(m)}"><i></i>${esc(m.cod)}</button>`).join("")}
+    <span class="ag-sep"></span>
+    ${[["", "Todo"], ["examen", "Exámenes"], ["entrega", "Entregas"]].map(([v, t]) => `<button type="button" class="ag-filtro${agFiltro.tipo === v ? " sel" : ""}" data-ag-ftipo="${v}">${t}</button>`).join("")}
+  </div>` : ""}
+  ${cuerpo}
+  ${agPeek ? peekHTML() : ""}`;
 }
-const optsMods = sel => S.modulos.map(m => `<option value="${m.id}"${m.id === sel ? " selected" : ""}>${esc(m.cod)} · ${esc(m.nombre)}</option>`).join("");
 
-function agExamenes() {
-  const hoy = hoyISO(), prox = examenesPendientes();
-  const pasados = S.examenes.filter(x => !prox.includes(x)).sort((a, b) => b.fecha.localeCompare(a.fecha)).slice(0, 12);
-  const tarjeta = x => {
-    const m = modPorId(x.modId), dd = diasEntre(x.fecha, hoy), hechos = x.plan.filter(t => t.hecho).length;
-    return `<article class="panel examen" style="${colorMod(m)}">
-      <div class="ex-cab">
-        <span class="codigo" style="${colorMod(m)}">${m ? esc(m.cod) : "—"}</span>
-        <div class="ex-tit"><strong>${esc(x.titulo)}</strong><span class="meta">${fechaCorta(x.fecha)}${x.hora ? " · " + esc(x.hora) : ""}${x.peso ? " · vale el " + num(x.peso) + " %" : ""}</span></div>
-        <div class="ex-cuenta${dd <= 3 ? " cerca" : ""}"><span class="cifra">${Math.max(0, dd)}</span><span class="meta">${dd === 0 ? "es hoy" : dd === 1 ? "día" : "días"}</span></div>
-      </div>
-      ${x.temas ? `<p class="meta ex-temas">Entra: ${esc(x.temas)}</p>` : ""}
-      ${x.plan.length ? `
-      <div class="ex-plan">
-        <div class="barra-fila"><span>Plan</span><span class="num">${hechos} de ${x.plan.length}</span></div>
-        <div class="medidor"><i style="width:${x.plan.length ? hechos / x.plan.length * 100 : 0}%"></i></div>
-        <ul class="ex-lista">${x.plan.map(t => `<li class="${t.hecho ? "hecho" : ""}${t.fecha === hoy ? " hoy" : ""}">
-          <button type="button" class="ex-check" data-ex-tarea="${x.id}|${t.id}" aria-pressed="${t.hecho}" aria-label="${t.hecho ? "Desmarcar" : "Marcar"}: ${esc(t.txt)}">${t.hecho ? CHECK : ""}</button>
-          <span class="meta ex-f">${t.fecha === hoy ? "hoy" : fechaCorta(t.fecha)}</span><span>${esc(t.txt)}</span></li>`).join("")}</ul>
-      </div>` : `<p class="meta">Todavía sin plan. Sácalo tú o pídeselo al profe.</p>`}
-      <div class="barra-btns" style="margin-top:12px">
-        <button type="button" class="btn mini" data-ex-auto="${x.id}">${x.plan.length ? "Rehacer" : "Plan automático"}</button>
-        ${sample ? `<button type="button" class="btn mini primario" data-ex-ia="${x.id}">Plan del profe</button>` : ""}
-        <button type="button" class="btn mini fantasma borrar" data-ex-borrar="${x.id}">Borrar</button>
-      </div>
-    </article>`;
-  };
+function agCalendario() {
+  const [y, mo] = agMes.split("-").map(Number), primero = agMes, hoy = hoyISO();
+  const inicio = lunesDe(primero), els = filtrados();
+  const celdas = [];
+  for (let i = 0; i < 42; i++) {
+    const f = sumaDias(inicio, i);
+    if (i >= 35 && f.slice(0, 7) !== agMes.slice(0, 7)) break;
+    celdas.push(f);
+  }
   return `
-  <section class="panel">
-    <div class="etq" style="margin-bottom:12px">Apuntar un examen</div>
-    <div class="form-examen">
-      <label class="campo">${esc(voc(false, true))}<select id="exMod">${optsMods(S.modulos[0] && S.modulos[0].id)}</select></label>
-      <label class="campo">Qué examen<input type="text" id="exTit" placeholder="Examen del tema 3"></label>
-      <label class="campo">Fecha<input type="date" id="exFecha" min="${hoy}"></label>
-      <label class="campo">Hora<input type="time" id="exHora"></label>
-      <label class="campo">Peso %<input type="number" id="exPeso" min="0" max="100" placeholder="Opcional"></label>
-      <label class="campo ex-temas-campo">Qué entra (un tema por línea)<textarea id="exTemas" rows="3" placeholder="Tema 3: bucles&#10;Tema 4: arrays"></textarea></label>
-      <button type="button" class="btn primario" id="btnAddExamen">Apuntar examen</button>
+  <div class="cal-cab">
+    <h2 class="cal-mes">${mayus(MESES[mo - 1])} <span class="meta">${y}</span></h2>
+    <div class="barra-btns">
+      <button type="button" class="btn mini" data-cal-mover="-1" aria-label="Mes anterior">‹</button>
+      <button type="button" class="btn mini" data-cal-hoy>Hoy</button>
+      <button type="button" class="btn mini" data-cal-mover="1" aria-label="Mes siguiente">›</button>
     </div>
-  </section>
-  ${prox.length ? `<div class="rejilla-examenes">${prox.map(tarjeta).join("")}</div>` : `<p class="vacio">No tienes exámenes apuntados. Cuando te den una fecha, ponla aquí: el plan de la semana se reorganiza solo.</p>`}
-  ${pasados.length ? `<section class="panel"><div class="grupo-cab"><h2>Ya hechos</h2></div>
-    ${pasados.map(x => { const m = modPorId(x.modId); return `<div class="fila"><span class="codigo" style="${colorMod(m)}">${m ? esc(m.cod) : "—"}</span>
-      <span class="principal-fila"><span class="t">${esc(x.titulo)}</span><span class="meta">${fechaCorta(x.fecha)}</span></span>
-      <label class="campo ex-nota">Nota<input type="number" min="0" max="10" step="0.01" value="${x.nota === null || x.nota === undefined ? "" : x.nota}" data-ex-nota="${x.id}" placeholder="—"></label></div>`; }).join("")}
-  </section>` : ""}`;
+  </div>
+  <div class="cal">
+    ${["L", "M", "X", "J", "V", "S", "D"].map(d => `<div class="cal-dsem">${d}</div>`).join("")}
+    ${celdas.map(f => {
+      const delDia = els.filter(e => e.fecha === f).sort((a, b) => (a.tipo === "examen" ? 0 : 1) - (b.tipo === "examen" ? 0 : 1));
+      return `<div class="cal-dia${f === hoy ? " hoy" : ""}${f.slice(0, 7) !== agMes.slice(0, 7) ? " otro" : ""}" data-cal-dia="${f}">
+        <div class="cal-num"><span>${num(f.slice(8))}</span><button type="button" class="cal-add" data-cal-add="${f}" aria-label="Añadir el ${fechaCorta(f)}">${icono("mas")}</button></div>
+        ${delDia.slice(0, 3).map(e => { const m = modPorId(e.modId); return `<div class="cal-el ${e.tipo}${e.estado === "hecha" ? " hecha" : ""}" draggable="true" data-el="${e.tipo}|${e.id}" style="${colorMod(m)}" tabindex="0" title="${esc(e.titulo)}">
+          ${e.tipo === "examen" ? icono("examen") : ""}<span>${esc(e.titulo)}</span></div>`; }).join("")}
+        ${delDia.length > 3 ? `<button type="button" class="cal-mas" data-cal-lista="${f}">+${delDia.length - 3} más</button>` : ""}
+      </div>`;
+    }).join("")}
+  </div>
+  ${els.some(e => !e.fecha) ? `<p class="meta" style="margin-top:12px">Hay ${els.filter(e => !e.fecha).length} cosas sin fecha: están en la vista de lista.</p>` : ""}`;
 }
 
+function agTablero() {
+  const els = filtrados().sort((a, b) => (a.fecha || "9999").localeCompare(b.fecha || "9999"));
+  return `<div class="tablero">${ESTADOS.map(([id, t]) => {
+    const col = els.filter(e => e.estado === id);
+    return `<div class="tb-col" data-tb-col="${id}">
+      <div class="tb-cab"><span class="tb-punto ${id}"></span>${t}<span class="meta num">${col.length}</span></div>
+      <div class="tb-lista">${col.map(tarjetaAg).join("") || `<p class="meta tb-vacio">${id === "hecha" ? "Arrastra aquí lo que termines" : "Nada por aquí"}</p>`}</div>
+      <button type="button" class="tb-nuevo" data-tb-nuevo="${id}">${icono("mas")}Nuevo</button>
+    </div>`;
+  }).join("")}</div>
+  <p class="meta" style="margin-top:10px">Arrastra las tarjetas entre columnas. Pincha una para abrirla.</p>`;
+}
+
+function agLista() {
+  const hoy = hoyISO(), els = filtrados();
+  const grupos = [
+    ["Atrasado", e => e.estado !== "hecha" && e.fecha && e.fecha < hoy],
+    ["Hoy", e => e.estado !== "hecha" && e.fecha === hoy],
+    ["Mañana", e => e.estado !== "hecha" && e.fecha === sumaDias(hoy, 1)],
+    ["Esta semana", e => e.estado !== "hecha" && e.fecha > sumaDias(hoy, 1) && e.fecha <= sumaDias(hoy, 7)],
+    ["Más adelante", e => e.estado !== "hecha" && e.fecha > sumaDias(hoy, 7)],
+    ["Sin fecha", e => e.estado !== "hecha" && !e.fecha]
+  ];
+  const fila = e => { const m = modPorId(e.modId); return `<div class="ls-fila${e.estado === "hecha" ? " hecha" : ""}" data-el="${e.tipo}|${e.id}" tabindex="0">
+    <button type="button" class="ex-check${e.estado === "hecha" ? " on" : ""}" data-ls-check="${e.tipo}|${e.id}" aria-pressed="${e.estado === "hecha"}" aria-label="${e.estado === "hecha" ? "Desmarcar" : "Marcar como hecho"}">${e.estado === "hecha" ? CHECK : ""}</button>
+    <span class="ls-tit">${esc(e.titulo)}</span>
+    <span class="ls-props">${pillTipo(e.tipo)}${pillMod(m)}${pillFecha(e.fecha, e.estado, e.hora)}${e.estado === "curso" ? `<span class="pill-estado">En curso</span>` : ""}</span></div>`; };
+  const hechas = els.filter(e => e.estado === "hecha").sort((a, b) => (b.fecha || "").localeCompare(a.fecha || ""));
+  const hayAlgo = grupos.some(([, f]) => els.some(f));
+  return `<div class="lista-ag">
+    ${hayAlgo ? grupos.map(([t, f]) => { const g = els.filter(f).sort((a, b) => (a.fecha || "").localeCompare(b.fecha || "") || (a.hora || "").localeCompare(b.hora || ""));
+      return g.length ? `<div class="ls-grupo"><div class="ls-cab">${t}<span class="meta num">${g.length}</span></div>${g.map(fila).join("")}</div>` : ""; }).join("")
+      : `<p class="vacio">Nada pendiente. Escribe arriba lo próximo que te manden.</p>`}
+    ${hechas.length ? `<details class="ls-grupo ls-hechas"><summary class="ls-cab">Hecho<span class="meta num">${hechas.length}</span></summary>${hechas.slice(0, 40).map(fila).join("")}</details>` : ""}
+  </div>`;
+}
+
+/* ── el panel lateral: todo se edita aquí y se guarda solo ── */
+function peekHTML() {
+  const e = elemento(agPeek.tipo, agPeek.id);
+  if (!e) { agPeek = null; return ""; }
+  const r = e.ref, m = modPorId(e.modId), hoy = hoyISO(), esEx = e.tipo === "examen";
+  return `
+  <div class="peek-fondo" data-peek-cerrar></div>
+  <aside class="peek" role="dialog" aria-label="${esc(e.titulo)}" style="${colorMod(m)}">
+    <div class="peek-cab">
+      <div class="peek-tipo">${[["entrega", "Entrega"], ["examen", "Examen"]].map(([v, t]) => `<button type="button" class="${e.tipo === v ? "sel" : ""}" data-peek-tipo="${v}">${icono(v)}${t}</button>`).join("")}</div>
+      <button type="button" class="icono-btn" data-peek-cerrar aria-label="Cerrar">${icono("cerrar")}</button>
+    </div>
+    <input type="text" class="peek-tit" id="pkTitulo" value="${esc(r.titulo)}" aria-label="Título">
+    <div class="peek-props">
+      <label class="pp"><span>${esc(voc(false, true))}</span><select id="pkMod">${optsMods(r.modId)}</select></label>
+      <label class="pp"><span>Fecha</span><input type="date" id="pkFecha" value="${esc(r.fecha || "")}"></label>
+      <label class="pp"><span>Hora</span><input type="time" id="pkHora" value="${esc(r.hora || "")}"></label>
+      <div class="pp"><span>Estado</span><div class="pk-estados">${ESTADOS.map(([v, t]) => `<button type="button" class="${e.estado === v ? "sel" : ""}" data-pk-estado="${v}">${t}</button>`).join("")}</div></div>
+      <label class="pp"><span>Peso en la nota</span><input type="number" id="pkPeso" min="0" max="100" value="${r.peso === null || r.peso === undefined ? "" : num(r.peso)}" placeholder="%"></label>
+      ${esEx ? `<label class="pp"><span>Nota</span><input type="number" id="pkNota" min="0" max="10" step="0.01" value="${r.nota === null || r.nota === undefined ? "" : r.nota}" placeholder="Cuando la sepas"></label>` : ""}
+    </div>
+    ${esEx ? `
+    <div class="peek-bloque">
+      <div class="etq">Qué entra</div>
+      <textarea id="pkTemas" rows="3" placeholder="Un tema por línea">${esc(r.temas || "")}</textarea>
+    </div>
+    <div class="peek-bloque">
+      <div class="peek-bcab"><span class="etq">Plan hasta el examen</span><span class="meta num">${r.plan.filter(t => t.hecho).length}/${r.plan.length}</span></div>
+      ${r.plan.length ? `<ul class="ex-lista">${r.plan.map(t => `<li class="${t.hecho ? "hecho" : ""}${t.fecha === hoy ? " hoy" : ""}">
+        <button type="button" class="ex-check${t.hecho ? " on" : ""}" data-pk-plan="${t.id}" aria-pressed="${t.hecho}" aria-label="${esc(t.txt)}">${t.hecho ? CHECK : ""}</button>
+        <span class="meta ex-f">${t.fecha === hoy ? "hoy" : fechaCorta(t.fecha)}</span><span>${esc(t.txt)}</span></li>`).join("")}</ul>` : `<p class="meta">${r.fecha ? "Sin plan todavía." : "Ponle fecha y te hago el plan."}</p>`}
+      <div class="barra-btns" style="margin-top:10px">
+        <button type="button" class="btn mini" data-pk-auto${r.fecha ? "" : " disabled"}>${r.plan.length ? "Rehacer" : "Plan automático"}</button>
+        ${sample ? `<button type="button" class="btn mini primario" data-pk-ia${r.fecha ? "" : " disabled"}>Plan del profe</button>` : ""}
+        ${sample ? `<button type="button" class="btn mini" data-pk-test="${r.modId}">Ponme un test</button>` : ""}
+      </div>
+    </div>` : `
+    <div class="peek-bloque">
+      <div class="peek-bcab"><span class="etq">Pasos</span><span class="meta num">${r.sub.filter(x => x.hecho).length}/${r.sub.length}</span></div>
+      <ul class="ex-lista">${r.sub.map(x => `<li class="${x.hecho ? "hecho" : ""}">
+        <button type="button" class="ex-check${x.hecho ? " on" : ""}" data-pk-sub="${x.id}" aria-pressed="${x.hecho}" aria-label="${esc(x.txt)}">${x.hecho ? CHECK : ""}</button>
+        <span></span><span>${esc(x.txt)}</span><button type="button" class="ho-borrar pk-quita" data-pk-quitasub="${x.id}" aria-label="Quitar paso">${icono("cerrar")}</button></li>`).join("")}</ul>
+      <input type="text" id="pkNuevoSub" class="pk-nuevo" placeholder="Añadir un paso y pulsar Intro">
+    </div>
+    <div class="peek-bloque">
+      <div class="etq">Notas</div>
+      <textarea id="pkNotas" rows="5" placeholder="Enunciado, enlaces, lo que te dijo el profesor…">${esc(r.notas || "")}</textarea>
+    </div>`}
+    <div class="peek-pie">
+      <span class="meta">Se guarda solo.</span>
+      <button type="button" class="btn mini borrar fantasma" data-pk-borrar>Borrar</button>
+    </div>
+  </aside>`;
+}
+function abrirPeek(tipo, id) { agPeek = { tipo, id }; if (seccion !== "entregas") irASeccion("entregas"); else pinta(); setTimeout(() => { const t = $("#pkTitulo"); if (t && (!t.value.trim() || t.value === "Sin título" || t.value === "Examen")) { t.focus(); t.select(); } }, 30); }
+function cerrarPeek() { agPeek = null; pinta(); }
+
+/* ── horario y plan ── */
 function agHorario() {
   const dias = DIAS_ORDEN.slice(0, S.horario.some(b => b.dia === "sab" || b.dia === "dom") ? 7 : 5);
   return `
   <section class="panel">
     <div class="etq" style="margin-bottom:12px">Añadir una clase</div>
     <div class="form-horario">
-      <label class="campo">Día<select id="hoDia">${DIAS_ORDEN.map(d => `<option value="${d}">${DIAS_NOMBRE[d]}</option>`).join("")}</select></label>
+      <label class="campo">Día<select id="hoDia">${DIAS_ORDEN.map(d => `<option value="${d}"${diaDe(hoyISO()) === d ? " selected" : ""}>${DIAS_NOMBRE[d]}</option>`).join("")}</select></label>
       <label class="campo">Empieza<input type="time" id="hoIni" value="08:00"></label>
       <label class="campo">Acaba<input type="time" id="hoFin" value="08:55"></label>
       <label class="campo">${esc(voc(false, true))}<select id="hoMod">${optsMods()}</select></label>
@@ -4515,7 +4835,6 @@ function agHorario() {
     </div>`).join("")}
   </div>`;
 }
-
 function agPlan() {
   const p = normalizarPerfil(), hoy = hoyISO(), semana = planSemana(hoy);
   const total = semana.reduce((s, d) => s + d.bloques.reduce((a, b) => a + b.min, 0), 0);
@@ -4549,31 +4868,57 @@ function panelHoy() {
       <div>
         <div class="meta hoy-t">Te toca estudiar</div>
         ${bloques.length ? bloques.map(b => { const m = modPorId(b.modId); return `<div class="hoy-bloque${b.hecho ? " hecho" : ""}" style="${colorMod(m)}">
-          <span class="codigo" style="${colorMod(m)}">${m ? esc(m.cod) : "—"}</span><span class="hoy-txt">${b.min} min<span class="meta"> · ${esc(b.motivo)}</span></span>
+          ${pillMod(m)}<span class="hoy-txt">${b.min} min<span class="meta"> · ${esc(b.motivo)}</span></span>
           ${b.hecho ? `<span class="pl-ok">${CHECK}</span>` : `<button type="button" class="btn mini" data-plan-empezar="${b.modId}">Empezar</button>`}</div>`; }).join("")
           : `<p class="meta">Hoy no es uno de tus días de estudio. Si te apetece, cualquier rato suma.</p>`}
       </div>
       <div>
         <div class="meta hoy-t">Clases</div>
-        ${clases.length ? clases.map(b => { const m = modPorId(b.modId); return `<div class="hoy-clase"><span class="num meta">${esc(b.ini)}</span><span class="codigo" style="${colorMod(m)}">${m ? esc(m.cod) : "—"}</span><span>${m ? esc(m.nombre) : ""}</span></div>`; }).join("")
+        ${clases.length ? clases.map(b => { const m = modPorId(b.modId); return `<div class="hoy-clase"><span class="num meta">${esc(b.ini)}</span>${pillMod(m)}<span>${m ? esc(m.nombre) : ""}</span></div>`; }).join("")
           : `<p class="meta">${S.horario.length ? "Hoy no tienes clase." : `Sin horario todavía. <button class="enlace" data-ir-agenda="horario">Añadirlo</button>`}</p>`}
       </div>
       <div class="hoy-examen">
         <div class="meta hoy-t">Próximo examen</div>
         ${ex ? `<div class="hoy-cuenta${dd <= 3 ? " cerca" : ""}"><span class="cifra">${dd}</span><span class="meta">${dd === 0 ? "es hoy" : dd === 1 ? "día" : "días"}</span></div>
-          <p><span class="codigo" style="${colorMod(exM)}">${exM ? esc(exM.cod) : "—"}</span> ${esc(ex.titulo)}</p>
-          ${ex.plan.length ? `<p class="meta">Plan: ${ex.plan.filter(t => t.hecho).length} de ${ex.plan.length} hechas</p>` : `<p class="meta">Sin plan. <button class="enlace" data-ir-agenda="examenes">Hacerlo</button></p>`}`
-          : `<p class="meta">Ninguno apuntado. <button class="enlace" data-ir-agenda="examenes">Apuntar uno</button></p>`}
+          <p><button class="enlace-sin" data-abrir-el="examen|${ex.id}">${pillMod(exM)} ${esc(ex.titulo)}</button></p>
+          ${ex.plan.length ? `<p class="meta">Plan: ${ex.plan.filter(t => t.hecho).length} de ${ex.plan.length} hechas</p>` : `<p class="meta">Sin plan. <button class="enlace" data-abrir-el="examen|${ex.id}">Hacerlo</button></p>`}`
+          : `<p class="meta">Ninguno apuntado. <button class="enlace" data-ir-agenda="calendario">Apuntar uno</button></p>`}
       </div>
     </div>
   </section>`;
 }
 
-/* ── botones ── */
+/* ── lo que se entiende mientras escribes ── */
+function pintaEntiende() {
+  const inp = $("#agRapido"), caja = $("#agEntiende"); if (!inp || !caja) return;
+  const v = inp.value.trim(); if (!v) { caja.innerHTML = ""; return; }
+  const e = entenderFrase(v), m = modPorId(e.modId);
+  caja.innerHTML = `${pillTipo(e.tipo)}${m ? pillMod(m) : `<span class="pill-fecha vacia">${esc(voc(false, true))}: ${esc((modPorId(agFiltro.modId) || S.modulos[0] || { cod: "—" }).cod)}</span>`}${e.fecha ? pillFecha(e.fecha, "", e.hora) : `<span class="pill-fecha vacia">Sin fecha</span>`}<span class="meta ag-intro">Intro para añadir</span>`;
+}
+function editarPeekCampo(id, v) {
+  if (!agPeek) return;
+  const e = elemento(agPeek.tipo, agPeek.id); if (!e) return;
+  const r = e.ref;
+  if (id === "pkTitulo") r.titulo = v.slice(0, 120);
+  else if (id === "pkTemas") r.temas = v.slice(0, 800);
+  else if (id === "pkNotas") r.notas = v.slice(0, 4000);
+  clearTimeout(pendientes._pk); pendientes._pk = setTimeout(() => guardar("agenda"), 500);
+}
+/* cambiar una entrega en examen o al revés: se mueve de lista conservando lo común */
+function cambiarTipo(e, nuevo) {
+  if (e.tipo === nuevo) return;
+  const r = e.ref, comun = { titulo: r.titulo, modId: r.modId, fecha: r.fecha, hora: r.hora, estado: e.estado };
+  if (nuevo === "examen") { S.tareas = S.tareas.filter(t => t.id !== r.id); agPeek = crearElemento(Object.assign(comun, { tipo: "examen" })); const ex = S.examenes.find(x => x.id === agPeek.id); ex.temas = r.notas || ""; ex.peso = r.peso; }
+  else { S.examenes = S.examenes.filter(x => x.id !== r.id); agPeek = crearElemento(Object.assign(comun, { tipo: "entrega" })); const t = S.tareas.find(x => x.id === agPeek.id); t.notas = r.temas || ""; t.peso = r.peso; }
+  guardar("agenda");
+}
+
+/* ── botones, teclado y arrastrar ── */
 document.addEventListener("click", e => {
   const t = e.target;
-  const tab = t.closest("[data-ag]"); if (tab) { agTab = tab.dataset.ag; pinta(); return; }
-  const ir = t.closest("[data-ir-agenda]"); if (ir) { agTab = ir.dataset.irAgenda; irASeccion("entregas"); return; }
+  const tab = t.closest("[data-ag]"); if (tab) { agTab = tab.dataset.ag; agPeek = null; pinta(); return; }
+  const ir = t.closest("[data-ir-agenda]"); if (ir) { agTab = ir.dataset.irAgenda; agPeek = null; irASeccion("entregas"); return; }
+  const ab = t.closest("[data-abrir-el]"); if (ab) { const [tipo, id] = ab.dataset.abrirEl.split("|"); agTab = agTab === "horario" || agTab === "plan" ? "calendario" : agTab; abrirPeek(tipo, id); return; }
   const emp = t.closest("[data-plan-empezar]");
   if (emp) {
     T.modId = emp.dataset.planEmpezar; T.fase = "trabajo";
@@ -4581,27 +4926,37 @@ document.addEventListener("click", e => {
     aviso("Cronómetro en marcha con " + (modPorId(T.modId) || { nombre: "esa " + voc() }).nombre + ".");
     pinta(); return;
   }
-  if (t.closest("#btnAddExamen")) {
-    const titulo = $("#exTit").value.trim(), fecha = $("#exFecha").value;
-    if (!titulo || !fecha) { aviso("Ponle nombre y fecha al examen.", "mal"); return; }
-    normalizarAgenda();
-    const ex = { id: uid(), modId: $("#exMod").value, titulo: titulo.slice(0, 100), fecha, hora: $("#exHora").value,
-      peso: $("#exPeso").value ? clamp(num($("#exPeso").value), 0, 100) : null, temas: $("#exTemas").value.trim().slice(0, 800), nota: null, plan: [] };
-    ex.plan = planExamenLocal(ex);
-    S.examenes.push(ex); guardar("agenda"); aviso("Examen apuntado, con su plan."); pinta(); return;
+  if (seccion !== "entregas") return;
+  const fm = t.closest("[data-ag-fmod]"); if (fm) { agFiltro.modId = fm.dataset.agFmod; pinta(); return; }
+  const ft = t.closest("[data-ag-ftipo]"); if (ft) { agFiltro.tipo = ft.dataset.agFtipo; pinta(); return; }
+  const mv = t.closest("[data-cal-mover]");
+  if (mv) { const [y, m] = agMes.split("-").map(Number), d = new Date(y, m - 1 + num(mv.dataset.calMover), 1); agMes = hoyISO(d).slice(0, 7) + "-01"; pinta(); return; }
+  if (t.closest("[data-cal-hoy]")) { agMes = hoyISO().slice(0, 7) + "-01"; pinta(); return; }
+  const add = t.closest("[data-cal-add]");
+  if (add) { const r = crearElemento({ tipo: agFiltro.tipo || "entrega", titulo: "", fecha: add.dataset.calAdd, modId: agFiltro.modId }); abrirPeek(r.tipo, r.id); return; }
+  const cl = t.closest("[data-cal-lista]"); if (cl) { agTab = "lista"; pinta(); return; }
+  const nv = t.closest("[data-tb-nuevo]");
+  if (nv) { const r = crearElemento({ tipo: agFiltro.tipo || "entrega", titulo: "", estado: nv.dataset.tbNuevo, modId: agFiltro.modId }); abrirPeek(r.tipo, r.id); return; }
+  const ck = t.closest("[data-ls-check]");
+  if (ck) { const [tipo, id] = ck.dataset.lsCheck.split("|"), el = elemento(tipo, id); if (el) { ponEstado(el, el.estado === "hecha" ? "pendiente" : "hecha"); pinta(); } return; }
+  if (t.closest("[data-peek-cerrar]")) { cerrarPeek(); return; }
+  const pt = t.closest("[data-peek-tipo]"); if (pt && agPeek) { const el = elemento(agPeek.tipo, agPeek.id); if (el) { cambiarTipo(el, pt.dataset.peekTipo); pinta(); } return; }
+  const pe = t.closest("[data-pk-estado]"); if (pe && agPeek) { const el = elemento(agPeek.tipo, agPeek.id); if (el) { ponEstado(el, pe.dataset.pkEstado); pinta(); } return; }
+  const pp = t.closest("[data-pk-plan]");
+  if (pp && agPeek) { const ex = S.examenes.find(x => x.id === agPeek.id), tt = ex && ex.plan.find(x => x.id === pp.dataset.pkPlan); if (tt) { tt.hecho = !tt.hecho; guardar("agenda"); pinta(); } return; }
+  if (t.closest("[data-pk-auto]") && agPeek) { const ex = S.examenes.find(x => x.id === agPeek.id); if (ex) { ex.plan = planExamenLocal(ex); guardar("agenda"); pinta(); } return; }
+  const ia = t.closest("[data-pk-ia]"); if (ia && agPeek) { const ex = S.examenes.find(x => x.id === agPeek.id); if (ex) planExamenIA(ex, ia); return; }
+  const ts = t.closest("[data-pk-test]"); if (ts) { agPeek = null; irASeccion("repaso"); testDeIA(ts.dataset.pkTest, ""); return; }
+  const ps = t.closest("[data-pk-sub]");
+  if (ps && agPeek) { const tk = S.tareas.find(x => x.id === agPeek.id), x = tk && tk.sub.find(y => y.id === ps.dataset.pkSub); if (x) { x.hecho = !x.hecho; guardar("agenda"); pinta(); } return; }
+  const qs = t.closest("[data-pk-quitasub]");
+  if (qs && agPeek) { const tk = S.tareas.find(x => x.id === agPeek.id); if (tk) { tk.sub = tk.sub.filter(y => y.id !== qs.dataset.pkQuitasub); guardar("agenda"); pinta(); } return; }
+  if (t.closest("[data-pk-borrar]") && agPeek) {
+    const el = elemento(agPeek.tipo, agPeek.id); if (!el) return;
+    if (!confirm("¿Borrar «" + (el.titulo || "esto") + "»?")) return;
+    if (el.tipo === "examen") S.examenes = S.examenes.filter(x => x.id !== el.id); else S.tareas = S.tareas.filter(x => x.id !== el.id);
+    guardar("agenda"); agPeek = null; pinta(); aviso("Borrado."); return;
   }
-  const ta = t.closest("[data-ex-tarea]");
-  if (ta) {
-    const [exId, tId] = ta.dataset.exTarea.split("|"), ex = S.examenes.find(x => x.id === exId), tarea = ex && ex.plan.find(x => x.id === tId);
-    if (tarea) { tarea.hecho = !tarea.hecho; guardar("agenda"); pinta(); }
-    return;
-  }
-  const au = t.closest("[data-ex-auto]");
-  if (au) { const ex = S.examenes.find(x => x.id === au.dataset.exAuto); if (ex) { ex.plan = planExamenLocal(ex); guardar("agenda"); pinta(); } return; }
-  const ia = t.closest("[data-ex-ia]");
-  if (ia) { const ex = S.examenes.find(x => x.id === ia.dataset.exIa); if (ex) planExamenIA(ex, ia); return; }
-  const bo = t.closest("[data-ex-borrar]");
-  if (bo) { if (!confirm("¿Borrar este examen y su plan?")) return; S.examenes = S.examenes.filter(x => x.id !== bo.dataset.exBorrar); guardar("agenda"); pinta(); return; }
   if (t.closest("#btnAddClase")) {
     const ini = $("#hoIni").value, fin = $("#hoFin").value;
     if (!ini || !fin || fin <= ini) { aviso("La clase tiene que acabar después de empezar.", "mal"); return; }
@@ -4609,16 +4964,82 @@ document.addEventListener("click", e => {
     S.horario.push({ id: uid(), dia: $("#hoDia").value, ini, fin, modId: $("#hoMod").value, aula: $("#hoAula").value.trim().slice(0, 30) });
     guardar("horario"); pinta(); return;
   }
-  const hb = t.closest("[data-ho-borrar]");
-  if (hb) { S.horario = S.horario.filter(b => b.id !== hb.dataset.hoBorrar); guardar("horario"); pinta(); return; }
+  const hb = t.closest("[data-ho-borrar]"); if (hb) { S.horario = S.horario.filter(b => b.id !== hb.dataset.hoBorrar); guardar("horario"); pinta(); return; }
+  /* pinchar una tarjeta, una fila o un evento del calendario la abre en el panel */
+  const el = t.closest("[data-el]");
+  if (el && !t.closest("button")) { const [tipo, id] = el.dataset.el.split("|"); abrirPeek(tipo, id); return; }
+});
+document.addEventListener("input", e => {
+  const t = e.target;
+  if (t.id === "agRapido") { pintaEntiende(); return; }
+  if (["pkTitulo", "pkTemas", "pkNotas"].includes(t.id)) editarPeekCampo(t.id, t.value);
 });
 document.addEventListener("change", e => {
+  const t = e.target; if (!agPeek || !t.id || !t.id.startsWith("pk")) return;
+  const el = elemento(agPeek.tipo, agPeek.id); if (!el) return;
+  const r = el.ref;
+  if (t.id === "pkMod") r.modId = t.value;
+  else if (t.id === "pkFecha") { r.fecha = t.value; if (el.tipo === "examen" && r.fecha && !r.plan.length) r.plan = planExamenLocal(r); }
+  else if (t.id === "pkHora") r.hora = t.value;
+  else if (t.id === "pkPeso") r.peso = t.value === "" ? null : clamp(num(t.value), 0, 100);
+  else if (t.id === "pkNota") { r.nota = t.value === "" ? null : clamp(num(t.value), 0, 10); registrarProgreso(); }
+  else if (t.id === "pkTitulo") { r.titulo = t.value.trim().slice(0, 120) || "Sin título"; }
+  else return;
+  guardar("agenda"); pinta();
+});
+document.addEventListener("keydown", e => {
+  if (seccion !== "entregas") return;
   const t = e.target;
-  if (t.dataset.exNota !== undefined) {
-    const ex = S.examenes.find(x => x.id === t.dataset.exNota); if (!ex) return;
-    ex.nota = t.value === "" ? null : clamp(num(t.value), 0, 10);
-    guardar("agenda"); registrarProgreso(); aviso("Nota guardada.");
+  if (t.id === "agRapido" && e.key === "Enter" && t.value.trim()) {
+    e.preventDefault();
+    const d = entenderFrase(t.value), r = crearElemento(d);
+    t.value = ""; pintaEntiende();
+    const m = modPorId(d.modId || agFiltro.modId || (S.modulos[0] && S.modulos[0].id));
+    aviso((d.tipo === "examen" ? "Examen" : "Entrega") + " apuntado" + (m ? " en " + m.cod : "") + (d.fecha ? " para " + cuandoTxt(diasEntre(d.fecha, hoyISO())) : "") + ".");
+    if (d.fecha && agTab === "calendario") agMes = d.fecha.slice(0, 7) + "-01";
+    pinta();
+    setTimeout(() => { const i = $("#agRapido"); if (i) i.focus(); }, 20);
+    return;
   }
+  if (t.id === "pkNuevoSub" && e.key === "Enter" && t.value.trim()) {
+    e.preventDefault();
+    const tk = agPeek && S.tareas.find(x => x.id === agPeek.id); if (!tk) return;
+    tk.sub.push({ id: uid(), txt: t.value.trim().slice(0, 160), hecho: false }); guardar("agenda"); pinta();
+    setTimeout(() => { const i = $("#pkNuevoSub"); if (i) i.focus(); }, 20);
+    return;
+  }
+  if (t.id === "pkTitulo" && e.key === "Enter") { e.preventDefault(); t.blur(); return; }
+  if (e.key === "Escape" && agPeek) { e.preventDefault(); cerrarPeek(); return; }
+  if (!editando() && (e.key === "n" || e.key === "N") && !e.ctrlKey && !e.metaKey && !e.altKey) {
+    const i = $("#agRapido"); if (i) { e.preventDefault(); i.focus(); }
+    return;
+  }
+  const el = t.closest && t.closest("[data-el]");
+  if (el && (e.key === "Enter" || e.key === " ")) { e.preventDefault(); const [tipo, id] = el.dataset.el.split("|"); abrirPeek(tipo, id); }
+});
+/* arrastrar: entre columnas cambia el estado; entre días del calendario, la fecha */
+document.addEventListener("dragstart", e => {
+  const el = e.target.closest && e.target.closest("[data-el]"); if (!el || seccion !== "entregas") return;
+  e.dataTransfer.setData("text/x-agenda", el.dataset.el); e.dataTransfer.effectAllowed = "move";
+  el.classList.add("arrastrando");
+});
+document.addEventListener("dragend", e => { const el = e.target.closest && e.target.closest("[data-el]"); if (el) el.classList.remove("arrastrando"); document.querySelectorAll(".soltar-aqui").forEach(x => x.classList.remove("soltar-aqui")); });
+const destinoAg = t => t.closest && (t.closest("[data-tb-col]") || t.closest("[data-cal-dia]"));
+document.addEventListener("dragover", e => {
+  if (seccion !== "entregas" || !Array.from(e.dataTransfer.types || []).includes("text/x-agenda")) return;
+  const d = destinoAg(e.target); if (!d) return;
+  e.preventDefault(); e.dataTransfer.dropEffect = "move";
+  document.querySelectorAll(".soltar-aqui").forEach(x => { if (x !== d) x.classList.remove("soltar-aqui"); });
+  d.classList.add("soltar-aqui");
+});
+document.addEventListener("drop", e => {
+  if (seccion !== "entregas") return;
+  const dato = e.dataTransfer.getData("text/x-agenda"), d = destinoAg(e.target); if (!dato || !d) return;
+  e.preventDefault();
+  const [tipo, id] = dato.split("|"), el = elemento(tipo, id); if (!el) return;
+  if (d.dataset.tbCol) ponEstado(el, d.dataset.tbCol);
+  else if (d.dataset.calDia) { ponFecha(el, d.dataset.calDia); if (el.tipo === "examen" && !el.ref.plan.some(x => x.hecho)) el.ref.plan = planExamenLocal(el.ref); }
+  pinta();
 });
 
 /* ══════════════════ repaso: tarjetas y tests ══════════════════
