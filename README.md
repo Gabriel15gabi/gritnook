@@ -46,7 +46,7 @@ Quien ya tenía datos no pasa por ahí: el perfil se rellena con lo que había y
 
 **Progreso.** Horas por semana y asignatura, la nota de cada una contra tu objetivo y cómo ha ido cambiando, y los exámenes hechos.
 
-**El tutor.** Un profesor particular de lo que estudies: no suelta la respuesta a la primera —pista, pregunta, ejemplo parecido y, si hace falta, la explicación entera—, conoce el temario de tus asignaturas, tus notas, tus entregas y de qué tienes apuntes, te escribe él cuando algo se acerca y puede ponerte repasos, entregas y objetivos. Se le pueden pasar capturas (pegadas con Ctrl+V o arrastradas) y archivos de código o texto para que los revise.
+**El tutor.** Un profesor particular de lo que estudies: no suelta la respuesta a la primera —pista, pregunta, ejemplo parecido y, si hace falta, la explicación entera—, conoce el temario de tus asignaturas, tus notas, tus entregas y de qué tienes apuntes, te escribe él cuando algo se acerca y puede ponerte repasos, entregas y objetivos. Se le pueden pasar capturas (pegadas con Ctrl+V o arrastradas) y archivos de código o texto para que los revise. Es especialista solo en el curso que marcas y tiene normas de profesor que no se desactivan: habla únicamente de estudiar y aprobar, nunca de vida personal ni de temas fuera de clase, no hace los trabajos por ti, dice siempre que es una IA y, si alguien lo está pasando mal de verdad, le anima a pedir ayuda y le da el 024.
 
 ![El profe](capturas/profe.png)
 
