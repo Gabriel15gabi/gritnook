@@ -1531,6 +1531,13 @@ body.foco .lb-barra{top:8px}
 .lb-rel:not(.lb-derecha) .lb-pop{left:0; right:auto}
 .lb-letra-muestra{font-family:var(--letra, var(--sans)); font-size:calc(var(--tam, 15px) * .95); line-height:1; color:var(--ink)}
 .lb-letra-nombre{font:500 12px/1 var(--sans); color:var(--ink-3)}
+/* borrar el apunte: arriba a la derecha y en rojo, para que se vea sin buscarlo */
+.editor-cab{display:flex; align-items:center; gap:12px}
+.editor-cab .editor-titulo{flex:1; min-width:0}
+.btn.btn-rojo{flex:0 0 auto; color:var(--riesgo-txt); background:transparent; border-color:color-mix(in srgb, var(--riesgo) 50%, transparent)}
+.btn.btn-rojo:hover{background:color-mix(in srgb, var(--riesgo) 12%, transparent); border-color:var(--riesgo); color:var(--riesgo-txt)}
+.btn.btn-rojo svg.i{width:14px; height:14px; flex:0 0 14px}
+@media (max-width:560px){ .btn.btn-rojo span{display:none} .btn.btn-rojo{width:34px; padding:0} }
 </style>
 </head>
 <body>
@@ -3460,7 +3467,10 @@ function vistaApuntes() {
     </div>
     ${n ? `
     <section class="panel editor">
-      <input type="text" class="editor-titulo" id="apTitulo" value="${esc(n.titulo)}" placeholder="Título del apunte" aria-label="Título">
+      <div class="editor-cab">
+        <input type="text" class="editor-titulo" id="apTitulo" value="${esc(n.titulo)}" placeholder="Título del apunte" aria-label="Título">
+        <button type="button" class="btn mini btn-rojo" data-borrar-apunte="${n.id}" title="Borrar este apunte"><svg class="i" viewBox="0 0 16 16" aria-hidden="true"><path d="M3 4.5h10M6.5 4.5V3h3v1.5M4.6 4.5l.7 8.3a1 1 0 0 0 1 .9h3.4a1 1 0 0 0 1-.9l.7-8.3"/></svg><span>Borrar apunte</span></button>
+      </div>
       <div class="editor-meta">
         <select id="apModulo" aria-label="Módulo">
           <option value="">Sin módulo</option>
@@ -3492,7 +3502,6 @@ function vistaApuntes() {
         <div class="barra-btns">
           <span class="meta num" id="contadorPalabras"></span>
           <button class="btn mini fantasma" id="btnExportarApunte">Descargar</button>
-          <button class="btn mini borrar" data-borrar-apunte="${n.id}">Borrar</button>
         </div>
       </div>
       <div class="ia oculto" id="panelIA">
