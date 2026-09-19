@@ -1407,6 +1407,24 @@ dialog.dlg-confirmar{width:min(400px, calc(100vw - 32px)); padding:0; border:1px
 @media (prefers-reduced-motion: reduce){ .hoja.resaltada{animation:none} }
 .pn-espacio{padding:2px 8px}
 .pn-espacio .pn-barra{--c:var(--acento); height:5px; margin:0 0 6px}
+/* casillero: vistas previas y visor de PDF */
+.hj-papel.foto{display:block; overflow:hidden; background:#101118}
+.hj-papel.foto::before, .hj-papel.pdf::before, .hj-papel.enl::before{display:none}
+.hj-papel.pdf{display:block; overflow:hidden; background:var(--surface-2)}
+.hj-papel.pdf::after, .hj-papel.enl::after{display:none}
+.hj-pag{display:block; width:74%; margin:14px auto 0; border-radius:2px; background:#FFFFFF; box-shadow:0 6px 18px rgba(0,0,0,.30)}
+.hoja:hover .hj-pag{transform:translateY(-2px); transition:transform .15s}
+.hj-etq{position:absolute; left:10px; bottom:10px; padding:4px 7px; border-radius:6px; font:600 10.5px/1 var(--sans); letter-spacing:.05em; color:#FFFFFF;
+  background:color-mix(in srgb, var(--c) 82%, #000); box-shadow:0 2px 6px rgba(0,0,0,.25)}
+.hj-papel.txt{display:block; overflow:hidden}
+.hj-extracto{margin:0; height:100%; overflow:hidden; padding:11px 12px 0 30px; white-space:pre; color:#2B2D3A;
+  font:400 10px/14px ui-monospace, SFMono-Regular, Consolas, "Liberation Mono", monospace}
+.hj-papel.enl{background:linear-gradient(135deg, color-mix(in srgb, var(--c) 24%, var(--surface)), var(--surface-2))}
+.hj-dominio{display:flex; align-items:center; gap:8px; max-width:86%; font:500 14px/1.2 var(--sans); color:var(--ink)}
+.hj-dominio span{overflow:hidden; text-overflow:ellipsis; white-space:nowrap}
+.hj-dominio svg.i{width:18px; height:18px; flex:0 0 18px; color:var(--acento-txt)}
+.visor-pdf{display:flex; flex-direction:column; gap:12px; max-height:70vh; overflow:auto; padding:4px; background:var(--surface-2); border-radius:10px}
+.pdf-pag{display:block; width:100%; height:auto; border-radius:3px; background:#FFFFFF; box-shadow:0 2px 10px rgba(0,0,0,.25)}
 </style>
 </head>
 <body>
@@ -3259,7 +3277,7 @@ function hojaHTML(d, conMod) {
   const tipo = hojaTipo(d), img = tipo === "Foto" && srcDoc(d), m = modPorId(d.modId);
   const fecha = d.creado ? fechaCorta(d.creado.slice(0, 10)) : "";
   return `<article class="hoja${img ? " con-foto" : ""}${d.id === casResaltar ? " resaltada" : ""}" style="${m ? colorMod(m) : "--c:var(--ink-4)"}">
-    <div class="hj-papel">${img ? `<img src="${esc(srcDoc(d))}" alt="" loading="lazy">` : `<span class="hj-tipo">${tipo}</span>`}</div>
+    ${papelHTML(d, tipo)}
     <div class="hj-pie">
       <div class="hj-t" title="${esc(d.titulo)}">${esc(d.titulo)}</div>
       <div class="hj-m">${conMod && m ? esc(m.cod) + " · " : ""}${tipo} · ${esc(fecha)}${d.tam ? " · " + Math.round(d.tam / 1024) + " KB" : ""}</div>
@@ -3433,6 +3451,7 @@ async function guardarEnNube(file, modId) {
   if (/^image\/(jpeg|png|webp)$/.test(tipo) && file.size > 1.5 * 1048576) { const r = await reducirFoto(file); if (r) { blob = r; tipoSubida = "image/jpeg"; } }
   if (blob.size > LIMITE_NUBE) { aviso("«" + file.name + "» pesa " + mb(blob.size) + " y el máximo son 20 MB. Guárdalo en Drive y pega aquí el enlace.", "mal"); return; }
   aviso("Subiendo «" + file.name + "»…");
+  const previa = previaDe(file, tipo, file.name);
   let r;
   try { r = await almacen.upload(blob, { type: tipoSubida }); }
   catch (e) {
@@ -3442,9 +3461,105 @@ async function guardarEnNube(file, modId) {
   }
   const id = uid();
   const doc = { id, titulo: file.name, modId, tipo: "archivo", mime: r.contentType || tipoSubida, tam: r.sizeBytes, creado: new Date().toISOString(), asset: r.id };
+  Object.assign(doc, await previa);
   S.casillero[id] = doc; guardarLocal();
   if (db) db.doc("casillero/" + id).set(doc).catch(e => aviso("No se pudo sincronizar el archivo: " + e.code, "mal"));
   aviso("Guardado: " + file.name); pinta(); refrescaUso();
+}
+
+/* ── vista previa de las hojas ──
+   Los PDF enseñan su primera página; los textos y el código, sus primeras
+   líneas; los enlaces, la web a la que llevan. La miniatura se hace al subir y,
+   para lo que ya estaba guardado, la primera vez que se ve. Los PDF se dibujan
+   con PDF.js (Mozilla, Apache 2.0), que solo se carga cuando hace falta. */
+const PDFJS = "https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/";
+let pdfjsCarga = null;
+function cargarPdfjs() {
+  if (window.pdfjsLib) return Promise.resolve(window.pdfjsLib);
+  if (pdfjsCarga) return pdfjsCarga;
+  const script = src => new Promise((ok, mal) => { const s = document.createElement("script"); s.src = src; s.onload = ok; s.onerror = mal; document.head.appendChild(s); });
+  /* el «worker» se carga como script normal: así PDF.js trabaja en la propia página y no necesita crear hilos */
+  pdfjsCarga = script(PDFJS + "pdf.worker.min.js").then(() => script(PDFJS + "pdf.min.js"))
+    .then(() => { window.pdfjsLib.GlobalWorkerOptions.workerSrc = PDFJS + "pdf.worker.min.js"; return window.pdfjsLib; })
+    .catch(e => { pdfjsCarga = null; throw e; });
+  return pdfjsCarga;
+}
+async function abrirPdf(data) {
+  const lib = await cargarPdfjs();
+  return lib.getDocument({ data, isEvalSupported: false }).promise;
+}
+async function miniPdf(data) {
+  const pdf = await abrirPdf(data), p = await pdf.getPage(1), v = p.getViewport({ scale: 1 }), vp = p.getViewport({ scale: 300 / v.width });
+  const c = document.createElement("canvas"); c.width = Math.round(vp.width); c.height = Math.round(vp.height);
+  const g = c.getContext("2d"); g.fillStyle = "#FFFFFF"; g.fillRect(0, 0, c.width, c.height);
+  await p.render({ canvasContext: g, viewport: vp }).promise;
+  const paginas = pdf.numPages; pdf.destroy();
+  return { mini: c.toDataURL("image/jpeg", .66), paginas };
+}
+const extracto = t => String(t).replace(/\r/g, "").replace(/\t/g, "  ").split("\n").slice(0, 16).map(l => l.slice(0, 80)).join("\n").slice(0, 900);
+async function previaDe(blob, mime, nombre) {
+  try {
+    const m = mime || "", pdf = m.includes("pdf") || extDe(nombre) === "pdf";
+    if (pdf) return await miniPdf(await blob.arrayBuffer());
+    if (!m.startsWith("image/") && !m.startsWith("video/")) return { extracto: extracto(await blob.slice(0, 65536).text()) };
+  } catch (e) { /* sin vista previa: se queda la etiqueta */ }
+  return {};
+}
+const dominioDe = u => { try { return new URL(u).hostname.replace(/^www\./, ""); } catch (e) { return u || ""; } };
+function papelHTML(d, tipo) {
+  const src = srcDoc(d);
+  if (tipo === "Foto" && src) return `<div class="hj-papel foto"><img src="${esc(src)}" alt="" loading="lazy"></div>`;
+  if (tipo === "PDF" && d.mini) return `<div class="hj-papel pdf"><img class="hj-pag" src="${esc(d.mini)}" alt="" loading="lazy">
+    <span class="hj-etq">PDF${d.paginas ? " · " + d.paginas + (d.paginas === 1 ? " pág." : " págs.") : ""}</span></div>`;
+  if (tipo === "Texto" && d.extracto) return `<div class="hj-papel txt"><pre class="hj-extracto">${esc(d.extracto)}</pre>
+    <span class="hj-etq">${esc((extDe(d.titulo) || "txt").toUpperCase())}</span></div>`;
+  if (tipo === "Enlace") return `<div class="hj-papel enl"><span class="hj-dominio">${ICO_TIPO.Enlace}<span>${esc(dominioDe(d.url))}</span></span></div>`;
+  return `<div class="hj-papel" data-previa="${d.id}"><span class="hj-tipo">${tipo}</span></div>`;
+}
+/* lo guardado antes de tener vista previa: se completa al verlo, de uno en uno */
+const previaHecha = new Set();
+let previasEnCurso = false;
+async function completarPrevias() {
+  if (previasEnCurso) return;
+  previasEnCurso = true;
+  try {
+    for (;;) {
+      const el = [...document.querySelectorAll(".hj-papel[data-previa]")].find(x => !previaHecha.has(x.dataset.previa));
+      if (!el) break;
+      const d = S.casillero[el.dataset.previa]; previaHecha.add(el.dataset.previa);
+      if (!d || !srcDoc(d) || !["PDF", "Texto"].includes(hojaTipo(d))) continue;
+      try {
+        const blob = await (await fetch(srcDoc(d))).blob();
+        const p = await previaDe(blob, hojaTipo(d) === "PDF" ? "application/pdf" : "text/plain", d.titulo);
+        if (!p.mini && !p.extracto) continue;
+        Object.assign(d, p); guardarLocal();
+        if (db) db.doc("casillero/" + d.id).set(d).catch(() => {});
+        document.querySelectorAll('.hj-papel[data-previa="' + d.id + '"]').forEach(x => { x.outerHTML = papelHTML(d, hojaTipo(d)); });
+      } catch (e) { /* se queda la etiqueta */ }
+    }
+  } finally { previasEnCurso = false; }
+}
+/* ver un PDF dentro de la app, página a página */
+async function verPdf(d) {
+  const src = srcDoc(d);
+  abrirDlg(d.titulo, `<div class="visor visor-pdf" id="visorPdf"><p class="meta">Abriendo el PDF…</p></div>
+    <p class="meta" style="margin-top:10px"><a href="${esc(src)}" target="_blank" rel="noopener">Abrir en otra pestaña</a></p>`, [{ txt: "Cerrar", clase: "btn", accion: () => {} }]);
+  try {
+    const pdf = await abrirPdf(await (await fetch(src)).arrayBuffer()), caja = $("#visorPdf"); if (!caja) return;
+    caja.innerHTML = "";
+    const ancho = Math.min(caja.clientWidth || 600, 900), dpr = Math.min(2, window.devicePixelRatio || 1), max = Math.min(pdf.numPages, 40);
+    for (let i = 1; i <= max && $("#dlg").open; i++) {
+      const p = await pdf.getPage(i), v = p.getViewport({ scale: 1 }), vp = p.getViewport({ scale: ancho / v.width * dpr });
+      const c = document.createElement("canvas"); c.width = Math.round(vp.width); c.height = Math.round(vp.height); c.className = "pdf-pag";
+      c.setAttribute("aria-label", "Página " + i + " de " + pdf.numPages);
+      caja.appendChild(c); await p.render({ canvasContext: c.getContext("2d"), viewport: vp }).promise;
+    }
+    if (pdf.numPages > max) caja.insertAdjacentHTML("beforeend", `<p class="meta">Aquí se ven las ${max} primeras páginas; el resto, en otra pestaña.</p>`);
+    pdf.destroy();
+  } catch (e) {
+    const caja = $("#visorPdf");
+    if (caja) caja.innerHTML = `<embed src="${esc(src)}" type="application/pdf" style="width:100%; height:60vh; border-radius:8px">`;
+  }
 }
 
 async function guardarArchivo(file, destino) {
@@ -3464,6 +3579,7 @@ async function guardarArchivo(file, destino) {
   }
   const id = uid();
   const doc = { id, titulo: file.name, modId, tipo: "archivo", mime, tam: contenido.length, creado: new Date().toISOString(), datos: contenido };
+  Object.assign(doc, await previaDe(file, mime, file.name));
   S.casillero[id] = doc; guardarLocal();
   if (db) db.doc("casillero/" + id).set(doc).catch(e => aviso("No se pudo sincronizar el archivo: " + e.code, "mal"));
   aviso("Guardado: " + file.name); pinta();
@@ -3666,6 +3782,7 @@ function pinta() {
   if (seccion === "escritorio") pintaReloj();
   if (seccion === "tutor") { tutorLeido(); chatAbajo(); }
   if (seccion === "apuntes" && apunteActivo && S.apuntes[apunteActivo]) { contarPalabras(); montarLibreta(); }
+  if (seccion === "casillero") completarPrevias();
 }
 function contarPalabras() {
   const t = $("#apCuerpo"); if (!t) return;
@@ -3801,8 +3918,7 @@ document.addEventListener("click", async e => {
     let cuerpo;
     const src = srcDoc(d);
     if ((d.mime || "").startsWith("image/")) cuerpo = `<div class="visor"><img src="${esc(src)}" alt="${esc(d.titulo)}"></div>`;
-    else if ((d.mime || "").includes("pdf")) cuerpo = `<div class="visor"><embed src="${esc(src)}" type="application/pdf" style="width:100%; height:60vh; border-radius:8px"></div>
-      <p class="meta" style="margin-top:10px">¿No se ve? <a href="${esc(src)}" target="_blank" rel="noopener">Ábrelo en otra pestaña</a>.</p>`;
+    else if ((d.mime || "").includes("pdf")) { verPdf(d); return; }
     else { let txt = "";
       try { txt = d.datos ? decodeURIComponent(escape(atob((d.datos || "").split(",")[1] || ""))) : await (await fetch(src)).text(); }
       catch (err) { txt = "No se puede mostrar este archivo."; }
@@ -6532,7 +6648,8 @@ function panelHTML(c) {
     const hoy = hoyISO(), en7 = sumaDias(hoy, 7), pronto = [];
     elementos().filter(e => e.estado !== "hecha" && e.fecha && e.fecha >= hoy && e.fecha <= en7 && modPorId(e.modId))
       .sort((a, b) => a.fecha.localeCompare(b.fecha)).forEach(e => { if (!pronto.some(p => p.modId === e.modId)) pronto.push(e); });
-    const mini = d => hojaTipo(d) === "Foto" && d.datos ? `<span class="pn-mini"><img src="${esc(d.datos)}" alt=""></span>` : `<span class="pn-mini">${ICO_TIPO[hojaTipo(d)]}</span>`;
+    const mini = d => { const s = hojaTipo(d) === "Foto" ? srcDoc(d) : d.mini;
+      return s ? `<span class="pn-mini"><img src="${esc(s)}" alt=""></span>` : `<span class="pn-mini">${ICO_TIPO[hojaTipo(d)]}</span>`; };
     return pnCab("Casillero", docs.length ? docs.length + (docs.length === 1 ? " hoja guardada" : " hojas guardadas") : "Aún vacío")
       + (libroAbierto || casTipo ? pnFila(" data-cas-volver", "", "Todas las libretas", "La estantería") : "")
       + (docs.length ? `<input type="search" class="pn-buscar" id="pnBuscar" placeholder="Buscar en tus libretas" aria-label="Buscar en tus libretas" autocomplete="off">`

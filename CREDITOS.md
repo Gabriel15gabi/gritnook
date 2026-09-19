@@ -6,6 +6,7 @@ GritNook es código propio con licencia MIT (ver [LICENSE](LICENSE)). Usa estas 
 |---|---|---|
 | [Phosphor Icons](https://phosphoricons.com) 2.1, estilo duotono | Iconos del menú (riel, barra del móvil y «Más») y símbolos de las libretas del casillero. Los dibujos van copiados dentro de `index.html`. | MIT |
 | [Inter](https://rsms.me/inter/), de Rasmus Andersson | Tipografía de toda la app (se carga de Google Fonts) y trazos del logotipo. | SIL Open Font License 1.1 |
+| [PDF.js](https://mozilla.github.io/pdf.js/), de Mozilla, 3.11 | Miniaturas y visor de los PDF del casillero. Se carga de cdnjs solo al ver un PDF. | Apache 2.0 |
 | [opentype.js](https://opentype.js.org) | Solo para regenerar el logotipo (`marca/generar.js`). No va dentro de la app. | MIT |
 
 El logotipo de GritNook (las anillas y el marcapáginas) es un diseño propio: no sale de ninguna librería de iconos.
