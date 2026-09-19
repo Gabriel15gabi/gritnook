@@ -1425,6 +1425,97 @@ dialog.dlg-confirmar{width:min(400px, calc(100vw - 32px)); padding:0; border:1px
 .hj-dominio svg.i{width:18px; height:18px; flex:0 0 18px; color:var(--acento-txt)}
 .visor-pdf{display:flex; flex-direction:column; gap:12px; max-height:70vh; overflow:auto; padding:4px; background:var(--surface-2); border-radius:10px}
 .pdf-pag{display:block; width:100%; height:auto; border-radius:3px; background:#FFFFFF; box-shadow:0 2px 10px rgba(0,0,0,.25)}
+:root{--ruido-papel:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='180' height='180'%3E%3Cfilter id='f'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='3' stitchTiles='stitch'/%3E%3CfeColorMatrix type='saturate' values='0'/%3E%3C/filter%3E%3Crect width='180' height='180' filter='url(%23f)' opacity='0.07'/%3E%3C/svg%3E")}
+
+/* ══════════════ libreta: barra por modos, formato, papeles y concentración ══════════════ */
+.lb-modos{gap:0; padding:2px; border-radius:9px; background:var(--surface-2)}
+.lb-modo{display:inline-flex; align-items:center; gap:6px; height:30px; padding:0 11px; border:0; border-radius:7px; background:none;
+  color:var(--ink-3); font:500 12.5px/1 var(--sans); cursor:pointer}
+.lb-modo svg.i{width:15px; height:15px}
+.lb-modo[aria-pressed="true"]{background:var(--surface); color:var(--ink); box-shadow:0 1px 3px rgba(0,0,0,.18)}
+.lb-grupo + .lb-grupo.lb-modos, .lb-modos + .lb-grupo{padding-left:12px}
+.lb-modos + .lb-grupo{border-left:1px solid var(--line)}
+.lb-btn[aria-pressed="true"]{background:var(--acento-suave); color:var(--acento-txt); box-shadow:inset 0 0 0 1px var(--acento-borde)}
+.lb-marcas{gap:0; flex-wrap:wrap}
+.lb-marcas .lb-color, .lb-paleta .lb-color{width:17px; height:17px; margin:0 2px}
+.lb-etq{display:grid; place-items:center; width:24px; color:var(--ink-3)}
+.lb-etq svg.i{width:15px; height:15px}
+.lb-color:hover{transform:scale(1.15)}
+.lb-color{transition:transform .1s}
+.lb-sin{background:var(--surface) !important; box-shadow:inset 0 0 0 1.5px var(--line-2) !important; position:relative}
+.lb-sin::after{content:""; position:absolute; left:3px; right:3px; top:50%; height:1.5px; background:var(--riesgo); transform:rotate(-45deg)}
+.lb-paleta{flex-wrap:wrap}
+.lb-libre{position:relative; display:inline-block; overflow:hidden; cursor:pointer;
+  background:conic-gradient(#F87171, #FBBF24, #34D399, #60A5FA, #A78BFA, #F472B6, #F87171) !important}
+.lb-libre.activo{box-shadow:inset 0 0 0 3px var(--c), 0 0 0 2px var(--surface), 0 0 0 3.5px var(--ink) !important}
+.lb-libre input{position:absolute; inset:0; width:100%; height:100%; opacity:0; cursor:pointer; border:0; padding:0}
+.lb-rel{position:relative}
+.lb-pop{position:absolute; top:calc(100% + 8px); right:0; z-index:20; min-width:180px; padding:8px; border:1px solid var(--line-2); border-radius:12px;
+  background:var(--surface); box-shadow:var(--sombra-modal)}
+.lb-pop-colores{display:grid; grid-template-columns:repeat(5, 26px); gap:8px; padding:4px}
+.lb-pop-colores .lb-color{margin:0; width:26px; height:26px}
+.lb-papel-op{display:flex; align-items:center; gap:10px; width:100%; padding:7px 8px; border:0; border-radius:8px; background:none;
+  color:var(--ink); font:500 13px/1 var(--sans); cursor:pointer; text-align:left}
+.lb-papel-op:hover{background:var(--surface-2)}
+.lb-papel-op[aria-pressed="true"]{background:var(--acento-suave)}
+.lb-muestra{width:30px; height:22px; flex:0 0 30px; border-radius:4px; background-color:var(--papel-libreta); box-shadow:inset 0 0 0 1px rgba(0,0,0,.14)}
+.lb-muestra.papel-cuadricula{background-image:linear-gradient(var(--cuadro) 1px, transparent 1px), linear-gradient(90deg, var(--cuadro) 1px, transparent 1px); background-size:6px 6px}
+.lb-muestra.papel-rayas{background-image:linear-gradient(var(--cuadro) 1px, transparent 1px); background-size:100% 6px}
+.lb-muestra.papel-puntos{background-image:radial-gradient(circle, var(--punto) .8px, transparent 1px); background-size:6px 6px}
+
+/* el texto con formato */
+.hoja-texto i, .hoja-texto em{font-style:italic}
+.hoja-texto u{text-decoration:underline; text-decoration-thickness:1.5px; text-underline-offset:3px}
+.hoja-texto s{text-decoration:line-through; text-decoration-thickness:1.5px}
+.hoja-texto mark{color:inherit; background:transparent; border-radius:3px; padding:1px 0; -webkit-box-decoration-break:clone; box-decoration-break:clone}
+.hoja-texto div[data-b="t1"]{font:600 23px/48px var(--sans); letter-spacing:-.015em}
+.hoja-texto div[data-b="t2"]{font:600 17.5px/24px var(--sans); letter-spacing:-.01em}
+.hoja-texto div[data-b="ul"], .hoja-texto div[data-b="ol"]{position:relative; padding-left:26px}
+.hoja-texto div[data-b="ul"]::before{content:""; position:absolute; left:8px; top:10px; width:6px; height:6px; border-radius:50%; background:currentColor}
+.hoja-texto div[data-b="ol"]{counter-increment:lbnum}
+.hoja-texto div[data-b="ol"]::before{content:counter(lbnum) "."; position:absolute; left:0; width:20px; text-align:right; font-variant-numeric:tabular-nums}
+.hoja-texto > div[data-b="ol"]:first-child, .hoja-texto > :not(div[data-b="ol"]) + div[data-b="ol"]{counter-reset:lbnum}
+
+/* los papeles: cuadrícula (el de siempre), rayas, puntos y lisa */
+:root{--punto:rgba(60,96,150,.42)}
+.hoja-papel.papel-rayas{background-image:linear-gradient(var(--cuadro) 1px, transparent 1px), var(--ruido-papel); background-size:100% 24px, 180px 180px}
+.hoja-papel.papel-puntos{background-image:radial-gradient(circle, var(--punto) 1.3px, transparent 1.6px), var(--ruido-papel); background-size:24px 24px, 180px 180px;
+  background-position:-12px -12px, 0 0}
+.hoja-papel.papel-lisa{background-image:var(--ruido-papel); background-size:180px 180px}
+.hoja-papel.papel-lisa::before{display:none}
+
+/* modo concentración: solo la hoja */
+body.foco .riel, body.foco .lateral, body.foco .cabeza-menu, body.foco .barra-movil, body.foco #contenido > .cab{display:none !important}
+body.foco .app{grid-template-columns:minmax(0,1fr) !important}
+body.foco .principal{padding-top:16px; padding-bottom:40px}
+body.foco .notas{grid-template-columns:minmax(0,1fr)}
+body.foco .notas > div:first-child{display:none}
+body.foco .lb-barra{top:8px}
+@media (max-width:640px){
+  .lb-modo span{display:none}
+  .lb-marcas .lb-color, .lb-paleta .lb-color{width:22px; height:22px; margin:2px}
+}
+.hoja-texto mark[data-m="amarillo"]{background:rgba(253, 224, 71, .55)}
+.hoja-texto mark[data-m="melocoton"]{background:rgba(253, 186, 116, .55)}
+.hoja-texto mark[data-m="coral"]{background:rgba(252, 165, 165, .55)}
+.hoja-texto mark[data-m="rosa"]{background:rgba(249, 168, 212, .55)}
+.hoja-texto mark[data-m="fucsia"]{background:rgba(240, 171, 252, .55)}
+.hoja-texto mark[data-m="lila"]{background:rgba(216, 180, 254, .55)}
+.hoja-texto mark[data-m="lavanda"]{background:rgba(196, 181, 253, .55)}
+.hoja-texto mark[data-m="azul"]{background:rgba(147, 197, 253, .55)}
+.hoja-texto mark[data-m="celeste"]{background:rgba(125, 211, 252, .55)}
+.hoja-texto mark[data-m="turquesa"]{background:rgba(94, 234, 212, .55)}
+.hoja-texto mark[data-m="menta"]{background:rgba(134, 239, 172, .55)}
+.hoja-texto mark[data-m="lima"]{background:rgba(190, 242, 100, .55)}
+.hoja-texto span[data-t="gris"]{color:#6B7280}
+.hoja-texto span[data-t="azul"]{color:#1D4ED8}
+.hoja-texto span[data-t="celeste"]{color:#0284C7}
+.hoja-texto span[data-t="verde"]{color:#15803D}
+.hoja-texto span[data-t="rojo"]{color:#DC2626}
+.hoja-texto span[data-t="rosa"]{color:#DB2777}
+.hoja-texto span[data-t="naranja"]{color:#EA580C}
+.hoja-texto span[data-t="morado"]{color:#7C3AED}
+.hoja-texto span[data-t="marron"]{color:#92400E}
 </style>
 </head>
 <body>
@@ -2079,8 +2170,29 @@ function dlgObjetivos() {
    tamaño y se deshace trazo a trazo. La hoja mide siempre 800 unidades de
    ancho y se escala entera, así el texto y el dibujo nunca se desalinean. */
 const LB_ANCHO = 800, LB_CUADRO = 24, LB_MIN_ALTO = 1056;
-const LB_TINTAS = [["#1C1C1E", "Negro"], ["#1D4ED8", "Azul"], ["#DC2626", "Rojo"], ["#15803D", "Verde"], ["#EA580C", "Naranja"], ["#7C3AED", "Morado"]];
-const LB_FLUOR = [["#FDE047", "Amarillo"], ["#86EFAC", "Verde"], ["#F9A8D4", "Rosa"], ["#93C5FD", "Azul"]];
+const LB_TINTAS = [["#1C1C1E", "Negro"], ["#6B7280", "Gris"], ["#1D4ED8", "Azul"], ["#0284C7", "Celeste"], ["#15803D", "Verde"],
+  ["#DC2626", "Rojo"], ["#DB2777", "Rosa"], ["#EA580C", "Naranja"], ["#7C3AED", "Morado"], ["#92400E", "Marrón"]];
+/* los subrayadores: doce tonos pastel, los mismos para dibujar y para subrayar el texto escrito */
+const LB_MARCAS = [["amarillo", "#FDE047", "Amarillo"], ["melocoton", "#FDBA74", "Melocotón"], ["coral", "#FCA5A5", "Coral"], ["rosa", "#F9A8D4", "Rosa"],
+  ["fucsia", "#F0ABFC", "Fucsia"], ["lila", "#D8B4FE", "Lila"], ["lavanda", "#C4B5FD", "Lavanda"], ["azul", "#93C5FD", "Azul"],
+  ["celeste", "#7DD3FC", "Celeste"], ["turquesa", "#5EEAD4", "Turquesa"], ["menta", "#86EFAC", "Menta"], ["lima", "#BEF264", "Lima"]];
+const LB_FLUOR = LB_MARCAS.map(([, c, n]) => [c, n]);
+/* los colores de letra, por nombre para guardarlos limpios */
+const LB_TXT = [["gris", "#6B7280", "Gris"], ["azul", "#1D4ED8", "Azul"], ["celeste", "#0284C7", "Celeste"], ["verde", "#15803D", "Verde"],
+  ["rojo", "#DC2626", "Rojo"], ["rosa", "#DB2777", "Rosa"], ["naranja", "#EA580C", "Naranja"], ["morado", "#7C3AED", "Morado"], ["marron", "#92400E", "Marrón"]];
+const LB_PAPELES = [["cuadricula", "Cuadrícula"], ["rayas", "Rayas"], ["puntos", "Puntos"], ["lisa", "Lisa"]];
+const hexRgb = h => { const n = parseInt(String(h).slice(1), 16); return [n >> 16 & 255, n >> 8 & 255, n & 255]; };
+const rgbaMarca = hex => { const [r, g, b] = hexRgb(hex); return "rgba(" + r + ", " + g + ", " + b + ", 0.55)"; };
+/* un color de CSS (rgb, rgba o #hex) al tono de la paleta más cercano; null si es transparente o no se parece a ninguno */
+function colorDePaleta(css, lista) {
+  const s = String(css || "").trim(); if (!s || s === "transparent") return null;
+  let c = s.match(/rgba?\(\s*(\d+)[,\s]+(\d+)[,\s]+(\d+)(?:[,\s/]+([\d.]+))?/i);
+  if (c) { if (c[4] !== undefined && +c[4] === 0) return null; c = [+c[1], +c[2], +c[3]]; }
+  else if (/^#[0-9a-f]{6}$/i.test(s)) c = hexRgb(s); else return null;
+  let mejor = null, dist = Infinity;
+  for (const [k, hex] of lista) { const q = hexRgb(hex), d = (q[0] - c[0]) ** 2 + (q[1] - c[1]) ** 2 + (q[2] - c[2]) ** 2; if (d < dist) { dist = d; mejor = k; } }
+  return dist < 3 * 70 * 70 ? mejor : null;
+}
 const LB_HERR = {
   boli:   { nombre: "Bolígrafo",  grosores: [1.3, 2, 3] },
   rotu:   { nombre: "Rotulador",  grosores: [3, 4.5, 7] },
@@ -2105,7 +2217,18 @@ const LB_ICON = {
   iman: '<path d="M4 2.5v5.2a4 4 0 0 0 8 0V2.5"/><path d="M4 5.5h2.4M9.6 5.5H12"/>',
   deshacer: '<path d="M5.8 4L2.8 7l3 3"/><path d="M3 7h6.6a3.6 3.6 0 0 1 0 7.2H7.5"/>',
   rehacer: '<path d="M10.2 4l3 3-3 3"/><path d="M13 7H6.4a3.6 3.6 0 0 0 0 7.2h2.1"/>',
-  papelera: '<path d="M3 4.5h10M6.5 4.5V3h3v1.5M4.6 4.5l.7 8.3a1 1 0 0 0 1 .9h3.4a1 1 0 0 0 1-.9l.7-8.3"/>'
+  papelera: '<path d="M3 4.5h10M6.5 4.5V3h3v1.5M4.6 4.5l.7 8.3a1 1 0 0 0 1 .9h3.4a1 1 0 0 0 1-.9l.7-8.3"/>',
+  cursiva: '<path d="M10.5 3H6.8M9.2 13H5.5M9.4 3 6.6 13"/>',
+  subrayado: '<path d="M4.8 2.8v4.4a3.2 3.2 0 0 0 6.4 0V2.8M3.8 13.5h8.4"/>',
+  tachado: '<path d="M2.8 8h10.4M10.9 4.7A3.1 3.1 0 0 0 8 3c-1.9 0-3.1 1-3.1 2.3 0 .7.3 1.2.9 1.6M5.1 11.2c.5 1.1 1.5 1.8 2.9 1.8 1.9 0 3.1-1 3.1-2.4 0-.4-.1-.8-.4-1.1"/>',
+  titulo: '<path d="M2.5 3.5v9M8 3.5v9M2.5 8H8M11 6.2l1.9-1.6v7.9"/>',
+  subtitulo: '<path d="M2.2 3.5v9M7.2 3.5v9M2.2 8h5M9.9 6.4a1.9 1.9 0 0 1 3.6.9c0 1.9-3.6 3.2-3.6 5.2h3.9"/>',
+  lista: '<path d="M6.2 4.5h7.3M6.2 8h7.3M6.2 11.5h7.3M2.6 4.5h.6M2.6 8h.6M2.6 11.5h.6" stroke-width="2"/>',
+  numerada: '<path d="M6.5 4.5h7M6.5 8h7M6.5 11.5h7M2.4 3.4l1.1-.7v3.4M2.2 9.2a.9.9 0 0 1 1.8.3c0 .8-1.8 1.3-1.8 2.3h1.9"/>',
+  letra: '<path d="M4.6 10.8 8 2.8l3.4 8M5.9 8h4.2M3 13.6h10"/>',
+  papel: '<rect x="2.5" y="2.5" width="11" height="11" rx="1.5"/><path d="M2.5 6.2h11M2.5 9.8h11M6.2 2.5v11M9.8 2.5v11"/>',
+  foco: '<path d="M2.5 6V2.5H6M10 2.5h3.5V6M13.5 10v3.5H10M6 13.5H2.5V10"/>',
+  salir: '<path d="M6 2.5V6H2.5M13.5 6H10V2.5M10 13.5V10h3.5M2.5 10H6v3.5"/>'
 };
 const lbIcono = n => `<svg class="i" viewBox="0 0 16 16" aria-hidden="true">${LB_ICON[n]}</svg>`;
 
@@ -2114,45 +2237,85 @@ const LB = Object.assign({ modo: "escribir", herr: "rotu", tinta: "#1C1C1E", flu
 if (!LB_HERR[LB.herr]) LB.herr = "rotu";
 if (![0, 1, 2].includes(LB.grosor)) LB.grosor = 1;
 if (LB.modo !== "dibujar") LB.modo = "escribir";
-Object.assign(LB, { trazos: [], hist: {}, vivo: null, dibujando: false, H: LB_MIN_ALTO, k: 1, nota: null,
+Object.assign(LB, { trazos: [], hist: {}, vivo: null, dibujando: false, H: LB_MIN_ALTO, k: 1, nota: null, pop: null,
   pedido: false, cursor: null, pendiente: false, temp: null, ro: null });
 const lbPrefs = () => guardaLS("libreta", { modo: LB.modo, herr: LB.herr, tinta: LB.tinta, fluor: LB.fluor, grosor: LB.grosor, iman: LB.iman });
 const lbHist = () => LB.hist[LB.nota] || (LB.hist[LB.nota] = { deshacer: [], rehacer: [] });
 const lbImanV = v => Math.round(v / LB_CUADRO) * LB_CUADRO;
 const lbVivaActiva = () => !!(LB.papel && LB.papel.isConnected);
 
+/* La barra cambia con el modo: al escribir, formato del texto (negrita, cursiva,
+   títulos, listas, subrayar y color de letra); al dibujar, útiles, formas,
+   colores y grosor. A la derecha, siempre, el papel y el modo concentración. */
 function lbBarraHTML() {
-  const h = LB.hist[apunteActivo] || { deshacer: [], rehacer: [] };
-  const trazosHoja = LB.nota === apunteActivo ? LB.trazos : (((S.apuntes[apunteActivo] || {}).dibujo || {}).trazos || []);
-  const fluor = LB.herr === "fluor", paleta = fluor ? LB_FLUOR : LB_TINTAS, actual = fluor ? LB.fluor : LB.tinta;
-  const herr = id => `<button type="button" class="lb-btn" data-lb-herr="${id}" aria-pressed="${LB.modo === "dibujar" && LB.herr === id}" title="${LB_HERR[id].nombre}" aria-label="${LB_HERR[id].nombre}">${lbIcono(id)}</button>`;
+  const h = LB.hist[apunteActivo] || { deshacer: [], rehacer: [] }, n = S.apuntes[apunteActivo] || {};
+  const trazosHoja = LB.nota === apunteActivo ? LB.trazos : ((n.dibujo || {}).trazos || []);
+  const escribir = LB.modo === "escribir", fluor = LB.herr === "fluor";
+  const btn = (attrs, icono, txt, extra) => `<button type="button" class="lb-btn${extra || ""}" ${attrs} title="${txt}" aria-label="${txt}">${lbIcono(icono)}</button>`;
+  const herr = id => btn(`data-lb-herr="${id}" aria-pressed="${!escribir && LB.herr === id}"`, id, LB_HERR[id].nombre);
+  const pop = (id, contenido) => LB.pop === id ? `<div class="lb-pop" role="dialog" aria-label="${id === "papel" ? "Tipo de papel" : "Color de letra"}">${contenido}</div>` : "";
+  const modos = `<div class="lb-grupo lb-modos" role="group" aria-label="Modo">
+      <button type="button" class="lb-modo" data-lb-modo="escribir" aria-pressed="${escribir}">${lbIcono("escribir")}<span>Escribir</span></button>
+      <button type="button" class="lb-modo" data-lb-modo="dibujar" aria-pressed="${!escribir}">${lbIcono("boli")}<span>Dibujar</span></button>
+    </div>`;
+  const texto = `
+    <div class="lb-grupo" role="group" aria-label="Formato del texto">
+      ${btn('id="lbNegrita" data-lb-cmd="bold" aria-pressed="false"', "negrita", "Negrita (Ctrl+B)", " lb-negrita")}
+      ${btn('data-lb-cmd="italic" aria-pressed="false"', "cursiva", "Cursiva (Ctrl+I)")}
+      ${btn('data-lb-cmd="underline" aria-pressed="false"', "subrayado", "Subrayado (Ctrl+U)")}
+      ${btn('data-lb-cmd="strikeThrough" aria-pressed="false"', "tachado", "Tachado")}
+    </div>
+    <div class="lb-grupo" role="group" aria-label="Tipo de línea">
+      ${btn('data-lb-bloque="t1" aria-pressed="false"', "titulo", "Título")}
+      ${btn('data-lb-bloque="t2" aria-pressed="false"', "subtitulo", "Subtítulo")}
+      ${btn('data-lb-bloque="ul" aria-pressed="false"', "lista", "Lista con viñetas")}
+      ${btn('data-lb-bloque="ol" aria-pressed="false"', "numerada", "Lista numerada")}
+    </div>
+    <div class="lb-grupo lb-marcas" role="group" aria-label="Subrayar el texto">
+      <span class="lb-etq" aria-hidden="true">${lbIcono("fluor")}</span>
+      ${LB_MARCAS.map(([k, c, nom]) => `<button type="button" class="lb-color" data-lb-marca="${k}" style="--c:${c}" title="Subrayar en ${nom.toLowerCase()}" aria-label="Subrayar en ${nom.toLowerCase()}"></button>`).join("")}
+      <button type="button" class="lb-color lb-sin" data-lb-marca="" title="Quitar el subrayado" aria-label="Quitar el subrayado"></button>
+    </div>
+    <div class="lb-grupo lb-rel">
+      ${btn(`data-lb-pop="color" aria-expanded="${LB.pop === "color"}"`, "letra", "Color de letra")}
+      ${pop("color", `<div class="lb-pop-colores">
+        <button type="button" class="lb-color" data-lb-tcolor="" style="--c:#1D2126" title="Automático" aria-label="Automático"></button>
+        ${LB_TXT.map(([k, c, nom]) => `<button type="button" class="lb-color" data-lb-tcolor="${c}" style="--c:${c}" title="${nom}" aria-label="${nom}"></button>`).join("")}</div>`)}
+    </div>`;
+  const paleta = fluor ? LB_FLUOR : LB_TINTAS, actual = fluor ? LB.fluor : LB.tinta;
+  const dibujo = `
+    <div class="lb-grupo" role="group" aria-label="Útiles">${["boli", "rotu", "fluor", "goma"].map(herr).join("")}</div>
+    <div class="lb-grupo" role="group" aria-label="Formas">
+      ${["linea", "flecha", "rect", "elipse"].map(herr).join("")}
+      ${btn(`id="lbIman" aria-pressed="${LB.iman}"`, "iman", "Ajustar las formas a la cuadrícula")}
+    </div>
+    <div class="lb-grupo lb-paleta" role="group" aria-label="${fluor ? "Colores del subrayador" : "Colores de tinta"}">
+      ${paleta.map(([c, nom]) => `<button type="button" class="lb-color" data-lb-color="${c}" style="--c:${c}" aria-pressed="${c.toLowerCase() === String(actual).toLowerCase()}" title="${nom}" aria-label="${nom}"></button>`).join("")}
+      <label class="lb-color lb-libre${paleta.some(([c]) => c.toLowerCase() === String(actual).toLowerCase()) ? "" : " activo"}" title="Otro color" style="--c:${actual}">
+        <input type="color" id="lbColorLibre" value="${esc(actual)}" aria-label="Otro color"></label>
+    </div>
+    <div class="lb-grupo" role="group" aria-label="Grosor">
+      ${[4, 7, 11].map((d, i) => `<button type="button" class="lb-btn lb-grosor" data-lb-grosor="${i}" aria-pressed="${LB.grosor === i}" title="${["Fino", "Medio", "Grueso"][i]}" aria-label="Grosor ${["fino", "medio", "grueso"][i]}"><i style="width:${d}px; height:${d}px"></i></button>`).join("")}
+    </div>`;
+  const papel = n.papel || "cuadricula";
   return `
       <div class="lb-barra" id="lbBarra" role="toolbar" aria-label="Herramientas de la libreta">
-        <div class="lb-grupo">
-          <button type="button" class="lb-btn" data-lb-modo="escribir" aria-pressed="${LB.modo === "escribir"}" title="Escribir con el teclado" aria-label="Escribir con el teclado">${lbIcono("escribir")}</button>
-          <button type="button" class="lb-btn lb-negrita" id="lbNegrita" aria-pressed="false" title="Negrita (Ctrl+B)" aria-label="Negrita">${lbIcono("negrita")}</button>
-          ${["boli", "rotu", "fluor", "goma"].map(herr).join("")}
-        </div>
-        <div class="lb-grupo">
-          ${["linea", "flecha", "rect", "elipse"].map(herr).join("")}
-          <button type="button" class="lb-btn" id="lbIman" aria-pressed="${LB.iman}" title="Ajustar las formas a la cuadrícula" aria-label="Ajustar las formas a la cuadrícula">${lbIcono("iman")}</button>
-        </div>
-        <div class="lb-grupo" role="group" aria-label="${fluor ? "Colores del subrayador" : "Colores de tinta"}">
-          ${paleta.map(([c, nombre]) => `<button type="button" class="lb-color" data-lb-color="${c}" style="--c:${c}" aria-pressed="${c === actual}" title="${nombre}" aria-label="${nombre}"></button>`).join("")}
-        </div>
-        <div class="lb-grupo" role="group" aria-label="Grosor">
-          ${[4, 7, 11].map((d, i) => `<button type="button" class="lb-btn lb-grosor" data-lb-grosor="${i}" aria-pressed="${LB.grosor === i}" title="${["Fino", "Medio", "Grueso"][i]}" aria-label="Grosor ${["fino", "medio", "grueso"][i]}"><i style="width:${d}px; height:${d}px"></i></button>`).join("")}
-        </div>
-        <div class="lb-grupo lb-derecha">
-          <button type="button" class="lb-btn" id="lbDeshacer" title="Deshacer (Ctrl+Z)" aria-label="Deshacer"${h.deshacer.length ? "" : " disabled"}>${lbIcono("deshacer")}</button>
-          <button type="button" class="lb-btn" id="lbRehacer" title="Rehacer (Ctrl+Y)" aria-label="Rehacer"${h.rehacer.length ? "" : " disabled"}>${lbIcono("rehacer")}</button>
-          <button type="button" class="lb-btn" id="lbLimpiar" title="Borrar todo el dibujo (el texto no se toca)" aria-label="Borrar todo el dibujo"${trazosHoja.length ? "" : " disabled"}>${lbIcono("papelera")}</button>
+        ${modos}${escribir ? texto : dibujo}
+        <div class="lb-grupo lb-derecha lb-rel">
+          ${escribir ? "" : `${btn(`id="lbDeshacer"${h.deshacer.length ? "" : " disabled"}`, "deshacer", "Deshacer el dibujo (Ctrl+Z)")}
+          ${btn(`id="lbRehacer"${h.rehacer.length ? "" : " disabled"}`, "rehacer", "Rehacer (Ctrl+Y)")}
+          ${btn(`id="lbLimpiar"${trazosHoja.length ? "" : " disabled"}`, "papelera", "Borrar todo el dibujo (el texto no se toca)")}`}
+          ${btn(`data-lb-pop="papel" aria-expanded="${LB.pop === "papel"}"`, "papel", "Tipo de papel")}
+          ${btn(`id="lbFoco" aria-pressed="${document.body.classList.contains("foco")}"`, document.body.classList.contains("foco") ? "salir" : "foco",
+            document.body.classList.contains("foco") ? "Salir del modo concentración (Esc)" : "Modo concentración: solo la hoja")}
+          ${pop("papel", LB_PAPELES.map(([k, nom]) => `<button type="button" class="lb-papel-op" data-lb-papel="${k}" aria-pressed="${papel === k}"><i class="lb-muestra papel-${k}"></i>${nom}</button>`).join(""))}
         </div>
       </div>`;
 }
 function lbPintarBarra() {
   const b = $("#lbBarra"); if (b) b.outerHTML = lbBarraHTML();
   const lib = $("#libreta"); if (lib) lib.classList.toggle("dibujar", LB.modo === "dibujar");
+  lbEstadoNegrita();
 }
 
 /* ── montaje: se llama tras cada repintado de Apuntes ── */
@@ -2337,6 +2500,8 @@ function lbMover(e) {
       else { const a = Math.round(Math.atan2(dy, dx) / (Math.PI / 4)) * (Math.PI / 4), L = Math.hypot(dx, dy); nx = tr.p[0] + Math.cos(a) * L; ny = tr.p[1] + Math.sin(a) * L; }
     }
     tr.p[2] = nx; tr.p[3] = ny;
+  } else if (e.shiftKey) {                          /* Mayús: raya recta, para subrayar o tachar limpio */
+    tr.p = [tr.p[0], tr.p[1], x, y];
   } else {
     const evs = e.getCoalescedEvents ? e.getCoalescedEvents() : [e];
     for (const ev of (evs.length ? evs : [e])) {
@@ -2374,37 +2539,69 @@ function lbArriba() {
 function limpiarHtml(html) {
   const t = document.createElement("template"); t.innerHTML = html || "";
   const raiz = document.createElement("div");
-  /* la negrita se decide por lo que se VE: <b>, <strong> o un peso grueso; un peso normal dentro de <b> la anula */
-  const peso = (el, heredado) => {
-    if (el.tagName === "B" || el.tagName === "STRONG") return true;
-    const fw = el.style && el.style.fontWeight;
-    if (fw) { if (/bold|bolder|[6-9]00/.test(fw)) return true; if (/normal|lighter|[1-5]00/.test(fw)) return false; }
-    return heredado;
+  const marcas = LB_MARCAS.map(([k, c]) => [k, c]), letras = LB_TXT.concat([["", "#1D2126"], ["", "#1C1C1E"]]);
+  /* el formato se decide por lo que se VE: etiquetas o estilos; un estilo normal dentro de <b> anula la negrita */
+  const formato = (el, f) => {
+    const g = Object.assign({}, f), tag = el.tagName, st = el.style || {};
+    if (tag === "B" || tag === "STRONG") g.b = true;
+    if (tag === "I" || tag === "EM") g.i = true;
+    if (tag === "U") g.u = true;
+    if (tag === "S" || tag === "STRIKE" || tag === "DEL") g.s = true;
+    if (tag === "MARK" && marcas.some(m => m[0] === el.getAttribute("data-m"))) g.m = el.getAttribute("data-m");
+    if (tag === "SPAN" && LB_TXT.some(x => x[0] === el.getAttribute("data-t"))) g.t = el.getAttribute("data-t");
+    const fw = st.fontWeight;
+    if (fw) { if (/bold|bolder|[6-9]00/.test(fw)) g.b = true; else if (/normal|lighter|[1-5]00/.test(fw)) g.b = false; }
+    if (st.fontStyle === "italic") g.i = true; else if (st.fontStyle === "normal") g.i = false;
+    const deco = String(st.textDecorationLine || st.textDecoration || "");
+    if (/underline/.test(deco)) g.u = true;
+    if (/line-through/.test(deco)) g.s = true;
+    if (st.backgroundColor) g.m = colorDePaleta(st.backgroundColor, marcas);
+    const col = (tag === "FONT" && el.getAttribute("color")) || st.color;
+    if (col) g.t = colorDePaleta(col, letras) || null;
+    return g;
   };
-  const volcar = (origen, destino, negrita) => {
+  const firma = g => (g.b ? "b" : "") + (g.i ? "i" : "") + (g.u ? "u" : "") + (g.s ? "s" : "") + "|" + (g.m || "") + "|" + (g.t || "");
+  const envolver = (txt, g) => {
+    let n = document.createTextNode(txt); const hoja = n;
+    if (g.t) { const x = document.createElement("span"); x.setAttribute("data-t", g.t); x.appendChild(n); n = x; }
+    if (g.m) { const x = document.createElement("mark"); x.setAttribute("data-m", g.m); x.appendChild(n); n = x; }
+    for (const k of ["s", "u", "i", "b"]) if (g[k]) { const x = document.createElement(k); x.appendChild(n); n = x; }
+    return { nodo: n, hoja };
+  };
+  /* los trozos seguidos con el mismo formato van juntos en una sola etiqueta */
+  const ultimo = new Map();
+  const texto = (valor, destino, g) => {
+    const f = firma(g), u = ultimo.get(destino);
+    if (f === "||") { destino.appendChild(document.createTextNode(valor)); ultimo.delete(destino); return; }
+    if (u && u.firma === f && destino.lastChild === u.nodo) { u.hoja.appendData(valor); return; }
+    const e = envolver(valor, g); destino.appendChild(e.nodo); ultimo.set(destino, { firma: f, nodo: e.nodo, hoja: e.hoja });
+  };
+  const tipoBloque = el => {
+    const b = el.getAttribute("data-b");
+    if (["t1", "t2", "ul", "ol"].includes(b)) return b;
+    if (el.tagName === "H1") return "t1";
+    if (/^H[2-6]$/.test(el.tagName)) return "t2";
+    if (el.tagName === "LI") return el.parentElement && el.parentElement.tagName === "OL" ? "ol" : "ul";
+    return "";
+  };
+  const volcar = (origen, destino, f) => {
     for (const nodo of origen.childNodes) {
-      if (nodo.nodeType === 3) {
-        if (!nodo.nodeValue) continue;
-        const txt = document.createTextNode(nodo.nodeValue);
-        if (negrita) {
-          const ult = destino.lastChild;
-          if (ult && ult.nodeName === "B") ult.appendChild(txt);
-          else { const b = document.createElement("b"); b.appendChild(txt); destino.appendChild(b); }
-        } else destino.appendChild(txt);
-      } else if (nodo.nodeType === 1) {
+      if (nodo.nodeType === 3) { if (nodo.nodeValue) texto(nodo.nodeValue, destino, f); }
+      else if (nodo.nodeType === 1) {
         const tag = nodo.tagName;
         if (tag === "SCRIPT" || tag === "STYLE" || tag === "TEMPLATE") continue;
-        if (tag === "BR") destino.appendChild(document.createElement("br"));
+        if (tag === "BR") { destino.appendChild(document.createElement("br")); ultimo.delete(destino); }
         else if (/^(DIV|P|LI|H[1-6]|BLOCKQUOTE|PRE)$/.test(tag)) {
-          const d = document.createElement("div");
-          volcar(nodo, d, peso(nodo, negrita));
+          const d = document.createElement("div"), tb = tipoBloque(nodo);
+          if (tb) d.setAttribute("data-b", tb);
+          volcar(nodo, d, formato(nodo, f));
           if (!d.childNodes.length) d.appendChild(document.createElement("br"));
-          destino.appendChild(d);
-        } else volcar(nodo, destino, peso(nodo, negrita));
+          destino.appendChild(d); ultimo.delete(destino);
+        } else volcar(nodo, destino, formato(nodo, f));
       }
     }
   };
-  volcar(t.content, raiz, false);
+  volcar(t.content, raiz, {});
   return raiz.innerHTML;
 }
 /* los apuntes de antes solo tenían texto: cada línea pasa a ser un bloque */
@@ -2412,15 +2609,26 @@ const textoAHtml = txt => (txt || "").split("\n").map(l => "<div>" + (l ? esc(l)
 /* texto plano del HTML limpio, línea a línea como se ve en la hoja; con marcas, la negrita sale como **negrita** (para descargar) */
 function htmlATexto(html, marcas) {
   const t = document.createElement("template"); t.innerHTML = html || "";
-  const marcar = s => s.split("\n").map(l => { const m = l.match(/^(\s*)(.*?)(\s*)$/); return m[1] + (m[2] ? "**" + m[2] + "**" : "") + m[3]; }).join("\n");
-  let out = "";
+  const marcar = (s, m) => s.split("\n").map(l => { const x = l.match(/^(\s*)(.*?)(\s*)$/); return x[1] + (x[2] ? m + x[2] + m : "") + x[3]; }).join("\n");
+  const MARCAS = { B: "**", I: "*", S: "~~", MARK: "==" };
+  let out = "", num = 0;
   const bloque = () => { if (out && !out.endsWith("\n")) out += "\n"; };
+  /* las listas y los títulos también se notan en el texto: «- », «1. », y con marcas «# » */
+  const prefijo = c => {
+    const b = c.getAttribute("data-b");
+    if (b === "ol") { num++; return num + ". "; }
+    num = 0;
+    if (b === "ul") return "- ";
+    if (marcas && b === "t1") return "# ";
+    if (marcas && b === "t2") return "## ";
+    return "";
+  };
   const recorrer = nodo => {
     for (const c of nodo.childNodes) {
       if (c.nodeType === 3) out += c.nodeValue;
       else if (c.nodeName === "BR") out += "\n";
-      else if (c.nodeName === "DIV") { bloque(); recorrer(c); bloque(); }
-      else if (c.nodeName === "B" && marcas) out += marcar(c.textContent);
+      else if (c.nodeName === "DIV") { bloque(); out += prefijo(c); recorrer(c); bloque(); }
+      else if (marcas && MARCAS[c.nodeName]) out += marcar(c.textContent, MARCAS[c.nodeName]);
       else recorrer(c);
     }
   };
@@ -2565,14 +2773,25 @@ function lbModo(m) {
 
 document.addEventListener("click", e => {
   const t = e.target;
-  if (t.closest("#lbNegrita")) {
-    const ed = LB.ta; if (!ed || !ed.isConnected) return;
-    if (LB.modo !== "escribir") lbModo("escribir");   /* ya deja el foco en el texto */
-    else if (document.activeElement !== ed) ed.focus({ preventScroll: true });
-    document.execCommand("bold");
-    lbEstadoNegrita(); return;
+  /* un clic fuera cierra el desplegable del papel o del color */
+  if (LB.pop && !t.closest(".lb-pop, [data-lb-pop]")) { LB.pop = null; lbPintarBarra(); }
+  const cmd = t.closest("[data-lb-cmd]");
+  if (cmd) { if (lbEditorListo()) { document.execCommand(cmd.dataset.lbCmd); lbEstadoNegrita(); } return; }
+  const bl = t.closest("[data-lb-bloque]"); if (bl) { lbBloque(bl.dataset.lbBloque); return; }
+  const mc = t.closest("[data-lb-marca]");
+  if (mc) { const m = LB_MARCAS.find(x => x[0] === mc.dataset.lbMarca); lbAplicarColor("hiliteColor", m ? rgbaMarca(m[1]) : "transparent"); return; }
+  const tc = t.closest("[data-lb-tcolor]");
+  if (tc) { lbAplicarColor("foreColor", tc.dataset.lbTcolor || "#1D2126"); LB.pop = null; lbPintarBarra(); return; }
+  const po = t.closest("[data-lb-pop]"); if (po) { LB.pop = LB.pop === po.dataset.lbPop ? null : po.dataset.lbPop; lbPintarBarra(); return; }
+  const pa = t.closest("[data-lb-papel]");
+  if (pa) {
+    const n = S.apuntes[apunteActivo];
+    if (n) { n.papel = pa.dataset.lbPapel; n.editado = new Date().toISOString(); guardarApunte(n);
+      const p = $("#lbPapel"); if (p) p.className = "hoja-papel" + (n.papel !== "cuadricula" ? " papel-" + n.papel : ""); }
+    LB.pop = null; lbPintarBarra(); return;
   }
-  if (t.closest("[data-lb-modo]")) { lbModo("escribir"); return; }
+  if (t.closest("#lbFoco")) { lbFoco(); return; }
+  const md = t.closest("[data-lb-modo]"); if (md) { lbModo(md.dataset.lbModo === "dibujar" ? "dibujar" : "escribir"); return; }
   const he = t.closest("[data-lb-herr]"); if (he) { LB.herr = he.dataset.lbHerr; lbModo("dibujar"); return; }
   const co = t.closest("[data-lb-color]");
   if (co) {
@@ -2597,13 +2816,105 @@ document.addEventListener("keydown", e => {
 });
 
 /* ── negrita y pegado en el texto de la hoja ── */
-function lbEstadoNegrita() {
-  const b = $("#lbNegrita"); if (!b) return;
-  let on = false; try { on = document.activeElement === LB.ta && document.queryCommandState("bold"); } catch (err) {}
-  b.setAttribute("aria-pressed", String(on));
+/* ── formato del texto de la hoja ── */
+function lbEditorListo() {
+  const ed = LB.ta; if (!ed || !ed.isConnected) return false;
+  if (LB.modo !== "escribir") lbModo("escribir");
+  else if (document.activeElement !== ed) ed.focus({ preventScroll: true });
+  return true;
 }
+/* la selección como posiciones en el texto, para recolocarla tras limpiar el HTML */
+function lbSelTexto(ed) {
+  const s = getSelection(); if (!s.rangeCount || !ed.contains(s.anchorNode)) return null;
+  const r = s.getRangeAt(0), pre = document.createRange();
+  pre.selectNodeContents(ed); pre.setEnd(r.startContainer, r.startOffset);
+  const a = pre.toString().length; return [a, a + r.toString().length];
+}
+function lbPonerSel(ed, pos) {
+  if (!pos) return;
+  const [a, b] = pos, r = document.createRange(), w = document.createTreeWalker(ed, NodeFilter.SHOW_TEXT);
+  let n, cuenta = 0, ini = false;
+  while ((n = w.nextNode())) {
+    const l = n.nodeValue.length;
+    if (!ini && a <= cuenta + l) { r.setStart(n, a - cuenta); ini = true; }
+    if (ini && b <= cuenta + l) { r.setEnd(n, b - cuenta); const s = getSelection(); s.removeAllRanges(); s.addRange(r); return; }
+    cuenta += l;
+  }
+}
+/* subrayar o dar color: el navegador lo pone con estilos y aquí se deja limpio al momento */
+function lbAplicarColor(cmd, valor) {
+  if (!lbEditorListo()) return;
+  const ed = LB.ta;
+  document.execCommand("styleWithCSS", false, true);
+  document.execCommand(cmd, false, valor);
+  document.execCommand("styleWithCSS", false, false);
+  const pos = lbSelTexto(ed);
+  ed.innerHTML = limpiarHtml(ed.innerHTML);
+  lbPonerSel(ed, pos);
+  ed.dispatchEvent(new InputEvent("input", { bubbles: true }));
+}
+/* títulos y listas: cada línea es un bloque y se marca entera */
+function lbBloque(tipo) {
+  if (!lbEditorListo()) return;
+  const ed = LB.ta, sel = getSelection(); if (!sel.rangeCount) return;
+  document.execCommand("formatBlock", false, "div");
+  const r = sel.getRangeAt(0);
+  const arriba = n => { while (n && n.parentNode !== ed) n = n.parentNode; return n; };
+  const a = arriba(r.startContainer === ed ? ed.childNodes[r.startOffset] || ed.lastChild : r.startContainer);
+  const b = arriba(r.endContainer === ed ? ed.childNodes[Math.max(0, r.endOffset - 1)] || ed.lastChild : r.endContainer);
+  const bloques = [];
+  for (let n = a; n; n = n.nextSibling) { if (n.nodeType === 1 && n.tagName === "DIV") bloques.push(n); if (n === b) break; }
+  if (!bloques.length) return;
+  const quitar = bloques.every(x => x.getAttribute("data-b") === tipo);
+  bloques.forEach(x => { if (quitar) x.removeAttribute("data-b"); else x.setAttribute("data-b", tipo); });
+  ed.dispatchEvent(new InputEvent("input", { bubbles: true }));
+  lbEstadoNegrita();
+}
+/* los botones se encienden según dónde está el cursor */
+function lbEstadoNegrita() {
+  const bar = $("#lbBarra"); if (!bar) return;
+  const ed = LB.ta, dentro = !!ed && document.activeElement === ed;
+  bar.querySelectorAll("[data-lb-cmd]").forEach(b => {
+    let on = false; try { on = dentro && document.queryCommandState(b.dataset.lbCmd); } catch (err) {}
+    b.setAttribute("aria-pressed", String(on));
+  });
+  let tipo = "";
+  if (dentro) { const s = getSelection(); let n = s.rangeCount ? s.anchorNode : null; while (n && n.parentNode !== ed) n = n.parentNode; tipo = (n && n.nodeType === 1 && n.getAttribute("data-b")) || ""; }
+  bar.querySelectorAll("[data-lb-bloque]").forEach(b => b.setAttribute("aria-pressed", String(b.dataset.lbBloque === tipo)));
+}
+/* modo concentración: solo la hoja, sin menús */
+function lbFoco(on) {
+  on = on !== undefined ? on : !document.body.classList.contains("foco");
+  document.body.classList.toggle("foco", on);
+  lbPintarBarra();
+}
+document.addEventListener("keydown", e => {
+  if (e.key === "Escape" && document.body.classList.contains("foco") && !document.querySelector("dialog[open]")) { lbFoco(false); return; }
+  if (e.key !== "Enter" || e.shiftKey || !e.target || e.target.id !== "apCuerpo") return;
+  const ed = LB.ta, sel = getSelection(); if (!ed || !sel.rangeCount) return;
+  let blq = sel.anchorNode; while (blq && blq.parentNode !== ed) blq = blq.parentNode;
+  if (!blq || blq.nodeType !== 1) return;
+  const tipo = blq.getAttribute("data-b"); if (!tipo) return;
+  /* Intro en una línea de lista vacía: se sale de la lista */
+  if ((tipo === "ul" || tipo === "ol") && !blq.textContent.trim()) {
+    e.preventDefault(); blq.removeAttribute("data-b"); ed.dispatchEvent(new InputEvent("input", { bubbles: true })); lbEstadoNegrita(); return;
+  }
+  /* después de un título se sigue escribiendo normal */
+  if (tipo === "t1" || tipo === "t2") requestAnimationFrame(() => {
+    let n = getSelection().anchorNode; while (n && n.parentNode !== ed) n = n.parentNode;
+    if (n && n !== blq && n.nodeType === 1 && n.getAttribute("data-b") === tipo) { n.removeAttribute("data-b"); ed.dispatchEvent(new InputEvent("input", { bubbles: true })); lbEstadoNegrita(); }
+  });
+});
+/* el color libre del dibujo */
+document.addEventListener("input", e => {
+  if (e.target.id !== "lbColorLibre") return;
+  const c = e.target.value;
+  if (LB.herr === "fluor") LB.fluor = c; else { LB.tinta = c; if (LB.herr === "goma") LB.herr = "rotu"; }
+  e.target.parentNode.style.setProperty("--c", c); lbPrefs();
+});
+document.addEventListener("change", e => { if (e.target.id === "lbColorLibre") lbPintarBarra(); });
 /* el botón B no puede quitarle el foco al texto: se perdería la selección */
-document.addEventListener("mousedown", e => { if (e.target.closest && e.target.closest("#lbNegrita")) e.preventDefault(); });
+document.addEventListener("mousedown", e => { if (e.target.closest && e.target.closest("#lbBarra button") && LB.modo === "escribir") e.preventDefault(); });
 /* el botón B se enciende cuando el cursor está sobre texto en negrita (también tras Ctrl+B) */
 document.addEventListener("selectionchange", lbEstadoNegrita);
 document.addEventListener("keyup", e => { if (e.target.id === "apCuerpo") lbEstadoNegrita(); });
@@ -3120,7 +3431,7 @@ function vistaApuntes() {
       <div class="libreta${LB.modo === "dibujar" ? " dibujar" : ""}" id="libreta">
         <div class="libreta-marco" id="lbMarco">
           <div class="hoja-escala" id="lbEscala">
-            <div class="hoja-papel" id="lbPapel">
+            <div class="hoja-papel${n.papel && n.papel !== "cuadricula" ? " papel-" + n.papel : ""}" id="lbPapel">
               <div class="hoja-texto${n.cuerpo && n.cuerpo.trim() ? "" : " sin-texto"}" id="apCuerpo" contenteditable="true" role="textbox" aria-multiline="true" aria-label="Contenido del apunte" aria-placeholder="Escribe aquí…" data-placeholder="Escribe aquí… o elige un rotulador y dibuja encima" spellcheck="true">${apunteHtml(n)}</div>
               <canvas class="capa" id="lbBase" aria-hidden="true"></canvas>
               <canvas class="capa viva" id="lbVivo" role="img" aria-label="Dibujo de la hoja"></canvas>
@@ -3790,7 +4101,7 @@ function contarPalabras() {
   $("#contadorPalabras").textContent = p + (p === 1 ? " palabra" : " palabras");
 }
 function irASeccion(id, foco) {
-  cerrarHojaMas();
+  cerrarHojaMas(); document.body.classList.remove("foco");
   modAbierto = null; libroAbierto = null; casEnlace = false; casTipo = null;
   seccion = id; pinta();
   window.scrollTo({ top: 0 });
