@@ -36,7 +36,7 @@ Quien ya tenía datos no pasa por ahí: el perfil se rellena con lo que había y
 
 **Agenda.** Entregas y exámenes en una sola base de datos que se ve como **calendario**, **tablero** (pendiente, en curso, hecho) o **lista**. Se añade escribiendo normal —«Examen de BD el jueves a las 10»— y la app entiende el tipo, la asignatura, el día y la hora; se mueve arrastrando; y cada cosa se abre en un panel lateral para editarla sin botón de guardar, con sus pasos y sus notas. Los exámenes llevan cuenta atrás y un plan de estudio hacia atrás, automático o hecho por el tutor. Más tu horario de clases y el **plan de la semana**, que sale solo de tus horas, tus días libres, tus exámenes y lo que peor llevas, y se va tachando al estudiar con el cronómetro. GritNook te dice cada día qué te toca.
 
-**Casillero.** PDFs, imágenes y apuntes de clase guardados dentro de la propia app.
+**Casillero.** Una estantería con una libreta en 3D por asignatura, con su color y su símbolo; los folios asoman cuando tiene hojas. Al abrirla salen sus hojas —fotos, PDF, textos, código y enlaces— para ver, descargar o **pasárselas al profe** y preguntarle. Se sueltan archivos encima de una libreta y se guardan en ella. Buscador en todas las libretas, filtro por tipo y las libretas de lo que tienes esta semana. Dentro de Claude los archivos van a su almacén (hasta 20 MB cada uno, las fotos grandes se reducen solas); fuera, se guardan en la app hasta 180 KB.
 
 **Inglés.** Traductor a mano, vocabulario propio y repaso espaciado de las palabras que te tocan.
 

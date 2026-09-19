@@ -4,7 +4,7 @@ GritNook es código propio con licencia MIT (ver [LICENSE](LICENSE)). Usa estas 
 
 | Qué | Dónde se usa | Licencia |
 |---|---|---|
-| [Phosphor Icons](https://phosphoricons.com) 2.1, estilo duotono | Iconos del menú: riel, barra del móvil y «Más». Los dibujos van copiados dentro de `index.html`. | MIT |
+| [Phosphor Icons](https://phosphoricons.com) 2.1, estilo duotono | Iconos del menú (riel, barra del móvil y «Más») y símbolos de las libretas del casillero. Los dibujos van copiados dentro de `index.html`. | MIT |
 | [Inter](https://rsms.me/inter/), de Rasmus Andersson | Tipografía de toda la app (se carga de Google Fonts) y trazos del logotipo. | SIL Open Font License 1.1 |
 | [opentype.js](https://opentype.js.org) | Solo para regenerar el logotipo (`marca/generar.js`). No va dentro de la app. | MIT |
 
