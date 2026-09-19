@@ -1538,6 +1538,42 @@ body.foco .lb-barra{top:8px}
 .btn.btn-rojo:hover{background:color-mix(in srgb, var(--riesgo) 12%, transparent); border-color:var(--riesgo); color:var(--riesgo-txt)}
 .btn.btn-rojo svg.i{width:14px; height:14px; flex:0 0 14px}
 @media (max-width:560px){ .btn.btn-rojo span{display:none} .btn.btn-rojo{width:34px; padding:0} }
+/* ══════════════ la bola de papel y la papelera ══════════════ */
+.bp-capa{position:fixed; inset:0; z-index:300; background:rgba(8,10,20,.42); backdrop-filter:blur(1.5px); touch-action:none; user-select:none; overflow:hidden}
+.bp-hoja{position:fixed; overflow:hidden; border-radius:3px; background:var(--papel-libreta); box-shadow:0 18px 40px -12px rgba(0,0,0,.5); will-change:transform}
+.bp-arrugas{position:absolute; inset:0; opacity:0; pointer-events:none;
+  background:repeating-linear-gradient(33deg, transparent 0 22px, rgba(0,0,0,.08) 22px 24px, transparent 24px 46px),
+             repeating-linear-gradient(-57deg, transparent 0 30px, rgba(255,255,255,.25) 30px 32px, transparent 32px 60px),
+             radial-gradient(circle at 40% 35%, transparent 30%, rgba(0,0,0,.18) 100%)}
+.bp-bola{position:absolute; left:0; top:0; z-index:2; cursor:grab; touch-action:none; filter:drop-shadow(0 10px 12px rgba(0,0,0,.35)); will-change:transform}
+.bp-bola svg{width:100%; height:100%; display:block}
+.bp-bola.cogida{cursor:grabbing; filter:drop-shadow(0 22px 20px rgba(0,0,0,.4))}
+.bp-bola:focus-visible{outline:3px solid var(--acento); outline-offset:4px; border-radius:50%}
+.bp-bola.dentro{z-index:2}
+.bp-papelera{position:absolute; pointer-events:none; transform-origin:50% 100%}
+.bp-papelera svg{width:100%; height:100%; display:block; overflow:visible}
+.bp-papelera.atras{z-index:1}
+.bp-papelera.delante{z-index:3}
+.bp-pista{position:absolute; left:50%; top:22px; transform:translateX(-50%); z-index:4; padding:10px 16px; border-radius:99px;
+  background:var(--surface); color:var(--ink); font:500 14px/1.2 var(--sans); box-shadow:var(--sombra-modal); transition:opacity .2s}
+.bp-pista.oculta{opacity:0}
+.bp-btns{position:absolute; right:18px; top:18px; z-index:4; display:flex; gap:8px}
+.bp-btns .btn{background:var(--surface)}
+.bp-canasta{position:absolute; left:50%; top:40%; transform:translate(-50%, -50%); z-index:5; padding:16px 26px; border-radius:18px;
+  background:var(--surface); color:var(--ink); font:600 24px/1.1 var(--sans); box-shadow:var(--sombra-modal); animation:bpSale .5s cubic-bezier(.2,1.6,.4,1)}
+@keyframes bpSale{from{transform:translate(-50%, -50%) scale(.6); opacity:0}}
+@media (max-width:640px){ .bp-pista{top:66px; max-width:82vw; text-align:center} .bp-btns{top:14px; right:12px} }
+
+/* el «−» de cada apunte en la lista: solo aparece al pasar por encima */
+.pn-item{position:relative}
+.pn-item[hidden]{display:none}
+.pn-item .pn-fila{padding-right:34px}
+.pn-quitar{position:absolute; right:6px; top:50%; transform:translateY(-50%) scale(.8); width:24px; height:24px; display:grid; place-items:center;
+  padding:0; border:0; border-radius:50%; background:transparent; color:var(--riesgo-txt); cursor:pointer; opacity:0; transition:opacity .15s, transform .15s, background .15s}
+.pn-quitar svg{width:14px; height:14px}
+.pn-item:hover .pn-quitar, .pn-quitar:focus-visible{opacity:1; transform:translateY(-50%) scale(1)}
+.pn-quitar:hover{background:color-mix(in srgb, var(--riesgo) 16%, transparent)}
+.pn-quitar:focus-visible{outline:2px solid var(--riesgo); outline-offset:1px}
 </style>
 </head>
 <body>
@@ -2976,6 +3012,156 @@ document.addEventListener("paste", e => {
 /* cada Intro crea un bloque <div> y la negrita se escribe como <b>, no como estilos */
 try { document.execCommand("defaultParagraphSeparator", false, "div"); document.execCommand("styleWithCSS", false, false); } catch (err) {}
 
+/* ══════════════════ la bola de papel ══════════════════
+   Al borrar el apunte que tienes abierto, la hoja se arruga en una bola que
+   puedes coger y lanzar a la papelera: gravedad, rebotes y canasta. El apunte
+   ya está borrado antes de empezar; esto es solo el gesto. Se salta con Esc,
+   con «Saltar» o si el sistema pide menos movimiento. */
+const BOLA_SVG = `<svg viewBox="0 0 100 100" aria-hidden="true">
+  <defs><radialGradient id="bpLuz" cx="36%" cy="30%" r="78%"><stop offset="0" stop-color="#FFFFFF"/><stop offset=".55" stop-color="#ECE8DD"/><stop offset="1" stop-color="#C4BDAC"/></radialGradient>
+  <clipPath id="bpForma"><path d="M50 4 70 8 88 22 96 44 93 68 80 87 58 97 34 95 14 84 5 62 6 38 17 17 32 8Z"/></clipPath></defs>
+  <path d="M50 4 70 8 88 22 96 44 93 68 80 87 58 97 34 95 14 84 5 62 6 38 17 17 32 8Z" fill="url(#bpLuz)"/>
+  <g clip-path="url(#bpForma)">
+    <path d="M0 30 100 22M0 52 100 46M0 74 100 70M22 0 30 100M48 0 52 100M74 0 70 100" stroke="#8FA8CC" stroke-width=".8" opacity=".35" fill="none"/>
+    <path d="M32 8 44 34 17 17M44 34 70 8M44 34 62 52 88 22M62 52 96 44M62 52 93 68M44 34 30 58 6 38M30 58 5 62M30 58 46 78 34 95M46 78 62 52M46 78 80 87M46 78 58 97M30 58 14 84"
+      fill="none" stroke="#9D9583" stroke-width="1.3" stroke-linejoin="round"/>
+    <path d="M44 34 62 52 46 78 30 58Z" fill="#000" opacity=".05"/><path d="M62 52 93 68 80 87 46 78Z" fill="#000" opacity=".09"/>
+    <path d="M30 58 46 78 34 95 14 84Z" fill="#000" opacity=".11"/><path d="M17 17 44 34 30 58 6 38Z" fill="#FFF" opacity=".25"/>
+  </g>
+  <path d="M50 4 70 8 88 22 96 44 93 68 80 87 58 97 34 95 14 84 5 62 6 38 17 17 32 8Z" fill="none" stroke="#A8A08E" stroke-width="1.2"/>
+</svg>`;
+const PAPELERA_ATRAS = `<svg viewBox="0 0 160 190" aria-hidden="true"><ellipse cx="80" cy="22" rx="70" ry="16" fill="#2A2D3C"/><path d="M12 24 28 180h104l16-156" fill="#20222E"/></svg>`;
+const PAPELERA_DELANTE = `<svg viewBox="0 0 160 190" aria-hidden="true">
+  <path d="M10 22c0 9 31 16 70 16s70-7 70-16L132 182c-4 5-26 8-52 8s-48-3-52-8Z" fill="#9184D9" fill-opacity=".18" stroke="#9184D9" stroke-width="3" stroke-linejoin="round"/>
+  <path d="M30 40 44 184M52 44 58 188M80 45v145M108 44 102 188M130 40 116 184" stroke="#B5ABFC" stroke-width="2" opacity=".55"/>
+  <path d="M20 78c14 6 36 9 60 9s46-3 60-9M24 120c14 5 34 8 56 8s42-3 56-8M28 160c13 4 32 7 52 7s39-3 52-7" fill="none" stroke="#B5ABFC" stroke-width="2" opacity=".45"/>
+  <path d="M10 22c0 9 31 16 70 16s70-7 70-16" fill="none" stroke="#B5ABFC" stroke-width="5" stroke-linecap="round"/>
+</svg>`;
+
+function bolaDePapel(rect, clon) {
+  if (matchMedia("(prefers-reduced-motion: reduce)").matches) { aviso("Apunte borrado."); return; }
+  const W = innerWidth, H = innerHeight, R = Math.max(34, Math.min(46, W * .045)), G = 2600;
+  const capa = document.createElement("div");
+  capa.className = "bp-capa"; capa.setAttribute("role", "dialog"); capa.setAttribute("aria-label", "Tira el apunte a la papelera");
+  capa.innerHTML = `<div class="bp-pista" id="bpPista">Coge la bola y lánzala a la papelera</div>
+    <div class="bp-btns"><button type="button" class="btn" id="bpAuto">Tírala por mí</button><button type="button" class="btn" id="bpSaltar">Saltar</button></div>
+    <div class="bp-papelera atras">${PAPELERA_ATRAS}</div><div class="bp-bola" id="bpBola" tabindex="0" aria-label="Bola de papel: arrástrala y suéltala">${BOLA_SVG}</div>
+    <div class="bp-papelera delante">${PAPELERA_DELANTE}</div><div class="bp-canasta" id="bpCanasta" hidden>¡A la papelera!</div>`;
+  document.body.appendChild(capa);
+  const bola = capa.querySelector("#bpBola"), pista = capa.querySelector("#bpPista");
+  /* la papelera, abajo a la derecha: su boca es la zona de canasta */
+  const pw = Math.min(160, W * .3), ph = pw * 190 / 160, px = W - pw - Math.max(24, W * .08), py = H - ph - Math.max(18, H * .04);
+  capa.querySelectorAll(".bp-papelera").forEach(p => Object.assign(p.style, { left: px + "px", top: py + "px", width: pw + "px", height: ph + "px" }));
+  const boca = { x1: px + pw * .1, x2: px + pw * .9, y: py + ph * .12 }, suelo = H - 16;
+  let x = Math.min(W - R - 10, Math.max(R + 10, rect.left + rect.width / 2)), y = Math.min(H * .55, Math.max(R + 60, rect.top + Math.min(rect.height, H) / 2));
+  let vx = 0, vy = 0, fase = "arrugando", arrastre = null, muestras = [], ultimo = 0, quieto = 0, dentro = false, fin = false;
+  const colocar = () => { bola.style.transform = `translate(${x - R}px, ${y - R}px) rotate(${(x * 1.3) % 360}deg)`; };
+  Object.assign(bola.style, { width: R * 2 + "px", height: R * 2 + "px", opacity: 0 }); colocar();
+
+  /* 1. la hoja se arruga: un clon de lo que se veía se encoge, gira y se redondea hasta ser la bola */
+  const vista = { left: Math.max(0, rect.left), top: Math.max(0, rect.top), right: Math.min(W, rect.right), bottom: Math.min(H, rect.bottom) };
+  const hoja = document.createElement("div"); hoja.className = "bp-hoja";
+  Object.assign(hoja.style, { left: vista.left + "px", top: vista.top + "px", width: (vista.right - vista.left) + "px", height: (vista.bottom - vista.top) + "px" });
+  if (clon) { clon.style.position = "absolute"; clon.style.left = (rect.left - vista.left) + "px"; clon.style.top = (rect.top - vista.top) + "px"; const k = +clon.dataset.escala || 1; clon.style.transformOrigin = "0 0"; clon.style.transform = k !== 1 ? "scale(" + k + ")" : "none"; hoja.appendChild(clon); }
+  hoja.insertAdjacentHTML("beforeend", '<i class="bp-arrugas"></i>');
+  capa.appendChild(hoja);
+  const cx = (vista.left + vista.right) / 2, cy = (vista.top + vista.bottom) / 2, esc = (R * 2) / Math.max(vista.right - vista.left, vista.bottom - vista.top);
+  const anim = hoja.animate([
+    { transform: "none", borderRadius: "3px", filter: "brightness(1)" },
+    { transform: "scale(.72, .6) rotate(6deg) skewX(4deg)", borderRadius: "16%", filter: "brightness(.96)", offset: .3 },
+    { transform: `translate(${(x - cx) * .5}px, ${(y - cy) * .5}px) scale(.3) rotate(-24deg) skewY(-6deg)`, borderRadius: "38%", filter: "brightness(.92)", offset: .65 },
+    { transform: `translate(${x - cx}px, ${y - cy}px) scale(${esc}) rotate(38deg)`, borderRadius: "50%", filter: "brightness(.9)" }
+  ], { duration: 780, easing: "cubic-bezier(.5,0,.3,1)", fill: "forwards" });
+  hoja.querySelector(".bp-arrugas").animate([{ opacity: 0 }, { opacity: 1 }], { duration: 700, fill: "forwards" });
+  /* la bola queda lista al acabar la animación o, si el navegador no avisa (pestaña en segundo plano), a los 0,9 s */
+  const lista = () => { if (fase !== "arrugando") return; hoja.remove(); bola.style.opacity = 1; bola.animate([{ transform: bola.style.transform + " scale(1.15)" }, { transform: bola.style.transform }], { duration: 180 }); fase = "espera"; bola.focus({ preventScroll: true }); };
+  anim.onfinish = lista; setTimeout(lista, 900);
+
+  /* 2. cogerla y lanzarla: la velocidad es la del gesto en sus últimos milisegundos */
+  bola.addEventListener("pointerdown", e => {
+    if (fase === "arrugando" || fin || dentro) return;
+    e.preventDefault(); try { bola.setPointerCapture(e.pointerId); } catch (err) {}
+    arrastre = { dx: e.clientX - x, dy: e.clientY - y }; muestras = [[performance.now(), e.clientX, e.clientY]];
+    fase = "cogida"; bola.classList.add("cogida"); pista.classList.add("oculta");
+  });
+  bola.addEventListener("pointermove", e => {
+    if (fase !== "cogida") return;
+    x = e.clientX - arrastre.dx; y = e.clientY - arrastre.dy; colocar();
+    muestras.push([performance.now(), e.clientX, e.clientY]); const t0 = performance.now() - 90; muestras = muestras.filter(m => m[0] >= t0);
+  });
+  const soltar = () => {
+    if (fase !== "cogida") return;
+    bola.classList.remove("cogida");
+    const a = muestras[0], b = muestras[muestras.length - 1], dt = Math.max(16, b[0] - a[0]) / 1000;
+    vx = Math.max(-4200, Math.min(4200, (b[1] - a[1]) / dt)); vy = Math.max(-4200, Math.min(4200, (b[2] - a[2]) / dt));
+    fase = "vuela"; ultimo = performance.now(); requestAnimationFrame(paso);
+  };
+  bola.addEventListener("pointerup", soltar); bola.addEventListener("pointercancel", soltar);
+
+  /* 3. el vuelo: gravedad, paredes, suelo, el borde de la papelera y la canasta */
+  function paso(ahora) {
+    if (fin || fase !== "vuela") return;
+    const dt = Math.min(.032, (ahora - ultimo) / 1000); ultimo = ahora;
+    const py0 = y;
+    vy += G * dt; x += vx * dt; y += vy * dt;
+    if (x < R) { x = R; vx = -vx * .6; } if (x > W - R) { x = W - R; vx = -vx * .6; }
+    if (y < R) { y = R; vy = -vy * .4; }
+    /* cae por la boca: canasta */
+    if (!dentro && vy > 0 && py0 <= boca.y && y > boca.y && x > boca.x1 + R * .35 && x < boca.x2 - R * .35) {
+      dentro = true; bola.classList.add("dentro"); canasta(); return;
+    }
+    /* da en el borde de la boca: rebota */
+    if (!dentro && vy > 0 && py0 <= boca.y && y > boca.y && x > boca.x1 - R && x < boca.x2 + R) {
+      y = boca.y - 1; vy = -vy * .45; vx += x < (boca.x1 + boca.x2) / 2 ? -260 : 260;
+    }
+    /* choca con los lados de la papelera por fuera */
+    if (y > boca.y && x + R > px + pw * .06 && x - R < px + pw * .94) {
+      if (x < px + pw / 2) { x = px + pw * .06 - R; vx = -Math.abs(vx) * .5; } else { x = px + pw * .94 + R; vx = Math.abs(vx) * .5; }
+    }
+    if (y > suelo - R) { y = suelo - R; vy = -vy * .42; vx *= .82; if (Math.abs(vy) < 90) vy = 0; }
+    colocar();
+    if (y >= suelo - R - .5 && Math.abs(vx) < 25 && vy === 0) { if ((quieto += dt) > .35) { fase = "espera"; pista.textContent = "Casi… ¡otra vez!"; pista.classList.remove("oculta"); quieto = 0; return; } } else quieto = 0;
+    requestAnimationFrame(paso);
+  }
+  /* 4. canasta: la bola cae dentro, la papelera se mueve y se cierra */
+  function canasta() {
+    const fondo = py + ph * .72;
+    bola.animate([{ transform: bola.style.transform }, { transform: `translate(${(boca.x1 + boca.x2) / 2 - R}px, ${fondo - R}px) rotate(200deg) scale(.9)` }],
+      { duration: 380, easing: "cubic-bezier(.5,0,.8,.4)", fill: "forwards" });
+    setTimeout(() => {
+      capa.querySelectorAll(".bp-papelera").forEach(p => p.animate([{ transform: "rotate(0)" }, { transform: "rotate(-5deg)" }, { transform: "rotate(4deg)" }, { transform: "rotate(0)" }], { duration: 420, easing: "ease-out" }));
+      capa.querySelector("#bpCanasta").hidden = false;
+    }, 360);
+    setTimeout(cerrar, 1500);
+  }
+  /* «Tírala por mí»: un tiro calculado que entra siempre */
+  capa.querySelector("#bpAuto").onclick = () => {
+    if (fin || dentro || fase === "arrugando") return;
+    const tx = (boca.x1 + boca.x2) / 2, ty = boca.y + 4, T = .85;
+    vx = (tx - x) / T; vy = (ty - y - .5 * G * T * T) / T;
+    fase = "vuela"; pista.classList.add("oculta"); ultimo = performance.now(); requestAnimationFrame(paso);
+  };
+  function cerrar() {
+    if (fin) return; fin = true;
+    capa.animate([{ opacity: 1 }, { opacity: 0 }], { duration: 220, fill: "forwards" }).onfinish = () => capa.remove();
+    setTimeout(() => capa.remove(), 400);
+    document.removeEventListener("keydown", tecla, true);
+  }
+  const tecla = e => { if (e.key === "Escape") { e.preventDefault(); e.stopPropagation(); cerrar(); } else if ((e.key === "Enter" || e.key === " ") && document.activeElement === bola) { e.preventDefault(); capa.querySelector("#bpAuto").click(); } };
+  document.addEventListener("keydown", tecla, true);
+  capa.querySelector("#bpSaltar").onclick = cerrar;
+}
+/* lo que se ve de la hoja, para arrugarlo: el papel, el texto y el dibujo (los lienzos no se copian solos) */
+function clonarHoja() {
+  const p = $("#lbPapel"); if (!p) return null;
+  const c = p.cloneNode(true);
+  const orig = p.querySelectorAll("canvas"), copias = c.querySelectorAll("canvas");
+  orig.forEach((cv, i) => { try { const img = document.createElement("img"); img.src = cv.toDataURL(); img.className = copias[i].className; img.style.cssText = copias[i].style.cssText; copias[i].replaceWith(img); } catch (e) { copias[i].remove(); } });
+  c.removeAttribute("id"); c.querySelectorAll("[id]").forEach(x => x.removeAttribute("id"));
+  const k = LB.k || 1; c.style.width = "800px"; c.style.transformOrigin = "0 0"; c.dataset.escala = k;
+  return c;
+}
+
 /* ══════════════════ navegación ══════════════════ */
 const SECCIONES = [
   { id: "escritorio", txt: "Inicio" }, { id: "modulos", txt: "Módulos" },
@@ -4222,9 +4408,13 @@ document.addEventListener("click", async e => {
   const ba = t.closest("[data-borrar-apunte]");
   if (ba) {
     if (!(await confirmar("Se borra con su texto y sus dibujos. No se puede deshacer.", { titulo: "¿Borrar este apunte?", si: "Borrar" }))) return;
-    const id = ba.dataset.borrarApunte;
+    const id = ba.dataset.borrarApunte, papel = id === apunteActivo && $("#lbPapel");
+    const rect = papel ? papel.getBoundingClientRect() : null, clon = papel ? clonarHoja() : null;
     delete S.apuntes[id]; if (db) db.doc("apuntes/" + id).delete().catch(() => {});
-    apunteActivo = null; guardarLocal(); pinta(); return;
+    if (id === apunteActivo) apunteActivo = null;
+    guardarLocal(); pinta();
+    if (rect && rect.width) bolaDePapel(rect, clon); else aviso("Apunte borrado.");
+    return;
   }
   const ia = t.closest("[data-ia]");
   if (ia) {
@@ -6982,9 +7172,10 @@ function panelHTML(c) {
     const lista = Object.values(S.apuntes).sort((a, b) => (b.editado || "").localeCompare(a.editado || ""));
     return pnCab("Apuntes", lista.length + (lista.length === 1 ? " apunte" : " apuntes"), pnAccion("#btnNuevoApunte", "Nuevo apunte"))
       + (lista.length ? `<input type="search" class="pn-buscar" id="pnBuscar" placeholder="Buscar apunte" aria-label="Buscar apunte" autocomplete="off">` : "")
-      + (lista.length ? lista.map(n => { const m = modPorId(n.modId);
-          return pnFila(` data-apunte="${n.id}"`, pnDot(m), n.titulo || "Sin título", [m && m.cod, n.editado ? fechaCorta(n.editado.slice(0, 10)) : ""].filter(Boolean).join(" · "),
-            n.id === apunteActivo, (n.titulo || "") + " " + (m ? m.cod + " " + m.nombre : "") + " " + (n.tags || []).join(" ")); }).join("")
+      + (lista.length ? lista.map(n => { const m = modPorId(n.modId), tit = n.titulo || "Sin título";
+          return `<div class="pn-item" data-pn-texto="${esc(sinTildes(tit + " " + (m ? m.cod + " " + m.nombre : "") + " " + (n.tags || []).join(" ")))}">`
+            + pnFila(` data-apunte="${n.id}"`, pnDot(m), tit, [m && m.cod, n.editado ? fechaCorta(n.editado.slice(0, 10)) : ""].filter(Boolean).join(" · "), n.id === apunteActivo)
+            + `<button type="button" class="pn-quitar" data-borrar-apunte="${n.id}" aria-label="Borrar «${esc(tit)}»" title="Borrar"><svg viewBox="0 0 16 16" aria-hidden="true"><circle cx="8" cy="8" r="6.4" fill="none" stroke="currentColor" stroke-width="1.5"/><path d="M5 8h6" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg></button></div>`; }).join("")
           + `<p class="pn-vacio" id="pnSinResultados" hidden>Nada coincide con esa búsqueda.</p>`
         : pnVacio("Todavía no hay apuntes. Crea el primero con el botón +."));
   }
