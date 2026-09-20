@@ -105,3 +105,7 @@ estudiarlo, no para copiarlo ni usarlo en otro producto. Las piezas de terceros 
 licencias libres, detalladas en [CREDITOS.md](CREDITOS.md).
 
 Qué datos guarda la aplicación y qué sale de ella: [DATOS.md](DATOS.md).
+
+Los papeles —privacidad, términos de uso, aviso legal y aviso sobre la IA— están en
+[legal/](legal/LEEME.md), y se leen también dentro de la app, en Ajustes → Legal. Los `.md`
+mandan: `marca/` tiene el logotipo y `legal/` los textos, que se meten en la app con un script.
