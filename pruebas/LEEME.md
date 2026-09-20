@@ -68,10 +68,25 @@ repinte la pantalla.
 | `casos-texto.js` | El sanitizador de la libreta: qué formato entra y qué se echa fuera (scripts, `onclick`, iframes). Identificadores y escapado |
 | `casos-estado.js` | Que un estado a medias o corrupto no tire la app abajo, las copias de seguridad y el reparto de horas |
 | `casos-entrada.js` | La pantalla de bienvenida entera, con sus campos y sus clics |
+| `casos-libreta.js` | Simplificar trazos, la goma que corta por donde pasa, el imán a la cuadrícula, deshacer y rehacer |
+| `casos-tiempo.js` | Horas de estudio, la racha, los objetivos del día y el repaso espaciado de tarjetas y vocabulario |
+| `casos-absurdos.js` | **Datos irreales**: notas de 900, faltas negativas, fechas del año 9999, emojis, árabe, textos de diez mil letras, estados de versiones que no existieron |
+
+## Datos irreales
+
+`casos-absurdos.js` hace lo contrario que los demás: en vez de comprobar que la
+app funciona cuando todo va bien, le mete lo peor que se le puede meter. Hay una
+lista de basura —`undefined`, `NaN`, `Infinity`, listas donde van objetos, SQL,
+`<script>`, emojis, árabe, japonés, diez mil letras— y se le pasa entera a cada
+función que recibe algo de fuera.
+
+No es paranoia: pasa de verdad. Se pega algo sin querer, se restaura una copia
+de otra versión, se sincroniza a medias, o una entrega se queda sin fecha. Lo que
+no puede pasar es que la pantalla se quede en blanco, y de ahí salió justo eso.
 
 ## Lo que han encontrado
 
-Tres fallos de verdad, el primer día:
+Cinco fallos de verdad:
 
 1. **Escribir el ciclo a mano dejaba la app inservible.** Los campos escritos solo
    se leían al cambiar de paso, así que el botón «Seguir» no se encendía nunca y
@@ -84,14 +99,26 @@ Tres fallos de verdad, el primer día:
 3. **El sanitizador se saltaba un `<script>` dentro de un `<svg>`**, porque dentro
    de SVG el nombre de la etiqueta llega en minúscula y la comparación era con
    mayúsculas.
+4. **Una fecha inválida dejaba la pantalla en blanco.** `hoyISO()` llamaba a
+   `toISOString()` sobre una fecha imposible y saltaba un `RangeError`. Como eso
+   se llama al pintar, bastaba una entrega sin fecha o una copia de seguridad a
+   medias para tirar la sección entera. Ahora devuelve vacío.
+5. **La lógica del repaso de inglés estaba dentro de un diálogo**, así que no
+   había forma de probarla sin abrir la ventana y pulsar botones. Extraída a
+   `responderPalabra()`, con los mismos días de siempre.
 
-Y un test estaba mal, no la app: daba por aprobado un 8 en el 60 % cuando todavía
-hace falta medio punto más en lo que queda.
+Y cuatro tests estaban mal, no la app: uno daba por aprobado un 8 en el 60 %
+cuando todavía hace falta medio punto más; tres se habían escrito contra una
+forma inventada de los objetivos del día. Eso también es parte del trabajo:
+cuando algo falla, lo primero es decidir quién se equivoca.
 
 ## Lo que falta por probar
 
-- [ ] La libreta: dibujar, deshacer, rehacer, la goma que corta el trazo.
-- [ ] El casillero: subir archivos, las vistas previas, borrar.
-- [ ] El cronómetro y el registro de horas.
-- [ ] El repaso espaciado: que las tarjetas vuelvan cuando toca.
+- [x] La libreta: simplificar, la goma que corta, el imán, deshacer y rehacer.
+- [x] El cronómetro y el registro de horas.
+- [x] El repaso espaciado, de tarjetas y de vocabulario.
+- [ ] El casillero de verdad: subir archivos, las vistas previas de PDF, borrar.
+  Hace falta simular `File` y `FileReader`, que es más trabajo.
+- [ ] Dibujar de verdad con el ratón: `lbAbajo`, `lbMover`, `lbArriba`.
+- [ ] El tutor: qué se le manda exactamente en cada pregunta.
 - [ ] La sincronización, cuando haya backend.

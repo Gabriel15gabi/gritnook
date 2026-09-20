@@ -1704,7 +1704,13 @@ const azar = (n = 8) => {
 };
 const uid = () => Date.now().toString(36) + azar();
 const cursoAcademico = () => { const d = new Date(), a = d.getMonth() >= 7 ? d.getFullYear() : d.getFullYear() - 1; return String(a).slice(2) + "–" + String(a + 1).slice(2); };
-const hoyISO = (d = new Date()) => new Date(d.getTime() - d.getTimezoneOffset() * 6e4).toISOString().slice(0, 10);
+/* Una fecha inválida hacía saltar toISOString con un RangeError, y como
+   esto se llama al pintar, la pantalla se quedaba en blanco entera. Con una
+   entrega sin fecha o una copia de seguridad a medias ya pasaba. */
+const hoyISO = (d = new Date()) => {
+  const t = d instanceof Date ? d : new Date(d);
+  return isNaN(t.getTime()) ? "" : new Date(t.getTime() - t.getTimezoneOffset() * 6e4).toISOString().slice(0, 10);
+};
 const num = (v, d = 0) => { const n = parseFloat(String(v).replace(",", ".")); return Number.isFinite(n) ? n : d; };
 const clamp = (n, a, b) => Math.min(b, Math.max(a, n));
 const nota = n => (Math.round(n * 100) / 100).toLocaleString("es-ES", { maximumFractionDigits: 2 });
@@ -1992,6 +1998,15 @@ function minutosSemana(modId) {
   return t;
 }
 const totalDia = iso => Object.values(S.horas).reduce((s, reg) => s + (reg[iso] || 0), 0);
+/* Cuándo vuelve a tocar una palabra de inglés. Estaba metido dentro del
+   diálogo de repaso, así que no había forma de probarlo sin abrir la ventana
+   y pulsar botones. Los días de cada caja son los de siempre. */
+const DIAS_PALABRA = [1, 2, 4, 8, 16];
+function responderPalabra(v, bien) {
+  v.caja = clamp(num(v.caja, 1) + (bien ? 1 : -1), 1, 5);
+  v.proximo = sumaDias(hoyISO(), DIAS_PALABRA[v.caja - 1]);
+  return v;
+}
 function racha() {
   let n = 0; const d = new Date();
   if (!totalDia(hoyISO(d))) d.setDate(d.getDate() - 1);
@@ -4346,10 +4361,7 @@ function dlgRepaso() {
     if (!revelada) $("#btnRevelar").onclick = () => { revelada = true; pinta2(); };
     else {
       const avanzar = bien => {
-        const dias = [1, 2, 4, 8, 16];
-        v.caja = clamp((v.caja || 1) + (bien ? 1 : -1), 1, 5);
-        const d = new Date(); d.setDate(d.getDate() + dias[v.caja - 1]);
-        v.proximo = hoyISO(d); guardar("ingles");
+        responderPalabra(v, bien); guardar("ingles");
         diaObj().repaso = true; guardar("objetivos");
         i++; revelada = false;
         if (i >= cola.length) { $("#dlg").close(); aviso("Repaso terminado: " + cola.length + " palabras."); pinta(); }
@@ -6447,7 +6459,12 @@ const DIAS_NOMBRE = { lun: "Lunes", mar: "Martes", mie: "Miércoles", jue: "Juev
 const MESES = ["enero", "febrero", "marzo", "abril", "mayo", "junio", "julio", "agosto", "septiembre", "octubre", "noviembre", "diciembre"];
 const ESTADOS = [["pendiente", "Pendiente"], ["curso", "En curso"], ["hecha", "Hecho"]];
 const diaDe = iso => DIAS_ORDEN[(new Date(iso + "T12:00:00").getDay() + 6) % 7];
-const sumaDias = (iso, n) => { const d = new Date(iso + "T12:00:00"); d.setDate(d.getDate() + n); return hoyISO(d); };
+const sumaDias = (iso, n) => {
+  const d = new Date(iso + "T12:00:00");
+  if (isNaN(d.getTime())) return "";              /* sin fecha de partida no hay fecha de llegada */
+  d.setDate(d.getDate() + num(n, 0));
+  return hoyISO(d);
+};
 const lunesDe = iso => sumaDias(iso, -DIAS_ORDEN.indexOf(diaDe(iso)));
 const fechaCorta = iso => mayus(new Date(iso + "T12:00:00").toLocaleDateString("es-ES", { weekday: "short", day: "numeric", month: "short" }));
 const cuandoTxt = dd => dd < 0 ? "hace " + (-dd) + " d" : dd === 0 ? "hoy" : dd === 1 ? "mañana" : "en " + dd + " días";

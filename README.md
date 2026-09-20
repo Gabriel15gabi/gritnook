@@ -104,10 +104,10 @@ La versión pública es para verla y probarla. La de Claude usa sus capacidades 
 node pruebas/correr.js
 ```
 
-114 pruebas que corren **dentro de la app de verdad**, cargada en un iframe, sin
+204 pruebas que corren **dentro de la app de verdad**, cargada en un iframe, sin
 instalar nada. Cubren las cuentas de las notas, entender las fechas escritas a
-mano, el sanitizador de la libreta, el estado y la pantalla de bienvenida
-entera. El cómo y lo que han encontrado, en [pruebas/](pruebas/LEEME.md).
+mano, el sanitizador, el estado, la libreta, el repaso espaciado, la pantalla de
+bienvenida entera y una tanda de datos absurdos a propósito. El cómo y lo que han encontrado, en [pruebas/](pruebas/LEEME.md).
 
 ## Base de datos
 
