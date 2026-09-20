@@ -70,6 +70,9 @@ repinte la pantalla.
 | `casos-entrada.js` | La pantalla de bienvenida entera, con sus campos y sus clics |
 | `casos-libreta.js` | Simplificar trazos, la goma que corta por donde pasa, el imán a la cuadrícula, deshacer y rehacer |
 | `casos-tiempo.js` | Horas de estudio, la racha, los objetivos del día y el repaso espaciado de tarjetas y vocabulario |
+| `casos-tutor.js` | **Qué se le manda al profe**: que el aviso de IA diga la verdad, y que lo que no está en la lista no salga |
+| `casos-archivos.js` | Copias de seguridad de ida y vuelta, y qué archivos entran en el casillero y con qué tipo |
+| `casos-dibujar.js` | Dibujar de verdad: eventos de puntero sobre el lienzo, el color, el grosor, la goma y el guardado |
 | `casos-absurdos.js` | **Datos irreales**: notas de 900, faltas negativas, fechas del año 9999, emojis, árabe, textos de diez mil letras, estados de versiones que no existieron |
 
 ## Datos irreales
@@ -86,7 +89,7 @@ no puede pasar es que la pantalla se quede en blanco, y de ahí salió justo eso
 
 ## Lo que han encontrado
 
-Cinco fallos de verdad:
+Siete fallos de verdad:
 
 1. **Escribir el ciclo a mano dejaba la app inservible.** Los campos escritos solo
    se leían al cambiar de paso, así que el botón «Seguir» no se encendía nunca y
@@ -106,6 +109,17 @@ Cinco fallos de verdad:
 5. **La lógica del repaso de inglés estaba dentro de un diálogo**, así que no
    había forma de probarla sin abrir la ventana y pulsar botones. Extraída a
    `responderPalabra()`, con los mismos días de siempre.
+6. **El aviso de IA no decía la verdad.** Prometía una lista de lo que se envía
+   y terminaba con «no se le manda nada que no esté en esa lista», pero el
+   código mandaba además el contenido del apunte abierto, qué te cuesta más,
+   para qué estudias, si trabajas, tu horario de clases, tus objetivos del día
+   y tus repasos pendientes. Se arreglaron los papeles, no el código: todo eso
+   le hace falta al profe. Ahora hay tests que fallan si alguien añade algo
+   nuevo sin contarlo.
+7. **El profe no se enteraba nunca de las faltas.** `faltasPct` es una
+   proporción (0,93) y se comparaba con 70, así que harían falta setenta veces
+   el máximo permitido para que se mencionaran. El cálculo del riesgo no se ha
+   tocado: solo se leía mal el número ya calculado.
 
 Y cuatro tests estaban mal, no la app: uno daba por aprobado un 8 en el 60 %
 cuando todavía hace falta medio punto más; tres se habían escrito contra una
@@ -117,8 +131,12 @@ cuando algo falla, lo primero es decidir quién se equivoca.
 - [x] La libreta: simplificar, la goma que corta, el imán, deshacer y rehacer.
 - [x] El cronómetro y el registro de horas.
 - [x] El repaso espaciado, de tarjetas y de vocabulario.
-- [ ] El casillero de verdad: subir archivos, las vistas previas de PDF, borrar.
-  Hace falta simular `File` y `FileReader`, que es más trabajo.
-- [ ] Dibujar de verdad con el ratón: `lbAbajo`, `lbMover`, `lbArriba`.
-- [ ] El tutor: qué se le manda exactamente en cada pregunta.
+- [x] El casillero: objetos `File` de verdad, tipos permitidos, `FileReader`.
+- [x] Dibujar de verdad: `PointerEvent` sobre el lienzo montado.
+- [x] El tutor: qué se le manda exactamente en cada pregunta.
+- [x] Las copias de seguridad, de ida y vuelta.
+- [ ] Las vistas previas de PDF: hay que cargar PDF.js y pedir un PDF de verdad.
+- [ ] La agenda por dentro: arrastrar entre columnas, el panel lateral.
+- [ ] La bola de papel: depende de animaciones que el navegador sin ventana
+  congela, así que haría falta un reloj falso.
 - [ ] La sincronización, cuando haya backend.

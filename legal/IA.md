@@ -17,15 +17,27 @@ El modelo lo pone **Anthropic**, y las respuestas se generan en servidores de
 
 Para poder responderte con sentido, se le envía:
 
-- tu nombre o apodo y qué estudias;
-- tus asignaturas, con sus notas y su riesgo;
-- las entregas y exámenes que tengas cerca;
-- los títulos de tus apuntes (y el contenido de uno concreto si le pides que te
-  lo resuma o te saque tarjetas);
+- tu nombre o apodo, qué estudias y en qué curso;
+- si trabajas, cuántas horas de estudio te has propuesto a la semana, qué días
+  dices que puedes ponerte, qué nota buscas, **qué te cuesta más y para qué
+  estudias** (esas dos las escribes tú y son opcionales: si las dejas en blanco,
+  no hay nada que mandar);
+- tus asignaturas con sus notas, lo que te falta para aprobar y, cuando las
+  faltas ya aprietan, cuántas llevas;
+- las entregas y exámenes que tengas cerca, con sus fechas y su plan;
+- tu horario de clases de hoy y de mañana, solo las horas y la asignatura;
+- **los títulos** de tus apuntes, para que sepa qué has visto ya;
+- **el contenido del apunte que tengas abierto en ese momento**, hasta unas
+  1.200 letras, para que pueda hablar de lo que estás mirando. Si no tienes
+  ninguno abierto, no se manda ningún apunte;
+- cuántas tarjetas de repaso te tocan hoy y tus objetivos del día;
 - los últimos mensajes de vuestra conversación;
 - los archivos o capturas que tú le adjuntes.
 
-**No se le manda** nada que no esté en esa lista.
+**No se le manda** nada que no esté en esa lista. En concreto, **no** se le
+envían los archivos de tu casillero, ni tu vocabulario de inglés, ni lo que hay
+escrito en tus tarjetas de repaso, ni el nombre de tu centro, ni el de tu aula,
+ni el texto de los apuntes que no tengas abiertos.
 
 ## En qué se equivoca
 

@@ -69,7 +69,7 @@ navegador.
 
 | Quién | Qué ve | Dónde está |
 |---|---|---|
-| Anthropic (proveedor del profe con IA) | Solo lo que se le envía en cada pregunta: tu nombre o apodo, tu curso y asignaturas, tus notas y entregas, los títulos de tus apuntes, los últimos mensajes y los archivos que adjuntes | Estados Unidos |
+| Anthropic (proveedor del profe con IA) | Solo lo que se le envía en cada pregunta. El detalle exacto, campo por campo, está en cómo funciona el profe: en resumen, tu nombre o apodo, tu curso, tus asignaturas con sus notas, tus entregas y exámenes, tu horario, los títulos de tus apuntes, el contenido del que tengas abierto, los últimos mensajes y los archivos que adjuntes | Estados Unidos |
 | Anthropic (almacenamiento de Claude), solo si abres la app desde allí | Tus datos sincronizados y tus archivos del casillero | Estados Unidos |
 | GitHub Pages (GitHub, Inc.) | Solo sirve los archivos de la app. Como cualquier servidor web, registra la dirección IP y el navegador de quien la abre, por seguridad. **No recibe ninguno de tus datos de estudio** | Estados Unidos |
 
