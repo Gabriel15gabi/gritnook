@@ -5,11 +5,24 @@
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <title>GritNook</title>
 <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 48 48'><rect width='48' height='48' rx='10.8' fill='%23161826'/><path d='M20.03 26.31H27.97V41.76L24 38.63L20.03 41.76Z' fill='%23F0616A'/><ellipse cx='24' cy='18.01' rx='8.42' ry='9.29' fill='none' stroke='%23B5ABFC' stroke-width='4.95'/></svg>">
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&display=swap">
 
 <style>
+/* ═══════════════ letras ═══════════════
+   Van dentro de la propia app, en la carpeta «fuentes»: no se piden a Google,
+   así que usarla no manda la dirección IP de nadie fuera. Inter para todo y
+   cuatro manuscritas para los apuntes, que solo se descargan si se eligen.
+   Todas con licencia SIL Open Font License (ver CREDITOS.md). */
+@font-face{font-family:'Inter'; font-style:normal; font-weight:300; font-display:swap; src:url("fuentes/inter-latin-300-normal.woff2") format("woff2")}
+@font-face{font-family:'Inter'; font-style:normal; font-weight:400; font-display:swap; src:url("fuentes/inter-latin-400-normal.woff2") format("woff2")}
+@font-face{font-family:'Inter'; font-style:normal; font-weight:500; font-display:swap; src:url("fuentes/inter-latin-500-normal.woff2") format("woff2")}
+@font-face{font-family:'Inter'; font-style:normal; font-weight:600; font-display:swap; src:url("fuentes/inter-latin-600-normal.woff2") format("woff2")}
+@font-face{font-family:'Caveat'; font-style:normal; font-weight:400; font-display:swap; src:url("fuentes/caveat-latin-400-normal.woff2") format("woff2")}
+@font-face{font-family:'Caveat'; font-style:normal; font-weight:700; font-display:swap; src:url("fuentes/caveat-latin-700-normal.woff2") format("woff2")}
+@font-face{font-family:'Kalam'; font-style:normal; font-weight:400; font-display:swap; src:url("fuentes/kalam-latin-400-normal.woff2") format("woff2")}
+@font-face{font-family:'Kalam'; font-style:normal; font-weight:700; font-display:swap; src:url("fuentes/kalam-latin-700-normal.woff2") format("woff2")}
+@font-face{font-family:'Patrick Hand'; font-style:normal; font-weight:400; font-display:swap; src:url("fuentes/patrick-hand-latin-400-normal.woff2") format("woff2")}
+@font-face{font-family:'Shadows Into Light'; font-style:normal; font-weight:400; font-display:swap; src:url("fuentes/shadows-into-light-latin-400-normal.woff2") format("woff2")}
+
 /* ═══════════════ tokens ═══════════════
    Monocromo estricto. No hay color de acento ni de estado: lo que en otra
    interfaz sería verde o rojo aquí se codifica con forma y con peso. */
@@ -2242,14 +2255,6 @@ const LB_PAPELES = [["cuadricula", "Cuadrícula"], ["rayas", "Rayas"], ["puntos"
 /* la letra de la hoja: la de la app o una manuscrita; la de cada apunte manda y, si no tiene, la elegida por defecto */
 const LB_LETRAS = [["normal", "Normal"], ["caveat", "A mano"], ["kalam", "Cuaderno"], ["patrick", "Rotulador"], ["lapiz", "Lápiz"]];
 const letraDe = n => { const k = (n && n.letra) || (S.config && S.config.letraApuntes) || "normal"; return LB_LETRAS.some(x => x[0] === k) ? k : "normal"; };
-/* las letras manuscritas se piden solo cuando hacen falta (Google Fonts baja cada una al usarla) */
-function cargarLetras() {
-  if (document.getElementById("letrasMano")) return;
-  const l = document.createElement("link"); l.id = "letrasMano"; l.rel = "stylesheet";
-  l.href = "https://fonts.googleapis.com/css2?family=Caveat:wght@400;700&family=Kalam:wght@400;700&family=Patrick+Hand&family=Shadows+Into+Light&display=swap";
-  l.onload = () => { if (document.fonts) document.fonts.ready.then(() => { if (lbVivaActiva()) lbAjustar(); }); };
-  document.head.appendChild(l);
-}
 const hexRgb = h => { const n = parseInt(String(h).slice(1), 16); return [n >> 16 & 255, n >> 8 & 255, n & 255]; };
 const rgbaMarca = hex => { const [r, g, b] = hexRgb(hex); return "rgba(" + r + ", " + g + ", " + b + ", 0.55)"; };
 /* un color de CSS (rgb, rgba o #hex) al tono de la paleta más cercano; null si es transparente o no se parece a ninguno */
@@ -2396,7 +2401,6 @@ function lbPintarBarra() {
 function montarLibreta() {
   const papel = $("#lbPapel"), n = S.apuntes[apunteActivo];
   if (!papel || !n) return;
-  if (letraDe(n) !== "normal") cargarLetras();
   if (LB.nota !== apunteActivo) {
     lbGuardarYa();                                  /* lo pendiente de la hoja anterior, antes de cambiar */
     LB.nota = apunteActivo;
@@ -2857,13 +2861,12 @@ document.addEventListener("click", e => {
   if (mc) { const m = LB_MARCAS.find(x => x[0] === mc.dataset.lbMarca); lbAplicarColor("hiliteColor", m ? rgbaMarca(m[1]) : "transparent"); return; }
   const tc = t.closest("[data-lb-tcolor]");
   if (tc) { lbAplicarColor("foreColor", tc.dataset.lbTcolor || "#1D2126"); LB.pop = null; lbPintarBarra(); return; }
-  const po = t.closest("[data-lb-pop]"); if (po) { LB.pop = LB.pop === po.dataset.lbPop ? null : po.dataset.lbPop; if (LB.pop === "letra") cargarLetras(); lbPintarBarra(); return; }
+  const po = t.closest("[data-lb-pop]"); if (po) { LB.pop = LB.pop === po.dataset.lbPop ? null : po.dataset.lbPop; lbPintarBarra(); return; }
   const le = t.closest("[data-lb-letra]");
   if (le) {
     const k = le.dataset.lbLetra, n = S.apuntes[apunteActivo];
     S.config.letraApuntes = k; guardar("ajustes");
     if (n) { n.letra = k; n.editado = new Date().toISOString(); guardarApunte(n); }
-    if (k !== "normal") cargarLetras();
     const ed = $("#apCuerpo"); if (ed) { ed.className = ed.className.replace(/\s*letra-[a-z]+/g, "") + " letra-" + k; }
     LB.pop = null; lbPintarBarra(); lbAjustar(); return;
   }
@@ -6091,9 +6094,15 @@ document.addEventListener("click", async e => {
   if (t.closest("#apBorrarTodo")) {
     if (!(await confirmar("Se borra todo: perfil, " + voc(true) + ", notas, horas, entregas, apuntes, documentos y la conversación.", { titulo: "¿Borrar todos tus datos?", si: "Borrar todo" }))) return;
     if (!(await confirmar("Esto no se puede deshacer. Si quieres guardar algo, descarga antes una copia desde aquí mismo.", { titulo: "¿Seguro del todo?", si: "Sí, borrar todo" }))) return;
+    /* también lo sincronizado y los archivos subidos: si no, al volver a conectar reaparecerían */
+    const apuntesIds = Object.keys(S.apuntes), docs = Object.values(S.casillero);
     S = estadoInicial(); guardarLocal();
     ["ajustes", "agenda", "ingles", "horas", "objetivos", "tutor", "perfil"].forEach(nd => guardar(nd));
-    Object.keys(S.apuntes).forEach(k => delete S.apuntes[k]);
+    if (db) {
+      apuntesIds.forEach(id => db.doc("apuntes/" + id).delete().catch(() => {}));
+      docs.forEach(d => db.doc("casillero/" + d.id).delete().catch(() => {}));
+    }
+    if (almacen) { docs.forEach(d => { if (d.asset) almacen.delete(d.asset).catch(() => {}); }); setTimeout(refrescaUso, 800); }
     aviso("Todo borrado.");
     bvAbrir(false); return;
   }

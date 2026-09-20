@@ -5,8 +5,8 @@ GritNook es código propio con licencia MIT (ver [LICENSE](LICENSE)). Usa estas 
 | Qué | Dónde se usa | Licencia |
 |---|---|---|
 | [Phosphor Icons](https://phosphoricons.com) 2.1, estilo duotono | Iconos del menú (riel, barra del móvil y «Más») y símbolos de las libretas del casillero. Los dibujos van copiados dentro de `index.html`. | MIT |
-| [Inter](https://rsms.me/inter/), de Rasmus Andersson | Tipografía de toda la app (se carga de Google Fonts) y trazos del logotipo. | SIL Open Font License 1.1 |
-| Caveat, Kalam, Patrick Hand y Shadows Into Light (Google Fonts) | Letras manuscritas de la hoja de apuntes. Se cargan de Google Fonts solo si se eligen. | SIL Open Font License 1.1 |
+| [Inter](https://rsms.me/inter/), de Rasmus Andersson | Tipografía de toda la app y trazos del logotipo. El archivo va dentro de la app, en `fuentes/`. | SIL Open Font License 1.1 |
+| Caveat, Kalam, Patrick Hand y Shadows Into Light | Letras manuscritas de la hoja de apuntes. Van dentro de la app, en `fuentes/`, y el navegador solo descarga la que elijas. | SIL Open Font License 1.1 |
 | [PDF.js](https://mozilla.github.io/pdf.js/), de Mozilla, 3.11 | Miniaturas y visor de los PDF del casillero. Se carga de cdnjs solo al ver un PDF. | Apache 2.0 |
 | [opentype.js](https://opentype.js.org) | Solo para regenerar el logotipo (`marca/generar.js`). No va dentro de la app. | MIT |
 
@@ -42,3 +42,7 @@ SOFTWARE.
 
 Copyright 2016 The Inter Project Authors (https://github.com/rsms/inter).
 This Font Software is licensed under the SIL Open Font License, Version 1.1 (https://openfontlicense.org).
+
+## Nada sale fuera
+
+Mientras usas GritNook no se pide nada a servidores ajenos: las letras y los iconos viajan dentro de la app. Lo único que se descarga de fuera es PDF.js, y solo al abrir un PDF del casillero.

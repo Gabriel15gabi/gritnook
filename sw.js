@@ -1,9 +1,11 @@
 /* Lo que deja usar GritNook sin conexión y la hace instalable.
-   La página va primero a la red, para que las versiones nuevas lleguen en
+   Las letras y los iconos viajan dentro de la app. La página va primero a la red, para que las versiones nuevas lleguen en
    cuanto las hay, y tira de la copia guardada si no hay conexión. Los iconos
    y la tipografía, al revés: primero la copia, que no cambian. */
-const CACHE = "gritnook-v1";
-const BASE = ["./", "index.html", "manifest.webmanifest", "iconos/icono-192.png", "iconos/icono-512.png"];
+const CACHE = "gritnook-v2";
+const BASE = ["./", "index.html", "manifest.webmanifest", "iconos/icono-192.png", "iconos/icono-512.png",
+  "fuentes/inter-latin-300-normal.woff2", "fuentes/inter-latin-400-normal.woff2",
+  "fuentes/inter-latin-500-normal.woff2", "fuentes/inter-latin-600-normal.woff2"];
 
 self.addEventListener("install", e => {
   e.waitUntil(caches.open(CACHE).then(c => c.addAll(BASE)).then(() => self.skipWaiting()));
@@ -17,7 +19,7 @@ self.addEventListener("fetch", e => {
   const r = e.request;
   if (r.method !== "GET") return;
   const url = new URL(r.url);
-  const guardable = url.origin === location.origin || /(^|\.)fonts\.(googleapis|gstatic)\.com$/.test(url.hostname);
+  const guardable = url.origin === location.origin;   /* las letras van dentro de la app: no se pide nada a Google */
   if (!guardable) return;
   if (r.mode === "navigate") {
     e.respondWith(fetch(r)

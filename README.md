@@ -100,4 +100,8 @@ Lo que falta para poder venderla —cuentas, cobro y lo legal— está en [CUENT
 
 ## Licencia
 
-MIT — ver [LICENSE](LICENSE). Las piezas de terceros y sus licencias están en [CREDITOS.md](CREDITOS.md).
+Todos los derechos reservados — ver [LICENSE](LICENSE). El código está publicado para leerlo y
+estudiarlo, no para copiarlo ni usarlo en otro producto. Las piezas de terceros mantienen sus
+licencias libres, detalladas en [CREDITOS.md](CREDITOS.md).
+
+Qué datos guarda la aplicación y qué sale de ella: [DATOS.md](DATOS.md).

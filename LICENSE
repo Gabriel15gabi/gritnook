@@ -1,21 +1,38 @@
-MIT License
-
+GritNook — Todos los derechos reservados
 Copyright (c) 2026 Gabriel Rodríguez
 
-Permission is hereby granted, free of charge, to any person obtaining a copy
-of this software and associated documentation files (the "Software"), to deal
-in the Software without restriction, including without limitation the rights
-to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
-copies of the Software, and to permit persons to whom the Software is
-furnished to do so, subject to the following conditions:
+Este repositorio es público para que cualquiera pueda leer el código, estudiarlo
+y ver cómo está hecha la aplicación. No es software libre.
 
-The above copyright notice and this permission notice shall be included in all
-copies or substantial portions of the Software.
+LO QUE PUEDES HACER
+- Leer el código y aprender de él.
+- Citar fragmentos en un trabajo, un artículo o una clase, diciendo de dónde salen.
+- Usar la aplicación publicada tal y como se ofrece.
 
-THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
-IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
-FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
-AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
-LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
-OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
-SOFTWARE.
+LO QUE NO PUEDES HACER SIN PERMISO ESCRITO DEL AUTOR
+- Copiar, publicar o distribuir este código o partes de él, con o sin cambios.
+- Usarlo en otro producto, tuyo o de un tercero.
+- Venderlo, alquilarlo o cobrar por él, ni ofrecerlo como servicio.
+- Quitar o cambiar los avisos de autoría.
+
+Para pedir permiso o una licencia, escribe a: Gabobumex@outlook.com
+
+COMPONENTES DE TERCEROS
+La aplicación incluye piezas de otros autores (tipografías, iconos y PDF.js) que
+mantienen sus propias licencias libres, detalladas en CREDITOS.md. Esas licencias
+se aplican solo a esas piezas, no al resto del código.
+
+SIN GARANTÍA
+El programa se ofrece "tal cual", sin garantía de ningún tipo. El autor no se
+hace responsable de los daños que puedan derivarse de su uso.
+
+---
+
+GritNook — All rights reserved
+Copyright (c) 2026 Gabriel Rodríguez
+
+This source code is published for reading and study only. It is not open source.
+You may not copy, modify, distribute, sublicense, sell or use this code, in whole
+or in part, in any other product or service without the author's prior written
+permission. Third-party components keep their own licences, listed in CREDITOS.md.
+Provided "as is", without warranty of any kind.
