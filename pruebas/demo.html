@@ -1,0 +1,389 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Datos de prueba · GritNook</title>
+<style>
+  :root{
+    --bg:#0E1117; --panel:#161A23; --linea:#252B37; --texto:#E7E9EE; --flojo:#8C93A3;
+    --ok:#4ADE80; --aviso:#FBBF24; --acento:#7C6CF0;
+    --sans:system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;
+  }
+  @media (prefers-color-scheme: light){
+    :root{--bg:#FAFAFA; --panel:#FFF; --linea:#E5E5E5; --texto:#141414; --flojo:#6B6B6B; --ok:#16A34A; --aviso:#B45309}
+  }
+  *{box-sizing:border-box}
+  body{margin:0; padding:28px 16px 64px; background:var(--bg); color:var(--texto); font:15px/1.6 var(--sans)}
+  main{max-width:720px; margin:0 auto}
+  h1{font-size:26px; letter-spacing:-.02em; margin:0 0 6px}
+  .sub{color:var(--flojo); margin:0 0 24px}
+  .caja{background:var(--panel); border:1px solid var(--linea); border-radius:14px; padding:20px 22px; margin-bottom:14px}
+  .aviso{border-color:color-mix(in srgb, var(--aviso) 45%, var(--linea))}
+  h2{font-size:15px; margin:0 0 10px}
+  ul{margin:0; padding-left:20px; color:var(--flojo)}
+  li{margin:2px 0}
+  .btns{display:flex; flex-wrap:wrap; gap:10px; margin-top:18px}
+  button{font:600 14px var(--sans); padding:11px 18px; border-radius:10px; cursor:pointer; border:1px solid var(--linea);
+    background:var(--panel); color:var(--texto); transition:transform .12s, filter .12s}
+  button:hover:not(:disabled){transform:translateY(-1px); filter:brightness(1.1)}
+  button:disabled{opacity:.45; cursor:default}
+  button.primario{background:var(--acento); border-color:var(--acento); color:#fff}
+  #dicho{margin-top:16px; font-weight:600; min-height:24px}
+  #dicho.bien{color:var(--ok)}
+  #marco{width:100%; height:760px; border:1px solid var(--linea); border-radius:14px; margin-top:20px; background:#fff}
+  code{font:12.5px ui-monospace,Menlo,Consolas,monospace; background:color-mix(in srgb, var(--flojo) 18%, transparent); padding:1px 6px; border-radius:4px}
+</style>
+</head>
+<body>
+<main>
+  <h1>Datos de prueba</h1>
+  <p class="sub">Rellena GritNook con un curso inventado para verla funcionando con todo lleno. Solo afecta a este navegador.</p>
+
+  <div class="caja aviso">
+    <h2>Antes de nada</h2>
+    <ul>
+      <li><strong>Lo que tengas ahora se guarda</strong> antes de tocar nada, y se puede devolver con el botón de al lado.</li>
+      <li>Esto es <strong>solo para este navegador</strong>. La versión de Claude no se toca.</li>
+      <li>Si la abres desde Claude, los datos falsos <strong>se sincronizarían</strong> con tu cuenta: ahí mejor no.</li>
+    </ul>
+  </div>
+
+  <div class="caja">
+    <h2>Lo que va a montar</h2>
+    <ul id="lista">
+      <li>Un perfil de 1.º de DAW, trabajando a jornada completa</li>
+      <li>7 asignaturas con sus notas repartidas: una cerrada, dos en riesgo y una con las faltas al límite</li>
+      <li>11 entregas y 3 exámenes, unos hechos, otros pendientes y alguno pasado de fecha</li>
+      <li>El horario de clase de la semana entera</li>
+      <li>10 semanas de horas de estudio, para que el progreso tenga algo que enseñar</li>
+      <li>6 apuntes escritos, uno de ellos con dibujos a mano</li>
+      <li>5 cosas en el casillero: PDF, fotos, código y un enlace</li>
+      <li>14 tarjetas de repaso y 18 palabras de inglés, en distintas cajas</li>
+      <li>Una conversación con la profe, con sus repasos puestos</li>
+    </ul>
+    <div class="btns">
+      <button class="primario" id="rellenar">Rellenar con datos de prueba</button>
+      <button id="devolver" disabled>Devolver lo que tenía</button>
+      <button id="abrir">Abrir la app</button>
+    </div>
+    <div id="dicho"></div>
+  </div>
+
+  <iframe id="marco" src="../index.html" title="GritNook"></iframe>
+</main>
+
+<script>
+/* Esto no toca la app: carga GritNook en el marco de abajo y le habla con
+   eval indirecto, igual que el banco de pruebas. Así se usan sus propias
+   funciones y lo que queda guardado es válido de verdad. */
+const $ = s => document.querySelector(s);
+const espera = ms => new Promise(r => setTimeout(r, ms));
+const marco = () => $("#marco").contentWindow;
+let copia = null;
+
+function decir(txt, bien) { $("#dicho").textContent = txt; $("#dicho").className = bien ? "bien" : ""; }
+
+async function lista() {
+  for (let i = 0; i < 60; i++) {
+    try { if (marco().eval('typeof S !== "undefined" && typeof guardarApunte === "function"')) return true; } catch (e) {}
+    await espera(300);
+  }
+  return false;
+}
+
+const SEMILLA = String.raw`
+(() => {
+  const hoy = new Date();
+  const dia = n => { const d = new Date(hoy); d.setDate(d.getDate() + n); return hoyISO(d); };
+  const entre = (a, b) => a + Math.floor(Math.random() * (b - a + 1));
+  const elige = l => l[Math.floor(Math.random() * l.length)];
+
+  /* ── quién es ── */
+  S.perfil = Object.assign(normalizarPerfil(), {
+    nombre: "Gabriel", etapa: "ciclo-sup", ciclo: "Desarrollo de Aplicaciones Web",
+    curso: "1.º", rama: "", centro: "IES de prueba", trabaja: "completa",
+    horasSemana: 10, diasFuertes: ["mar", "jue", "sab"], meta: "nota", objetivoNota: 7,
+    motivo: "Salir de la fábrica y trabajar de esto",
+    cuestaMas: "Bases de datos y las consultas con varias tablas",
+    profe: { nombre: "Marta", tono: "cercano", cana: "pistas", avisos: 2, puedeCrear: true },
+    listo: true, creado: dia(-70), edadOk: true, aceptado: { fecha: new Date().toISOString(), v: typeof LEGAL_V !== "undefined" ? LEGAL_V : "" }
+  });
+  S.config.curso = "Grado superior · Desarrollo de Aplicaciones Web · 1.º";
+  S.config.objetivo = 7;
+  S.config.postit = "Repasar JOIN antes del jueves";
+
+  /* ── las asignaturas, con notas de todos los colores ── */
+  const notas = {
+    PRO:   [8.5, 7.5, 9],        LMSGI: [6, 7, null],
+    BD:    [4.5, 5, null],       SI:    [7, 8, null],
+    ED:    [6.5, 7, null],       ING:   [null, null, null],
+    FOL:   [9, 8.5, null]
+  };
+  const faltas = { PRO: 2, LMSGI: 4, BD: 9, SI: 1, ED: 0, ING: 3, FOL: 13 };
+  S.modulos.forEach(m => {
+    const ns = notas[m.cod] || [entre(4, 9), entre(4, 9), null];
+    (m.pesos || []).forEach((p, i) => { if (ns[i] !== undefined && ns[i] !== null) p.nota = ns[i]; });
+    if (faltas[m.cod] !== undefined) m.faltas = faltas[m.cod];
+    m.objetivo = 7;
+  });
+  const mod = c => (S.modulos.find(m => m.cod === c) || S.modulos[0]).id;
+
+  /* ── agenda ── */
+  const titulosEntrega = [
+    ["Práctica de herencia en Java", "PRO", 2, 15], ["Consultas con JOIN, ejercicios 12 al 20", "BD", 4, 10],
+    ["Maquetar la página del proyecto", "LMSGI", 9, 20], ["Cuestionario de prevención", "FOL", -3, 5],
+    ["Instalar y configurar Apache", "SI", 6, 10], ["Diagrama entidad-relación de la tienda", "BD", 12, 15],
+    ["Ejercicios de arrays", "PRO", -8, 10], ["Formulario de contacto con validación", "LMSGI", 15, 10],
+    ["Control de versiones: primer repositorio", "ED", 3, 10], ["Lectura y resumen en inglés", "ING", 7, 5],
+    ["Presentación del proyecto de aula", "PRO", 20, 25]
+  ];
+  S.tareas = titulosEntrega.map(([titulo, cod, d, peso], i) => ({
+    id: uid(), titulo, modId: mod(cod), fecha: dia(d), hora: "", peso,
+    hecha: d < 0, hechaEn: d < 0 ? dia(d) : "",
+    estado: d < 0 ? "hecha" : (i % 4 === 1 ? "curso" : "pendiente"),
+    pasos: [], notas: "", creado: dia(d - 10)
+  }));
+
+  S.examenes = [
+    { id: uid(), titulo: "Examen de bases de datos: consultas", modId: mod("BD"), fecha: dia(6), hora: "09:00",
+      temas: "SELECT con JOIN\nAgrupaciones y subconsultas\nVistas", plan: [
+        { t: "Repasar los apuntes de JOIN", hecho: true }, { t: "Hacer los ejercicios del tema 4", hecho: true },
+        { t: "Simulacro con tiempo", hecho: false }, { t: "Dudas con la profe", hecho: false }
+      ], creado: dia(-8) },
+    { id: uid(), titulo: "Examen de programación: objetos", modId: mod("PRO"), fecha: dia(14), hora: "11:30",
+      temas: "Clases y objetos\nHerencia\nInterfaces", plan: [
+        { t: "Releer el tema 5", hecho: false }, { t: "Hacer diez ejercicios", hecho: false }
+      ], creado: dia(-2) },
+    { id: uid(), titulo: "Examen de sistemas informáticos", modId: mod("SI"), fecha: dia(-12), hora: "09:00",
+      temas: "Particiones y permisos", plan: [], creado: dia(-30) }
+  ];
+
+  const clase = (d, ini, fin, cod, aula) => ({ id: uid(), dia: d, ini, fin, modId: mod(cod), aula });
+  S.horario = [
+    clase("lun", "15:30", "17:30", "PRO", "A-12"), clase("lun", "17:45", "19:15", "BD", "Lab 2"),
+    clase("mar", "15:30", "17:00", "LMSGI", "A-12"), clase("mar", "17:15", "19:15", "PRO", "Lab 1"),
+    clase("mie", "15:30", "17:30", "BD", "Lab 2"), clase("mie", "17:45", "19:15", "SI", "A-14"),
+    clase("jue", "15:30", "17:00", "FOL", "A-12"), clase("jue", "17:15", "19:15", "ED", "Lab 1"),
+    clase("vie", "15:30", "17:30", "PRO", "Lab 1"), clase("vie", "17:45", "19:15", "ING", "A-12")
+  ];
+
+  /* ── diez semanas de horas de estudio ── */
+  S.horas = {};
+  const cods = ["PRO", "BD", "LMSGI", "SI", "ED"];
+  const apuntaHoras = (f, cuantas) => {
+    for (let k = 0; k < cuantas; k++) {
+      const id = mod(elige(cods));
+      S.horas[id] = S.horas[id] || {};
+      S.horas[id][f] = (S.horas[id][f] || 0) + entre(1, 4) * 25;
+    }
+  };
+  for (let i = 69; i >= 3; i--) {
+    if (i % 7 === 0) continue;                      /* los domingos, libres */
+    if (Math.random() < 0.18) continue;             /* y algún día que no toca */
+    apuntaHoras(dia(-i), entre(1, 3));
+  }
+  /* los tres últimos días sí o sí, para que la semana en curso y la racha
+     tengan algo que enseñar nada más abrir */
+  apuntaHoras(dia(-2), 2); apuntaHoras(dia(-1), 2); apuntaHoras(dia(0), 2);
+
+  /* ── apuntes ── */
+  const apuntes = [
+    ["Consultas con varias tablas", "BD", "cuadricula", "kalam", ["SQL", "examen"],
+      '<div data-b="t1">JOIN: juntar dos tablas</div>' +
+      '<div>La idea es sencilla: <mark data-m="menta">dos tablas que comparten un dato</mark> se pueden leer como si fueran una sola.</div>' +
+      '<div><br></div><div data-b="t2">Los cuatro tipos</div>' +
+      '<div data-b="ul">INNER JOIN — solo las filas que casan en las dos.</div>' +
+      '<div data-b="ul">LEFT JOIN — todas las de la izquierda, casen o no.</div>' +
+      '<div data-b="ul">RIGHT JOIN — igual pero al revés.</div>' +
+      '<div data-b="ul">FULL JOIN — todo de las dos. <span data-t="#B45309">MySQL no lo tiene</span>.</div>' +
+      '<div><br></div><div data-b="t2">Lo que me cuesta</div>' +
+      '<div>El <b>ON</b> no es el <b>WHERE</b>. El ON dice <u>cómo se juntan</u>; el WHERE filtra <u>después</u>.</div>' +
+      '<div><br></div><div><mark data-m="amarillo">Para el examen: dibujar las dos tablas en sucio antes de escribir nada.</mark></div>'],
+    ["Herencia en Java", "PRO", "rayas", "normal", ["Java", "POO"],
+      '<div data-b="t1">Herencia</div>' +
+      '<div>Una clase <b>extends</b> otra y se queda con todo lo suyo, menos lo privado.</div>' +
+      '<div><br></div><div data-b="ol">super() llama al constructor del padre.</div>' +
+      '<div data-b="ol">@Override cambia un método heredado.</div>' +
+      '<div data-b="ol">Si el padre es abstract, no se puede instanciar.</div>'],
+    ["Etiquetas semánticas", "LMSGI", "puntos", "caveat", ["HTML"],
+      '<div data-b="t1">HTML que se entiende solo</div>' +
+      '<div><mark data-m="cielo">header, nav, main, section, article, aside, footer</mark></div>' +
+      '<div>No cambian nada de cómo se ve, pero un lector de pantalla y Google sí lo notan.</div>'],
+    ["Permisos en Linux", "SI", "cuadricula", "patrick", ["Linux"],
+      '<div data-b="t1">chmod</div>' +
+      '<div>Tres números: dueño, grupo y el resto. <b>4</b> leer, <b>2</b> escribir, <b>1</b> ejecutar.</div>' +
+      '<div><br></div><div>755 = el dueño todo, los demás leer y ejecutar.</div>'],
+    ["Git: lo que uso todos los días", "ED", "lisa", "normal", ["git"],
+      '<div data-b="t1">Los cuatro de siempre</div>' +
+      '<div data-b="ul">git status — qué he tocado.</div>' +
+      '<div data-b="ul">git add -A — lo preparo todo.</div>' +
+      '<div data-b="ul">git commit -m "…" — lo guardo.</div>' +
+      '<div data-b="ul">git log --oneline — qué hice.</div>'],
+    ["Vocabulario técnico de la unidad 2", "ING", "rayas", "lapiz", ["inglés"],
+      '<div data-b="t1">Unidad 2</div>' +
+      '<div>deployment, query, framework, request, response, statement, rollback.</div>']
+  ];
+  S.apuntes = {};
+  apuntes.forEach(([titulo, cod, papel, letra, etiquetas, html], i) => {
+    const id = uid();
+    S.apuntes[id] = { id, titulo, modId: mod(cod), etiquetas, papel, letra, html,
+      cuerpo: htmlATexto(html), creado: dia(-20 + i * 3), editado: new Date(Date.now() - i * 86400000).toISOString() };
+  });
+  /* al primero, unos trazos a mano por encima */
+  const primero = Object.values(S.apuntes)[0];
+  const trazos = [];
+  for (let k = 0; k < 4; k++) {
+    const y = 300 + k * 60, p = [];
+    for (let x = 90; x < 560; x += 18) p.push(x, y + Math.sin(x / 40 + k) * 7);
+    trazos.push({ t: k === 3 ? "fluor" : "boli", c: k === 3 ? "#FDE047" : "#1D2126", w: k === 3 ? 16 : 2, p });
+  }
+  primero.dibujo = { v: 1, trazos };
+
+  /* ── casillero ── */
+  const lienzo = (texto, color) => {
+    const c = document.createElement("canvas"); c.width = 400; c.height = 280;
+    const g = c.getContext("2d");
+    g.fillStyle = color; g.fillRect(0, 0, 400, 280);
+    g.fillStyle = "rgba(255,255,255,.9)"; g.font = "600 26px system-ui"; g.textAlign = "center";
+    g.fillText(texto, 200, 150);
+    return c.toDataURL("image/jpeg", .8);
+  };
+  const docs = [
+    { titulo: "Apuntes de clase del tema 4.pdf", tipo: "archivo", mime: "application/pdf", cod: "BD", tam: 482000, extracto: "" },
+    { titulo: "Pizarra del jueves.jpg", tipo: "archivo", mime: "image/jpeg", cod: "PRO", tam: 96000, datos: lienzo("Pizarra del jueves", "#3B5BA5") },
+    { titulo: "Esquema del examen.jpg", tipo: "archivo", mime: "image/jpeg", cod: "BD", tam: 88000, datos: lienzo("Esquema del examen", "#A5533B") },
+    { titulo: "consulta-alumnos.sql", tipo: "archivo", mime: "text/plain", cod: "BD", tam: 1200,
+      extracto: "SELECT a.nombre, COUNT(m.id) AS asignaturas\\nFROM alumnos a\\nLEFT JOIN matriculas m ON m.alumno = a.id\\nGROUP BY a.id;" },
+    { titulo: "Documentación de MySQL", tipo: "enlace", url: "https://dev.mysql.com/doc/", cod: "BD" }
+  ];
+  S.casillero = {};
+  docs.forEach((d, i) => {
+    const id = uid();
+    S.casillero[id] = Object.assign({ id, modId: mod(d.cod), creado: dia(-15 + i * 2) }, d);
+    delete S.casillero[id].cod;
+  });
+
+  /* ── repaso e inglés ── */
+  const tarjetas = [
+    ["¿Qué diferencia hay entre ON y WHERE en un JOIN?", "ON dice cómo se juntan las tablas; WHERE filtra el resultado ya juntado.", "BD"],
+    ["¿Qué devuelve un LEFT JOIN sin pareja en la derecha?", "La fila de la izquierda con NULL en las columnas de la derecha.", "BD"],
+    ["¿Para qué sirve super() en Java?", "Para llamar al constructor de la clase padre.", "PRO"],
+    ["¿Qué hace @Override?", "Avisa al compilador de que ese método cambia uno heredado.", "PRO"],
+    ["¿Qué es la tercera forma normal?", "Ningún campo depende de otro que no sea la clave.", "BD"],
+    ["¿Qué etiqueta envuelve el contenido principal de una página?", "<main>", "LMSGI"],
+    ["¿Qué significa chmod 755?", "Dueño: leer, escribir y ejecutar. Los demás: leer y ejecutar.", "SI"],
+    ["¿Diferencia entre git add y git commit?", "add prepara los cambios; commit los guarda en el historial.", "ED"],
+    ["¿Qué es una clase abstracta?", "Una que no se puede instanciar: sirve de base para otras.", "PRO"],
+    ["¿Qué hace GROUP BY?", "Agrupa filas para poder contarlas o sumarlas.", "BD"],
+    ["¿Qué es un índice en una base de datos?", "Una estructura que acelera las búsquedas por una columna.", "BD"],
+    ["¿Qué pasa si no pones break en un switch?", "Sigue ejecutando los casos siguientes.", "PRO"],
+    ["¿Para qué sirve el atributo alt de una imagen?", "Describe la imagen si no carga o si la lee un lector de pantalla.", "LMSGI"],
+    ["¿Qué es una transacción?", "Un grupo de operaciones que se hacen todas o ninguna.", "BD"]
+  ];
+  S.tarjetas = tarjetas.map(([frente, dorso, cod], i) => ({
+    id: uid(), modId: mod(cod), apunteId: "", frente, dorso,
+    caja: i % 6, proximo: dia(i % 5 === 0 ? 0 : entre(-2, 9)),
+    vistas: entre(0, 12), aciertos: entre(0, 8), creada: dia(-entre(3, 40))
+  }));
+
+  const palabras = [
+    ["deployment", "despliegue"], ["query", "consulta"], ["framework", "entorno de trabajo"],
+    ["request", "petición"], ["response", "respuesta"], ["statement", "sentencia"],
+    ["rollback", "deshacer los cambios"], ["nested", "anidado"], ["scope", "ámbito"],
+    ["inheritance", "herencia"], ["array", "vector"], ["loop", "bucle"],
+    ["branch", "rama"], ["merge", "fusionar"], ["issue", "incidencia"],
+    ["release", "publicación"], ["pipeline", "cadena de montaje"], ["rollout", "despliegue por fases"]
+  ];
+  S.vocab = palabras.map(([en, es], i) => ({
+    id: uid(), en, es, caja: 1 + (i % 5), proximo: dia(entre(-1, 12))
+  }));
+
+  /* ── objetivos y progreso ── */
+  normalizarObjetivos();
+  S.objetivos.propios = [{ id: uid(), t: "Terminar los ejercicios de JOIN" }];
+
+  S.progreso = [];
+  S.modulos.forEach(m => {
+    const c = calcModulo(m);
+    if (c.media === null) return;
+    for (let k = 3; k >= 0; k--) {
+      S.progreso.push({ id: uid(), modId: m.id, fecha: dia(-k * 18), nota: Math.max(0, Math.min(10, c.media + (Math.random() - .5) * 1.6)) });
+    }
+  });
+
+  /* ── la conversación con la profe ── */
+  const T = normalizarTutor();
+  T.nombre = "Marta";
+  const h = (d, hora) => dia(d) + "T" + hora + ":00.000Z";
+  T.chat = [
+    { id: uid(), r: "profe", t: "Buenas, Gabriel. Soy Marta, tu profe de Desarrollo de Aplicaciones Web. Ya tengo tus 7 asignaturas y las 10 horas a la semana que te has propuesto. Con jornada completa encima, iremos a ratos cortos y bien aprovechados.", h: h(-14, "18:02") },
+    { id: uid(), r: "tu", t: "vale, por donde empiezo?", h: h(-14, "18:06") },
+    { id: uid(), r: "profe", t: "Por lo que más te va a doler si lo dejas: bases de datos. Llevas un 4,67 y el examen entra en seis días. Empezamos por JOIN, que me has dicho que es lo que peor llevas.", h: h(-14, "18:06") },
+    { id: uid(), r: "tu", t: "es que no pillo cuando usar left join y cuando inner", h: h(-1, "17:04") },
+    { id: uid(), r: "profe", t: "Antes de explicártelo, dime una cosa: si tienes la tabla ALUMNOS y la tabla MATRICULAS, y quieres sacar TODOS los alumnos, incluidos los que aún no se han matriculado de nada… ¿qué pasa con los que no tienen ninguna fila en MATRICULAS?", h: h(-1, "17:04") },
+    { id: uid(), r: "tu", t: "que no saldrian?", h: h(-1, "17:06") },
+    { id: uid(), r: "profe", t: "Exacto, con INNER JOIN desaparecen. Ahí es donde entra el LEFT: se queda con todo lo de la izquierda aunque la derecha esté vacía, y te rellena con NULL.\\n\\nRegla corta para el examen: si la frase lleva un «todos los…», casi siempre es LEFT.\\n\\nTe pongo uno para que lo sueltes tú: saca el nombre de cada alumno y cuántas asignaturas tiene matriculadas, y que salgan también los que tienen cero.", h: h(-1, "17:06") },
+    { id: uid(), r: "tu", t: "SELECT a.nombre, COUNT(m.id) FROM alumnos a LEFT JOIN matriculas m ON m.alumno = a.id GROUP BY a.id;", h: h(-1, "17:14") },
+    { id: uid(), r: "profe", t: "Eso es. Y fíjate en un detalle que cae mucho: has puesto COUNT(m.id) y no COUNT(*). Con COUNT(*) los alumnos sin matrícula te saldrían con un 1, porque cuenta la fila; contando una columna de la tabla de la derecha, los NULL no se cuentan y salen con 0.\\n\\nTe lo apunto para repasar en dos días.", h: h(-1, "17:15") },
+    { id: uid(), r: "profe", t: "Por cierto: en Formación y Orientación Laboral llevas 13 faltas y el máximo son 14. Una más y te quedas sin evaluación continua. Eso no se arregla estudiando.", h: h(0, "09:30") }
+  ];
+  T.temas = [{ tema: "SQL: JOIN", fecha: dia(-1) }, { tema: "Java: herencia", fecha: dia(-5) }, { tema: "HTML: formularios", fecha: dia(-9) }];
+  T.repasos = [
+    { id: uid(), tema: "COUNT(*) frente a COUNT(columna) en un LEFT JOIN", fecha: dia(1), hecho: false },
+    { id: uid(), tema: "Rehacer los ejercicios 12-20 de JOIN", fecha: dia(2), hecho: false },
+    { id: uid(), tema: "Repasar herencia y super()", fecha: dia(-3), hecho: true }
+  ];
+
+  ["ajustes", "agenda", "horas", "objetivos", "tutor", "perfil", "horario", "repaso", "ingles", "progreso"].forEach(nd => { try { guardar(nd); } catch (e) {} });
+  Object.values(S.apuntes).forEach(n => { try { guardarApunte(n); } catch (e) {} });
+  guardarLocal();
+  seccion = "escritorio"; pinta();
+
+  return S.modulos.length + " asignaturas, " + S.tareas.length + " entregas, " + S.examenes.length + " exámenes, " +
+    Object.keys(S.apuntes).length + " apuntes, " + Object.keys(S.casillero).length + " documentos, " +
+    S.tarjetas.length + " tarjetas, " + S.vocab.length + " palabras y " + T.chat.length + " mensajes.";
+})()`;
+
+$("#rellenar").onclick = async () => {
+  $("#rellenar").disabled = true;
+  decir("Esperando a que cargue la app…");
+  if (!await lista()) { decir("La app no ha llegado a cargar."); $("#rellenar").disabled = false; return; }
+
+  /* copia de lo que hubiera, para poder devolverlo */
+  copia = {};
+  for (let i = 0; i < localStorage.length; i++) {
+    const k = localStorage.key(i);
+    if (k && k.startsWith("desk-daw:")) copia[k] = localStorage.getItem(k);
+  }
+  localStorage.setItem("gritnook-copia", JSON.stringify(copia));
+
+  try {
+    const r = marco().eval(SEMILLA);
+    decir("Listo: " + r, true);
+    $("#devolver").disabled = false;
+  } catch (e) {
+    decir("No se ha podido: " + e.message);
+    $("#rellenar").disabled = false;
+  }
+};
+
+$("#devolver").onclick = () => {
+  const guardada = copia || JSON.parse(localStorage.getItem("gritnook-copia") || "null");
+  if (!guardada) { decir("No hay ninguna copia guardada."); return; }
+  Object.keys(localStorage).filter(k => k.startsWith("desk-daw:")).forEach(k => localStorage.removeItem(k));
+  Object.entries(guardada).forEach(([k, v]) => localStorage.setItem(k, v));
+  $("#marco").src = "../index.html?vuelta=" + Date.now();
+  decir("Devuelto lo que tenías.", true);
+  $("#devolver").disabled = true;
+  $("#rellenar").disabled = false;
+};
+
+$("#abrir").onclick = () => window.open("../index.html", "_blank");
+
+/* la copia se guarda fuera de las claves de la app, así que sigue ahí
+   aunque cierres la pestaña o recargues */
+if (localStorage.getItem("gritnook-copia")) $("#devolver").disabled = false;
+</script>
+</body>
+</html>

@@ -82,6 +82,24 @@ repinte la pantalla.
 | `casos-bola.js` | La bola de papel, con reloj falso: que aparezca, que caiga, que no se salga de la pantalla y que entre en la papelera |
 | `casos-absurdos.js` | **Datos irreales**: notas de 900, faltas negativas, fechas del año 9999, emojis, árabe, textos de diez mil letras, estados de versiones que no existieron |
 
+## Rellenar la app para verla funcionando
+
+```
+localhost:4173/pruebas/demo.html
+```
+
+Una página con dos botones: **rellenar** la app con un curso de 1.º de DAW
+inventado —siete asignaturas con sus notas, once entregas, tres exámenes, el
+horario, diez semanas de horas, seis apuntes (uno con dibujos), el casillero,
+catorce tarjetas, dieciocho palabras de inglés y una conversación con la profe—
+y **devolver** lo que hubiera antes.
+
+Guarda una copia de lo que tengas antes de tocar nada, así que se puede usar sin
+miedo. Solo afecta a ese navegador: **abierta desde Claude, los datos falsos se
+sincronizarían con la cuenta**, así que ahí mejor no.
+
+Es también lo que genera las capturas del README.
+
 ## Datos irreales
 
 `casos-absurdos.js` hace lo contrario que los demás: en vez de comprobar que la
