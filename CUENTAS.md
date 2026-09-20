@@ -74,6 +74,16 @@ personas, hay respuesta. Si la usan 12, se ha ahorrado el lío.
 Las tres son *merchant of record*: facturan ellas al cliente final, lo que quita
 de encima el IVA europeo. El ingreso sigue habiendo que declararlo en España.
 
+## El backend
+
+Decidido el 20 de septiembre de 2026: GritNook pasa a ser full stack con
+**Supabase** (PostgreSQL, cuentas y almacenamiento), manteniendo el frontend tal
+como está. El esquema y los pasos están en [backend/](backend/LEEME.md).
+
+Esto no cambia el plan de publicarla gratis: la capa gratuita de Supabase cuesta
+0 €. Lo que sí cambia es la responsabilidad, porque pasas a guardar tú los datos
+de otra gente. Está todo apuntado en [backend/LEEME.md](backend/LEEME.md).
+
 ## Y si hiciera falta el profe fuera de Claude
 
 Solo tendría sentido con suscripción, nunca con pago único. Haría falta:

@@ -98,6 +98,12 @@ El mismo archivo corre en dos sitios con capacidades distintas:
 
 La versión pública es para verla y probarla. La de Claude usa sus capacidades de sincronización e IA, que solo existen cuando la página se abre desde allí; el código detecta si están disponibles y, si no, esconde o explica lo que no puede funcionar en vez de fallar.
 
+## Base de datos
+
+Hoy todo vive en el navegador de cada uno. El paso a PostgreSQL con cuentas de
+usuario está escrito y listo en [backend/](backend/LEEME.md): el esquema, las
+reglas de seguridad por usuario y qué cambia al guardar datos de otra gente.
+
 ## El plan
 
 GritNook se publica gratis. El porqué, las cuentas de venderla y qué haría falta para cobrar están en [CUENTAS.md](CUENTAS.md).
