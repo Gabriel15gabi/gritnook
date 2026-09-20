@@ -10,7 +10,7 @@ integración continua.
 
 **308 pruebas.** Sin ventana pasan 302 y 6 se quedan en pendiente: son las que
 dibujan un PDF, y sin tarjeta gráfica eso tarda demasiado. Abriendo
- en un navegador normal pasan las 308.
+`pruebas/pruebas.html` en un navegador normal pasan las 308.
 
 Para verlas con colores y poder pinchar en cada una, abre
 `pruebas/pruebas.html` con la app servida (`node servidor.js` y luego
