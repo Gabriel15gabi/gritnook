@@ -1,0 +1,155 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Pruebas · GritNook</title>
+<style>
+  :root{
+    --bg:#0E1117; --panel:#161A23; --linea:#252B37; --texto:#E7E9EE; --flojo:#8C93A3;
+    --ok:#4ADE80; --mal:#F87171; --pend:#FBBF24;
+    --mono:ui-monospace,"SF Mono",Menlo,Consolas,monospace;
+    --sans:system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;
+  }
+  @media (prefers-color-scheme: light){
+    :root{--bg:#FAFAFA; --panel:#FFF; --linea:#E5E5E5; --texto:#141414; --flojo:#6B6B6B;
+          --ok:#16A34A; --mal:#DC2626; --pend:#B45309}
+  }
+  *{box-sizing:border-box}
+  body{margin:0; padding:24px 16px 64px; background:var(--bg); color:var(--texto); font:15px/1.5 var(--sans)}
+  main{max-width:840px; margin:0 auto}
+  h1{font-size:26px; letter-spacing:-.02em; margin:0 0 4px}
+  .sub{color:var(--flojo); margin:0 0 22px}
+  #marcador{position:sticky; top:0; z-index:2; display:flex; flex-wrap:wrap; gap:10px 22px; align-items:baseline;
+    background:var(--panel); border:1px solid var(--linea); border-radius:12px; padding:16px 18px; margin-bottom:20px}
+  #marcador b{font-size:30px; font-weight:600; letter-spacing:-.02em}
+  #marcador span{color:var(--flojo); font-size:13px}
+  .g{background:var(--panel); border:1px solid var(--linea); border-radius:12px; margin-bottom:12px; overflow:hidden}
+  .g > h2{font-size:14px; font-weight:600; margin:0; padding:12px 16px; border-bottom:1px solid var(--linea);
+    display:flex; justify-content:space-between; gap:12px}
+  .g > h2 em{font-style:normal; color:var(--flojo); font-weight:400; font-size:12.5px}
+  .c{display:flex; gap:10px; padding:7px 16px; font-size:13.5px; align-items:flex-start}
+  .c + .c{border-top:1px solid color-mix(in srgb, var(--linea) 55%, transparent)}
+  .c i{font-style:normal; flex:0 0 auto; width:16px; text-align:center}
+  .ok i{color:var(--ok)} .mal i{color:var(--mal)} .pendiente i{color:var(--pend)}
+  .mal{background:color-mix(in srgb, var(--mal) 9%, transparent)}
+  .err{display:block; margin-top:4px; font:12.5px/1.5 var(--mono); color:var(--mal); white-space:pre-wrap}
+  #marco{position:absolute; width:1280px; height:860px; left:-4000px; top:0; border:0}
+  #estado{color:var(--flojo); font-size:13px}
+  code{font:12.5px var(--mono); background:color-mix(in srgb, var(--flojo) 18%, transparent); padding:1px 5px; border-radius:4px}
+</style>
+</head>
+<body>
+<main>
+  <h1>Pruebas de GritNook</h1>
+  <p class="sub">Corren dentro de la app de verdad, cargada aquí al lado. Para lanzarlas desde la consola: <code>node pruebas/correr.js</code></p>
+  <div id="marcador"><span id="estado">Cargando la app…</span></div>
+  <div id="salida"></div>
+</main>
+
+<iframe id="marco" src="../index.html" title="La app, para probarla"></iframe>
+
+<script>
+/* ────────────────────────────────────────────────────────────────────
+   Cómo funciona esto:
+
+   1. Se carga la app en un iframe del mismo origen.
+   2. Se espera a que esté montada de verdad.
+   3. Se le pasan al iframe el marco y los casos con eval indirecto, que
+      corre en el ámbito global de esa ventana. Por eso los tests pueden
+      llamar a calcModulo() o a S directamente, sin exportar nada ni
+      tocar una línea de la app.
+   4. Se ejecutan y se pinta el resultado.
+
+   Antes de empezar se guarda lo que haya en localStorage y al terminar
+   se devuelve, para que probar no te borre tus apuntes.
+   ──────────────────────────────────────────────────────────────────── */
+
+const ARCHIVOS = ["marco.js", "casos-notas.js", "casos-agenda.js", "casos-texto.js", "casos-estado.js", "casos-entrada.js"];
+const espera = ms => new Promise(r => setTimeout(r, ms));
+const $ = s => document.querySelector(s);
+
+function guardarloTodo() {
+  const copia = {};
+  for (let i = 0; i < localStorage.length; i++) {
+    const k = localStorage.key(i);
+    if (k && k.startsWith("desk-daw:")) copia[k] = localStorage.getItem(k);
+  }
+  return copia;
+}
+function devolverlo(copia) {
+  Object.keys(localStorage).filter(k => k.startsWith("desk-daw:")).forEach(k => localStorage.removeItem(k));
+  Object.entries(copia).forEach(([k, v]) => localStorage.setItem(k, v));
+}
+
+async function listo(w) {
+  for (let i = 0; i < 60; i++) {
+    try { if (w.eval('typeof calcModulo === "function" && typeof S !== "undefined"')) return true; } catch (e) {}
+    await espera(250);
+  }
+  return false;
+}
+
+function pintar(res) {
+  const falla = res.fallos.length;
+  $("#marcador").innerHTML =
+    `<div><b style="color:var(--ok)">${res.ok}</b> <span>pasan</span></div>` +
+    `<div><b style="color:${falla ? "var(--mal)" : "var(--flojo)"}">${falla}</b> <span>fallan</span></div>` +
+    (res.pendientes ? `<div><b style="color:var(--pend)">${res.pendientes}</b> <span>pendientes</span></div>` : "") +
+    `<div style="margin-left:auto"><span>${res.total} en total · ${res.ms} ms</span></div>`;
+
+  $("#salida").innerHTML = res.grupos.map(g => {
+    const mal = g.casos.filter(c => c.estado === "mal").length;
+    return `<section class="g">
+      <h2>${g.nombre}<em>${mal ? mal + " de " + g.casos.length + " fallan" : g.casos.length + " pasan"}</em></h2>
+      ${g.casos.map(c => `<div class="c ${c.estado}">
+        <i>${c.estado === "ok" ? "✓" : c.estado === "mal" ? "✕" : "·"}</i>
+        <div>${c.nombre}${c.error ? `<span class="err">${c.error.replace(/[<>&]/g, x => ({ "<": "&lt;", ">": "&gt;", "&": "&amp;" }[x]))}</span>` : ""}</div>
+      </div>`).join("")}
+    </section>`;
+  }).join("");
+
+  /* para poder leer el resultado desde la consola, sin abrir el navegador */
+  document.title = (falla ? "FALLAN " + falla : "TODO OK") + " · " + res.ok + "/" + res.total;
+  const resumen = res.fallos.map(f => "MAL · " + f.grupo + " · " + f.caso + "\n     " + f.error).join("\n");
+  const pre = document.createElement("pre");
+  pre.id = "resumen";
+  pre.hidden = true;
+  pre.textContent = "RESULTADO " + res.ok + "/" + res.total + " fallan:" + res.fallos.length + "\n" + resumen;
+  document.body.appendChild(pre);
+}
+
+window.addEventListener("load", async () => {
+  const copia = guardarloTodo();
+  const w = $("#marco").contentWindow;
+  try {
+    if (!await listo(w)) throw new Error("la app no ha llegado a cargar");
+    $("#estado").textContent = "Cargando los casos…";
+
+    let codigo = "";
+    for (const a of ARCHIVOS) {
+      const r = await fetch(a + "?t=" + Date.now());
+      if (!r.ok) throw new Error("no se pudo leer " + a);
+      codigo += "\n/* ── " + a + " ── */\n" + await r.text();
+    }
+    w.eval(codigo);
+
+    $("#estado").textContent = "Corriendo…";
+    const t0 = performance.now();
+    const res = await w.eval("__correrPruebas()");
+    res.ms = Math.round(performance.now() - t0);
+    pintar(res);
+  } catch (e) {
+    document.title = "ERROR DEL BANCO";
+    $("#marcador").innerHTML = `<span style="color:var(--mal)">No se han podido correr: ${e.message}</span>`;
+    const pre = document.createElement("pre");
+    pre.id = "resumen"; pre.hidden = true;
+    pre.textContent = "ERROR DEL BANCO: " + e.message + "\n" + (e.stack || "");
+    document.body.appendChild(pre);
+  } finally {
+    devolverlo(copia);
+  }
+});
+</script>
+</body>
+</html>

@@ -98,6 +98,17 @@ El mismo archivo corre en dos sitios con capacidades distintas:
 
 La versión pública es para verla y probarla. La de Claude usa sus capacidades de sincronización e IA, que solo existen cuando la página se abre desde allí; el código detecta si están disponibles y, si no, esconde o explica lo que no puede funcionar en vez de fallar.
 
+## Pruebas
+
+```bash
+node pruebas/correr.js
+```
+
+114 pruebas que corren **dentro de la app de verdad**, cargada en un iframe, sin
+instalar nada. Cubren las cuentas de las notas, entender las fechas escritas a
+mano, el sanitizador de la libreta, el estado y la pantalla de bienvenida
+entera. El cómo y lo que han encontrado, en [pruebas/](pruebas/LEEME.md).
+
 ## Base de datos
 
 Hoy todo vive en el navegador de cada uno. El paso a PostgreSQL con cuentas de

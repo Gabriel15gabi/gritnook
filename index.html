@@ -1628,6 +1628,11 @@ dialog.dlg-legal::backdrop{background:rgba(0,0,0,.45)}
 .ent-legal{margin-top:24px; padding:16px 18px; border-radius:var(--r-l); background:var(--surface-2); display:grid; gap:10px}
 .ent-legal .meta{margin:4px 0 0}
 .ia-mando .ent-linea span{font-size:14px}
+/* la lista de fallos apuntados */
+.err-fila{padding:10px 0; border-top:1px solid var(--line)}
+.err-fila:first-of-type{border-top:0; padding-top:0}
+.err-que{font:500 13.5px/1.45 var(--sans); color:var(--ink); margin-bottom:3px}
+.err-pila{margin-top:5px; font:11.5px/1.5 ui-monospace,Menlo,Consolas,monospace; color:var(--ink-3); word-break:break-all}
 </style>
 </head>
 <body>
@@ -1683,7 +1688,21 @@ dialog.dlg-legal::backdrop{background:rgba(0,0,0,.45)}
 /* ══════════════════ utilidades ══════════════════ */
 const $ = (s, r = document) => r.querySelector(s);
 const esc = s => String(s ?? "").replace(/[&<>"']/g, c => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[c]));
-const uid = () => Date.now().toString(36) + Math.random().toString(36).slice(2, 7);
+/* El trozo de azar de los identificadores. Con cinco caracteres en base 36
+   son 60 millones de combinaciones, que suena a mucho y no lo es: pidiendo
+   cinco mil seguidos ya se repetía alguno, y dos apuntes con el mismo
+   identificador son un apunte perdido, porque uno pisa al otro. Con ocho, y
+   sacados del generador criptográfico del navegador, son billones. */
+const azar = (n = 8) => {
+  const abc = "0123456789abcdefghijklmnopqrstuvwxyz";
+  let s = "";
+  if (self.crypto && self.crypto.getRandomValues) {
+    const b = new Uint8Array(n); self.crypto.getRandomValues(b);
+    for (let i = 0; i < n; i++) s += abc[b[i] % 36];
+  } else for (let i = 0; i < n; i++) s += abc[Math.floor(Math.random() * 36)];
+  return s;
+};
+const uid = () => Date.now().toString(36) + azar();
 const cursoAcademico = () => { const d = new Date(), a = d.getMonth() >= 7 ? d.getFullYear() : d.getFullYear() - 1; return String(a).slice(2) + "–" + String(a + 1).slice(2); };
 const hoyISO = (d = new Date()) => new Date(d.getTime() - d.getTimezoneOffset() * 6e4).toISOString().slice(0, 10);
 const num = (v, d = 0) => { const n = parseFloat(String(v).replace(",", ".")); return Number.isFinite(n) ? n : d; };
@@ -1705,6 +1724,55 @@ const avisados = new Set();
 const avisoUnaVez = (clave, txt, tipo = "mal") => { if (avisados.has(clave)) return; avisados.add(clave); aviso(txt, tipo); };
 const guardaLS = (k, v) => { try { localStorage.setItem("desk-daw:" + k, JSON.stringify(v)); return true; } catch (e) { return false; } };
 const leeLS = k => { try { const v = localStorage.getItem("desk-daw:" + k); return v ? JSON.parse(v) : null; } catch (e) { return null; } };
+
+/* ── un solo oído por cada tipo de evento ───────────────────────────
+   Cada parte de la app apunta aquí su mano con alEvento("click", fn) y
+   hay un único listener de verdad por tipo, que las llama a todas en el
+   orden en que se registraron: exactamente lo que pasaba cuando cada
+   una tenía su propio addEventListener, pero en un solo sitio.
+
+   De paso, si una mano falla se apunta en el registro de errores en vez
+   de morirse en silencio en la consola de alguien que nunca la mira. */
+const MANOS = new Map();
+function alEvento(tipo, mano) {
+  let lista = MANOS.get(tipo);
+  if (!lista) {
+    MANOS.set(tipo, lista = []);
+    document.addEventListener(tipo, ev => {
+      for (const fn of lista) {
+        try {
+          const r = fn(ev);
+          if (r && typeof r.catch === "function") r.catch(err => apuntarError(err, "evento " + tipo));
+        } catch (err) { apuntarError(err, "evento " + tipo); }
+      }
+    });
+  }
+  lista.push(mano);
+}
+
+/* ── el registro de errores ─────────────────────────────────────────
+   Sin esto, cuando la app falla en el móvil de alguien no se entera
+   nadie. Se guardan los veinte últimos, aquí y en este dispositivo, y
+   se ven en Ajustes → Datos. No sale de aquí: no hay servidor al que
+   mandarlos ni ganas de tenerlo. */
+const ERRORES = [];
+function apuntarError(err, donde) {
+  const e = {
+    h: new Date().toISOString(),
+    donde: String(donde || "").slice(0, 60),
+    que: String((err && err.message) || err || "error sin mensaje").slice(0, 300),
+    pila: String((err && err.stack) || "").split("\n").slice(1, 4).join(" · ").slice(0, 400),
+    seccion: typeof seccion === "string" ? seccion : ""
+  };
+  ERRORES.push(e);
+  if (ERRORES.length > 20) ERRORES.shift();
+  try { guardaLS("errores", ERRORES); } catch (x) {}
+  if (console && console.error) console.error("[GritNook] " + e.donde + ": " + e.que, err);
+}
+try { const v = leeLS("errores"); if (Array.isArray(v)) ERRORES.push(...v.slice(-20)); } catch (e) {}
+window.addEventListener("error", e => apuntarError(e.error || e.message, "suelto"));
+window.addEventListener("unhandledrejection", e => apuntarError(e.reason, "promesa sin recoger"));
+
 
 /* iconos de trazo fino, dibujados a mano para que compartan grosor y remate */
 const ICON = {
@@ -2018,14 +2086,14 @@ function migrarConfig() {
   S.config.descanso = 15; S.config.descanso15 = true;
   guardar("ajustes");
 }
-document.addEventListener("click", e => {
+alEvento("click", e => {
   const t = e.target;
   if (t.closest("#mrPlay")) { if (T.activo) pausarTimer(); else iniciarTimer(); return; }
   if (t.closest("#mrCerrar")) { T.fase = "trabajo"; reiniciarTimer(); return; }
   if (t.closest("#mrInfo")) { irASeccion("escritorio"); return; }
 });
 /* con la pestaña en segundo plano el navegador frena los temporizadores: al volver se comprueba en el acto */
-document.addEventListener("visibilitychange", () => { if (!document.hidden && T.activo && segsRestantes() <= 0) terminarFase(); });
+alEvento("visibilitychange", () => { if (!document.hidden && T.activo && segsRestantes() <= 0) terminarFase(); });
 
 function registrarMinutos(modId, mins) {
   if (!modId || !mins) return;
@@ -2675,6 +2743,8 @@ function lbArriba() {
    línea) para mostrarlo, y en texto plano para buscar, contar palabras y
    pasárselo a Claude. Todo lo que entra se reconstruye desde cero con esas
    piezas: ningún atributo, estilo ni script sobrevive. */
+/* lo que nunca pinta nada en un apunte: ni la etiqueta ni lo que lleva dentro */
+const FUERA_DE_LA_HOJA = /^(script|style|template|noscript|svg|math|iframe|object|embed|canvas|audio|video|link|meta|head|title|form|input|button|select|textarea)$/;
 function limpiarHtml(html) {
   const t = document.createElement("template"); t.innerHTML = html || "";
   const raiz = document.createElement("div");
@@ -2728,7 +2798,11 @@ function limpiarHtml(html) {
       if (nodo.nodeType === 3) { if (nodo.nodeValue) texto(nodo.nodeValue, destino, f); }
       else if (nodo.nodeType === 1) {
         const tag = nodo.tagName;
-        if (tag === "SCRIPT" || tag === "STYLE" || tag === "TEMPLATE") continue;
+        /* localName va siempre en minúscula; tagName, no: dentro de un <svg>
+           el nombre llega como "script" y la comparación con "SCRIPT" fallaba,
+           así que su contenido se colaba como texto en la hoja. Y de paso se
+           echa fuera todo lo que trae contenido que no es texto. */
+        if (FUERA_DE_LA_HOJA.test((nodo.localName || tag || "").toLowerCase())) continue;
         if (tag === "BR") { destino.appendChild(document.createElement("br")); ultimo.delete(destino); }
         else if (/^(DIV|P|LI|H[1-6]|BLOCKQUOTE|PRE)$/.test(tag)) {
           const d = document.createElement("div"), tb = tipoBloque(nodo);
@@ -2910,7 +2984,7 @@ function lbModo(m) {
   LB.cursor = null; lbPintarBarra(); lbPintarVivo();
 }
 
-document.addEventListener("click", e => {
+alEvento("click", e => {
   const t = e.target;
   /* un clic fuera cierra el desplegable del papel o del color */
   if (LB.pop && !t.closest(".lb-pop, [data-lb-pop]")) { LB.pop = null; lbPintarBarra(); }
@@ -2953,7 +3027,7 @@ document.addEventListener("click", e => {
   if (t.closest("#lbLimpiar")) { lbLimpiar(); return; }
 });
 /* Ctrl+Z / Ctrl+Y para el dibujo; mientras escribes, el texto usa su propio deshacer */
-document.addEventListener("keydown", e => {
+alEvento("keydown", e => {
   if (seccion !== "apuntes" || !lbVivaActiva()) return;
   const tag = document.activeElement && document.activeElement.tagName;
   if (["TEXTAREA", "INPUT", "SELECT"].includes(tag) || (document.activeElement && document.activeElement.isContentEditable)) return;
@@ -3035,7 +3109,7 @@ function lbFoco(on) {
   document.body.classList.toggle("foco", on);
   lbPintarBarra();
 }
-document.addEventListener("keydown", e => {
+alEvento("keydown", e => {
   if (e.key === "Escape" && document.body.classList.contains("foco") && !document.querySelector("dialog[open]")) { lbFoco(false); return; }
   if (e.key !== "Enter" || e.shiftKey || !e.target || e.target.id !== "apCuerpo") return;
   const ed = LB.ta, sel = getSelection(); if (!ed || !sel.rangeCount) return;
@@ -3053,20 +3127,20 @@ document.addEventListener("keydown", e => {
   });
 });
 /* el color libre del dibujo */
-document.addEventListener("input", e => {
+alEvento("input", e => {
   if (e.target.id !== "lbColorLibre") return;
   const c = e.target.value;
   if (LB.herr === "fluor") LB.fluor = c; else { LB.tinta = c; if (LB.herr === "goma") LB.herr = "rotu"; }
   e.target.parentNode.style.setProperty("--c", c); lbPrefs();
 });
-document.addEventListener("change", e => { if (e.target.id === "lbColorLibre") lbPintarBarra(); });
+alEvento("change", e => { if (e.target.id === "lbColorLibre") lbPintarBarra(); });
 /* el botón B no puede quitarle el foco al texto: se perdería la selección */
-document.addEventListener("mousedown", e => { if (e.target.closest && e.target.closest("#lbBarra button") && LB.modo === "escribir") e.preventDefault(); });
+alEvento("mousedown", e => { if (e.target.closest && e.target.closest("#lbBarra button") && LB.modo === "escribir") e.preventDefault(); });
 /* el botón B se enciende cuando el cursor está sobre texto en negrita (también tras Ctrl+B) */
-document.addEventListener("selectionchange", lbEstadoNegrita);
-document.addEventListener("keyup", e => { if (e.target.id === "apCuerpo") lbEstadoNegrita(); });
+alEvento("selectionchange", lbEstadoNegrita);
+alEvento("keyup", e => { if (e.target.id === "apCuerpo") lbEstadoNegrita(); });
 /* lo que se pega entra como texto limpio: ni colores ni tipografías de la web de origen */
-document.addEventListener("paste", e => {
+alEvento("paste", e => {
   if (!(e.target.closest && e.target.closest("#apCuerpo"))) return;
   e.preventDefault();
   const txt = (e.clipboardData || window.clipboardData).getData("text/plain");
@@ -3318,14 +3392,14 @@ function abrirHojaMas() {
   const primero = h.querySelector(".hm-fila"); if (primero) primero.focus({ preventScroll: true });
 }
 function cerrarHojaMas() { const h = $("#hojaMas"); if (h && !h.hidden) { h.hidden = true; h.innerHTML = ""; pintaBarraMovil(); } }
-document.addEventListener("click", e => {
+alEvento("click", e => {
   const t = e.target;
   if (t.closest("#bmMas")) { $("#hojaMas").hidden ? abrirHojaMas() : cerrarHojaMas(); return; }
   if (t.closest("[data-hm-cerrar]")) { cerrarHojaMas(); return; }
   const s = t.closest("#barraMovil [data-sec], #hojaMas [data-sec]");
   if (s) { cerrarHojaMas(); irASeccion(s.dataset.sec); }
 });
-document.addEventListener("keydown", e => { if (e.key === "Escape" && $("#hojaMas") && !$("#hojaMas").hidden) { e.preventDefault(); cerrarHojaMas(); } });
+alEvento("keydown", e => { if (e.key === "Escape" && $("#hojaMas") && !$("#hojaMas").hidden) { e.preventDefault(); cerrarHojaMas(); } });
 
 /* ══════════════════ vistas ══════════════════ */
 function vistaEscritorio() {
@@ -3640,7 +3714,7 @@ function refrescaFicha(m) {
 }
 
 /* escribir en la ficha: se actualiza lo calculado sin tocar lo que estás escribiendo */
-document.addEventListener("input", e => {
+alEvento("input", e => {
   const t = e.target, m = modAbierto && modPorId(modAbierto); if (!m || !t.closest(".ficha-mod")) return;
   if (t.dataset.campo) {
     const p = m.pesos.find(x => x.id === t.closest(".md-fila").dataset.p); if (!p) return;
@@ -3659,11 +3733,11 @@ document.addEventListener("input", e => {
   refrescaFicha(m); guardaFicha();
 });
 /* al soltar un campo: lo guardado queda firme y el menú se pone al día */
-document.addEventListener("change", e => {
+alEvento("change", e => {
   if (!modAbierto || !e.target.closest(".ficha-mod") || !(e.target.dataset.campo || e.target.dataset.mdDato)) return;
   clearTimeout(fichaT); guardar("ajustes"); registrarProgreso(); pintaNav();
 });
-document.addEventListener("click", async e => {
+alEvento("click", async e => {
   const t = e.target, m = modAbierto && modPorId(modAbierto);
   if (t.closest("[data-md-nuevo]")) { nuevoModulo(); return; }
   if (!m || !t.closest(".ficha-mod")) return;
@@ -3963,7 +4037,7 @@ function vistaCasillero() {
 }
 
 /* abrir, volver y guardar enlaces */
-document.addEventListener("click", e => {
+alEvento("click", e => {
   const t = e.target;
   const lb = t.closest("[data-libro]");
   if (lb) {
@@ -3978,7 +4052,7 @@ document.addEventListener("click", e => {
   if (t.closest("[data-cas-enlace]")) { casEnlace = !casEnlace; pinta(); if (casEnlace) { const x = $("#dTitulo"); if (x) x.focus(); } return; }
 });
 
-document.addEventListener("click", async e => {
+alEvento("click", async e => {
   const dp = e.target.closest("[data-doc-profe]"); if (!dp) return;
   const d = S.casillero[dp.dataset.docProfe]; if (!d || !srcDoc(d)) return;
   const m = modPorId(d.modId);
@@ -3995,14 +4069,14 @@ document.addEventListener("click", async e => {
 /* soltar archivos: encima de una libreta o en la libreta abierta */
 let casSobre = null;
 const zonaSoltar = e => e.target && e.target.closest && e.target.closest("[data-soltar-mod]");
-document.addEventListener("dragover", e => {
+alEvento("dragover", e => {
   if (seccion !== "casillero" || !e.dataTransfer || ![...e.dataTransfer.types].includes("Files")) return;
   const z = zonaSoltar(e); if (!z) return;
   e.preventDefault(); e.dataTransfer.dropEffect = "copy";
   if (casSobre !== z) { if (casSobre) casSobre.classList.remove("encima"); casSobre = z; z.classList.add("encima"); }
 });
-document.addEventListener("dragleave", e => { if (casSobre && !casSobre.contains(e.relatedTarget)) { casSobre.classList.remove("encima"); casSobre = null; } });
-document.addEventListener("drop", async e => {
+alEvento("dragleave", e => { if (casSobre && !casSobre.contains(e.relatedTarget)) { casSobre.classList.remove("encima"); casSobre = null; } });
+alEvento("drop", async e => {
   const z = zonaSoltar(e); if (!z || seccion !== "casillero") return;
   e.preventDefault(); z.classList.remove("encima"); casSobre = null;
   const mod = z.dataset.soltarMod, files = [...e.dataTransfer.files];
@@ -4413,7 +4487,7 @@ $("#nav").addEventListener("click", e => {
   const b = e.target.closest("[data-sec]"); if (b) irASeccion(b.dataset.sec);
 });
 
-document.addEventListener("click", async e => {
+alEvento("click", async e => {
   const t = e.target;
   const ir = t.closest("[data-ir]"); if (ir) { irASeccion(ir.dataset.ir); return; }
 
@@ -4608,7 +4682,7 @@ Devuelve: (1) la versión corregida en inglés natural, (2) una lista breve en e
   if (t.closest("#btnTema")) { cambiarTema(); return; }
 });
 
-document.addEventListener("input", e => {
+alEvento("input", e => {
   const t = e.target;
   if (t.id === "postit") { S.config.postit = t.value; clearTimeout(pendientes._p); pendientes._p = setTimeout(() => guardar("ajustes"), 800); }
   if (t.id === "buscarApuntes") {
@@ -4639,7 +4713,7 @@ document.addEventListener("input", e => {
     clearTimeout(pendientes._a); pendientes._a = setTimeout(() => guardarApunte(n), 700);
   }
 });
-document.addEventListener("change", e => {
+alEvento("change", e => {
   const t = e.target;
   if (t.id === "inputArchivo" && t.files.length) { const lista = [...t.files]; t.value = ""; (async () => { for (const f of lista) await guardarArchivo(f); })(); }
   const hc = t.closest("[data-hecha]");
@@ -5193,14 +5267,14 @@ function vistaTutor() {
   </section>` : ""}`;
 }
 
-document.addEventListener("submit", e => {
+alEvento("submit", e => {
   if (e.target.id !== "chatForm") return;
   e.preventDefault();
   const ta = $("#chatTexto"), v = ta ? ta.value : "";
   if (ta) { ta.value = ""; ta.style.height = "auto"; }
   tutorEnviar(v);
 });
-document.addEventListener("click", e => {
+alEvento("click", e => {
   const t = e.target;
   if (t.closest("#chatParar")) { if (tutorCorta) tutorCorta.abort(); return; }
   const sg = t.closest("[data-sug]"); if (sg) { tutorEnviar(sg.dataset.sug); return; }
@@ -5218,18 +5292,18 @@ document.addEventListener("click", e => {
     return;
   }
 });
-document.addEventListener("keydown", e => {
+alEvento("keydown", e => {
   if (e.target.id !== "chatTexto" || e.key !== "Enter" || e.shiftKey) return;
   e.preventDefault();
   const v = e.target.value; e.target.value = ""; e.target.style.height = "auto";
   tutorEnviar(v);
 });
-document.addEventListener("input", e => {
+alEvento("input", e => {
   if (e.target.id !== "chatTexto") return;
   e.target.style.height = "auto";
   e.target.style.height = Math.min(e.target.scrollHeight, 160) + "px";
 });
-document.addEventListener("change", e => { if (e.target.id === "chatMod") tutorMod = e.target.value; });
+alEvento("change", e => { if (e.target.id === "chatMod") tutorMod = e.target.value; });
 
 /* ── adjuntar al profe: clip, pegar con Ctrl+V o arrastrar ──
    Las capturas se mandan tal cual (Claude las reduce a ~1,2 megapíxeles) y en
@@ -5263,16 +5337,16 @@ async function tutorAnadir(lista) {
   }
   pintaAdj();
 }
-document.addEventListener("click", e => {
+alEvento("click", e => {
   const t = e.target;
   if (t.closest("#chatClip")) { const i = $("#chatArchivo"); if (i) i.click(); return; }
   const q = t.closest("[data-quitar-adj]");
   if (q) { tutorAdj = tutorAdj.filter(a => a.id !== q.dataset.quitarAdj); pintaAdj(); }
 });
-document.addEventListener("change", e => { if (e.target.id === "chatArchivo") { tutorAnadir(e.target.files); e.target.value = ""; } });
+alEvento("change", e => { if (e.target.id === "chatArchivo") { tutorAnadir(e.target.files); e.target.value = ""; } });
 /* lo que llevas escrito sobrevive a los repintados (por ejemplo, cuando acaba el cronómetro) */
-document.addEventListener("input", e => { if (e.target.id === "chatTexto") tutorBorrador = e.target.value; });
-document.addEventListener("paste", e => {
+alEvento("input", e => { if (e.target.id === "chatTexto") tutorBorrador = e.target.value; });
+alEvento("paste", e => {
   if (e.target.id !== "chatTexto") return;
   const archivos = Array.from((e.clipboardData && e.clipboardData.files) || []);
   if (!archivos.length) return;          /* el texto se pega tal cual: así el código llega letra a letra */
@@ -5280,16 +5354,16 @@ document.addEventListener("paste", e => {
 });
 /* en la sección del profe, soltar un archivo en cualquier sitio lo adjunta (y no abre la imagen encima de la app) */
 const conArchivos = e => e.dataTransfer && Array.from(e.dataTransfer.types || []).includes("Files");
-document.addEventListener("dragover", e => {
+alEvento("dragover", e => {
   if (seccion !== "tutor" || !conArchivos(e)) return;
   e.preventDefault();
   const p = $(".chat-panel"); if (p) p.classList.add("soltando");
 });
-document.addEventListener("dragleave", e => {
+alEvento("dragleave", e => {
   if (seccion !== "tutor" || e.relatedTarget) return;
   const p = $(".chat-panel"); if (p) p.classList.remove("soltando");
 });
-document.addEventListener("drop", e => {
+alEvento("drop", e => {
   if (seccion !== "tutor" || !conArchivos(e)) return;
   e.preventDefault();
   const p = $(".chat-panel"); if (p) p.classList.remove("soltando");
@@ -5438,7 +5512,7 @@ function catalogoDe(p) {
   if (e === "eso") return CAT_ESO[p.curso] || CAT_ESO["1.º"];
   if (e === "bach") return CAT_BACH[p.curso + "·" + p.rama] || CAT_BACH["1.º·Ciencias y Tecnología"];
   if (e === "ciclo-sup" || e === "ciclo-medio") {
-    const fam = (CAT_FP[e] || {})[p.ciclo];
+    const fam = familiaFP(e, p.ciclo);
     const lista = (fam && (fam[p.curso] || fam["1.º"])) || [];
     return lista.length ? planNuevoFP(lista, p.curso) : [];
   }
@@ -5448,6 +5522,22 @@ function catalogoDe(p) {
   return [];
 }
 const ciclosDe = etapa => Object.keys(CAT_FP[etapa] || {});
+/* En el catálogo el ciclo se llama "DAW · Desarrollo de Aplicaciones Web", pero
+   la gente lo escribe como le sale: "DAW", "daw", "desarrollo de aplicaciones
+   web"… Antes solo valía la cadena exacta, así que quien escribía su ciclo en
+   vez de pulsar la sugerencia se quedaba sin asignaturas y sin poder seguir. */
+function familiaFP(etapa, ciclo) {
+  const tabla = CAT_FP[etapa] || {};
+  if (tabla[ciclo]) return tabla[ciclo];
+  const q = sinTildes(String(ciclo || "").trim());
+  if (q.length < 2) return null;
+  const clave = Object.keys(tabla).find(k => {
+    const partes = sinTildes(k).split(" · "), cod = partes[0], nom = partes[1] || "";
+    return cod === q || nom === q || sinTildes(k) === q ||
+           (q.length >= 5 && (nom.includes(q) || q.includes(nom)));
+  });
+  return clave ? tabla[clave] : null;
+}
 /* Desde el curso 24/25 la FP tiene módulos comunes nuevos (Real Decreto 659/2023):
    FOL pasa a ser Itinerario personal para la empleabilidad I, Empresa e Iniciativa
    Emprendedora el II, el proyecto pasa a ser intermodular, y entran Inglés
@@ -5527,6 +5617,10 @@ function bvCerrar() { BV = null; $("#entrada").hidden = true; document.body.clas
 function bvCargarCatalogo() {
   const p = BV.p, cat = catalogoDe(p);
   BV.asigs = cat.map(([cod, nombre, h]) => ({ id: uid(), cod, nombre, horas: h, temario: "", on: true }));
+  /* de un curso que no conozco no puedo proponer nada, pero dejar la pantalla
+     en blanco es un callejón sin salida: mejor tres filas listas para escribir */
+  if (!BV.asigs.length) BV.asigs = [0, 1, 2].map(() =>
+    ({ id: uid(), cod: "", nombre: "", horas: porSemana(p.etapa) ? 3 : 100, temario: "", on: true }));
   if (!BV.pesos) BV.pesos = PLANTILLAS[plantillaDe(p)].map(([nombre, peso]) => ({ nombre, peso }));
 }
 /* y si tienes Claude, la lista de verdad de tu curso, con su temario */
@@ -5613,7 +5707,9 @@ function bvPaso2() {
   const hay = (S.modulos || []).length && BV.reconfig;
   return `
   <h1 class="ent-tit">Tus ${esc(voc(true))}.</h1>
-  <p class="ent-lead">Esto es una propuesta: desmarca lo que no lleves, cámbiale el nombre a lo que se llame de otra forma y añade lo que falte. Todo se puede tocar después en Ajustes.</p>
+  <p class="ent-lead">${catalogoDe(p).length
+    ? "Esto es una propuesta: desmarca lo que no lleves, cámbiale el nombre a lo que se llame de otra forma y añade lo que falte. Todo se puede tocar después en Ajustes."
+    : "De tu curso no tengo lista, así que las escribes tú: el código corto, el nombre y las horas. Con una basta para empezar, y luego se añaden más en Ajustes."}</p>
   <div class="ent-acciones">
     <button type="button" class="btn${sample ? " primario" : ""}" id="bvIA"${BV.cargando ? " disabled" : ""}>
       ${BV.cargando ? "Preguntándole al profe…" : "Pedirle la lista al profe"}</button>
@@ -5746,7 +5842,7 @@ function bvPuedeSeguir() {
     if (["uni", "oposicion", "idioma", "otro"].includes(p.etapa)) return !!String(p.ciclo || "").trim();
     return !!p.curso;
   }
-  if (BV.paso === 2) return BV.asigs.some(a => a.on);
+  if (BV.paso === 2) return BV.asigs.some(a => a.on && String(a.nombre || "").trim());
   if (BV.paso === 4) return BV.pesos.length > 0;
   if (BV.paso === bvPasos().length - 1) return !!BV.edadOk && !!BV.legalOk;   /* 14 años y papeles aceptados */
   return true;
@@ -5817,7 +5913,7 @@ function bvAplicar() {
 }
 
 /* ── clics y campos de la entrada ── */
-document.addEventListener("click", e => {
+alEvento("click", e => {
   if (!BV) return;
   const t = e.target;
   const et = t.closest("[data-bv-etapa]");
@@ -5848,7 +5944,7 @@ document.addEventListener("click", e => {
   if (cas) { BV[cas.id === "bvEdad" ? "edadOk" : "legalOk"] = cas.checked; pintaEntrada(); return; }
   if (t.closest("#bvSiguiente")) { BV.paso === bvPasos().length - 1 ? bvAplicar() : bvIr(1); return; }
 });
-document.addEventListener("input", e => {
+alEvento("input", e => {
   if (!BV) return;
   const t = e.target, campo = t.dataset.bvCampo;
   if (campo) {
@@ -5860,9 +5956,26 @@ document.addEventListener("input", e => {
   if (t.dataset.bvPeso) {
     const x = BV.pesos[num(t.dataset.i)]; if (!x) return;
     x[t.dataset.bvPeso] = t.dataset.bvPeso === "peso" ? num(t.value) : t.value;
+    return;
+  }
+  /* Cualquier otro campo escrito a mano: el ciclo, el grado, la plaza de la
+     oposición… Antes solo se leían al cambiar de paso, así que quien escribía
+     su ciclo en vez de pulsar una sugerencia se encontraba el botón "Seguir"
+     apagado para siempre y no pasaba de la segunda pantalla. Se apunta lo
+     escrito y se mira si ya se puede seguir, sin repintar: repintar aquí
+     dejaría el cursor a mitad de la palabra. */
+  if (t.closest("#entrada")) {
+    bvLeerCampos();
+    /* En los ciclos, la casilla de texto se pinta vacía cuando lo elegido es
+       una de las sugerencias, y por eso bvLeerCampos no la deja borrar nada.
+       Pero si estás escribiendo en ella, mandas tú: escribir o borrar cambia
+       el ciclo, aunque antes hubieras pulsado una sugerencia. */
+    if (t.id === "bvCiclo") BV.p.ciclo = t.value.trim().slice(0, 80);
+    const seguir = $("#bvSiguiente");
+    if (seguir) seguir.disabled = !bvPuedeSeguir();
   }
 });
-document.addEventListener("keydown", e => {
+alEvento("keydown", e => {
   if (!BV || e.key !== "Enter" || e.target.tagName === "TEXTAREA") return;
   if (e.target.tagName === "INPUT" && e.target.type === "checkbox") return;
   e.preventDefault();
@@ -6113,6 +6226,41 @@ function ajLegal() {
   </section>`;
 }
 
+function verErrores() {
+  const dlg = $("#dlgLegal"); if (!dlg) return;
+  const lista = ERRORES.slice().reverse();
+  dlg.innerHTML = `
+    <div class="dlgl-cab">
+      <h3>Fallos apuntados</h3>
+      <button type="button" class="icono-btn" data-papel-cerrar aria-label="Cerrar"><svg class="i" viewBox="0 0 16 16"><path d="M4 4l8 8M12 4l-8 8"/></svg></button>
+    </div>
+    <div class="dlgl-cuerpo">
+      <p class="meta" style="margin:0 0 14px">${lista.length === 1 ? "El único que hay" : "Los " + lista.length + " últimos, del más reciente al más viejo"}. Se borran al vaciar los datos del navegador.</p>
+      ${lista.map(e => `<div class="err-fila">
+        <div class="err-que">${esc(e.que)}</div>
+        <div class="meta">${esc(fechaLarga(e.h))} · ${esc(e.donde)}${e.seccion ? " · en " + esc(e.seccion) : ""}</div>
+        ${e.pila ? `<div class="err-pila">${esc(e.pila)}</div>` : ""}
+      </div>`).join("")}
+      <div class="barra-btns" style="margin-top:18px">
+        <button type="button" class="btn" id="errCopiar">Copiar para mandarlos</button>
+        <button type="button" class="btn borrar fantasma" id="errVaciar">Vaciar la lista</button>
+      </div>
+    </div>`;
+  dlg.onclick = async e => {
+    if (e.target.closest("#errCopiar")) {
+      const txt = lista.map(x => x.h + " · " + x.donde + (x.seccion ? " · " + x.seccion : "") + "\n" + x.que + (x.pila ? "\n" + x.pila : "")).join("\n\n");
+      try { await navigator.clipboard.writeText(txt); aviso("Copiado."); } catch (x) { aviso("No he podido copiarlo.", "mal"); }
+      return;
+    }
+    if (e.target.closest("#errVaciar")) {
+      ERRORES.length = 0; guardaLS("errores", []); dlg.close(); pinta(); aviso("Lista vaciada.");
+      return;
+    }
+    if (e.target.closest("[data-papel-cerrar]") || e.target === dlg) dlg.close();
+  };
+  if (!dlg.open) dlg.showModal();
+}
+
 function ajDatos() {
   const tam = Math.round(JSON.stringify(S).length / 1024);
   return `
@@ -6131,6 +6279,11 @@ function ajDatos() {
       : "Solo en este navegador y en este dispositivo. Si vas a usarla en el móvil y en el ordenador, descárgate la copia aquí y cárgala allí."}</p>
     <p class="meta" style="margin:6px 0 0">Ocupan ${tam} KB, con ${Object.keys(S.apuntes || {}).length} apuntes y ${Object.keys(S.casillero || {}).length} documentos.</p>
     <p class="meta" style="margin:10px 0 0">El detalle de qué se guarda y qué sale fuera está en <button type="button" class="lg-enlace" data-lg="privacidad">la política de privacidad</button>.</p>
+    ${ERRORES.length ? `
+    <hr class="separador">
+    <div class="etq">Si algo ha fallado</div>
+    <p class="meta" style="margin:6px 0 12px">La app ha apuntado ${ERRORES.length} fallo${ERRORES.length === 1 ? "" : "s"} mientras la usabas. No salen de este dispositivo: están aquí para saber qué hay que arreglar.</p>
+    <button type="button" class="btn fantasma" id="apVerErrores">Ver los fallos</button>` : ""}
     <hr class="separador">
     <div class="etq">Empezar de cero</div>
     <p class="meta" style="margin:6px 0 14px">Borra el perfil, las ${esc(voc(true))}, las notas, las horas, las entregas, los apuntes y la conversación con el profe. No se puede deshacer.</p>
@@ -6153,10 +6306,11 @@ function ajLeerPerfil() {
   if (v("apMotivo") !== undefined) p.motivo = v("apMotivo").trim().slice(0, 120);
   S.config.curso = [etapaDe(p.etapa).nombre, p.ciclo || p.rama, p.curso].filter(Boolean).join(" · ").slice(0, 60);
 }
-document.addEventListener("click", async e => {
+alEvento("click", async e => {
   const t = e.target;
   const tab = t.closest("[data-aj]"); if (tab) { ajTab = tab.dataset.aj; lgAbierto = null; pinta(); return; }
   const sw = t.closest("#apIA"); if (sw) { ponerIA(sw.checked); return; }
+  if (t.closest("#apVerErrores")) { verErrores(); return; }
   const pap = t.closest("[data-lg-dlg]"); if (pap) { e.preventDefault(); verPapel(pap.dataset.lgDlg); return; }
   const lg = t.closest("[data-lg]"); if (lg) { lgAbierto = lg.dataset.lg; ajTab = "legal"; pinta(); window.scrollTo({ top: 0 }); return; }
   if (t.closest("[data-lg-volver]")) { lgAbierto = null; pinta(); return; }
@@ -6253,7 +6407,7 @@ document.addEventListener("click", async e => {
     bvAbrir(false); return;
   }
 });
-document.addEventListener("change", async e => {
+alEvento("change", async e => {
   const t = e.target;
   if (t.dataset.ajHex) { const m = modPorId(t.dataset.ajHex); if (m) { m.colorHex = t.value; guardar("ajustes"); pinta(); } return; }
   if (t.id === "apEtapa") { ajLeerPerfil(); guardar("perfil"); pinta(); return; }
@@ -6271,7 +6425,7 @@ document.addEventListener("change", async e => {
     t.value = ""; return;
   }
 });
-document.addEventListener("input", e => {
+alEvento("input", e => {
   const t = e.target;
   if (!t.dataset.ajMod) return;
   const m = modPorId(t.dataset.id); if (!m) return;
@@ -6763,7 +6917,7 @@ function cambiarTipo(e, nuevo) {
 }
 
 /* ── botones, teclado y arrastrar ── */
-document.addEventListener("click", async e => {
+alEvento("click", async e => {
   const t = e.target;
   const tab = t.closest("[data-ag]"); if (tab) { agTab = tab.dataset.ag; agPeek = null; pinta(); return; }
   const ir = t.closest("[data-ir-agenda]"); if (ir) { agTab = ir.dataset.irAgenda; agPeek = null; irASeccion("entregas"); return; }
@@ -6818,12 +6972,12 @@ document.addEventListener("click", async e => {
   const el = t.closest("[data-el]");
   if (el && !t.closest("button")) { const [tipo, id] = el.dataset.el.split("|"); abrirPeek(tipo, id); return; }
 });
-document.addEventListener("input", e => {
+alEvento("input", e => {
   const t = e.target;
   if (t.id === "agRapido") { pintaEntiende(); return; }
   if (["pkTitulo", "pkTemas", "pkNotas"].includes(t.id)) editarPeekCampo(t.id, t.value);
 });
-document.addEventListener("change", e => {
+alEvento("change", e => {
   const t = e.target; if (!agPeek || !t.id || !t.id.startsWith("pk")) return;
   const el = elemento(agPeek.tipo, agPeek.id); if (!el) return;
   const r = el.ref;
@@ -6836,7 +6990,7 @@ document.addEventListener("change", e => {
   else return;
   guardar("agenda"); pinta();
 });
-document.addEventListener("keydown", e => {
+alEvento("keydown", e => {
   if (seccion !== "entregas") return;
   const t = e.target;
   if (t.id === "agRapido" && e.key === "Enter" && t.value.trim()) {
@@ -6869,21 +7023,21 @@ document.addEventListener("keydown", e => {
   if (el && (e.key === "Enter" || e.key === " ")) { e.preventDefault(); const [tipo, id] = el.dataset.el.split("|"); abrirPeek(tipo, id); }
 });
 /* arrastrar: entre columnas cambia el estado; entre días del calendario, la fecha */
-document.addEventListener("dragstart", e => {
+alEvento("dragstart", e => {
   const el = e.target.closest && e.target.closest("[data-el]"); if (!el || seccion !== "entregas") return;
   e.dataTransfer.setData("text/x-agenda", el.dataset.el); e.dataTransfer.effectAllowed = "move";
   el.classList.add("arrastrando");
 });
-document.addEventListener("dragend", e => { const el = e.target.closest && e.target.closest("[data-el]"); if (el) el.classList.remove("arrastrando"); document.querySelectorAll(".soltar-aqui").forEach(x => x.classList.remove("soltar-aqui")); });
+alEvento("dragend", e => { const el = e.target.closest && e.target.closest("[data-el]"); if (el) el.classList.remove("arrastrando"); document.querySelectorAll(".soltar-aqui").forEach(x => x.classList.remove("soltar-aqui")); });
 const destinoAg = t => t.closest && (t.closest("[data-tb-col]") || t.closest("[data-cal-dia]"));
-document.addEventListener("dragover", e => {
+alEvento("dragover", e => {
   if (seccion !== "entregas" || !Array.from(e.dataTransfer.types || []).includes("text/x-agenda")) return;
   const d = destinoAg(e.target); if (!d) return;
   e.preventDefault(); e.dataTransfer.dropEffect = "move";
   document.querySelectorAll(".soltar-aqui").forEach(x => { if (x !== d) x.classList.remove("soltar-aqui"); });
   d.classList.add("soltar-aqui");
 });
-document.addEventListener("drop", e => {
+alEvento("drop", e => {
   if (seccion !== "entregas") return;
   const dato = e.dataTransfer.getData("text/x-agenda"), d = destinoAg(e.target); if (!dato || !d) return;
   e.preventDefault();
@@ -7083,7 +7237,7 @@ function rpResponder(como) {
   if (!s.cola.length) { const d = diaObj(); d.tarjetas = true; guardar("objetivos"); }
   guardar("repaso"); pinta();
 }
-document.addEventListener("click", e => {
+alEvento("click", e => {
   const t = e.target;
   if (t.closest("#rpEmpezar")) { rpEmpezar(); return; }
   const rm = t.closest("[data-rp-mod]"); if (rm) { rpEmpezar(rm.dataset.rpMod); return; }
@@ -7112,7 +7266,7 @@ document.addEventListener("click", e => {
   const ap = t.closest("[data-tarjetas-apunte]");
   if (ap) { const n = S.apuntes[ap.dataset.tarjetasApunte]; if (n) { irASeccion("repaso"); tarjetasDeIA(n.modId, n.id); } return; }
 });
-document.addEventListener("keydown", e => {
+alEvento("keydown", e => {
   if (seccion !== "repaso" || !RP.sesion || editando()) return;
   if (e.key === " " && !RP.sesion.volteada) { e.preventDefault(); RP.sesion.volteada = true; pinta(); }
   else if (RP.sesion.volteada && ["1", "2", "3"].includes(e.key)) rpResponder({ 1: "no", 2: "duda", 3: "si" }[e.key]);
@@ -7214,7 +7368,7 @@ function vistaProgreso() {
   </div>`;
 }
 /* el dato de cada tramo al pasar por encima; con teclado, la tabla de debajo */
-document.addEventListener("mousemove", e => {
+alEvento("mousemove", e => {
   const tip = $("#pgTip"); if (!tip) return;
   const r = e.target.closest && e.target.closest("rect[data-tip]");
   if (!r) { tip.hidden = true; return; }
@@ -7395,7 +7549,7 @@ function panelHTML(c) {
 }
 
 /* acciones del panel */
-document.addEventListener("click", e => {
+alEvento("click", e => {
   const t = e.target;
   if (t.closest(".cm-logo")) { irASeccion("escritorio"); return; }
   const pk = t.closest("[data-pn-peek]"); if (pk) { const [tipo, id] = pk.dataset.pnPeek.split(":"); abrirPeek(tipo, id); return; }
@@ -7406,7 +7560,7 @@ document.addEventListener("click", e => {
   const pd = t.closest("[data-pn-pedir]");
   if (pd) { const ta = $("#chatTexto"); if (ta) { ta.value = pd.dataset.pnPedir; ta.focus(); ta.dispatchEvent(new Event("input", { bubbles: true })); } return; }
 });
-document.addEventListener("input", e => {
+alEvento("input", e => {
   if (e.target.id !== "pnBuscar") return;
   const q = sinTildes(e.target.value.trim());
   let vistos = 0;
