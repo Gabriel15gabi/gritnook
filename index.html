@@ -1788,6 +1788,14 @@ let db = null, sample = null, sampleReal = null, descargas = null, almacen = nul
 /* el interruptor del profe: apagado, la app no manda nada a ninguna IA.
    sampleReal guarda la conexión de verdad; sample es la que usa la app. */
 const iaApagada = () => !!(S && S.config && S.config.ia === false);
+/* dentro de Claude el profe se puede conectar; fuera —GitHub Pages, el archivo
+   suelto— esta versión sencillamente no lo lleva, y hay que decirlo así */
+const enClaude = () => typeof claude !== "undefined" && !!claude;
+const avisoIA = (queSiFunciona) => iaApagada()
+  ? "El profe está apagado en Ajustes → El profe."
+  : enClaude()
+    ? "Esto necesita abrir la app desde tu enlace de Claude."
+    : "Esta versión de GritNook no lleva el profe con inteligencia artificial." + (queSiFunciona ? " " + queSiFunciona : "");
 function ponerIA(v) {
   S.config.ia = !!v;
   sample = S.config.ia ? sampleReal : null;
@@ -1900,7 +1908,8 @@ function calcModulo(m) {
   let est = "ok", txt = "Vas bien";
   if (imposible) { est = "riesgo"; txt = "Solo con recuperación"; }
   else if (faltasPct >= 1) { est = "riesgo"; txt = "Faltas al límite"; }
-  else if (media !== null && media < obj) { est = "riesgo"; txt = "Suspenso ahora"; }
+  /* por debajo del 5 es suspenso de verdad; por debajo de tu objetivo, solo es ir corto */
+  else if (media !== null && media < obj) { est = "riesgo"; txt = media < 5 ? "Suspenso ahora" : "Por debajo de tu objetivo"; }
   else if (necesita !== null && necesita > 7) { est = "aviso"; txt = "Te exige mucho"; }
   else if (faltasPct >= 0.7) { est = "aviso"; txt = "Ojo con las faltas"; }
   else if (media === null) { est = "aviso"; txt = "Sin notas aún"; }
@@ -2051,7 +2060,7 @@ function pintaReloj() {
 
 /* ══════════════════ Claude ══════════════════ */
 async function pedirAClaude(prompt, destino) {
-  if (!sample) { destino.textContent = "Esta función necesita que abras la página desde tu cuenta de Claude."; return null; }
+  if (!sample) { destino.textContent = avisoIA(); return null; }
   destino.textContent = "Pensando…"; destino.classList.add("cargando");
   try {
     const r = await sample(prompt, { onText: ({ text }) => { destino.classList.remove("cargando"); destino.textContent = text; } });
@@ -5055,7 +5064,9 @@ async function tutorEnviar(texto) {
     tutorApunta(msg);
     tutorApunta({ id: uid(), r: "profe", t: iaApagada()
       ? "Me tienes apagado en Ajustes → El profe. Así no sale nada de la app hacia ninguna inteligencia artificial, ni tu nombre ni tus notas, pero tampoco puedo contestarte. Enciéndeme cuando quieras: lo que me escribas se queda guardado igual."
-      : "Aquí no puedo contestarte: esta copia de la página no está conectada con Claude. Ábreme desde tu enlace de Claude y seguimos; lo que me escribas allí sí me llega.", h: ahora() });
+      : enClaude()
+        ? "Aquí no puedo contestarte: esta copia de la página no está conectada con Claude. Ábreme desde tu enlace de Claude y seguimos; lo que me escribas allí sí me llega."
+        : "Esta versión de GritNook no me lleva a mí: soy la parte con inteligencia artificial y no vengo incluido. Escríbeme igual, que se guarda, pero no voy a poder contestarte. Todo lo demás de la app funciona.", h: ahora() });
     guardar("tutor"); pinta();
     const c = $("#chatTexto"); if (c) c.focus();
     return;
@@ -5165,7 +5176,8 @@ function vistaTutor() {
     <p class="chat-nota">${sample
       ? "Pega capturas con Ctrl+V, arrástralas aquí o usa el clip. El código, mejor pegado como texto o en archivo: así lo lee entero y sin errores."
       : iaApagada() ? "El profe está apagado en Ajustes. Lo que escribas se guarda, pero no sale de tu dispositivo ni le llega a ninguna inteligencia artificial."
-      : "Esta copia de la página no tiene conexión con Claude. Escríbele igualmente —se guarda—, pero para que te conteste ábrela desde tu enlace de Claude."}</p>
+      : enClaude() ? "Esta copia de la página no tiene conexión con Claude. Escríbele igualmente —se guarda—, pero para que te conteste ábrela desde tu enlace de Claude."
+      : "Esta versión no lleva el profe con inteligencia artificial. Lo que escribas se guarda en tu dispositivo, pero no te va a contestar nadie."}</p>
   </section>
   ${pend.length ? `
   <section class="panel">
@@ -5519,7 +5531,7 @@ function bvCargarCatalogo() {
 }
 /* y si tienes Claude, la lista de verdad de tu curso, con su temario */
 async function bvPedirAClaude() {
-  if (!sample) { BV.aviso = "Para esto hace falta abrir la página desde tu cuenta de Claude."; pintaEntrada(); return; }
+  if (!sample) { BV.aviso = avisoIA("Sigue con la propuesta de abajo y la ajustas a mano en un momento."); pintaEntrada(); return; }
   const p = BV.p, e = etapaDe(p.etapa);
   BV.cargando = true; BV.aviso = ""; pintaEntrada();
   const donde = [e.nombre, p.curso, p.rama, p.ciclo, p.centro].filter(Boolean).join(" · ");
@@ -5609,7 +5621,7 @@ function bvPaso2() {
     <button type="button" class="btn fantasma" id="bvAddAsig">${icono("mas")}Añadir a mano</button>
   </div>
   ${BV.aviso ? `<p class="ent-aviso">${esc(BV.aviso)}</p>` : ""}
-  ${!sample ? `<p class="ent-aviso">Aquí no hay conexión con Claude: la lista sale del catálogo y la ajustas tú.</p>` : ""}
+  ${!sample ? `<p class="ent-aviso">${esc(enClaude() ? "Aquí no hay conexión con Claude: la lista sale del catálogo y la ajustas tú." : "La lista sale del catálogo y la ajustas tú: quita lo que no lleves y añade lo que falte.")}</p>` : ""}
   ${p.etapa === "ciclo-sup" || p.etapa === "ciclo-medio" ? `<p class="ent-aviso">Desde el curso 24/25 la FP tiene módulos comunes nuevos: Itinerario personal para la empleabilidad, Inglés profesional, Digitalización, Sostenibilidad y el Proyecto intermodular. Cada comunidad los reparte entre 1.º y 2.º a su manera, así que desmarca los que no tengas este curso. Las horas son orientativas: pon las de tu centro.</p>` : ""}
   <div class="ent-asigs">
     ${BV.asigs.length ? BV.asigs.map(a => `<div class="ent-asig${a.on ? "" : " off"}" data-asig="${a.id}">
@@ -6114,7 +6126,9 @@ function ajDatos() {
     </div>
     <hr class="separador">
     <div class="etq">Dónde están tus datos</div>
-    <p class="meta" style="margin:6px 0 0">${db ? "En tu cuenta de Claude: los ves igual desde el móvil y desde cualquier ordenador." : "Solo en este navegador. Para que te sigan entre dispositivos, abre la app desde tu enlace de Claude."}</p>
+    <p class="meta" style="margin:6px 0 0">${db ? "En tu cuenta de Claude: los ves igual desde el móvil y desde cualquier ordenador."
+      : enClaude() ? "Solo en este navegador. Para que te sigan entre dispositivos, abre la app desde tu enlace de Claude."
+      : "Solo en este navegador y en este dispositivo. Si vas a usarla en el móvil y en el ordenador, descárgate la copia aquí y cárgala allí."}</p>
     <p class="meta" style="margin:6px 0 0">Ocupan ${tam} KB, con ${Object.keys(S.apuntes || {}).length} apuntes y ${Object.keys(S.casillero || {}).length} documentos.</p>
     <p class="meta" style="margin:10px 0 0">El detalle de qué se guarda y qué sale fuera está en <button type="button" class="lg-enlace" data-lg="privacidad">la política de privacidad</button>.</p>
     <hr class="separador">
@@ -6449,7 +6463,7 @@ function planExamenLocal(ex) {
   return plan;
 }
 async function planExamenIA(ex, boton) {
-  if (!sample) { aviso("El plan del profe necesita abrir la app desde tu enlace de Claude.", "mal"); return; }
+  if (!sample) { aviso(avisoIA("El plan de examen lo puedes montar a mano en la agenda."), "mal"); return; }
   const m = modPorId(ex.modId), p = normalizarPerfil(), hoy = hoyISO();
   const dias = (p.diasFuertes.length ? p.diasFuertes : DIAS_ORDEN.slice(0, 6)).join(", ");
   if (boton) { boton.disabled = true; boton.textContent = "Preparándolo…"; }
@@ -6917,7 +6931,7 @@ function textoParaIA(modId, apunteId) {
   return partes.join("\n");
 }
 async function tarjetasDeIA(modId, apunteId, boton) {
-  if (!sample) { aviso("Esto necesita abrir la app desde tu enlace de Claude.", "mal"); return; }
+  if (!sample) { aviso(avisoIA("Las tarjetas a mano funcionan igual."), "mal"); return; }
   RP.cargando = "tarjetas"; pinta();
   const q = textoParaIA(modId, apunteId) + `
 
@@ -6934,7 +6948,7 @@ Entre 6 y 15 tarjetas. Nada que no esté en ${apunteId ? "los apuntes" : "el tem
   RP.cargando = ""; pinta();
 }
 async function testDeIA(modId, apunteId) {
-  if (!sample) { aviso("El test necesita abrir la app desde tu enlace de Claude.", "mal"); return; }
+  if (!sample) { aviso(avisoIA("Puedes repasar con tus propias tarjetas."), "mal"); return; }
   RP.cargando = "test"; pinta();
   const q = textoParaIA(modId, apunteId) + `
 
@@ -6987,7 +7001,7 @@ function vistaRepaso() {
         <button type="button" class="btn" id="rpTarjetasIA"${sample && !RP.cargando ? "" : " disabled"}>${RP.cargando === "tarjetas" ? "Haciendo tarjetas…" : "Hacer tarjetas"}</button>
         <button type="button" class="btn" id="rpTestIA"${sample && !RP.cargando ? "" : " disabled"}>${RP.cargando === "test" ? "Preparando el test…" : "Ponme un test"}</button>
       </div>
-      ${sample ? "" : `<p class="meta" style="margin-top:10px">Esto necesita abrir la app desde tu enlace de Claude. Las tarjetas a mano funcionan igual.</p>`}
+      ${sample ? "" : `<p class="meta" style="margin-top:10px">${esc(avisoIA("Las tarjetas a mano funcionan igual."))}</p>`}
     </section>
     <section class="panel c-12">
       <div class="etq" style="margin-bottom:12px">Tarjeta a mano</div>

@@ -4,6 +4,8 @@ App de estudio que se acomoda a lo que estudies: le dices si vas a la ESO, a Bac
 
 **[Probarla en vivo →](https://gabriel15gabi.github.io/gritnook/)**
 
+La versión pública funciona entera y no pide registrarse: todo se guarda en tu propio navegador. **No lleva el profe con inteligencia artificial ni la sincronización entre dispositivos**, porque esas dos cosas son capacidades de Claude y solo existen abriéndola desde allí.
+
 ![GritNook](capturas/escritorio.png)
 
 ## Por qué
@@ -30,6 +32,8 @@ Quien ya tenía datos no pasa por ahí: el perfil se rellena con lo que había y
 
 **Apuntes en libreta de verdad.** Papel de cuadrícula, rayas, puntos o liso, con su margen rojo. Al escribir: negrita, cursiva, subrayado, tachado, títulos, listas con viñetas o numeradas, subrayado del texto en doce tonos pastel y color de letra. Al dibujar: bolígrafo, rotulador, subrayador (doce pastel), diez tintas y un color libre, formas (línea, flecha, rectángulo, círculo) con imán a la cuadrícula y rayas rectas con Mayús. Letra normal o escrita a mano (cuatro manuscritas) que se queda para todos tus apuntes. Modo concentración para quedarte solo con la hoja. La goma **corta el trazo por donde pasa** en vez de borrarlo entero, como una goma de verdad. Deshacer y rehacer sin límite.
 
+![Módulos](capturas/modulos.png)
+
 ![La libreta](capturas/libreta.png)
 
 **Horas y cronómetro.** Pomodoro por asignatura que se queda a mano debajo del menú, en cualquier sección, para pararlo o seguir sin moverte. Al acabar la concentración te para con un «bien hecho» y el descanso lo empiezas tú. Con el reparto de la semana y la meta semanal de cada una.
@@ -52,7 +56,7 @@ Quien ya tenía datos no pasa por ahí: el perfil se rellena con lo que había y
 
 **Menú.** En el ordenador, un riel con cada sección y su nombre, siempre en el mismo sitio, y al lado un panel con lo que hay dentro de la sección en la que estás: tus apuntes con buscador, lo pendiente de la agenda agrupado por fechas, tus asignaturas con su estado… En el móvil, una barra de pestañas abajo y un «Más» con el resto de secciones y su dato al día. Las confirmaciones (borrar algo, cargar una copia) son ventanas de la propia app, nunca las del navegador.
 
-**Ajustes.** Perfil, asignaturas con su color, plantilla de evaluación, cronómetro, el tutor, tema y copia de seguridad en JSON.
+**Ajustes.** Perfil, asignaturas con su color, plantilla de evaluación, cronómetro, el tutor —con un interruptor para apagarlo del todo, y entonces no sale nada hacia ninguna IA—, tema, copia de seguridad en JSON y los cuatro documentos legales, que se leen dentro de la app.
 
 ## Cómo está hecho
 
@@ -94,9 +98,9 @@ El mismo archivo corre en dos sitios con capacidades distintas:
 
 La versión pública es para verla y probarla. La de Claude usa sus capacidades de sincronización e IA, que solo existen cuando la página se abre desde allí; el código detecta si están disponibles y, si no, esconde o explica lo que no puede funcionar en vez de fallar.
 
-## Cuentas de usuario
+## El plan
 
-Lo que falta para poder venderla —cuentas, cobro y lo legal— está en [CUENTAS.md](CUENTAS.md).
+GritNook se publica gratis. El porqué, las cuentas de venderla y qué haría falta para cobrar están en [CUENTAS.md](CUENTAS.md).
 
 ## Licencia
 
