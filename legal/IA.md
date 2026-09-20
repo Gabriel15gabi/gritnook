@@ -1,6 +1,6 @@
 # Cómo funciona el profe
 
-En vigor desde el [RELLENAR: fecha].
+En vigor desde el 20 de septiembre de 2026.
 
 ## Estás hablando con una máquina
 
@@ -73,6 +73,10 @@ encargado de tratamiento con el proveedor.]
 ## Si no lo quieres usar
 
 El resto de GritNook —notas, faltas, agenda, apuntes, casillero, repaso— funciona
-sin el profe. Si no lo usas, no se envía nada a ninguna inteligencia artificial.
+sin el profe.
 
-[PENDIENTE: interruptor en Ajustes para apagarlo del todo.]
+Puedes apagarlo del todo en **Ajustes → El profe**, quitando la marca de «Usar el
+profe con inteligencia artificial». Mientras esté apagado **no sale nada** de la
+aplicación hacia ninguna IA: ni tu nombre, ni tus notas, ni tus apuntes. Lo que le
+escribas se guarda en tu dispositivo, pero no se envía a nadie. Se vuelve a
+encender en el mismo sitio.

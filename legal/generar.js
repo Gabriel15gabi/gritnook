@@ -74,7 +74,10 @@ const legal = DOCS.map(([id, archivo, nombre, resumen]) => {
 const APP = process.argv[2] || "escritorio-daw.html";
 let s = fs.readFileSync(APP, "utf8");
 const marcaIni = "const LEGAL = ", marcaFin = ";\nlet lgAbierto = null;";
-const constante = marcaIni + JSON.stringify(legal) + marcaFin;
+/* la versión de los papeles es su fecha de entrada en vigor: queda guardada
+   con la aceptación de cada alumno, para saber qué aceptó exactamente */
+const vigor = (legal.find(d => d.id === "privacidad").html.match(/En vigor desde el ([^<.]+)/) || [, ""])[1].trim();
+const constante = marcaIni + JSON.stringify(legal) + ";\nconst LEGAL_V = " + JSON.stringify(vigor) + marcaFin;
 
 function rep(a, b) {
   const n = s.split(a).length - 1;

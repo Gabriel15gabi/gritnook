@@ -1,11 +1,11 @@
 # Términos de uso
 
-En vigor desde el [RELLENAR: fecha].
+En vigor desde el 20 de septiembre de 2026.
 
 ## 1. Qué es esto
 
-Estas son las reglas entre **[RELLENAR: nombre y apellidos]**, NIF
-[RELLENAR: NIF] («el titular»), y tú, que usas GritNook. Al usar la aplicación
+Estas son las reglas entre **Gabriel Rodríguez Blanco**, NIF
+09215128V («el titular»), y tú, que usas GritNook. Al usar la aplicación
 las aceptas. Si no estás de acuerdo con alguna, no la uses.
 
 Van con ellas la [política de privacidad](PRIVACIDAD.md), el

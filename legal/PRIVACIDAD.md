@@ -1,6 +1,6 @@
 # Política de privacidad
 
-En vigor desde el [RELLENAR: fecha].
+En vigor desde el 20 de septiembre de 2026.
 
 ## Lo importante, en cinco líneas
 
@@ -13,13 +13,12 @@ o borrarlo entero cuando quieras, desde Ajustes → Datos.
 
 ## 1. Quién responde de tus datos
 
-- **Responsable:** [RELLENAR: nombre y apellidos]
-- **NIF:** [RELLENAR: NIF]
-- **Domicilio:** [RELLENAR: dirección]
-- **Correo para todo lo relacionado con tus datos:** [RELLENAR: correo]
+- **Responsable:** Gabriel Rodríguez Blanco
+- **NIF:** 09215128V
+- **Correo para todo lo relacionado con tus datos:** gabriel_gabiz@hotmail.com
 
-No hace falta delegado de protección de datos, pero puedes escribir a ese correo
-para cualquier cosa.
+No hace falta delegado de protección de datos. El correo es el canal oficial:
+por ahí se atienden todas las peticiones, y se responden en un mes como máximo.
 
 ## 2. Qué datos se tratan
 
@@ -72,7 +71,7 @@ navegador.
 |---|---|---|
 | Anthropic (proveedor del profe con IA) | Solo lo que se le envía en cada pregunta: tu nombre o apodo, tu curso y asignaturas, tus notas y entregas, los títulos de tus apuntes, los últimos mensajes y los archivos que adjuntes | Estados Unidos |
 | Anthropic (almacenamiento de Claude), solo si abres la app desde allí | Tus datos sincronizados y tus archivos del casillero | Estados Unidos |
-| [RELLENAR: alojamiento web, p. ej. GitHub Pages] | Solo sirve los archivos de la app. Como cualquier servidor web, registra la dirección IP y el navegador de quien la abre, por seguridad. **No recibe ninguno de tus datos de estudio** | [RELLENAR: país] |
+| GitHub Pages (GitHub, Inc.) | Solo sirve los archivos de la app. Como cualquier servidor web, registra la dirección IP y el navegador de quien la abre, por seguridad. **No recibe ninguno de tus datos de estudio** | Estados Unidos |
 
 No hay nadie más. No se ceden datos a terceros, ni se venden, ni hay anunciantes.
 Solo se entregarían a jueces, fuerzas de seguridad o administraciones si una ley
@@ -116,7 +115,7 @@ Puedes pedir, gratis y en cualquier momento:
 - **Limitación y oposición** al tratamiento.
 
 Casi todos los puedes ejercer tú solo desde la app, sin pedir permiso a nadie. Si
-prefieres escribir, el correo es [RELLENAR: correo]. Se responde en un mes como
+prefieres escribir, el correo es gabriel_gabiz@hotmail.com. Se responde en un mes como
 máximo.
 
 Si crees que no se han respetado tus derechos, puedes reclamar ante la **Agencia

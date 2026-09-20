@@ -1,17 +1,23 @@
 # Aviso legal
 
-En vigor desde el [RELLENAR: fecha].
+En vigor desde el 20 de septiembre de 2026.
 
 ## Quién está detrás de GritNook
 
-- **Titular:** [RELLENAR: nombre y apellidos]
-- **NIF:** [RELLENAR: NIF]
-- **Domicilio:** [RELLENAR: dirección a efectos de notificaciones]
-- **Correo de contacto:** [RELLENAR: correo]
+- **Titular:** Gabriel Rodríguez Blanco
+- **NIF:** 09215128V
+- **Correo de contacto:** gabriel_gabiz@hotmail.com
 - **Dirección de la aplicación:** [RELLENAR: dirección web]
 
 Esta información se publica para cumplir el artículo 10 de la Ley 34/2002, de
 servicios de la sociedad de la información y de comercio electrónico.
+
+GritNook se ofrece **gratis y sin actividad comercial**: no se cobra por ella, no
+hay publicidad y no se vende nada. Por eso aquí no figura una dirección postal.
+El día que la aplicación pase a ser de pago se publicará también el domicilio del
+titular, que es lo que exige ese artículo 10 cuando hay actividad económica.
+Mientras tanto, para cualquier notificación sirve el correo de contacto, que se
+lee y se responde.
 
 ## Qué es GritNook
 
