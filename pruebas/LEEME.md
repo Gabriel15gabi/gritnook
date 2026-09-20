@@ -8,6 +8,10 @@ Eso levanta un servidor, abre un navegador sin ventana y escribe el resultado en
 la consola. Devuelve 1 si algo falla, que es lo que mira un servidor de
 integración continua.
 
+**308 pruebas.** Sin ventana pasan 302 y 6 se quedan en pendiente: son las que
+dibujan un PDF, y sin tarjeta gráfica eso tarda demasiado. Abriendo
+ en un navegador normal pasan las 308.
+
 Para verlas con colores y poder pinchar en cada una, abre
 `pruebas/pruebas.html` con la app servida (`node servidor.js` y luego
 `localhost:4173/pruebas/pruebas.html`).
@@ -73,6 +77,9 @@ repinte la pantalla.
 | `casos-tutor.js` | **Qué se le manda al profe**: que el aviso de IA diga la verdad, y que lo que no está en la lista no salga |
 | `casos-archivos.js` | Copias de seguridad de ida y vuelta, y qué archivos entran en el casillero y con qué tipo |
 | `casos-dibujar.js` | Dibujar de verdad: eventos de puntero sobre el lienzo, el color, el grosor, la goma y el guardado |
+| `casos-pdf.js` | Vistas previas: la primera página de un PDF de verdad, los extractos de textos y de código, y los dominios de los enlaces |
+| `casos-agenda2.js` | El tablero por dentro: mover entre columnas, cambiar de día, convertir una entrega en examen |
+| `casos-bola.js` | La bola de papel, con reloj falso: que aparezca, que caiga, que no se salga de la pantalla y que entre en la papelera |
 | `casos-absurdos.js` | **Datos irreales**: notas de 900, faltas negativas, fechas del año 9999, emojis, árabe, textos de diez mil letras, estados de versiones que no existieron |
 
 ## Datos irreales
@@ -135,8 +142,21 @@ cuando algo falla, lo primero es decidir quién se equivoca.
 - [x] Dibujar de verdad: `PointerEvent` sobre el lienzo montado.
 - [x] El tutor: qué se le manda exactamente en cada pregunta.
 - [x] Las copias de seguridad, de ida y vuelta.
-- [ ] Las vistas previas de PDF: hay que cargar PDF.js y pedir un PDF de verdad.
-- [ ] La agenda por dentro: arrastrar entre columnas, el panel lateral.
-- [ ] La bola de papel: depende de animaciones que el navegador sin ventana
-  congela, así que haría falta un reloj falso.
+- [x] Las vistas previas de PDF, con un PDF escrito a mano en el propio test.
+- [x] La agenda por dentro: columnas, fechas y cambiar de tipo.
+- [x] La bola de papel, con un reloj falso para la física.
 - [ ] La sincronización, cuando haya backend.
+- [ ] Arrastrar de verdad con el ratón en el tablero (ahora se prueban las
+  funciones que mueven las tarjetas, no el gesto).
+
+## Dos cosas que aprendí montando esto
+
+**El reloj del navegador sin ventana va virtual.** Adelanta en cuanto no queda
+nada pendiente, así que un `setTimeout` de doce segundos salta al instante
+aunque el trabajo esté a medias. Poner topes por caso no solo no protegía: los
+hacía fallar. El único tope que sirve es el de la carga de una librería, porque
+mientras la petición de red está en el aire el reloj virtual sí se para.
+
+**La primera página de PDF que se dibuja tarda muchísimo** —PDF.js monta su
+motor— y las siguientes van finas. En la app eso se nota la primera vez que
+abres un PDF del casillero.

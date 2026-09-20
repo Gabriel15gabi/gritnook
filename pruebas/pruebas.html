@@ -65,7 +65,7 @@
    se devuelve, para que probar no te borre tus apuntes.
    ──────────────────────────────────────────────────────────────────── */
 
-const ARCHIVOS = ["marco.js", "casos-notas.js", "casos-agenda.js", "casos-texto.js", "casos-estado.js", "casos-entrada.js", "casos-libreta.js", "casos-tiempo.js", "casos-tutor.js", "casos-archivos.js", "casos-dibujar.js", "casos-absurdos.js"];
+const ARCHIVOS = ["marco.js", "casos-notas.js", "casos-agenda.js", "casos-texto.js", "casos-estado.js", "casos-entrada.js", "casos-libreta.js", "casos-tiempo.js", "casos-tutor.js", "casos-archivos.js", "casos-dibujar.js", "casos-pdf.js", "casos-agenda2.js", "casos-bola.js", "casos-absurdos.js"];
 const espera = ms => new Promise(r => setTimeout(r, ms));
 const $ = s => document.querySelector(s);
 
@@ -111,7 +111,10 @@ function pintar(res) {
 
   /* para poder leer el resultado desde la consola, sin abrir el navegador */
   document.title = (falla ? "FALLAN " + falla : "TODO OK") + " · " + res.ok + "/" + res.total;
-  const resumen = res.fallos.map(f => "MAL · " + f.grupo + " · " + f.caso + "\n     " + f.error).join("\n");
+  const resumen = res.fallos.map(f => "MAL · " + f.grupo + " · " + f.caso + "\n     " + f.error).join("\n")
+    + res.grupos.flatMap(g => g.casos
+        .filter(c => c.estado === "pendiente" && c.error)
+        .map(c => "\nPENDIENTE · " + g.nombre + " · " + c.nombre + "\n     " + c.error)).join("");
   const pre = document.createElement("pre");
   pre.id = "resumen";
   pre.hidden = true;
@@ -124,6 +127,14 @@ window.addEventListener("load", async () => {
   const w = $("#marco").contentWindow;
   try {
     if (!await listo(w)) throw new Error("la app no ha llegado a cargar");
+
+    /* Se empieza siempre desde cero. Sin esto, los datos que deje una
+       ejecución anterior —sobre todo si se cortó a medias— hacen que un test
+       pase o falle según lo que hubiera antes, que es lo peor que le puede
+       pasar a un banco de pruebas. */
+    Object.keys(localStorage).filter(k => k.startsWith("desk-daw:")).forEach(k => localStorage.removeItem(k));
+    w.eval("S = estadoInicial(); normalizarPerfil(); normalizarTutor(); normalizarObjetivos(); apunteActivo = null; seccion = 'escritorio'; if (typeof BV !== 'undefined' && BV) bvCerrar();");
+
     $("#estado").textContent = "Cargando los casos…";
 
     let codigo = "";

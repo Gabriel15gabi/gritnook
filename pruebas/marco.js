@@ -32,6 +32,12 @@ function prueba(nombre, fn) {
 /* los tests que aún no tocan, sin borrarlos */
 prueba.pendiente = (nombre) => { __P.actual.casos.push({ nombre, pendiente: true }); };
 
+/* Para lo que depende de algo de fuera —una librería que se baja de
+   internet, una animación que el navegador congela—: si no se puede
+   probar, se dice por qué, en vez de fallar y hacer ruido de más. */
+class Saltado extends Error {}
+function saltar(motivo) { throw new Saltado(motivo); }
+
 class Fallo extends Error {}
 const ver = v =>
   typeof v === "string" ? JSON.stringify(v)
@@ -97,11 +103,14 @@ async function __correrPruebas() {
     for (const c of g.casos) {
       res.total++;
       if (c.pendiente) { res.pendientes++; rg.casos.push({ nombre: c.nombre, estado: "pendiente" }); continue; }
+      /* por dónde va, para poder ver dónde se queda colgado si se cuelga */
+      window.__ENCURSO = g.nombre + " · " + c.nombre;
       try {
         await c.fn();
         res.ok++;
         rg.casos.push({ nombre: c.nombre, estado: "ok" });
       } catch (e) {
+        if (e instanceof Saltado) { res.pendientes++; rg.casos.push({ nombre: c.nombre, estado: "pendiente", error: e.message }); continue; }
         const detalle = e instanceof Fallo ? e.message : (e && e.stack ? String(e.stack).split("\n").slice(0, 3).join(" · ") : String(e));
         res.fallos.push({ grupo: g.nombre, caso: c.nombre, error: detalle, roto: !(e instanceof Fallo) });
         rg.casos.push({ nombre: c.nombre, estado: "mal", error: detalle });
