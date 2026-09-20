@@ -146,8 +146,10 @@ cuando algo falla, lo primero es decidir quién se equivoca.
 - [x] La agenda por dentro: columnas, fechas y cambiar de tipo.
 - [x] La bola de papel, con un reloj falso para la física.
 - [ ] La sincronización, cuando haya backend.
-- [ ] Arrastrar de verdad con el ratón en el tablero (ahora se prueban las
-  funciones que mueven las tarjetas, no el gesto).
+- [x] Arrastrar de verdad con el ratón en el tablero: **probado a mano por
+  Gabriel el 21 de septiembre de 2026** y funciona, incluido el tachado al
+  soltar la tarjeta en «hecho». Los tests cubren las funciones que mueven las
+  tarjetas; el gesto en sí sigue sin automatizar, pero ya no es una incógnita.
 
 ## Dos cosas que aprendí montando esto
 
