@@ -5,7 +5,7 @@ de base para la política de privacidad y para el registro de tratamientos que
 exige el Reglamento General de Protección de Datos. Se actualiza cada vez que
 se añade algo que guarde información.
 
-Última revisión: 20 de septiembre de 2026.
+Última revisión: 21 de septiembre de 2026.
 
 ## En una frase
 
@@ -28,6 +28,7 @@ dirección**, no tiene publicidad, no hay analítica y no hay cookies de tercero
 | Objetivos del día | Los objetivos y si están cumplidos | El alumno y la app |
 | Tutor | **La conversación entera** con el profe, los archivos y capturas que se le pasen, los temas trabajados y los repasos que pone | El alumno |
 | Ajustes | Tema claro u oscuro, preferencias de la libreta, minutos del cronómetro y cómo debe tratarle el tutor | El alumno |
+| Oposición (solo si opositas) | El temario (número, título y bloque de cada tema, sus vueltas con fecha, si está dominado, su dificultad, tus notas y un enlace a la ley), las reglas del examen (fecha, preguntas, opciones, penalización, corte, minutos y preguntas de reserva), el plan de vueltas, los simulacros (fecha, de qué, preguntas, aciertos, fallos y minutos) y la convocatoria (plazas, aspirantes, enlace a las bases y cortes de otros años) | El opositor |
 
 **No se guarda:** correo electrónico, contraseña, teléfono, dirección, fecha de
 nacimiento, datos de pago, ubicación ni ningún identificador publicitario.
@@ -45,7 +46,11 @@ nacimiento, datos de pago, ubicación ni ningún identificador publicitario.
 - **Al usar el tutor** se envía a Anthropic, para poder responder: el nombre o
   apodo, el curso y las asignaturas, las notas y el riesgo de cada una, las
   entregas pendientes, los títulos de los apuntes, los últimos mensajes de la
-  conversación y los archivos o capturas que se adjunten.
+  conversación y los archivos o capturas que se adjunten. Si opositas, además,
+  el nombre de la oposición, las reglas y la fecha del examen, cómo vas con las
+  vueltas, los títulos de los temas que tocan hoy, se enfrían o llevas flojos, y
+  los resultados de los simulacros. **Las notas de cada tema y los enlaces que
+  guardes no se envían.**
 - **Al pedirle a Claude** que resuma un apunte, saque tarjetas o prepare el plan
   de un examen se envía ese apunte o esos datos concretos.
 - **Al abrir un PDF del casillero** se descarga la librería PDF.js desde cdnjs.
@@ -62,8 +67,8 @@ nacimiento, datos de pago, ubicación ni ningún identificador publicitario.
 
 ## 5. Pendiente para cuando se venda
 
-- [ ] Edad mínima de 14 años y permiso de padre o tutor para menores de 18.
-- [ ] Interruptor para apagar el tutor (no enviar nada a la IA).
+- [x] Edad mínima de 14 años y aviso a menores de 18, al entrar.
+- [x] Interruptor para apagar el tutor (no enviar nada a la IA), en Ajustes → El profe.
 - [ ] Cuentas propias: al cambiar el almacén de Claude por uno propio, este
       documento cambia entero (proveedor, país, contratos y seguridad).
 - [ ] Contrato de encargado de tratamiento con el proveedor de IA y con el del servidor.

@@ -76,12 +76,15 @@ grupo("La racha", () => {
 });
 
 grupo("Minutos de la semana", () => {
-  prueba("cuenta los siete días, no el mes entero", () => {
+  prueba("cuenta la semana de lunes a domingo, no los últimos siete días", () => {
+    /* Este test pasaba o fallaba según el día en que se ejecutara: suponía
+       «los últimos siete días» y la app cuenta la semana natural. Un lunes
+       solo hay un día de semana. Ahora se calcula el lunes igual que la app. */
     conEstado(() => {
+      const dow = (new Date().getDay() + 6) % 7, lunes = sumaDias(hoyISO(), -dow);
       S.horas = { m1: {} };
-      for (let i = 0; i < 20; i++) S.horas.m1[sumaDias(hoyISO(), -i)] = 60;
-      const m = minutosSemana("m1");
-      esperar(m).entre(60 * 5, 60 * 7);
+      for (let i = -7; i < 7; i++) S.horas.m1[sumaDias(lunes, i)] = 60;   /* la semana pasada y esta */
+      esperar(minutosSemana("m1")).igualA(7 * 60);
     });
   });
 

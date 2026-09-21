@@ -32,12 +32,18 @@ Para poder responderte con sentido, se le envía:
   ninguno abierto, no se manda ningún apunte;
 - cuántas tarjetas de repaso te tocan hoy y tus objetivos del día;
 - los últimos mensajes de vuestra conversación;
-- los archivos o capturas que tú le adjuntes.
+- los archivos o capturas que tú le adjuntes;
+- **si opositas**: el nombre de tu oposición, la fecha y las reglas del examen
+  (preguntas, opciones, lo que resta cada fallo y la nota de corte), cuántos
+  temas tiene tu temario y por qué vuelta vas, el número y el título de los
+  temas que te tocan hoy, de los que se te enfrían y de los que llevas flojos, y
+  los resultados de tus simulacros.
 
 **No se le manda** nada que no esté en esa lista. En concreto, **no** se le
 envían los archivos de tu casillero, ni tu vocabulario de inglés, ni lo que hay
 escrito en tus tarjetas de repaso, ni el nombre de tu centro, ni el de tu aula,
-ni el texto de los apuntes que no tengas abiertos.
+ni el texto de los apuntes que no tengas abiertos, ni las notas que escribas en
+cada tema de la oposición, ni los enlaces que guardes a leyes o a las bases.
 
 ## En qué se equivoca
 

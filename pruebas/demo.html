@@ -62,8 +62,10 @@
       <li>14 tarjetas de repaso y 18 palabras de inglés, en distintas cajas</li>
       <li>Una conversación con la profe, con sus repasos puestos</li>
     </ul>
+    <p style="margin:14px 0 0; color:var(--flojo)"><strong style="color:var(--texto)">Como opositor:</strong> un temario de ejemplo de 32 temas en dos partes, a mitad de la segunda vuelta, con temas que se enfrían, cuatro difíciles, nueve simulacros mejorando poco a poco y otros cuatro por tema, el examen en 95 días y las notas de corte de dos años. El temario lo he escrito para la demo: no es el de ninguna convocatoria.</p>
     <div class="btns">
-      <button class="primario" id="rellenar">Rellenar con datos de prueba</button>
+      <button class="primario" id="rellenar">Rellenar como estudiante</button>
+      <button class="primario" id="rellenarOpo">Rellenar como opositor</button>
       <button id="devolver" disabled>Devolver lo que tenía</button>
       <button id="abrir">Abrir la app</button>
     </div>
@@ -345,34 +347,157 @@ const SEMILLA = String.raw`
     S.tarjetas.length + " tarjetas, " + S.vocab.length + " palabras y " + T.chat.length + " mensajes.";
 })()`;
 
-$("#rellenar").onclick = async () => {
-  $("#rellenar").disabled = true;
-  decir("Esperando a que cargue la app…");
-  if (!await lista()) { decir("La app no ha llegado a cargar."); $("#rellenar").disabled = false; return; }
+/* el mismo curso de mentira, pero de alguien que oposita */
+const SEMILLA_OPO = String.raw`
+(() => {
+  const hoy = new Date();
+  const dia = n => { const d = new Date(hoy); d.setDate(d.getDate() + n); return hoyISO(d); };
+  const entre = (a, b) => a + Math.floor(Math.random() * (b - a + 1));
 
-  /* copia de lo que hubiera, para poder devolverlo */
-  copia = {};
-  for (let i = 0; i < localStorage.length; i++) {
-    const k = localStorage.key(i);
-    if (k && k.startsWith("desk-daw:")) copia[k] = localStorage.getItem(k);
+  S.perfil = Object.assign(normalizarPerfil(), {
+    nombre: "Lucía", etapa: "oposicion", ciclo: "Administrativo del Estado", curso: "", rama: "", centro: "",
+    trabaja: "parcial", horasSemana: 25, diasFuertes: ["lun", "mar", "mie", "jue", "vie", "sab"], meta: "plaza", objetivoNota: 7,
+    motivo: "Sacar plaza este año", cuestaMas: "Los plazos de la ley de procedimiento",
+    profe: { nombre: "Marta", tono: "exigente", cana: "mixto", avisos: 2, puedeCrear: true },
+    listo: true, creado: dia(-120), edadOk: true, aceptado: { fecha: new Date().toISOString(), v: typeof LEGAL_V !== "undefined" ? LEGAL_V : "" }
+  });
+  S.config.curso = "Oposiciones · Administrativo del Estado";
+  S.modulos = CAT_OPOSICION.map(([cod, nombre, h], i) => ({
+    id: uid(), cod, nombre, color: i % 7, horas: h * 30, faltas: 0, objetivo: 7, metaSemanal: h, temario: "",
+    pesos: PLANTILLAS.oposicion.map(([n, p]) => ({ id: uid(), nombre: n, peso: p, nota: null }))
+  }));
+  S.tareas = []; S.examenes = []; S.horario = []; S.apuntes = {}; S.casillero = {}; S.tarjetas = []; S.vocab = [];
+
+  /* un temario de ejemplo, escrito para la demo: no es el de ninguna convocatoria */
+  const indice = [
+    "PARTE GENERAL",
+    "Tema 1. La Constitución Española de 1978: estructura y contenido. Los derechos y deberes fundamentales",
+    "Tema 2. La Corona. Funciones del Rey",
+    "Tema 3. Las Cortes Generales: composición y funciones",
+    "Tema 4. El Gobierno: composición, funciones y responsabilidad",
+    "Tema 5. El Poder Judicial y el Tribunal Constitucional",
+    "Tema 6. La organización territorial del Estado. Las comunidades autónomas",
+    "Tema 7. La Administración local: municipio y provincia",
+    "Tema 8. La Unión Europea: instituciones y fuentes del derecho",
+    "Tema 9. Las fuentes del derecho administrativo. La jerarquía normativa",
+    "Tema 10. El acto administrativo: concepto, clases y eficacia",
+    "Tema 11. El procedimiento administrativo común: iniciación, ordenación e instrucción",
+    "Tema 12. El procedimiento administrativo común: terminación y plazos",
+    "Tema 13. Los recursos administrativos",
+    "Tema 14. La responsabilidad patrimonial de las Administraciones",
+    "Tema 15. El régimen jurídico del sector público",
+    "Tema 16. La protección de datos personales y la transparencia",
+    "Tema 17. La igualdad de género y la no discriminación",
+    "Tema 18. El personal al servicio de las Administraciones: clases y derechos",
+    "Tema 19. Derechos y deberes de los empleados públicos. Incompatibilidades",
+    "Tema 20. El régimen disciplinario de los empleados públicos",
+    "PARTE ESPECÍFICA",
+    "Tema 21. La gestión de personal: nóminas y Seguridad Social",
+    "Tema 22. Los presupuestos: estructura y elaboración",
+    "Tema 23. El gasto público: fases y control",
+    "Tema 24. La contratación en el sector público",
+    "Tema 25. Los contratos: tipos y procedimientos de adjudicación",
+    "Tema 26. El registro y el archivo. La administración electrónica",
+    "Tema 27. La atención a la ciudadanía. Quejas y sugerencias",
+    "Tema 28. La informática básica: sistemas operativos y archivos",
+    "Tema 29. El procesador de textos",
+    "Tema 30. La hoja de cálculo",
+    "Tema 31. Las bases de datos y el correo electrónico",
+    "Tema 32. Internet y la seguridad de la información"
+  ].join("\n");
+  S.opo = OPO_DEF();
+  crearTemas(leerIndice(indice), true);
+  const O = S.opo;
+
+  /* las vueltas, como iría alguien a mitad de preparación */
+  O.temas.forEach((t, i) => {
+    const vueltas = i < 6 ? 3 : i < 16 ? 2 : i < 26 ? 1 : 0;
+    for (let v = 0; v < vueltas; v++) t.vueltas.push(dia(-(vueltas - v) * entre(8, 16) - (i % 5)));
+    t.vueltas.sort();
+    if (i < 3) t.dominado = true;
+    if ([11, 12, 22, 24].includes(i)) t.dificultad = "dificil";
+  });
+  /* y alguno que lleva mucho sin tocarse, para que se vea que se enfría */
+  O.temas[9].vueltas = [dia(-48), dia(-31)];
+  O.temas[14].vueltas = [dia(-26)];
+  /* lo de hoy, a medias */
+  O.temas[20].vueltas.push(dia(0));
+
+  O.examen = { fecha: dia(95), preguntas: 100, opciones: 4, penalizacion: null, corte: null, minutos: 90, reserva: 5 };
+  O.plan = { vueltas: 3, diasSemana: 6, diasSimulacro: 14 };
+  O.convocatoria = { plazas: 1500, aspirantes: 28000, enlace: "", cortes: [{ anio: 2023, corte: 54.5 }, { anio: 2024, corte: 58.25 }] };
+
+  /* simulacros completos, mejorando poco a poco */
+  O.simulacros = [];
+  for (let i = 0; i < 9; i++) {
+    const a = 46 + i * 3 + entre(-2, 2), f = 26 - i + entre(-2, 2);
+    O.simulacros.push({ id: uid(), fecha: dia(-60 + i * 7), tipo: "completo", ref: "", preguntas: 100, aciertos: a, fallos: f, minutos: 90 });
   }
-  localStorage.setItem("gritnook-copia", JSON.stringify(copia));
+  /* y alguno por tema, de los flojos */
+  [[11, 20, 9, 9], [12, 20, 8, 10], [24, 20, 11, 7], [4, 20, 17, 2]].forEach(([i, n, a, f], k) => {
+    O.simulacros.push({ id: uid(), fecha: dia(-10 + k * 2), tipo: "tema", ref: O.temas[i].id, preguntas: n, aciertos: a, fallos: f, minutos: 20 });
+  });
+
+  /* horas de estudio de estos dos meses */
+  S.horas = {};
+  const gen = S.modulos[0].id, esp = S.modulos[1].id, test = S.modulos[2].id;
+  for (let i = 60; i >= 0; i--) {
+    if (i % 7 === 0 && i) continue;
+    [gen, esp, test].forEach((id, k) => {
+      if (Math.random() < .3 && k) return;
+      S.horas[id] = S.horas[id] || {};
+      S.horas[id][dia(-i)] = entre(2, 6) * 25;
+    });
+  }
+
+  normalizarTutor().chat = [
+    { id: uid(), r: "profe", t: "Lucía, vas por la segunda vuelta y el examen es en 95 días. Hoy toca el tema 21 y el 10, que se te está enfriando.", h: dia(0) + "T08:30:00.000Z" }
+  ];
+
+  ["ajustes", "agenda", "horas", "objetivos", "tutor", "perfil", "horario", "repaso", "ingles", "progreso", "oposicion"].forEach(nd => { try { guardar(nd); } catch (e) {} });
+  guardarLocal();
+  opoTab = "resumen"; seccion = "oposicion"; pinta();
+  return O.temas.length + " temas, " + O.simulacros.length + " simulacros, examen en 95 días.";
+})()`;
+
+
+async function rellenar(semilla) {
+  const botones = [$("#rellenar"), $("#rellenarOpo")];
+  botones.forEach(b => b.disabled = true);
+  decir("Esperando a que cargue la app…");
+  if (!await lista()) { decir("La app no ha llegado a cargar."); botones.forEach(b => b.disabled = false); return; }
+
+  /* La copia de lo que hubiera, para poder devolverlo. Solo la primera vez:
+     si ya hay una, lo que hay ahora son datos de prueba, y guardarlos encima
+     haría que «Devolver» te devolviera los datos falsos en vez de los tuyos. */
+  if (!localStorage.getItem("gritnook-copia")) {
+    copia = {};
+    for (let i = 0; i < localStorage.length; i++) {
+      const k = localStorage.key(i);
+      if (k && k.startsWith("desk-daw:")) copia[k] = localStorage.getItem(k);
+    }
+    localStorage.setItem("gritnook-copia", JSON.stringify(copia));
+  }
 
   try {
-    const r = marco().eval(SEMILLA);
+    marco().eval("S = estadoInicial();");
+    const r = marco().eval(semilla);
     decir("Listo: " + r, true);
     $("#devolver").disabled = false;
   } catch (e) {
     decir("No se ha podido: " + e.message);
-    $("#rellenar").disabled = false;
   }
-};
+  botones.forEach(b => b.disabled = false);
+}
+$("#rellenar").onclick = () => rellenar(SEMILLA);
+$("#rellenarOpo").onclick = () => rellenar(SEMILLA_OPO);
 
 $("#devolver").onclick = () => {
   const guardada = copia || JSON.parse(localStorage.getItem("gritnook-copia") || "null");
   if (!guardada) { decir("No hay ninguna copia guardada."); return; }
   Object.keys(localStorage).filter(k => k.startsWith("desk-daw:")).forEach(k => localStorage.removeItem(k));
   Object.entries(guardada).forEach(([k, v]) => localStorage.setItem(k, v));
+  localStorage.removeItem("gritnook-copia"); copia = null;
   $("#marco").src = "../index.html?vuelta=" + Date.now();
   decir("Devuelto lo que tenías.", true);
   $("#devolver").disabled = true;

@@ -8,9 +8,9 @@ Eso levanta un servidor, abre un navegador sin ventana y escribe el resultado en
 la consola. Devuelve 1 si algo falla, que es lo que mira un servidor de
 integración continua.
 
-**308 pruebas.** Sin ventana pasan 302 y 6 se quedan en pendiente: son las que
+**398 pruebas.** Sin ventana pasan 392 y 6 se quedan en pendiente: son las que
 dibujan un PDF, y sin tarjeta gráfica eso tarda demasiado. Abriendo
-`pruebas/pruebas.html` en un navegador normal pasan las 308.
+`pruebas/pruebas.html` en un navegador normal pasan las 398.
 
 Para verlas con colores y poder pinchar en cada una, abre
 `pruebas/pruebas.html` con la app servida (`node servidor.js` y luego
@@ -80,6 +80,7 @@ repinte la pantalla.
 | `casos-pdf.js` | Vistas previas: la primera página de un PDF de verdad, los extractos de textos y de código, y los dominios de los enlaces |
 | `casos-agenda2.js` | El tablero por dentro: mover entre columnas, cambiar de día, convertir una entrega en examen |
 | `casos-bola.js` | La bola de papel, con reloj falso: que aparezca, que caiga, que no se salga de la pantalla y que entre en la papelera |
+| `casos-oposicion.js` | El modo opositor: penalizaciones, cuántas acertar para el corte, cuándo compensa arriesgar, pegar el índice en cualquier formato, vueltas, temas que se enfrían, el plan y lo que se le cuenta al profe |
 | `casos-absurdos.js` | **Datos irreales**: notas de 900, faltas negativas, fechas del año 9999, emojis, árabe, textos de diez mil letras, estados de versiones que no existieron |
 
 ## Rellenar la app para verla funcionando
@@ -114,7 +115,7 @@ no puede pasar es que la pantalla se quede en blanco, y de ahí salió justo eso
 
 ## Lo que han encontrado
 
-Siete fallos de verdad:
+Nueve fallos de verdad:
 
 1. **Escribir el ciclo a mano dejaba la app inservible.** Los campos escritos solo
    se leían al cambiar de paso, así que el botón «Seguir» no se encendía nunca y
@@ -145,6 +146,17 @@ Siete fallos de verdad:
    proporción (0,93) y se comparaba con 70, así que harían falta setenta veces
    el máximo permitido para que se mencionaran. El cálculo del riesgo no se ha
    tocado: solo se leía mal el número ya calculado.
+8. **En el plan de vueltas, el ritmo y lo que hacía falta iban en unidades
+   distintas**: el ritmo por día natural y lo necesario por día de estudio, y se
+   comparaban como si fueran lo mismo. Ahora los dos van por día de estudio.
+9. **Quien iba justo a tiempo salía como que no llegaba.** Con 17 temas
+   pendientes y 17 vueltas en dos semanas, 17 / (17 / 14) da
+   14,000000000000002 días, y redondeando hacia arriba eran 15. Ahora se
+   multiplica antes de dividir.
+
+Y en la página de datos de prueba: si le dabas a rellenar dos veces, la segunda
+copia de seguridad guardaba los datos falsos encima de los tuyos y «Devolver» te
+devolvía los falsos. Ahora la copia solo se hace la primera vez.
 
 Y cuatro tests estaban mal, no la app: uno daba por aprobado un 8 en el 60 %
 cuando todavía hace falta medio punto más; tres se habían escrito contra una

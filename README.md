@@ -50,6 +50,8 @@ Quien ya tenía datos no pasa por ahí: el perfil se rellena con lo que había y
 
 **Progreso.** Horas por semana y asignatura, la nota de cada una contra tu objetivo y cómo ha ido cambiando, y los exámenes hechos.
 
+**Oposiciones.** Para cualquier oposición sin elegirla de una lista: pegas el índice del temario tal cual sale en la convocatoria y cada línea se convierte en un tema, agrupado por bloques. Cada tema lleva sus **vueltas** con fecha, se marca como dominado o difícil, se le enlaza la ley del BOE y se le escriben notas. Los temas que llevas tiempo sin tocar **se enfrían** y la app te los devuelve, igual que las tarjetas de repaso. Con las reglas de tu examen —preguntas, opciones, lo que resta cada fallo y la nota de corte— te dice **cuántas tienes que acertar** según cuántas dejes en blanco, y **si compensa contestar o dejarla en blanco** cuando descartas una opción. Los simulacros se apuntan y se ven en una gráfica contra el corte, y el **plan de vueltas** calcula cuántos temas por día hacen falta para llegar a la fecha y si a tu ritmo llegas. El profe se convierte en tu preparador, con la orden de no inventarse nunca un artículo de ley. La app no trae temarios ni preguntas: eso es el negocio de las academias y tiene sus derechos.
+
 **El tutor.** Un profesor particular de lo que estudies: no suelta la respuesta a la primera —pista, pregunta, ejemplo parecido y, si hace falta, la explicación entera—, conoce el temario de tus asignaturas, tus notas, tus entregas y de qué tienes apuntes, te escribe él cuando algo se acerca y puede ponerte repasos, entregas y objetivos. Se le pueden pasar capturas (pegadas con Ctrl+V o arrastradas) y archivos de código o texto para que los revise. Es especialista solo en el curso que marcas y tiene normas de profesor que no se desactivan: solo responde dudas de tus estudios o dudas profesionales de tu sector —a todo lo demás contesta con una frase fija y te devuelve a lo tuyo, sin entrar en lo personal ni en temas fuera de clase—, no hace los trabajos por ti, dice siempre que es una IA y, si alguien lo está pasando mal de verdad, le anima a pedir ayuda y le da el 024.
 
 ![El profe](capturas/profe.png)
@@ -104,10 +106,10 @@ La versión pública es para verla y probarla. La de Claude usa sus capacidades 
 node pruebas/correr.js
 ```
 
-308 pruebas que corren **dentro de la app de verdad**, cargada en un iframe, sin
+398 pruebas que corren **dentro de la app de verdad**, cargada en un iframe, sin
 instalar nada. Cubren las cuentas de las notas, entender las fechas escritas a
 mano, el sanitizador, el estado, la libreta, el repaso espaciado, la pantalla de
-bienvenida entera y una tanda de datos absurdos a propósito. El cómo y lo que han encontrado, en [pruebas/](pruebas/LEEME.md).
+bienvenida entera y el modo opositor y una tanda de datos absurdos a propósito. El cómo y lo que han encontrado, en [pruebas/](pruebas/LEEME.md).
 
 ## Base de datos
 
