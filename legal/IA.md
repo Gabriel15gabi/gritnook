@@ -37,13 +37,19 @@ Para poder responderte con sentido, se le envía:
   (preguntas, opciones, lo que resta cada fallo y la nota de corte), cuántos
   temas tiene tu temario y por qué vuelta vas, el número y el título de los
   temas que te tocan hoy, de los que se te enfrían y de los que llevas flojos, y
-  los resultados de tus simulacros.
+  los resultados de tus simulacros. Si hay tema a desarrollar, cuántas bolas se
+  sacan y la probabilidad de que te salga uno que llevas. Y si has puesto el
+  plazo de la solicitud, hasta cuándo es y si ya la has presentado.
 
 **No se le manda** nada que no esté en esa lista. En concreto, **no** se le
 envían los archivos de tu casillero, ni tu vocabulario de inglés, ni lo que hay
 escrito en tus tarjetas de repaso, ni el nombre de tu centro, ni el de tu aula,
 ni el texto de los apuntes que no tengas abiertos, ni las notas que escribas en
-cada tema de la oposición, ni los enlaces que guardes a leyes o a las bases.
+cada tema de la oposición, ni los enlaces que guardes a leyes o a las bases, ni
+las horas que llevas en cada tema, ni de qué temas eran tus fallos.
+
+Cuando pulsas «Que el profe me pregunte este tema», la app te deja escrita la
+petición con el número y el título del tema, pero **no la envía**: la mandas tú.
 
 ## En qué se equivoca
 

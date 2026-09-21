@@ -686,3 +686,664 @@ grupo("Oposición: lo que se le cuenta al profe", () => {
     });
   });
 });
+
+/* ══════ la segunda tanda ══════ */
+
+grupo("Oposición: ya llevo estudiado", () => {
+  prueba("marca un rango de temas de golpe, con la última vuelta cuando dijiste", () => {
+    conEstado(() => {
+      opositorDePrueba();
+      S.opo.temas = Array.from({ length: 10 }, (_, i) => temaDe(i + 1));
+      esperar(marcarRango({ desde: 1, hasta: 5, vueltas: 2, haceDias: 14 })).igualA(5);
+      esperar(S.opo.temas[0].vueltas).igualA([haceDias(28), haceDias(14)]);
+      esperar(S.opo.temas[4].vueltas.length).igualA(2);
+      esperar(S.opo.temas[5].vueltas.length).igualA(0);
+    });
+  });
+  prueba("nunca quita vueltas que ya estaban", () => {
+    conEstado(() => {
+      opositorDePrueba();
+      S.opo.temas = [temaDe(1, { vueltas: [haceDias(30), haceDias(20), haceDias(3)] })];
+      esperar(marcarRango({ desde: 1, hasta: 1, vueltas: 1 })).igualA(0);
+      esperar(S.opo.temas[0].vueltas.length).igualA(3);
+    });
+  });
+  prueba("completa las que faltan sin tocar la de ayer", () => {
+    conEstado(() => {
+      opositorDePrueba();
+      S.opo.temas = [temaDe(1, { vueltas: [haceDias(1)] })];
+      marcarRango({ desde: 1, hasta: 1, vueltas: 3, haceDias: 30 });
+      esperar(S.opo.temas[0].vueltas.length).igualA(3);
+      esperar(S.opo.temas[0].vueltas).contiene(haceDias(1));
+      esperar(S.opo.temas[0].vueltas[0] < haceDias(30)).cierto();
+    });
+  });
+  prueba("lo marcado hace dos meses sale como que se enfría", () => {
+    conEstado(() => {
+      opositorDePrueba();
+      S.opo.temas = [temaDe(1), temaDe(2)];
+      marcarRango({ desde: 1, hasta: 2, vueltas: 1, haceDias: 60 });
+      esperar(temasFrios().length).igualA(2);
+    });
+  });
+  prueba("también puede marcarlos como dominados", () => {
+    conEstado(() => {
+      opositorDePrueba();
+      S.opo.temas = [temaDe(1, { vueltas: [haceDias(3), haceDias(2), haceDias(1)] })];
+      esperar(marcarRango({ desde: 1, hasta: 1, vueltas: 1, dominar: true })).igualA(1);
+      esperar(S.opo.temas[0].dominado).cierto();
+    });
+  });
+  prueba("un rango al revés, o sin nada que marcar, no toca nada", () => {
+    conEstado(() => {
+      opositorDePrueba();
+      S.opo.temas = [temaDe(1), temaDe(2)];
+      esperar(marcarRango({ desde: 5, hasta: 2, vueltas: 2 })).igualA(0);
+      esperar(marcarRango({ desde: 0, hasta: 2, vueltas: 2 })).igualA(0);
+      esperar(marcarRango({ desde: 1, hasta: 2, vueltas: 0 })).igualA(0);
+      esperar(marcarRango()).igualA(0);
+      esperar(S.opo.temas.every(t => !t.vueltas.length)).cierto();
+    });
+  });
+});
+
+grupo("Oposición: numerar los temas", () => {
+  const dosPartes = () => [temaDe(1, { id: "a", grupo: "GENERAL" }), temaDe(2, { id: "b", grupo: "GENERAL" }),
+    temaDe(1, { id: "c", grupo: "ESPECÍFICA" }), temaDe(2, { id: "d", grupo: "ESPECÍFICA" })];
+  prueba("dos partes numeradas desde el 1 se detectan", () => {
+    conEstado(() => { opositorDePrueba(); S.opo.temas = dosPartes(); esperar(numeracionRara()).cierto(); });
+  });
+  prueba("numerar seguido respeta el orden de las partes", () => {
+    conEstado(() => {
+      opositorDePrueba();
+      S.opo.temas = dosPartes();
+      renumerar();
+      esperar(S.opo.temas.map(t => t.id + t.n)).igualA(["a1", "b2", "c3", "d4"]);
+      esperar(numeracionRara()).falso();
+    });
+  });
+  prueba("un temario del 1 al final no pide nada", () => {
+    conEstado(() => { opositorDePrueba(); S.opo.temas = [temaDe(1), temaDe(2), temaDe(3)]; esperar(numeracionRara()).falso(); });
+  });
+});
+
+grupo("Oposición: de qué temas eran los fallos", () => {
+  prueba("«3, 7, 7, 12»: cada número es un fallo", () => {
+    esperar(leerFallosTema("3, 7, 7, 12")).igualA({ 3: 1, 7: 2, 12: 1 });
+  });
+  prueba("«7x2», «7 x 3» y «7×2» dicen cuántos", () => {
+    esperar(leerFallosTema("7x2, 12")).igualA({ 7: 2, 12: 1 });
+    esperar(leerFallosTema("7 x 3")).igualA({ 7: 3 });
+    esperar(leerFallosTema("7×2 y 7")).igualA({ 7: 3 });
+  });
+  prueba("sin números, o con el tema cero, nada", () => {
+    esperar(leerFallosTema("")).igualA({});
+    esperar(leerFallosTema("ninguno")).igualA({});
+    esperar(leerFallosTema("0")).igualA({});
+    esperar(leerFallosTema(null)).igualA({});
+  });
+  prueba("se pasa a los temas de verdad, y lo que no existe se avisa aparte", () => {
+    conEstado(() => {
+      opositorDePrueba();
+      S.opo.temas = [temaDe(1), temaDe(2), temaDe(3)];
+      const r = fallosPorTema("2, 2, 9");
+      esperar(r.ids).igualA({ t2: 2 });
+      esperar(r.total).igualA(2);
+      esperar(r.sueltos).igualA([9]);
+    });
+  });
+  prueba("dos fallos en simulacros completos ya lo sacan como flojo; uno, todavía no", () => {
+    conEstado(() => {
+      opositorDePrueba();
+      S.opo.temas = [temaDe(1), temaDe(2), temaDe(3)];
+      S.opo.simulacros = [
+        { id: "a", tipo: "completo", preguntas: 100, aciertos: 60, fallos: 10, fallosTema: { t3: 1, t2: 1 } },
+        { id: "b", tipo: "completo", preguntas: 100, aciertos: 60, fallos: 10, fallosTema: { t3: 1 } }
+      ];
+      const f = temasFlojos();
+      esperar(f.map(x => x.t.n)).igualA([3]);
+      esperar(f[0].fallosSim).igualA(2);
+    });
+  });
+  prueba("un reparto de fallos roto no rompe nada", () => {
+    conEstado(() => {
+      opositorDePrueba();
+      S.opo.temas = [temaDe(1)];
+      S.opo.simulacros = [{ id: "a", fallosTema: "texto" }, { id: "b", fallosTema: [1, 2] }, { id: "c", fallosTema: { t1: "abc", t9: -4 } }, { id: "d", fallosTema: null }];
+      esperar(temasFlojos()).igualA([]);
+      esperar(fallosSimDe()).igualA({});
+    });
+  });
+});
+
+grupo("Oposición: el simulacro con reloj", () => {
+  const C = (extra = {}) => Object.assign({ inicio: 1000000, minutos: 90, preguntas: 100, ref: "", fin: 0 }, extra);
+  prueba("cuenta hacia atrás desde los minutos del examen", () => {
+    esperar(segsSimulacro(C(), 1000000)).igualA(5400);
+    esperar(segsSimulacro(C(), 1000000 + 60000)).igualA(5340);
+    esperar(segsSimulacro(C(), 1000000 + 999 * 60000)).igualA(0);
+  });
+  prueba("los minutos que has tardado, hacia arriba y sin pasarte", () => {
+    esperar(minutosSimulacro(C(), 1000000 + 30 * 60000)).igualA(30);
+    esperar(minutosSimulacro(C(), 1000000 + 30 * 60000 + 1000)).igualA(31);
+    esperar(minutosSimulacro(C(), 1000000 + 500 * 60000)).igualA(90);
+    esperar(minutosSimulacro(C(), 1000000)).igualA(1);
+  });
+  prueba("entregar para el reloj, y entregar dos veces no cambia nada", () => {
+    conEstado(() => {
+      opositorDePrueba();
+      S.opo.crono = C();
+      entregarSimulacro(1000000 + 42 * 60000);
+      esperar(S.opo.crono.fin).igualA(1000000 + 42 * 60000);
+      entregarSimulacro(1000000 + 80 * 60000);
+      esperar(minutosSimulacro(S.opo.crono)).igualA(42);
+      esperar(segsSimulacro(S.opo.crono)).igualA(48 * 60);
+    });
+  });
+  prueba("si se acaba el tiempo, lo entregado no pasa del límite", () => {
+    conEstado(() => {
+      opositorDePrueba();
+      S.opo.crono = C();
+      entregarSimulacro(1000000 + 300 * 60000);
+      esperar(S.opo.crono.fin).igualA(1000000 + 90 * 60000);
+    });
+  });
+  prueba("empieza con las reglas de tu examen, y se puede cancelar", () => {
+    conEstado(() => {
+      opositorDePrueba();
+      S.opo.examen.minutos = 60; S.opo.examen.preguntas = 50;
+      const c = empezarSimulacro("bloque:bGEN");
+      esperar(c.minutos).igualA(60);
+      esperar(c.preguntas).igualA(50);
+      esperar(c.ref).igualA("bloque:bGEN");
+      cancelarSimulacro();
+      esperar(S.opo.crono).nulo();
+    });
+  });
+  prueba("un reloj roto que llegue de otra versión se quita", () => {
+    conEstado(() => {
+      S.opo = Object.assign(OPO_DEF(), { crono: { inicio: "ayer" } });
+      esperar(normalizarOpo().crono).nulo();
+      S.opo.crono = "texto";
+      esperar(normalizarOpo().crono).nulo();
+      S.opo.crono = C();
+      esperar(normalizarOpo().crono.minutos).igualA(90);
+    });
+  });
+  prueba("el reloj se escribe como un reloj", () => {
+    esperar(relojTxt(5400)).igualA("1:30:00");
+    esperar(relojTxt(3599)).igualA("59:59");
+    esperar(relojTxt(59)).igualA("00:59");
+    esperar(relojTxt(-4)).igualA("00:00");
+    esperar(relojTxt("abc")).igualA("00:00");
+  });
+  prueba("se pinta sin empezar, en marcha y acabado", () => {
+    conEstado(() => {
+      const antesTab = opoTab;
+      try {
+        opositorDePrueba(); opoTab = "simulacros";
+        esperar(vistaOposicion()).contiene("opoEmpezarSim");
+        S.opo.crono = C({ inicio: Date.now() });
+        esperar(vistaOposicion()).contiene("opoEntregarSim");
+        S.opo.crono.fin = Date.now();
+        const h = vistaOposicion();
+        esperar(h).contiene("Simulacro terminado");
+        esperar(h).contiene('id="osMin" value="1"');
+        opoTab = "resumen"; S.opo.temas = [temaDe(1)];
+        esperar(vistaOposicion()).contiene("opo-marcha");
+      } finally { opoTab = antesTab; }
+    });
+  });
+});
+
+grupo("Oposición: las horas de cada tema", () => {
+  /* el cronómetro es de toda la app: se deja como estaba */
+  const conReloj = fn => {
+    const antes = Object.assign({}, T);
+    try { fn(); }
+    finally {
+      const d = $("#dlg"); if (d.open) d.close();
+      clearInterval(T.tick); Object.assign(T, antes, { tick: null }); guardarTimer(); pintaMini();
+    }
+  };
+  prueba("los minutos se suman al tema", () => {
+    conEstado(() => {
+      opositorDePrueba();
+      S.opo.temas = [temaDe(1)];
+      registrarMinutosTema("t1", 25); registrarMinutosTema("t1", 25);
+      esperar(S.opo.temas[0].minutos).igualA(50);
+    });
+  });
+  prueba("minutos raros o un tema que no existe no suman nada", () => {
+    conEstado(() => {
+      opositorDePrueba();
+      S.opo.temas = [temaDe(1)];
+      [-5, 0, NaN, "abc", null, Infinity].forEach(m => registrarMinutosTema("t1", m));
+      registrarMinutosTema("no-existe", 25); registrarMinutosTema("", 25);
+      esperar(S.opo.temas[0].minutos).igualA(0);
+    });
+  });
+  prueba("al acabar una sesión con tema, los minutos van al tema y a su bloque", () => {
+    conEstado(() => conReloj(() => {
+      opositorDePrueba(); S.horas = {};
+      S.opo.temas = [temaDe(1, { modId: "bGEN" })];
+      Object.assign(T, { activo: false, fase: "trabajo", modId: "bGEN", temaId: "t1", restante: 0, aviso: "" });
+      terminarFase();
+      const p = num(S.config.pomodoro, 25);
+      esperar(S.opo.temas[0].minutos).igualA(p);
+      esperar(S.horas.bGEN[hoyISO()]).igualA(p);
+      esperar($("#dlgCuerpo").textContent).contiene("del tema 1");
+    }));
+  });
+  prueba("estudiar un tema arranca el cronómetro con su bloque", () => {
+    conEstado(() => conReloj(() => {
+      opositorDePrueba();
+      S.opo.temas = [temaDe(1, { modId: "bESP" })];
+      Object.assign(T, { activo: false, fase: "trabajo", modId: null, temaId: "", restante: 0, aviso: "" });
+      estudiarTema("t1");
+      esperar(T.activo).cierto();
+      esperar(T.temaId).igualA("t1");
+      esperar(T.modId).igualA("bESP");
+    }));
+  });
+  prueba("con una sesión a medias no la pisa", () => {
+    conEstado(() => conReloj(() => {
+      opositorDePrueba();
+      S.opo.temas = [temaDe(1)];
+      Object.assign(T, { activo: false, fase: "trabajo", modId: "bGEN", temaId: "", restante: 300, aviso: "" });
+      estudiarTema("t1");
+      esperar(T.temaId).igualA("");
+      esperar(T.restante).igualA(300);
+    }));
+  });
+  prueba("Inicio deja elegir el tema en el cronómetro, solo al opositor", () => {
+    conEstado(() => {
+      opositorDePrueba();
+      S.opo.temas = [temaDe(1)];
+      esperar(vistaEscritorio()).contiene("selTimerTema");
+      S.perfil.etapa = "ciclo-sup";
+      esperar(vistaEscritorio()).noContiene("selTimerTema");
+    });
+  });
+});
+
+grupo("Oposición: tarjetas y profe desde un tema", () => {
+  const cerrar = () => { const d = $("#dlg"); if (d.open) d.close(); };
+  prueba("desde la ficha, una pregunta fallada se convierte en tarjeta del tema", () => {
+    conEstado(() => {
+      try {
+        opositorDePrueba(); S.tarjetas = [];
+        S.opo.temas = [temaDe(1)];
+        abrirTema("t1");
+        $("#otPreg").value = "¿Plazo del recurso de alzada?"; $("#otResp").value = "Un mes";
+        $("#otAddTarj").click();
+        esperar(S.tarjetas.length).igualA(1);
+        esperar(S.tarjetas[0].temaId).igualA("t1");
+        esperar(S.tarjetas[0].modId).igualA("bGEN");
+        esperar(tarjetasDeTema("t1").length).igualA(1);
+        esperar($("#otNTarj").textContent).contiene("1 tarjeta");
+      } finally { cerrar(); }
+    });
+  });
+  prueba("sin pregunta o sin respuesta no se crea nada", () => {
+    conEstado(() => {
+      try {
+        opositorDePrueba(); S.tarjetas = [];
+        S.opo.temas = [temaDe(1)];
+        abrirTema("t1");
+        $("#otPreg").value = "Solo la pregunta";
+        $("#otAddTarj").click();
+        esperar(S.tarjetas.length).igualA(0);
+      } finally { cerrar(); }
+    });
+  });
+  prueba("«que el profe me pregunte» deja la pregunta escrita, sin mandarla", () => {
+    conEstado(() => {
+      const antes = seccion;
+      try {
+        opositorDePrueba();
+        S.opo.temas = [temaDe(4, { titulo: "El Gobierno y la Administración" })];
+        preguntarTema(S.opo.temas[0]);
+        esperar(seccion).igualA("tutor");
+        esperar($("#chatTexto").value).contiene("tema 4");
+        esperar($("#chatTexto").value).contiene("El Gobierno y la Administración");
+        esperar(tutorVivo).nulo();
+      } finally { tutorBorrador = ""; const ta = $("#chatTexto"); if (ta) ta.value = ""; seccion = antes; pinta(); }
+    });
+  });
+  /* este lo encontró la prueba a mano: al cerrarse la ficha la app repinta, y
+     el cuadro del chat se volvía a dibujar vacío */
+  prueba("desde la ficha, la pregunta llega al chat aunque la pantalla se repinte al cerrarla", async () => {
+    const copia = JSON.parse(JSON.stringify(S)), antes = seccion;
+    try {
+      opositorDePrueba();
+      S.opo.temas = [temaDe(7, { titulo: "La Administración local" })];
+      abrirTema("t7");
+      $("#otProfe").click();
+      await new Promise(r => setTimeout(r, 150));
+      esperar($("#dlg").open).falso();
+      esperar(seccion).igualA("tutor");
+      esperar($("#chatTexto").value).contiene("tema 7");
+      esperar($("#chatTexto").value).contiene("La Administración local");
+    } finally {
+      tutorBorrador = ""; const ta = $("#chatTexto"); if (ta) ta.value = "";
+      const d = $("#dlg"); if (d.open) d.close();
+      S = JSON.parse(JSON.stringify(copia)); seccion = antes; pinta();
+    }
+  });
+  prueba("abrir otra ventana después de pegar el índice ya no arrastra su «oninput»", () => {
+    conEstado(() => {
+      try {
+        opositorDePrueba(); S.opo.temas = [temaDe(1)];
+        abrirPegarIndice(); $("#dlg").close();
+        abrirTema("t1");
+        esperar($("#dlgCuerpo").oninput).nulo();
+      } finally { cerrar(); }
+    });
+  });
+  prueba("normalizar no cambia los temas por copias: la ficha abierta sigue valiendo", () => {
+    conEstado(() => {
+      opositorDePrueba();
+      S.opo.temas = [temaDe(1)];
+      const t = S.opo.temas[0];
+      normalizarOpo(); normalizarOpo();
+      esperar(S.opo.temas[0] === t).cierto();
+      darVuelta(t);
+      esperar(vueltasDe(temaPorId("t1"))).igualA(1);
+    });
+  });
+});
+
+grupo("Oposición: el tema a desarrollar", () => {
+  prueba("25 temas, 3 bolas y 15 preparados: un 94,8 %", () => {
+    esperar(probAlMenosUno(25, 15, 3)).cerca(1 - 720 / 13800, 1e-9);
+  });
+  prueba("25 temas, 5 bolas y 10 preparados: un 94,3 %", () => {
+    esperar(probAlMenosUno(25, 10, 5)).cerca(1 - 3003 / 53130, 1e-9);
+  });
+  prueba("sin preparar nada, cero; con todo, uno", () => {
+    esperar(probAlMenosUno(25, 0, 3)).igualA(0);
+    esperar(probAlMenosUno(25, 25, 3)).igualA(1);
+  });
+  prueba("si los que no llevas no dan para todas las bolas, sale seguro", () => {
+    esperar(probAlMenosUno(25, 23, 3)).igualA(1);
+  });
+  prueba("con una bola, la probabilidad es la proporción", () => {
+    esperar(probAlMenosUno(10, 1, 1)).cerca(0.1, 1e-12);
+  });
+  prueba("cuántos hay que llevar para un 90 %", () => {
+    esperar(temasParaProb(25, 3, 0.9)).igualA(13);
+    esperar(probAlMenosUno(25, 12, 3) < 0.9).cierto();
+  });
+  prueba("para ir seguro, todos menos las bolas menos uno", () => {
+    esperar(temasParaProb(25, 3, 1)).igualA(23);
+  });
+  prueba("el sorteo saca bolas distintas y nunca más de las que hay", () => {
+    const lista = Array.from({ length: 10 }, (_, i) => temaDe(i + 1));
+    const r = sacarBolas(3, lista);
+    esperar(r.length).igualA(3);
+    esperar(new Set(r.map(t => t.id)).size).igualA(3);
+    esperar(sacarBolas(50, lista).length).igualA(10);
+    esperar(sacarBolas("abc", lista)).igualA([]);
+    esperar(sacarBolas(3, null)).igualA([]);
+  });
+  prueba("el sorteo no tiene favoritos", () => {
+    const lista = Array.from({ length: 5 }, (_, i) => temaDe(i + 1)), vistos = {};
+    for (let i = 0; i < 1000; i++) { const b = sacarBolas(1, lista)[0]; vistos[b.n] = (vistos[b.n] || 0) + 1; }
+    esperar(Object.keys(vistos).length).igualA(5);
+    Object.values(vistos).forEach(v => esperar(v).entre(120, 290));
+  });
+  prueba("cuentan como preparados los dominados y los que tienen todas las vueltas", () => {
+    conEstado(() => {
+      opositorDePrueba(); S.opo.plan.vueltas = 2;
+      S.opo.temas = [temaDe(1, { dominado: true }), temaDe(2, { vueltas: [haceDias(9), haceDias(2)] }), temaDe(3, { vueltas: [haceDias(2)] })];
+      esperar(temasPreparados().map(t => t.n)).igualA([1, 2]);
+    });
+  });
+  prueba("los porcentajes se redondean hacia abajo: un 99,97 % no es un 100 %", () => {
+    esperar(pctTxt(0.9997)).igualA("99,9");
+    esperar(pctTxt(1)).igualA("100");
+    esperar(pctTxt(0.94782)).igualA("94,7");
+    esperar(pctTxt(NaN)).igualA("0");
+  });
+  prueba("se pinta en «Examen y plan» solo si hay bolas", () => {
+    conEstado(() => {
+      const antesTab = opoTab;
+      try {
+        opositorDePrueba(); opoTab = "examen";
+        S.opo.temas = Array.from({ length: 25 }, (_, i) => temaDe(i + 1));
+        esperar(vistaOposicion()).noContiene("opoSacarBolas");
+        S.opo.examen.bolas = 3;
+        esperar(vistaOposicion()).contiene("opoSacarBolas");
+      } finally { opoTab = antesTab; }
+    });
+  });
+});
+
+grupo("Oposición: el plazo de la solicitud", () => {
+  const plazo = (d, presentada = false) => {
+    opositorDePrueba();
+    S.opo.convocatoria.plazoFin = d === null ? "" : sumaDias(hoyISO(), d);
+    S.opo.convocatoria.presentada = presentada;
+  };
+  prueba("a tres días, urgente", () => {
+    conEstado(() => { plazo(3); const a = avisoPlazo(); esperar(a.tipo).igualA("urgente"); esperar(a.d).igualA(3); });
+  });
+  prueba("a diez días, pronto", () => {
+    conEstado(() => { plazo(10); esperar(avisoPlazo().tipo).igualA("pronto"); });
+  });
+  prueba("el último día lo dice así", () => {
+    conEstado(() => { plazo(0); esperar(avisoPlazo().txt).contiene("Hoy acaba"); });
+  });
+  prueba("a un mes todavía no molesta", () => {
+    conEstado(() => { plazo(30); esperar(avisoPlazo()).nulo(); });
+  });
+  prueba("presentada, no se avisa más", () => {
+    conEstado(() => { plazo(2, true); esperar(avisoPlazo()).nulo(); });
+  });
+  prueba("pasado el plazo sin marcarla, se dice", () => {
+    conEstado(() => { plazo(-2); esperar(avisoPlazo().tipo).igualA("pasado"); });
+  });
+  prueba("sin fecha o con una fecha que no es fecha, nada", () => {
+    conEstado(() => {
+      plazo(null); esperar(avisoPlazo()).nulo();
+      S.opo.convocatoria.plazoFin = "mañana"; esperar(avisoPlazo()).nulo();
+    });
+  });
+  prueba("sale en el resumen y en Inicio", () => {
+    conEstado(() => {
+      const antesTab = opoTab;
+      try {
+        plazo(4); S.opo.temas = [temaDe(1)]; opoTab = "resumen";
+        esperar(vistaOposicion()).contiene("opo-alerta urgente");
+        esperar(vistaEscritorio()).contiene("opo-alerta urgente");
+      } finally { opoTab = antesTab; }
+    });
+  });
+});
+
+grupo("Oposición: tus últimos siete días", () => {
+  prueba("cuenta vueltas, temas empezados, simulacros y horas, contra la semana anterior", () => {
+    conEstado(() => {
+      opositorDePrueba();
+      S.opo.temas = [temaDe(1, { vueltas: [haceDias(1)] }), temaDe(2, { vueltas: [haceDias(9), haceDias(2)] }), temaDe(3, { vueltas: [haceDias(8)] })];
+      S.opo.simulacros = [{ id: "a", fecha: haceDias(3) }, { id: "b", fecha: haceDias(10) }, { id: "c" }];
+      S.horas = { bGEN: { [haceDias(0)]: 30, [haceDias(8)]: 45 } };
+      const s = semanaOpo();
+      esperar(s.esta).igualA({ vueltas: 2, nuevos: 1, simulacros: 1, minutos: 30 });
+      esperar(s.antes).igualA({ vueltas: 2, nuevos: 2, simulacros: 1, minutos: 45 });
+    });
+  });
+  prueba("el día siete ya es de la semana anterior", () => {
+    conEstado(() => {
+      opositorDePrueba();
+      S.opo.temas = [temaDe(1, { vueltas: [haceDias(6)] }), temaDe(2, { vueltas: [haceDias(7)] })];
+      S.horas = {};
+      const s = semanaOpo();
+      esperar(s.esta.vueltas).igualA(1);
+      esperar(s.antes.vueltas).igualA(1);
+    });
+  });
+});
+
+grupo("Oposición: el temario en Excel", () => {
+  prueba("cabecera, BOM y punto y coma", () => {
+    conEstado(() => {
+      opositorDePrueba();
+      S.opo.temas = [temaDe(2), temaDe(1, { vueltas: [haceDias(5)], minutos: 90 })];
+      const c = csvTemario();
+      esperar(c.charCodeAt(0)).igualA(0xFEFF);
+      const filas = c.slice(1).trim().split("\r\n");
+      esperar(filas[0].split(";")[0]).igualA("Nº");
+      esperar(filas[1].split(";")[0]).igualA("1");
+      esperar(filas[1]).contiene(";90;");
+      esperar(filas.length).igualA(3);
+    });
+  });
+  prueba("un título con punto y coma o comillas no descuadra las columnas", () => {
+    conEstado(() => {
+      opositorDePrueba();
+      S.opo.temas = [temaDe(1, { titulo: 'La Ley 39/2015; el "procedimiento"' })];
+      esperar(csvTemario()).contiene('"La Ley 39/2015; el ""procedimiento"""');
+    });
+  });
+  prueba("un título que empieza por «=» no se convierte en fórmula", () => {
+    conEstado(() => {
+      opositorDePrueba();
+      S.opo.temas = [temaDe(1, { titulo: '=HYPERLINK("http://malo.example")' }), temaDe(2, { titulo: "+34 tema" }), temaDe(3, { titulo: "@SUMA" })];
+      const c = csvTemario();
+      esperar(c).noContiene(";=HYPERLINK");
+      esperar(c).contiene("'=HYPERLINK");
+      esperar(c).contiene(";'+34 tema;");
+      esperar(c).contiene(";'@SUMA;");
+    });
+  });
+});
+
+grupo("Oposición: el objetivo del día y «uno más»", () => {
+  prueba("al opositor le sale «Dar los temas de hoy», y se cumple al darlos", () => {
+    conEstado(() => {
+      opositorDePrueba();
+      S.opo.temas = [temaDe(1), temaDe(2)];
+      let o = objetivosDeHoy().find(x => x.id === "opo");
+      esperar(o.hecho).falso();
+      temasDeHoy().lista.forEach(t => darVuelta(t));
+      o = objetivosDeHoy().find(x => x.id === "opo");
+      esperar(o.hecho).cierto();
+      esperar(o.p).igualA(100);
+    });
+  });
+  prueba("a quien no oposita no le sale", () => {
+    conEstado(() => {
+      opositorDePrueba();
+      S.opo.temas = [temaDe(1)];
+      S.perfil.etapa = "ciclo-sup";
+      esperar(objetivosDeHoy().some(x => x.id === "opo")).falso();
+    });
+  });
+  prueba("se puede apagar como los demás", () => {
+    conEstado(() => {
+      opositorDePrueba();
+      S.opo.temas = [temaDe(1)];
+      normalizarObjetivos().activos.opo = false;
+      esperar(objetivosDeHoy().some(x => x.id === "opo")).falso();
+    });
+  });
+  prueba("«uno más» amplía lo de hoy en un tema, y solo hoy", () => {
+    conEstado(() => {
+      const antes = opoMas;
+      try {
+        opositorDePrueba();
+        S.opo.temas = Array.from({ length: 6 }, (_, i) => temaDe(i + 1));
+        const cupo = temasDeHoy().cupo;
+        opoMas = { fecha: hoyISO(), n: 1 };
+        esperar(temasDeHoy().cupo).igualA(cupo + 1);
+        opoMas = { fecha: haceDias(1), n: 1 };
+        esperar(temasDeHoy().cupo).igualA(cupo);
+      } finally { opoMas = antes; }
+    });
+  });
+});
+
+grupo("Oposición: los campos nuevos", () => {
+  prueba("las bolas: vacío es que no hay, y como mucho diez", () => {
+    conEstado(() => {
+      opositorDePrueba();
+      ponCampoOpo("examen.bolas", "3"); esperar(S.opo.examen.bolas).igualA(3);
+      ponCampoOpo("examen.bolas", "40"); esperar(S.opo.examen.bolas).igualA(10);
+      ponCampoOpo("examen.bolas", ""); esperar(S.opo.examen.bolas).nulo();
+    });
+  });
+  prueba("el plazo solo acepta fechas y lo de presentada es sí o no", () => {
+    conEstado(() => {
+      opositorDePrueba();
+      ponCampoOpo("convocatoria.plazoFin", "2026-10-01"); esperar(S.opo.convocatoria.plazoFin).igualA("2026-10-01");
+      ponCampoOpo("convocatoria.plazoFin", "ayer"); esperar(S.opo.convocatoria.plazoFin).igualA("");
+      ponCampoOpo("convocatoria.presentada", true); esperar(S.opo.convocatoria.presentada).cierto();
+      ponCampoOpo("convocatoria.presentada", "cualquier cosa"); esperar(S.opo.convocatoria.presentada).falso();
+    });
+  });
+  prueba("ni el reloj ni la lista de temas se tocan por aquí", () => {
+    conEstado(() => {
+      opositorDePrueba();
+      ponCampoOpo("crono.inicio", "5"); ponCampoOpo("temas.length", "0"); ponCampoOpo("examen.hasOwnProperty", "x");
+      esperar(S.opo.crono).nulo();
+      esperar(Array.isArray(S.opo.temas)).cierto();
+      esperar(typeof S.opo.examen.hasOwnProperty).igualA("function");
+    });
+  });
+  prueba("un estado de la primera versión del modo opositor coge los campos nuevos", () => {
+    conEstado(() => {
+      S.opo = { v: 1, temas: [{ id: "x", n: 1, titulo: "Viejo", vueltas: [] }], examen: { fecha: "", preguntas: 100, opciones: 4 }, plan: {}, simulacros: [], convocatoria: { cortes: [] } };
+      const O = normalizarOpo();
+      esperar(O.examen.bolas).nulo();
+      esperar(O.convocatoria.plazoFin).igualA("");
+      esperar(O.convocatoria.presentada).falso();
+      esperar(O.temas[0].minutos).igualA(0);
+      esperar(O.crono).nulo();
+    });
+  });
+});
+
+grupo("Oposición: el profe, con lo nuevo", () => {
+  prueba("le llega el tema a desarrollar con su probabilidad", () => {
+    conEstado(() => {
+      opositorDePrueba();
+      S.opo.temas = Array.from({ length: 25 }, (_, i) => temaDe(i + 1, { dominado: i < 15 }));
+      S.opo.examen.bolas = 3;
+      const c = tutorContexto();
+      esperar(c).contiene("sacan 3 bolas de 25 temas");
+      esperar(c).contiene("94,7 %");
+    });
+  });
+  prueba("y si no ha presentado la solicitud", () => {
+    conEstado(() => {
+      opositorDePrueba();
+      S.opo.convocatoria.plazoFin = sumaDias(hoyISO(), 5);
+      esperar(tutorContexto()).contiene("todavía NO la ha presentado");
+      S.opo.convocatoria.presentada = true;
+      esperar(tutorContexto()).contiene("ya la ha presentado");
+    });
+  });
+  prueba("las horas de cada tema, las tarjetas y el reparto de fallos no se le mandan", () => {
+    conEstado(() => {
+      opositorDePrueba(); S.tarjetas = [];
+      S.opo.temas = [temaDe(1, { minutos: 777, vueltas: [haceDias(30)] })];
+      const c0 = nuevaTarjeta("bGEN", "PREGUNTA_SECRETA_DEL_TEMA", "RESPUESTA_SECRETA"); c0.temaId = "t1";
+      S.opo.simulacros = [{ id: "a", tipo: "completo", fecha: haceDias(1), preguntas: 100, aciertos: 50, fallos: 20, fallosTema: { t1: 3 } }];
+      const c = tutorContexto();
+      esperar(c).noContiene("777");
+      esperar(c).noContiene("PREGUNTA_SECRETA");
+      esperar(c).noContiene("RESPUESTA_SECRETA");
+      esperar(c).noContiene("fallosTema");
+    });
+  });
+  prueba("le pide recordar la solicitud y no inventarse probabilidades", () => {
+    conEstado(() => {
+      opositorDePrueba();
+      const i = tutorInstrucciones();
+      esperar(i).contiene("no te inventes otras cifras");
+      esperar(i).contiene("recuérdaselo");
+    });
+  });
+});

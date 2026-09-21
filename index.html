@@ -1651,7 +1651,7 @@ dialog.dlg-legal::backdrop{background:rgba(0,0,0,.45)}
 
 /* las filas de temas: hoy, se enfrían, flojos */
 .opo-lista{display:grid; gap:2px}
-.opo-fila{display:grid; grid-template-columns:minmax(0,1fr) auto auto; align-items:center; gap:12px; padding:6px 6px 6px 0;
+.opo-fila{display:grid; grid-template-columns:minmax(0,1fr); grid-auto-flow:column; grid-auto-columns:auto; align-items:center; gap:12px; padding:6px 6px 6px 0;
   border-top:1px solid var(--line)}
 .opo-fila:first-child{border-top:0}
 .opo-fila-t{display:flex; align-items:center; gap:10px; min-width:0; padding:6px 8px; border:0; border-radius:var(--r-m);
@@ -1745,7 +1745,6 @@ dialog.dlg-legal::backdrop{background:rgba(0,0,0,.45)}
   /* la cuenta atrás, en una línea: «95 días para el examen» */
   .cab .opo-cuenta{flex-direction:row; align-items:baseline; gap:8px; text-align:left}
   .opo-cuenta b{font-size:34px}
-  .opo-fila{grid-template-columns:minmax(0,1fr) auto; }
   .opo-fila-e{display:none}
   .opo-form .opo-ancho{grid-column:1 / -1}
   .opo-tr{grid-template-columns:minmax(80px,1fr) minmax(0,1.2fr) 60px 28px}
@@ -1753,6 +1752,64 @@ dialog.dlg-legal::backdrop{background:rgba(0,0,0,.45)}
   .opo-inicio{grid-template-columns:1fr}
   .opo-paso{grid-template-columns:30px minmax(0,1fr)}
   .opo-paso .btn{grid-column:2; justify-self:start}
+}
+/* segunda tanda: estudiar un tema, avisos, el reloj del simulacro, la semana y las bolas */
+.opo-fila .icono-btn{width:30px; height:30px; color:var(--ink-3)}
+.opo-fila .icono-btn:hover{color:var(--ink)}
+.opo-hecho{display:flex; align-items:center; justify-content:space-between; gap:12px; flex-wrap:wrap}
+.opo-alerta{display:flex; align-items:center; gap:12px; flex-wrap:wrap; padding:12px 14px; border-radius:var(--r-l); background:var(--surface-2);
+  font:500 14px/1.4 var(--sans); color:var(--ink)}
+.opo-alerta > span{flex:1 1 220px}
+.opo-alerta .i{flex:0 0 auto; width:18px; height:18px}
+.opo-alerta.urgente{background:color-mix(in srgb, #DC2626 9%, var(--surface)); box-shadow:inset 0 0 0 1px color-mix(in srgb, #DC2626 40%, transparent)}
+.opo-alerta.urgente .i{color:#DC2626}
+.opo-alerta.pronto, .opo-alerta.pasado{background:color-mix(in srgb, #F59E0B 11%, var(--surface)); box-shadow:inset 0 0 0 1px color-mix(in srgb, #F59E0B 45%, transparent)}
+.opo-alerta.pronto .i, .opo-alerta.pasado .i{color:#D97706}
+.opo-inicio > .opo-alerta{grid-column:1 / -1}
+.opo-marcha{display:inline-flex; align-items:center; gap:10px; margin-top:12px; padding:8px 14px; border:0; border-radius:999px; cursor:pointer;
+  background:var(--surface-2); color:var(--ink); font:500 13.5px/1 var(--sans)}
+.opo-marcha.vivo{background:color-mix(in srgb, var(--acento, #7C6CF0) 13%, var(--surface)); box-shadow:inset 0 0 0 1px var(--acento, #7C6CF0)}
+.opo-marcha b{font-variant-numeric:tabular-nums; font-weight:600}
+.opo-marcha .i{width:16px; height:16px}
+/* dentro de la cuenta atrás de Inicio, que no herede sus números grandes */
+.opo-cuenta .opo-marcha span{font:500 13.5px/1 var(--sans); color:var(--ink)}
+.opo-cuenta .opo-marcha b{font:600 13.5px/1 var(--sans); letter-spacing:0; color:var(--ink)}
+/* las cuatro cifras del resumen: en fila si caben, y si no, dos y dos; nunca tres y una suelta */
+.opo-cuerpo{container-type:inline-size}
+.resumen-mod.cuatro{grid-template-columns:repeat(4, minmax(0,1fr))}
+@container (max-width:760px){ .resumen-mod.cuatro{grid-template-columns:repeat(2, minmax(0,1fr))} }
+.opo-crono{display:flex; align-items:center; justify-content:space-between; gap:16px; flex-wrap:wrap}
+.opo-crono > div:first-child{flex:1 1 300px; min-width:0}
+.opo-crono.vivo{box-shadow:inset 0 0 0 1.5px var(--acento, #7C6CF0)}
+.opo-reloj{font:300 64px/1 var(--sans); letter-spacing:-.04em; font-variant-numeric:tabular-nums; margin:10px 0 8px; color:var(--ink)}
+.opo-semana{display:grid; grid-template-columns:repeat(4, minmax(0,1fr)); gap:10px}
+.opo-sem{display:grid; gap:3px; padding:12px 14px; border-radius:var(--r-l); background:var(--surface-2)}
+.opo-sem b{font:300 26px/1.1 var(--sans); letter-spacing:-.02em; font-variant-numeric:tabular-nums; color:var(--ink)}
+.opo-sem span{font:500 13px/1.2 var(--sans); color:var(--ink-2)}
+.opo-sem em{font:500 12px/1.3 var(--sans); font-style:normal; color:var(--ink-3)}
+.opo-bolas{display:flex; flex-wrap:wrap; gap:8px; margin-top:12px}
+.opo-bolas:empty{display:none}
+.opo-bolas .meta{flex-basis:100%; margin-top:4px}
+.opo-bola{display:inline-flex; align-items:center; gap:8px; max-width:100%; padding:5px 12px 5px 5px; border-radius:999px; background:var(--surface-2);
+  font:500 13px/1.2 var(--sans); color:var(--ink-2); overflow:hidden; text-overflow:ellipsis; white-space:nowrap}
+.opo-bola b{flex:0 0 auto; min-width:26px; height:26px; padding:0 4px; border-radius:999px; display:grid; place-items:center; background:var(--surface);
+  color:var(--ink); font-weight:600; box-shadow:inset 0 0 0 1px var(--line-2)}
+.opo-bola.si b{background:var(--verde); color:var(--on-verde); box-shadow:none}
+.opo-ficha-datos{display:flex; flex-wrap:wrap; gap:6px 14px; margin:0 0 14px; font:500 12.5px/1.3 var(--sans); color:var(--ink-3)}
+.opo-tarj{display:grid; grid-template-columns:minmax(0,1fr) minmax(0,1fr) auto; gap:10px; align-items:end}
+.opo-check{align-self:end; min-height:40px}
+.opo-pie-temario{margin-top:14px}
+.opc{font-weight:400; color:var(--ink-4); margin-left:4px}
+.sel-tema{margin-top:8px}
+@media (max-width:700px){
+  .opo-semana{grid-template-columns:repeat(2, minmax(0,1fr))}
+  .opo-reloj{font-size:52px}
+  .opo-tarj{grid-template-columns:minmax(0,1fr)}
+  .opo-tarj .btn{justify-self:start}
+  /* en el móvil, «Vuelta hecha» se queda en «+»: el título del tema necesita el sitio */
+  .opo-fila .opo-bt{display:none}
+  .opo-fila .btn.mini{padding-inline:10px}
+  .opo-sem b{font-size:22px}
 }
 </style>
 </head>
@@ -1960,7 +2017,7 @@ const GLOSARIO = [
   ["stateless", "sin estado"], ["framework", "entorno de trabajo"], ["merge", "fusionar (ramas)"],
   ["rollback", "deshacer los cambios de una transacción"], ["debug", "depurar errores"]
 ];
-const OBJ_DEF = () => ({ activos: { estudio: true, riesgo: true, descanso: true, tarea: true, vocab: true, apunte: true }, propios: [], dias: {} });
+const OBJ_DEF = () => ({ activos: { estudio: true, riesgo: true, descanso: true, tarea: true, vocab: true, apunte: true, opo: true }, propios: [], dias: {} });
 function estadoInicial() {
   return {
     config: { curso: "1.º DAW", objetivo: 5, pctFaltas: 15, pomodoro: 25, descanso: 15, descanso15: true, postit: "" },
@@ -2138,7 +2195,7 @@ function racha() {
 const modPorId = id => S.modulos.find(m => m.id === id);
 
 /* ══════════════════ cronómetro ══════════════════ */
-const T = { activo: false, fase: "trabajo", fin: 0, modId: null, restante: 0, tick: null, aviso: "" };
+const T = { activo: false, fase: "trabajo", fin: 0, modId: null, temaId: "", restante: 0, tick: null, aviso: "" };
 function cargarTimer() {
   const g = leeLS("timer"); if (!g) return;
   Object.assign(T, g, { tick: null });
@@ -2147,7 +2204,7 @@ function cargarTimer() {
   else if (T.activo && Date.now() - T.fin < 12 * 3600000) T.pendienteFin = true;
   else T.activo = false;
 }
-const guardarTimer = () => guardaLS("timer", { activo: T.activo, fase: T.fase, fin: T.fin, modId: T.modId, restante: T.restante, aviso: T.aviso || "" });
+const guardarTimer = () => guardaLS("timer", { activo: T.activo, fase: T.fase, fin: T.fin, modId: T.modId, temaId: T.temaId || "", restante: T.restante, aviso: T.aviso || "" });
 const segsRestantes = () => T.activo ? Math.max(0, Math.round((T.fin - Date.now()) / 1000)) : T.restante;
 function arrancarTick() { clearInterval(T.tick); T.tick = setInterval(() => { pintaReloj(); if (T.activo && segsRestantes() <= 0) terminarFase(); }, 500); }
 function iniciarTimer() {
@@ -2163,6 +2220,7 @@ function terminarFase() {
   if (T.fase === "trabajo") {
     const mins = num(S.config.pomodoro, 25), m = modPorId(T.modId);
     registrarMinutos(T.modId, mins);
+    if (T.temaId) registrarMinutosTema(T.temaId, mins);
     /* no arranca el descanso sola: te para y lo empiezas tú */
     T.fase = "descanso"; T.aviso = "hecho";
     guardarTimer(); pitido(); pinta();
@@ -2194,7 +2252,8 @@ function pintaMini() {
   box.classList.toggle("hecho", hecho);
   $("#mrFase").textContent = hecho ? "¡Bien hecho!" : otra ? "Descanso terminado"
     : T.fase === "trabajo" ? (T.activo ? "Concentración" : "En pausa") : (T.activo ? "Descanso" : "Descanso en pausa");
-  $("#mrMod").textContent = m ? m.cod : "";
+  const tm = T.temaId ? temaPorId(T.temaId) : null;
+  $("#mrMod").textContent = tm ? "Tema " + tm.n : m ? m.cod : "";
   $("#mrTiempo").textContent = String(Math.floor(s / 60)).padStart(2, "0") + ":" + String(s % 60).padStart(2, "0");
   const play = $("#mrPlay"), estado = T.activo ? "pausa" : "play";
   if (play.dataset.estado !== estado) { play.innerHTML = icono(estado); play.dataset.estado = estado; }
@@ -2204,6 +2263,11 @@ function pintaMini() {
   if (!cerrar.firstChild) cerrar.innerHTML = icono("cerrar");
   cerrar.hidden = T.activo;          /* mientras corre solo se pausa: así no se tira una sesión sin querer */
 }
+/* «del tema 12» si estudiabas un tema de la oposición; si no, el módulo */
+function queEstudiaste(m) {
+  const t = T.temaId ? temaPorId(T.temaId) : null;
+  return t ? "del tema " + t.n : "de " + (m ? m.nombre : "estudio");
+}
 function dlgBienHecho(m, mins) {
   const dlg = $("#dlg"), desc = num(S.config.descanso, 15);
   if (dlg.open) dlg.close();
@@ -2211,7 +2275,7 @@ function dlgBienHecho(m, mins) {
     <div class="bien-hecho">
       <span class="bh-circulo">${CHECK}</span>
       <p class="bh-titulo">¡Bien hecho!</p>
-      <p class="bh-texto">${mins} minutos de ${esc(m ? m.nombre : "estudio")}, guardados. Ahora para de verdad: levántate, estira y bebe agua. Dale cuando vayas a descansar.</p>
+      <p class="bh-texto">${mins} minutos ${esc(queEstudiaste(m))}, guardados. Ahora para de verdad: levántate, estira y bebe agua. Dale cuando vayas a descansar.</p>
     </div>`,
     [{ txt: "Ahora no", clase: "btn", izquierda: true, accion: () => {} },
      { txt: "Empezar descanso · " + desc + " min", clase: "btn primario verde", accion: () => { iniciarTimer(); } }]);
@@ -2317,7 +2381,8 @@ const OBJ_SUGERIDOS = [
   ["descanso", () => "Descansar 15 min", "Suma los descansos del cronómetro; también puedes marcarlo a mano."],
   ["tarea", () => "Completar 1 entrega", "Aparece cuando tienes entregas pendientes; se marca al tachar una."],
   ["vocab", () => "Repasar vocabulario", "Aparece cuando te toca repasar palabras; se marca al contestar el repaso."],
-  ["apunte", () => "Escribir en tus apuntes", "Se marca solo al escribir en cualquier apunte."]
+  ["apunte", () => "Escribir en tus apuntes", "Se marca solo al escribir en cualquier apunte."],
+  ["opo", () => "Dar los temas de hoy", "Solo si opositas: se marca al apuntar las vueltas que te tocan."]
 ];
 const OBJ_IDEAS = ["Leer 10 páginas", "Salir a caminar 20 min", "Preparar la mochila para mañana",
   "Beber 2 litros de agua", "Acostarme antes de las 12", "Ordenar el escritorio"];
@@ -2343,6 +2408,11 @@ function registrarDescanso(mins) { const d = diaObj(); d.descanso = num(d.descan
 function objetivosDeHoy() {
   const O = normalizarObjetivos(), hoy = hoyISO(), d = O.dias[hoy] || { hechos: {}, descanso: 0 };
   const hechosDia = d.hechos || {}, meta = num(S.config.pomodoro, 25), lista = [];
+  if (O.activos.opo && esOpositor() && normalizarOpo().temas.length) {
+    const h = temasDeHoy(hoy), total = h.hechos + h.lista.length;
+    if (total) lista.push({ id: "opo", titulo: "Dar los temas de hoy", p: h.hechos / total * 100, hecho: !h.lista.length,
+      sub: h.lista.length ? h.hechos + " de " + total + " temas" : h.hechos + (h.hechos === 1 ? " tema hecho" : " temas hechos") });
+  }
   if (O.activos.estudio) {
     const min = totalDia(hoy);
     lista.push({ id: "estudio", titulo: "Estudiar " + meta + " min", p: min / meta * 100, hecho: min >= meta,
@@ -2454,7 +2524,7 @@ function dlgObjetivos() {
     $("#dlgCuerpo").innerHTML = `
       <p class="meta" style="margin-bottom:16px">Los sugeridos se marcan solos con lo que haces en la app. Los tuyos los marcas tú tocando el círculo.</p>
       <div class="etq" style="margin-bottom:4px">Sugeridos</div>
-      <div class="lista">${OBJ_SUGERIDOS.map(([id, titulo, desc]) => `
+      <div class="lista">${OBJ_SUGERIDOS.filter(([id]) => id !== "opo" || esOpositor()).map(([id, titulo, desc]) => `
         <label class="fila" style="cursor:pointer">
           <input type="checkbox" data-sug="${id}"${O.activos[id] ? " checked" : ""}>
           <span class="principal-fila"><span class="t" style="display:block">${esc(titulo())}</span>
@@ -3577,6 +3647,10 @@ function vistaEscritorio() {
         <option value="">Elige un módulo…</option>
         ${S.modulos.map(m => `<option value="${m.id}"${T.modId === m.id ? " selected" : ""}>${esc(m.cod)} · ${esc(m.nombre)}</option>`).join("")}
       </select>
+      ${esOpositor() && normalizarOpo().temas.length ? `<select id="selTimerTema" class="sel-tema" aria-label="Tema que vas a estudiar">
+        <option value="">Sin tema concreto</option>
+        ${normalizarOpo().temas.slice().sort((a, b) => a.n - b.n).map(t => `<option value="${t.id}"${T.temaId === t.id ? " selected" : ""}>Tema ${t.n} · ${esc(t.titulo.slice(0, 70))}</option>`).join("")}
+      </select>` : ""}
       <div class="reloj" id="reloj">25:00</div>
       <div class="barra-btns">
         <button class="btn primario" id="btnTimer">Empezar</button>
@@ -4110,7 +4184,7 @@ function hojaHTML(d, conMod) {
         ${d.tipo === "enlace" ? `<a class="btn mini" href="${esc(d.url)}" target="_blank" rel="noopener noreferrer">Abrir</a>`
           : `<button type="button" class="btn mini" data-ver-doc="${d.id}">Ver</button>`}
         ${(tipo === "Foto" || tipo === "Texto") && srcDoc(d) ? `<button type="button" class="btn mini fantasma" data-doc-profe="${d.id}" title="Pasárselo al profe y preguntarle">Al profe</button>` : ""}
-        ${d.tipo !== "enlace" && descargas ? `<button type="button" class="hj-borrar hj-bajar" data-bajar-doc="${d.id}" aria-label="Descargar «${esc(d.titulo)}»" title="Descargar">${ICO_BAJAR}</button>` : ""}
+        ${d.tipo !== "enlace" && (descargas || !enClaude()) ? `<button type="button" class="hj-borrar hj-bajar" data-bajar-doc="${d.id}" aria-label="Descargar «${esc(d.titulo)}»" title="Descargar">${ICO_BAJAR}</button>` : ""}
         <button type="button" class="hj-borrar" data-borrar-doc="${d.id}" aria-label="Borrar «${esc(d.titulo)}»" title="Borrar">${ICO_X}</button>
       </div>
     </div>
@@ -4532,7 +4606,7 @@ function confirmar(texto, { titulo = "¿Seguro?", si = "Aceptar", no = "Cancelar
 function abrirDlg(titulo, html, botones) {
   $("#dlgTit").textContent = titulo;
   const cuerpoDlg = $("#dlgCuerpo");
-  cuerpoDlg.onclick = cuerpoDlg.onchange = cuerpoDlg.onkeydown = null;
+  cuerpoDlg.onclick = cuerpoDlg.onchange = cuerpoDlg.onkeydown = cuerpoDlg.oninput = null;
   cuerpoDlg.innerHTML = html;
   const pie = $("#dlgPie"); pie.innerHTML = "";
   const der = document.createElement("div"); der.className = "derecha";
@@ -4572,11 +4646,7 @@ function dlgAjustes() {
       guardar("ajustes"); pinta();
     } }]);
 
-  $("#btnExportar").onclick = async () => {
-    if (!descargas) { aviso("Las descargas no están disponibles en esta vista.", "mal"); return; }
-    try { await descargas.save({ filename: "gritnook-" + hoyISO() + ".json", data: JSON.stringify(S, null, 2) }); aviso("Copia descargada."); }
-    catch (e) { if (e.code !== "declined") aviso("No se pudo descargar (" + e.code + ").", "mal"); }
-  };
+  $("#btnExportar").onclick = bajarCopia;
   $("#btnImportar").onclick = () => $("#inputImportar").click();
   $("#inputImportar").onchange = async e => {
     const f = e.target.files[0]; if (!f) return;
@@ -4590,6 +4660,30 @@ function dlgAjustes() {
       pinta(); $("#dlg").close(); aviso("Copia restaurada.");
     } catch (err) { aviso("Ese archivo no es una copia válida.", "mal"); }
   };
+}
+
+/* ══════════════════ descargar un archivo ══════════════════
+   Dentro de Claude, con su permiso de descargas. Fuera (GitHub Pages, un
+   servidor cualquiera), con un enlace de descarga normal, como cualquier web.
+   Devuelve si ha salido bien. */
+async function bajarArchivo(nombre, data, tipo = "application/octet-stream") {
+  if (!descargas && enClaude()) { aviso("Las descargas no están disponibles en esta vista.", "mal"); return false; }
+  try {
+    if (descargas) { await descargas.save({ filename: nombre, data }); return true; }
+    const blob = data instanceof Blob ? data : new Blob([data], { type: tipo });
+    const url = URL.createObjectURL(blob), a = document.createElement("a");
+    a.href = url; a.download = nombre; a.hidden = true;
+    document.body.append(a); a.click(); a.remove();
+    setTimeout(() => URL.revokeObjectURL(url), 5000);
+    return true;
+  } catch (e) {
+    if (!e || e.code !== "declined") aviso("No se pudo descargar" + (e && e.code ? " (" + e.code + ")." : "."), "mal");
+    return false;
+  }
+}
+/* la copia de todo, que se pide desde dos sitios */
+async function bajarCopia() {
+  if (await bajarArchivo("gritnook-" + hoyISO() + ".json", JSON.stringify(S, null, 2), "application/json")) aviso("Copia descargada.");
 }
 
 /* ══════════════════ oposiciones ══════════════════
@@ -4607,16 +4701,21 @@ function OPO_DEF() {
   return {
     v: 1,
     temas: [],
-    examen: { fecha: "", preguntas: 100, opciones: 4, penalizacion: null, corte: null, minutos: 90, reserva: 0 },
+    examen: { fecha: "", preguntas: 100, opciones: 4, penalizacion: null, corte: null, minutos: 90, reserva: 0, bolas: null },
     plan: { vueltas: 3, diasSemana: 6, diasSimulacro: 14 },
     simulacros: [],
-    convocatoria: { plazas: null, aspirantes: null, enlace: "", cortes: [] }
+    convocatoria: { plazas: null, aspirantes: null, enlace: "", cortes: [], plazoFin: "", presentada: false },
+    crono: null
   };
 }
 const esOpositor = () => normalizarPerfil().etapa === "oposicion";
+const TEMA_DEF = [["titulo", ""], ["modId", ""], ["grupo", ""], ["dominado", false], ["dificultad", "normal"], ["notas", ""], ["ley", ""], ["minutos", 0]];
+const esFecha = v => /^\d{4}-\d{2}-\d{2}$/.test(v) && !isNaN(new Date(v + "T12:00:00"));
 
 /* lo que llegue —de otra versión, de una copia a medias, de la sincronización—
-   se deja con su forma, sin perder lo que ya tuviera */
+   se deja con su forma, sin perder lo que ya tuviera. Se arregla en el sitio
+   y sin copiar: quien tenga un tema en la mano (la ficha abierta, por
+   ejemplo) sigue teniendo el mismo objeto que está en el estado */
 function normalizarOpo() {
   if (!S.opo || typeof S.opo !== "object" || Array.isArray(S.opo)) S.opo = OPO_DEF();
   const O = S.opo, d = OPO_DEF();
@@ -4627,12 +4726,32 @@ function normalizarOpo() {
   if (!Array.isArray(O.temas)) O.temas = [];
   if (!Array.isArray(O.simulacros)) O.simulacros = [];
   if (!Array.isArray(O.convocatoria.cortes)) O.convocatoria.cortes = [];
-  O.temas = O.temas.filter(t => t && typeof t === "object").map((t, i) => Object.assign(
-    { id: uid(), n: i + 1, titulo: "", modId: "", grupo: "", vueltas: [], dominado: false, dificultad: "normal", notas: "", ley: "" }, t,
-    { vueltas: Array.isArray(t.vueltas) ? t.vueltas.filter(f => /^\d{4}-\d{2}-\d{2}$/.test(f)).sort() : [] }));
-  O.simulacros = O.simulacros.filter(s => s && typeof s === "object");
+  const esObj = x => x && typeof x === "object" && !Array.isArray(x);
+  if (!O.temas.every(esObj)) O.temas = O.temas.filter(esObj);
+  /* los identificadores acaban en atributos del HTML: solo letras, números y guiones */
+  const idBueno = id => typeof id === "string" && /^[A-Za-z0-9_-]{1,60}$/.test(id);
+  O.temas.forEach((t, i) => {
+    if (!idBueno(t.id)) t.id = uid();
+    t.n = Math.max(1, Math.round(num(t.n, i + 1)));
+    for (const [k, v] of TEMA_DEF) if (t[k] === undefined || t[k] === null) t[k] = v;
+    if (typeof t.titulo !== "string") t.titulo = String(t.titulo);
+    if (!["facil", "normal", "dificil"].includes(t.dificultad)) t.dificultad = "normal";
+    t.dominado = t.dominado === true;
+    t.minutos = clamp(num(t.minutos), 0, 1e7);
+    const v = Array.isArray(t.vueltas) ? t.vueltas.filter(esFecha).sort() : [];
+    if (!Array.isArray(t.vueltas) || v.length !== t.vueltas.length || v.some((f, j) => f !== t.vueltas[j])) t.vueltas = v;
+  });
+  if (!O.simulacros.every(esObj)) O.simulacros = O.simulacros.filter(esObj);
+  O.simulacros.forEach(s => {
+    if (!idBueno(s.id)) s.id = uid();
+    if (s.fecha !== undefined && !esFecha(s.fecha)) s.fecha = "";
+  });
+  const c = O.crono;
+  if (c !== null && !(esObj(c) && num(c.inicio) > 0 && num(c.minutos) > 0 && num(c.preguntas) > 0)) O.crono = null;
+  else if (c) { c.minutos = clamp(Math.round(num(c.minutos)), 1, 600); c.preguntas = clamp(Math.round(num(c.preguntas)), 1, 500); }
   return O;
 }
+const temaPorId = id => id ? normalizarOpo().temas.find(t => t.id === id) : undefined;
 
 /* ── las reglas del examen ──
    Lo normal es que cada fallo reste lo que vale acertar entre las opciones
@@ -4676,6 +4795,46 @@ function valorDeArriesgar(opciones, descartadas, pen) {
   return p - (1 - p) * Math.max(0, num(pen));
 }
 
+/* ── el tema a desarrollar ──
+   En muchas oposiciones sacan unas bolas y eliges uno de los temas que
+   salen. Que no salga ninguno de los que llevas es que todas caigan en los
+   otros: C(n−k, b) / C(n, b), que es el producto de (n−k−i)/(n−i) por cada
+   bola. Lo que interesa es lo contrario: que salga al menos uno. */
+function probAlMenosUno(n, k, b) {
+  /* ningún temario pasa de unos cientos de temas ni se sacan más de diez
+     bolas: los topes son para que un número absurdo no cuelgue la página */
+  n = Math.min(5000, Math.round(num(n))); b = Math.round(num(b));
+  if (!(n > 0) || !(b > 0)) return 0;
+  k = clamp(Math.round(num(k)), 0, n); b = Math.min(b, n, 100);
+  let ninguno = 1;
+  for (let i = 0; i < b; i++) ninguno *= Math.max(0, n - k - i) / (n - i);
+  return clamp(1 - ninguno, 0, 1);
+}
+/* cuántos temas hay que llevar para llegar a esa probabilidad */
+function temasParaProb(n, b, p) {
+  n = clamp(Math.round(num(n)), 0, 5000);
+  for (let k = 0; k <= n; k++) if (probAlMenosUno(n, k, b) >= num(p) - 1e-12) return k;
+  return n;
+}
+/* los que cuentan como preparados: dominados o con todas las vueltas del plan */
+function temasPreparados() {
+  const O = normalizarOpo(), obj = clamp(Math.round(num(O.plan.vueltas, 3)), 1, 8);
+  return O.temas.filter(t => t.dominado || vueltasDe(t) >= obj);
+}
+/* azar de verdad para el sorteo, del generador criptográfico */
+function azarEntero(n) {
+  if (!(n > 0)) return 0;
+  if (self.crypto && self.crypto.getRandomValues) { const a = new Uint32Array(1); self.crypto.getRandomValues(a); return a[0] % n; }
+  return Math.floor(Math.random() * n);
+}
+function sacarBolas(b, lista = normalizarOpo().temas) {
+  const bolsa = Array.isArray(lista) ? lista.slice() : [], r = [];
+  const cuantas = clamp(Math.round(num(b)), 0, bolsa.length);
+  while (r.length < cuantas) r.push(bolsa.splice(azarEntero(bolsa.length), 1)[0]);
+  return r;
+}
+const pctTxt = p => p >= 1 ? "100" : !(p > 0) ? "0" : (Math.floor(p * 1000) / 10).toLocaleString("es-ES", { maximumFractionDigits: 1 });
+
 /* ── pegar el índice del temario ──
    Se pega tal cual sale de la convocatoria o del PDF de la academia. Cada
    línea con número es un tema; las líneas en mayúsculas o que empiezan por
@@ -4717,15 +4876,32 @@ function crearTemas(indice, sustituir) {
   const nuevos = indice.temas.map((t, i) => ({
     id: uid(), n: base ? base + i + 1 : t.n, titulo: t.titulo, grupo: t.grupo,
     modId: bloqueDeGrupo(t.grupo, Math.max(0, indice.grupos.indexOf(t.grupo))),
-    vueltas: [], dominado: false, dificultad: "normal", notas: "", ley: ""
+    vueltas: [], dominado: false, dificultad: "normal", notas: "", ley: "", minutos: 0
   }));
   O.temas = sustituir ? nuevos : O.temas.concat(nuevos);
   return nuevos.length;
 }
 
+/* muchas convocatorias numeran cada parte desde el 1, y al pegarlas salen
+   dos temas 1, dos temas 2… Se puede dejar así, pero entonces «el tema 5»
+   ya no dice cuál es */
+function numeracionRara() {
+  const ns = normalizarOpo().temas.map(t => t.n).sort((a, b) => a - b);
+  return ns.some((n, i) => n !== i + 1);
+}
+/* del 1 al final, respetando el orden de los grupos tal y como se pegaron */
+function renumerar() {
+  const O = normalizarOpo(), orden = [];
+  O.temas.forEach(t => { if (!orden.includes(t.grupo || "")) orden.push(t.grupo || ""); });
+  O.temas.sort((a, b) => orden.indexOf(a.grupo || "") - orden.indexOf(b.grupo || "") || a.n - b.n);
+  O.temas.forEach((t, i) => { t.n = i + 1; });
+  return O.temas.length;
+}
+
 /* ── el temario ── */
 const vueltasDe = t => (t && Array.isArray(t.vueltas) ? t.vueltas.length : 0);
 const ultimaVuelta = t => vueltasDe(t) ? t.vueltas[t.vueltas.length - 1] : "";
+const txtVueltas = t => vueltasDe(t) ? vueltasDe(t) + (vueltasDe(t) === 1 ? " vuelta" : " vueltas") : "sin empezar";
 /* cuánto aguanta un tema sin volver a él antes de empezar a olvidarse: cuantas
    más vueltas lleva, más tiempo. Es la misma idea que las tarjetas de repaso */
 const INTERVALO_VUELTA = [0, 10, 21, 35, 50];
@@ -4745,22 +4921,57 @@ function temasFrios(hoy = hoyISO()) {
   return normalizarOpo().temas.map(t => ({ t, retraso: retrasoTema(t, hoy) })).filter(x => x.retraso > 0)
     .sort((a, b) => b.retraso - a.retraso).map(x => x.t);
 }
-/* los que más se fallan en los simulacros por tema, y los que tú marcas como difíciles */
+/* los fallos de los simulacros completos, repartidos por tema, si los apuntaste */
+function fallosSimDe() {
+  const r = {};
+  normalizarOpo().simulacros.forEach(s => {
+    const f = s.fallosTema;
+    if (!f || typeof f !== "object" || Array.isArray(f)) return;
+    Object.keys(f).forEach(id => { const n = Math.max(0, Math.round(num(f[id]))); if (n) r[id] = (r[id] || 0) + n; });
+  });
+  return r;
+}
+/* los que más se fallan —en los tests de un tema y en los simulacros
+   completos— y los que tú marcas como difíciles. Cada fallo apuntado en un
+   simulacro completo suma una décima: con dos ya sale */
 function temasFlojos() {
-  const O = normalizarOpo(), cuenta = {};
+  const O = normalizarOpo(), cuenta = {}, sim = fallosSimDe();
   O.simulacros.filter(s => s.tipo === "tema" && s.ref).forEach(s => {
     const c = cuenta[s.ref] || (cuenta[s.ref] = { pregs: 0, fallos: 0 });
     c.pregs += num(s.preguntas); c.fallos += num(s.fallos);
   });
   return O.temas.map(t => {
-    const c = cuenta[t.id], tasa = c && c.pregs ? c.fallos / c.pregs : null;
-    const peso = (tasa === null ? 0 : tasa) + (t.dificultad === "dificil" ? .25 : 0);
-    return { t, tasa, peso };
+    const c = cuenta[t.id], tasa = c && c.pregs ? c.fallos / c.pregs : null, fallosSim = sim[t.id] || 0;
+    const peso = (tasa === null ? 0 : tasa) + (t.dificultad === "dificil" ? .25 : 0) + Math.min(.6, fallosSim / 10);
+    return { t, tasa, fallosSim, peso };
   }).filter(x => !x.t.dominado && x.peso >= .2).sort((a, b) => b.peso - a.peso);
 }
 function vueltaActual() {
   const T = normalizarOpo().temas; if (!T.length) return 0;
   return Math.min(...T.map(t => t.dominado ? Infinity : vueltasDe(t))) + 1;
+}
+
+/* quien ya llevaba meses estudiando no va a pulsar sesenta botones: dice de
+   qué tema a qué tema lleva cuántas vueltas y cuándo fue la última. Las
+   vueltas de antes se reparten hacia atrás de dos en dos semanas, para que
+   los temas se enfríen cuando toca. Nunca quita vueltas que ya estuvieran */
+function marcarRango({ desde, hasta, vueltas, haceDias = 7, dominar = false } = {}, hoy = hoyISO()) {
+  const a = Math.round(num(desde)), b = Math.round(num(hasta)), v = clamp(Math.round(num(vueltas)), 0, 8);
+  const h = clamp(Math.round(num(haceDias, 7)), 0, 3650), ultima = sumaDias(hoy, -h);
+  if (!(a >= 1) || !(b >= a) || !ultima || (!v && !dominar)) return 0;
+  let n = 0;
+  normalizarOpo().temas.forEach(t => {
+    if (t.n < a || t.n > b) return;
+    let cambia = false;
+    if (vueltasDe(t) < v) {
+      const f = new Set(t.vueltas);
+      for (let k = 0; f.size < v && k < 400; k++) { const x = sumaDias(ultima, -14 * k); if (x) f.add(x); }
+      t.vueltas = [...f].sort(); cambia = true;
+    }
+    if (dominar && !t.dominado) { t.dominado = true; cambia = true; }
+    if (cambia) n++;
+  });
+  return n;
 }
 
 /* ── el plan de vueltas ──
@@ -4800,10 +5011,13 @@ function planOpo(hoy = hoyISO()) {
   r.fase = dias <= reserva ? "final" : "vueltas";
   return r;
 }
+/* «uno más»: si has acabado lo de hoy y te queda cuerda. Vale solo para hoy */
+let opoMas = { fecha: "", n: 0 };
 /* lo de hoy: primero lo que se está enfriando, luego lo que lleva menos vueltas */
 function temasDeHoy(hoy = hoyISO()) {
   const O = normalizarOpo(), pl = planOpo(hoy);
-  const cupo = clamp(Math.ceil(isFinite(pl.porDia) && pl.porDia > 0 ? pl.porDia : 2), 1, 8);
+  const extra = opoMas.fecha === hoy ? opoMas.n : 0;
+  const cupo = clamp(Math.ceil(isFinite(pl.porDia) && pl.porDia > 0 ? pl.porDia : 2), 1, 8) + extra;
   const hechosHoy = new Set(O.temas.filter(t => t.vueltas.includes(hoy)).map(t => t.id));
   const frios = temasFrios(hoy).filter(t => !hechosHoy.has(t.id));
   const resto = O.temas.filter(t => !t.dominado && !hechosHoy.has(t.id) && !frios.includes(t) && vueltasDe(t) < pl.objetivo)
@@ -4815,6 +5029,25 @@ function darVuelta(t, dia = hoyISO()) {
   if (!Array.isArray(t.vueltas)) t.vueltas = [];
   if (!t.vueltas.includes(dia)) { t.vueltas.push(dia); t.vueltas.sort(); }
   guardar("oposicion");
+}
+
+/* ── las horas de cada tema ──
+   El cronómetro de siempre, con un tema elegido: los minutos van a su bloque,
+   como siempre, y además al tema */
+function registrarMinutosTema(id, mins) {
+  const t = temaPorId(id), m = Math.round(num(mins));
+  if (!t || !(m > 0 && m <= 1440)) return;
+  t.minutos = Math.max(0, num(t.minutos)) + m;
+  guardar("oposicion");
+}
+function estudiarTema(id) {
+  const t = temaPorId(id); if (!t) return;
+  if (T.activo || (T.fase === "trabajo" && T.restante > 0)) { aviso("Ya tienes una sesión a medias. Termínala o reiníciala antes de empezar otra."); return; }
+  T.temaId = t.id;
+  T.modId = modPorId(t.modId) ? t.modId : (T.modId || (S.modulos[0] || {}).id || null);
+  T.fase = "trabajo"; T.restante = 0; T.aviso = "";
+  iniciarTimer();
+  if (T.activo) aviso(num(S.config.pomodoro, 25) + " minutos con el tema " + t.n + ". A por ello.");
 }
 
 /* ── los simulacros ── */
@@ -4843,9 +5076,172 @@ function corteDe() {
   return c.length ? { valor: num(c[0].corte), de: "de " + c[0].anio } : null;
 }
 
+/* «3, 7, 7, 12» o «7x2, 12»: de qué temas eran los fallos de un simulacro.
+   Devuelve { número de tema: fallos } */
+function leerFallosTema(texto) {
+  const r = {}, re = /(\d{1,3})(?:\s*[x×*]\s*(\d{1,3}))?/gi;
+  let m;
+  while ((m = re.exec(String(texto || "")))) {
+    const n = +m[1], c = m[2] === undefined ? 1 : +m[2];
+    if (n >= 1 && c >= 1) r[n] = (r[n] || 0) + c;
+  }
+  return r;
+}
+/* y lo mismo con los temas de verdad: si hay dos temas con el mismo número,
+   va al primero; los números que no están en el temario se devuelven aparte */
+function fallosPorTema(texto) {
+  const O = normalizarOpo(), porN = leerFallosTema(texto), ids = {}, sueltos = [];
+  Object.keys(porN).forEach(n => {
+    const t = O.temas.find(x => x.n === +n);
+    if (t) ids[t.id] = (ids[t.id] || 0) + porN[n]; else sueltos.push(+n);
+  });
+  return { ids, total: Object.values(ids).reduce((a, b) => a + b, 0), sueltos };
+}
+
+/* ── el simulacro con reloj ──
+   Como el de verdad: los minutos del examen y sin pausa. Vive en S.opo, así
+   que aguanta una recarga y se ve igual desde el móvil. */
+function empezarSimulacro(ref = "", ahora = Date.now()) {
+  const O = normalizarOpo();
+  O.crono = { inicio: ahora, minutos: clamp(Math.round(num(O.examen.minutos, 90)), 1, 600),
+    preguntas: clamp(Math.round(num(O.examen.preguntas, 100)), 1, 500), ref: String(ref || "").slice(0, 80), fin: 0 };
+  guardar("oposicion"); arrancarCronoOpo();
+  return O.crono;
+}
+const finCrono = c => num(c.inicio) + num(c.minutos) * 60000;
+function segsSimulacro(c, ahora = Date.now()) {
+  if (!c) return 0;
+  const s = Math.ceil((finCrono(c) - num(c.fin || ahora, Date.now())) / 1000 - 1e-9);
+  return Number.isFinite(s) ? clamp(s, 0, 36000) : 0;
+}
+/* los minutos que has tardado de verdad, hacia arriba y sin pasar del límite */
+function minutosSimulacro(c, ahora = Date.now()) {
+  if (!c) return 0;
+  const m = Math.ceil((num(c.fin || ahora, Date.now()) - num(c.inicio)) / 60000 - 1e-9);
+  return Number.isFinite(m) ? clamp(m, 1, clamp(Math.round(num(c.minutos, 90)), 1, 600)) : 1;
+}
+function entregarSimulacro(ahora = Date.now()) {
+  const c = normalizarOpo().crono; if (!c || c.fin) return c;
+  c.fin = clamp(ahora, num(c.inicio), finCrono(c)); guardar("oposicion");
+  return c;
+}
+function cancelarSimulacro() { normalizarOpo().crono = null; guardar("oposicion"); }
+const relojTxt = s => {
+  s = Math.max(0, Math.round(num(s)));
+  const h = Math.floor(s / 3600), m = Math.floor(s % 3600 / 60), x = String(s % 60).padStart(2, "0");
+  return h ? h + ":" + String(m).padStart(2, "0") + ":" + x : String(m).padStart(2, "0") + ":" + x;
+};
+const horaDe = ms => new Date(ms).toLocaleTimeString("es-ES", { hour: "2-digit", minute: "2-digit" });
+/* las horas del simulacro van al bloque de tests, si lo hay */
+const bloqueTest = () => ((S.modulos.find(m => /test|simulacro/.test(sinTildes(String(m.nombre || "")))) || S.modulos[0] || {}).id) || "";
+let cronoOpoTick = null;
+function arrancarCronoOpo() {
+  clearInterval(cronoOpoTick); cronoOpoTick = null;
+  const c = S.opo && S.opo.crono; if (!c || c.fin) return;
+  cronoOpoTick = setInterval(() => {
+    const c2 = S.opo && S.opo.crono;
+    if (!c2 || c2.fin) { clearInterval(cronoOpoTick); cronoOpoTick = null; return; }
+    const s = segsSimulacro(c2);
+    document.querySelectorAll("[data-opo-crono]").forEach(el => { el.textContent = relojTxt(s); });
+    if (s > 0) return;
+    /* si acabó con la página cerrada, se cierra sin pitar: el pitido es para el que está delante */
+    const enDirecto = Date.now() - finCrono(c2) < 60000;
+    entregarSimulacro(); clearInterval(cronoOpoTick); cronoOpoTick = null;
+    if (enDirecto) { pitido(); aviso("¡Tiempo! Corrígelo y apunta cómo te ha ido."); }
+    opoTab = "simulacros";
+    if (!editando()) pinta();
+  }, 1000);
+}
+
+/* ── tarjetas y profe para un tema ── */
+const tarjetasDeTema = id => normalizarTarjetas().filter(c => c.temaId === id);
+function preguntarTema(t) {
+  if (!t) return;
+  const ex = normalizarOpo().examen;
+  /* va al borrador del chat y no solo al cuadro de texto: al cerrarse la ficha
+     la app repinta, y el cuadro se vuelve a dibujar con lo que haya en el borrador */
+  tutorBorrador = "Hazme 5 preguntas tipo test del tema " + t.n + ", «" + t.titulo + "», con " + ex.opciones + " opciones. De una en una: espera a que conteste antes de corregirme.";
+  tutorMod = t.modId || ""; irASeccion("tutor");
+  setTimeout(() => {
+    const ta = $("#chatTexto"); if (!ta || seccion !== "tutor") return;
+    ta.focus(); ta.setSelectionRange(ta.value.length, ta.value.length);
+    ta.dispatchEvent(new Event("input", { bubbles: true }));   /* para que crezca a su tamaño */
+  }, 80);
+}
+
+/* ── el plazo de la solicitud: el despiste que más plazas cuesta ── */
+function avisoPlazo(hoy = hoyISO()) {
+  const cv = normalizarOpo().convocatoria;
+  if (!esFecha(cv.plazoFin) || cv.presentada) return null;
+  const d = diasEntre(cv.plazoFin, hoy);
+  if (!isFinite(d)) return null;
+  if (d < 0) return { d, tipo: "pasado", txt: "El plazo de solicitud terminó el " + fechaCorta(cv.plazoFin) + ". Si la presentaste, márcalo." };
+  if (d > 20) return null;
+  return { d, tipo: d <= 5 ? "urgente" : "pronto",
+    txt: d === 0 ? "Hoy acaba el plazo para presentar la solicitud y pagar la tasa."
+      : "Te quedan " + d + (d === 1 ? " día" : " días") + " para presentar la solicitud y pagar la tasa." };
+}
+
+/* ── la semana: los últimos siete días contra los siete de antes ── */
+function semanaOpo(hoy = hoyISO()) {
+  const O = normalizarOpo();
+  const cuenta = fin => {
+    const ini = sumaDias(fin, -6), en = f => !!f && f >= ini && f <= fin;
+    let minutos = 0;
+    for (let i = 0; i < 7; i++) minutos += totalDia(sumaDias(fin, -i));
+    return {
+      vueltas: O.temas.reduce((s, t) => s + t.vueltas.filter(en).length, 0),
+      nuevos: O.temas.filter(t => en(t.vueltas[0])).length,
+      simulacros: O.simulacros.filter(s => en(s.fecha)).length,
+      minutos
+    };
+  };
+  return { esta: cuenta(hoy), antes: cuenta(sumaDias(hoy, -7)) };
+}
+
+/* ── el temario en una hoja de cálculo ──
+   Punto y coma y marca BOM, que es lo que el Excel en español abre bien. Lo
+   que empieza por = + - @ se protege con un apóstrofo: si no, la hoja lo
+   toma por una fórmula, y una fórmula pegada en un título puede hacer cosas */
+function csvTemario() {
+  const O = normalizarOpo(), sim = fallosSimDe();
+  const celda = v => {
+    let s = v === null || v === undefined ? "" : String(v);
+    if (/^[=+\-@\t\r]/.test(s)) s = "'" + s;
+    return /[";\n\r]/.test(s) ? '"' + s.replace(/"/g, '""') + '"' : s;
+  };
+  const dif = { facil: "fácil", normal: "normal", dificil: "difícil" };
+  const filas = [["Nº", "Tema", "Grupo", "Bloque", "Vueltas", "Primera vuelta", "Última vuelta", "Dominado", "Dificultad", "Minutos estudiados", "Fallos en simulacros"]];
+  O.temas.slice().sort((a, b) => a.n - b.n).forEach(t => filas.push([t.n, t.titulo, t.grupo, (modPorId(t.modId) || {}).nombre || "",
+    vueltasDe(t), t.vueltas[0] || "", ultimaVuelta(t), t.dominado ? "sí" : "no", dif[t.dificultad] || "normal", Math.round(num(t.minutos)), sim[t.id] || 0]));
+  return "﻿" + filas.map(f => f.map(celda).join(";")).join("\r\n") + "\r\n";
+}
+
 /* ══════ la pantalla ══════ */
 let opoTab = "resumen";
 const OPO_TABS = [["resumen", "Resumen"], ["temario", "Temario"], ["simulacros", "Simulacros"], ["examen", "Examen y plan"]];
+
+/* una fila de tema: abrir su ficha, estudiarlo con el cronómetro o apuntar la vuelta */
+const filaTema = (t, estado, clase = "") => `<div class="opo-fila">
+    <button type="button" class="opo-fila-t" data-opo-tema="${t.id}"><span class="opo-n">${t.n}</span><span class="opo-titulo">${esc(t.titulo)}</span></button>
+    <span class="opo-fila-e${clase ? " " + clase : ""}">${estado}</span>
+    <button type="button" class="icono-btn" data-opo-estudiar="${t.id}" aria-label="Estudiar el tema ${t.n} con el cronómetro" title="Estudiar con el cronómetro">${icono("play")}</button>
+    <button type="button" class="btn mini" data-opo-vuelta="${t.id}" aria-label="Vuelta hecha al tema ${t.n}" title="Apuntar que hoy le has dado una vuelta">${icono("mas")}<span class="opo-bt">Vuelta hecha</span></button>
+  </div>`;
+
+/* el aviso del simulacro en marcha, que se ve desde cualquier pestaña */
+function opoMarcha(irA) {
+  const c = normalizarOpo().crono; if (!c) return "";
+  const destino = irA ? `data-opo-ir="simulacros"` : `data-opo-tab="simulacros"`;
+  return c.fin
+    ? `<button type="button" class="opo-marcha" ${destino}>${icono("reloj")}<span>Simulacro terminado: apunta cómo te ha ido</span></button>`
+    : `<button type="button" class="opo-marcha vivo" ${destino}>${icono("reloj")}<span>Simulacro en marcha</span><b data-opo-crono>${relojTxt(segsSimulacro(c))}</b></button>`;
+}
+function opoAlertaPlazo() {
+  const a = avisoPlazo(); if (!a) return "";
+  return `<div class="opo-alerta ${a.tipo}" role="status">${icono("calendario")}<span>${esc(a.txt)}</span>
+    <button type="button" class="btn mini" data-opo-presentada>Ya la he presentado</button></div>`;
+}
 
 function vistaOposicion() {
   const O = normalizarOpo(), p = normalizarPerfil();
@@ -4868,6 +5264,7 @@ function vistaOposicion() {
       <div class="eyebrow">Oposición</div>
       <h1 class="titulo">${esc(nombre)}</h1>
       <p class="lead">${lead}</p>
+      ${opoTab !== "simulacros" ? opoMarcha(false) : ""}
     </div>
     ${pl.dias !== undefined && pl.dias >= 0 ? `<div class="opo-cuenta"><b>${pl.dias}</b><span>${pl.dias === 1 ? "día" : "días"} para el examen</span></div>` : ""}
   </header>
@@ -4902,15 +5299,12 @@ function opoResumen() {
   const va = vueltaActual();
   /* los temas que aún no han llegado a esta vuelta */
   const faltanVuelta = va === Infinity ? 0 : O.temas.filter(t => !t.dominado && vueltasDe(t) < va).length;
-
-  const filaTema = t => `<div class="opo-fila">
-      <button type="button" class="opo-fila-t" data-opo-tema="${t.id}"><span class="opo-n">${t.n}</span><span class="opo-titulo">${esc(t.titulo)}</span></button>
-      <span class="opo-fila-e">${vueltasDe(t) ? vueltasDe(t) + (vueltasDe(t) === 1 ? " vuelta" : " vueltas") : "sin empezar"}</span>
-      <button type="button" class="btn mini" data-opo-vuelta="${t.id}" title="Apuntar que hoy le has dado una vuelta">${icono("mas")}Vuelta hecha</button>
-    </div>`;
+  const flojoTxt = x => x.tasa !== null ? Math.round(x.tasa * 100) + " % de fallos"
+    : x.fallosSim ? x.fallosSim + (x.fallosSim === 1 ? " fallo" : " fallos") + " en simulacros" : "Marcado difícil";
 
   return `
-  ${O.temas.length && (!O.examen.fecha || corteDe() === null) ? opoMontar() : ""}
+  ${opoAlertaPlazo()}
+  ${!O.examen.fecha || corteDe() === null ? opoMontar() : ""}
   <div class="resumen-mod cuatro">
     <div class="panel rm-tile"><div class="rm-etq">Temario</div>
       <div class="rm-cifra">${O.temas.length}<small>temas</small></div>
@@ -4931,24 +5325,40 @@ function opoResumen() {
 
   <section class="panel">
     <div class="opo-cab-sec"><div class="etq">Hoy te tocan</div><span class="meta">${hoy.hechos} de ${hoy.cupo} hechos</span></div>
-    ${hoy.lista.length ? `<div class="opo-lista">${hoy.lista.map(filaTema).join("")}</div>`
-      : `<p class="meta">${hoy.hechos ? (frios.length ? "Plan de hoy hecho. Si te queda cuerda, repasa alguno de los que se enfrían, aquí abajo." : "Plan de hoy hecho. Si te apetece más, adelanta un tema del temario.") : "No queda nada pendiente para hoy."}</p>`}
+    ${hoy.lista.length ? `<div class="opo-lista">${hoy.lista.map(t => filaTema(t, txtVueltas(t))).join("")}</div>`
+      : `<div class="opo-hecho"><p class="meta">${hoy.hechos ? (frios.length ? "Plan de hoy hecho. Si te queda cuerda, repasa alguno de los que se enfrían, aquí abajo." : "Plan de hoy hecho. Si te queda cuerda, adelanta uno.") : "No queda nada pendiente para hoy."}</p>
+        ${hoy.hechos && !frios.length ? `<button type="button" class="btn mini" id="opoUnoMas">${icono("mas")}Uno más</button>` : ""}</div>`}
   </section>
 
   ${frios.length ? `<section class="panel">
     <div class="opo-cab-sec"><div class="etq">Se te están enfriando</div><span class="meta">Hace tiempo que no los tocas</span></div>
-    <div class="opo-lista">${frios.slice(0, 6).map(t => `<div class="opo-fila">
-      <button type="button" class="opo-fila-t" data-opo-tema="${t.id}"><span class="opo-n">${t.n}</span><span class="opo-titulo">${esc(t.titulo)}</span></button>
-      <span class="opo-fila-e frio">${diasSinTocar(t)} días sin tocarlo</span>
-      <button type="button" class="btn mini" data-opo-vuelta="${t.id}">${icono("mas")}Vuelta hecha</button></div>`).join("")}</div>
+    <div class="opo-lista">${frios.slice(0, 6).map(t => filaTema(t, diasSinTocar(t) + " días sin tocarlo", "frio")).join("")}</div>
   </section>` : ""}
 
   ${flojos.length ? `<section class="panel">
     <div class="opo-cab-sec"><div class="etq">Tus temas flojos</div><span class="meta">Los que más fallas o marcaste difíciles</span></div>
     <div class="opo-lista">${flojos.map(x => `<div class="opo-fila">
       <button type="button" class="opo-fila-t" data-opo-tema="${x.t.id}"><span class="opo-n">${x.t.n}</span><span class="opo-titulo">${esc(x.t.titulo)}</span></button>
-      <span class="opo-fila-e">${x.tasa !== null ? Math.round(x.tasa * 100) + " % de fallos" : "Marcado difícil"}</span></div>`).join("")}</div>
-  </section>` : ""}`;
+      <span class="opo-fila-e">${flojoTxt(x)}</span></div>`).join("")}</div>
+  </section>` : ""}
+
+  ${opoSemanaHTML()}`;
+}
+
+function opoSemanaHTML() {
+  const s = semanaOpo(), e = s.esta, a = s.antes;
+  if (![e.vueltas, e.simulacros, e.minutos, a.vueltas, a.simulacros, a.minutos].some(Boolean)) return "";
+  const dif = (x, y, fmt = v => v) => x === y ? "Igual que la anterior" : (x > y ? "+" : "−") + fmt(Math.abs(x - y)) + " que la anterior";
+  const item = (cifra, etq, sub) => `<div class="opo-sem"><b>${cifra}</b><span>${etq}</span><em>${sub}</em></div>`;
+  return `<section class="panel">
+    <div class="opo-cab-sec"><div class="etq">Tus últimos siete días</div><span class="meta">Comparados con los siete de antes</span></div>
+    <div class="opo-semana">
+      ${item(e.vueltas, e.vueltas === 1 ? "vuelta dada" : "vueltas dadas", dif(e.vueltas, a.vueltas))}
+      ${item(e.nuevos, e.nuevos === 1 ? "tema empezado" : "temas empezados", dif(e.nuevos, a.nuevos))}
+      ${item(e.simulacros, e.simulacros === 1 ? "simulacro" : "simulacros", dif(e.simulacros, a.simulacros))}
+      ${item(horasTxt(e.minutos), "estudiadas", dif(e.minutos, a.minutos, horasTxt))}
+    </div>
+  </section>`;
 }
 
 function opoTemario() {
@@ -4961,12 +5371,13 @@ function opoTemario() {
     x.temas.push(t);
   });
   const celda = t => `<button type="button" class="opo-celda opo-e-${estadoTema(t)}${retrasoTema(t) > 0 ? " frio" : ""}" data-opo-tema="${t.id}"
-    title="${esc("Tema " + t.n + ": " + t.titulo + " · " + NOMBRE_ESTADO[estadoTema(t)])}">${t.n}</button>`;
+    title="${esc("Tema " + t.n + ": " + t.titulo + " · " + NOMBRE_ESTADO[estadoTema(t)] + (t.minutos ? " · " + horasTxt(t.minutos) : ""))}">${t.n}</button>`;
   const cuenta = k => O.temas.filter(t => estadoTema(t) === k).length;
   return `<section class="panel">
     <div class="opo-cab-sec">
       <div class="etq">Tu temario · ${O.temas.length} temas</div>
       <div class="barra-btns"><button type="button" class="btn mini" id="opoPegar">${icono("mas")}Pegar más temas</button>
+        <button type="button" class="btn mini" id="opoYaLlevo">Ya llevo estudiado…</button>
         <button type="button" class="btn mini fantasma" id="opoNuevoTema">Añadir uno</button></div>
     </div>
     ${grupos.map(x => `${x.g ? `<div class="opo-grupo">${esc(x.g)}</div>` : ""}<div class="opo-rejilla">${x.temas.map(celda).join("")}</div>`).join("")}
@@ -4974,7 +5385,11 @@ function opoTemario() {
       ${["dom", "v3", "v2", "v1", "nada"].map(k => `<span><i class="opo-e-${k}"></i>${NOMBRE_ESTADO[k]} · ${cuenta(k)}</span>`).join("")}
       <span><i class="opo-frio"></i>Enfriándose</span>
     </div>
-    <p class="meta" style="margin-top:12px">Pincha en un tema para apuntar vueltas, marcarlo como dominado o difícil, enlazar la ley del BOE y escribir tus notas.</p>
+    <p class="meta" style="margin-top:12px">Pincha en un tema para apuntar vueltas, marcarlo como dominado o difícil, guardar las preguntas que fallas, enlazar la ley del BOE y escribir tus notas.</p>
+    <div class="barra-btns opo-pie-temario">
+      <button type="button" class="btn mini fantasma" id="opoBajarTemario">Descargar para Excel</button>
+      ${numeracionRara() ? `<button type="button" class="btn mini fantasma" id="opoRenumerar">Numerar seguido del 1 al ${O.temas.length}</button>` : ""}
+    </div>
   </section>`;
 }
 
@@ -4985,7 +5400,11 @@ function abrirTema(id) {
   const vueltasHTML = () => t.vueltas.length
     ? `<ul class="opo-vueltas">${t.vueltas.map((f, i) => `<li><span>${i + 1}.ª vuelta</span><span class="meta">${esc(fechaCorta(f))}</span></li>`).join("")}</ul>`
     : `<p class="meta">Todavía sin vueltas.</p>`;
+  const tarjTxt = () => { const n = tarjetasDeTema(t.id).length; return n ? n + (n === 1 ? " tarjeta" : " tarjetas") : "ninguna todavía"; };
+  const fs = fallosSimDe()[t.id] || 0;
   const cuerpo = `
+    <div class="opo-ficha-datos"><span>${t.minutos ? horasTxt(t.minutos) + " estudiadas" : "Sin horas apuntadas"}</span>
+      ${fs ? `<span>${fs} ${fs === 1 ? "fallo" : "fallos"} en simulacros</span>` : ""}</div>
     <label class="campo">Título<input type="text" id="otTitulo" value="${esc(t.titulo)}" maxlength="300"></label>
     <div class="rejilla-campos" style="grid-template-columns:90px minmax(0,1fr); margin-top:12px">
       <label class="campo">Número<input type="number" id="otN" value="${t.n}" min="1" max="999" step="1"></label>
@@ -5001,35 +5420,57 @@ function abrirTema(id) {
       <button type="button" class="btn mini" id="otVuelta">${icono("mas")}Vuelta hecha hoy</button>
       ${t.vueltas.length ? `<button type="button" class="btn mini fantasma" id="otQuitarVuelta">Quitar la última</button>` : ""}
     </div>
+    <div class="etq" style="margin:20px 0 4px">Preguntas que fallas · <span id="otNTarj">${tarjTxt()}</span></div>
+    <p class="meta" style="margin:0 0 10px">Cada una se convierte en una tarjeta de repaso que te vuelve a salir cuando toca.</p>
+    <div class="opo-tarj">
+      <label class="campo">Pregunta<input type="text" id="otPreg" maxlength="300" placeholder="¿Plazo del recurso de alzada?"></label>
+      <label class="campo">Respuesta<input type="text" id="otResp" maxlength="600" placeholder="Un mes si el acto es expreso"></label>
+      <button type="button" class="btn" id="otAddTarj">${icono("mas")}Añadir</button>
+    </div>
+    <div class="barra-btns" style="margin-top:12px">
+      <button type="button" class="btn mini fantasma" id="otProfe">${icono("tutor")}Que el profe me pregunte este tema</button>
+    </div>
     <label class="campo" style="margin-top:18px">Ley o norma que entra (enlace al BOE)<input type="url" id="otLey" value="${esc(t.ley)}" placeholder="https://www.boe.es/buscar/act.php?id=BOE-A-…"></label>
     ${t.ley && /^https?:\/\//i.test(t.ley) ? `<p class="meta" style="margin-top:6px"><a href="${esc(t.ley)}" target="_blank" rel="noopener">Abrir la ley en el BOE</a>. Los textos del BOE son públicos: consulta siempre la versión consolidada.</p>` : ""}
     <label class="campo" style="margin-top:14px">Tus notas del tema<textarea id="otNotas" rows="4" maxlength="4000" placeholder="Lo que siempre se te olvida, trampas del test, artículos clave…">${esc(t.notas)}</textarea></label>`;
   let dificultad = t.dificultad;
+  /* lo que haya en la ficha se guarda igual al pulsar Guardar que al irte al profe */
+  const guardarFicha = () => {
+    t.titulo = ($("#otTitulo").value.trim() || t.titulo).slice(0, 300);
+    t.n = clamp(Math.round(num($("#otN").value, t.n)), 1, 999);
+    t.modId = $("#otBloque").value || t.modId;
+    t.dificultad = dificultad;
+    t.dominado = $("#otDominado").checked;
+    const ley = $("#otLey").value.trim();
+    t.ley = /^https?:\/\//i.test(ley) || !ley ? ley.slice(0, 500) : "https://" + ley.slice(0, 490);
+    t.notas = $("#otNotas").value.slice(0, 4000);
+    guardar("oposicion");
+  };
   abrirDlg("Tema " + t.n, cuerpo, [
     { txt: "Borrar el tema", clase: "btn borrar fantasma", izquierda: true, accion: () => {
-      confirmar("Se borra «" + t.titulo + "» con sus vueltas y sus notas.", { titulo: "¿Borrar el tema?", si: "Borrar" }).then(ok => {
+      confirmar("Se borra «" + t.titulo + "» con sus vueltas y sus notas. Sus tarjetas de repaso se quedan.", { titulo: "¿Borrar el tema?", si: "Borrar" }).then(ok => {
         if (!ok) return; O.temas = O.temas.filter(x => x.id !== t.id); guardar("oposicion"); pinta(); aviso("Tema borrado.");
       });
     } },
     { txt: "Cancelar", clase: "btn fantasma" },
-    { txt: "Guardar", clase: "btn primario", accion: () => {
-      t.titulo = ($("#otTitulo").value.trim() || t.titulo).slice(0, 300);
-      t.n = clamp(Math.round(num($("#otN").value, t.n)), 1, 999);
-      t.modId = $("#otBloque").value || t.modId;
-      t.dificultad = dificultad;
-      t.dominado = $("#otDominado").checked;
-      const ley = $("#otLey").value.trim();
-      t.ley = /^https?:\/\//i.test(ley) || !ley ? ley.slice(0, 500) : "https://" + ley.slice(0, 490);
-      t.notas = $("#otNotas").value.slice(0, 4000);
-      guardar("oposicion"); pinta();
-    } }
+    { txt: "Guardar", clase: "btn primario", accion: () => { guardarFicha(); pinta(); } }
   ]);
   const cuerpoDlg = $("#dlgCuerpo");
   cuerpoDlg.onclick = e => {
     const d = e.target.closest("[data-ot-dif]");
     if (d) { dificultad = d.dataset.otDif; cuerpoDlg.querySelectorAll("[data-ot-dif]").forEach(b => b.classList.toggle("sel", b === d)); return; }
     if (e.target.closest("#otVuelta")) { darVuelta(t); $("#otVueltas").innerHTML = vueltasHTML(); aviso("Vuelta apuntada."); return; }
-    if (e.target.closest("#otQuitarVuelta")) { t.vueltas.pop(); guardar("oposicion"); $("#otVueltas").innerHTML = vueltasHTML(); }
+    if (e.target.closest("#otQuitarVuelta")) { t.vueltas.pop(); guardar("oposicion"); $("#otVueltas").innerHTML = vueltasHTML(); return; }
+    if (e.target.closest("#otAddTarj")) {
+      const p = $("#otPreg").value.trim(), r = $("#otResp").value.trim();
+      if (!p || !r) { aviso("Escribe la pregunta y la respuesta.", "mal"); ( p ? $("#otResp") : $("#otPreg") ).focus(); return; }
+      const c = nuevaTarjeta(t.modId, p, r); if (!c) return;
+      c.temaId = t.id; guardar("repaso");
+      $("#otPreg").value = ""; $("#otResp").value = ""; $("#otNTarj").textContent = tarjTxt(); $("#otPreg").focus();
+      aviso("Tarjeta añadida: te sale hoy en Repaso.");
+      return;
+    }
+    if (e.target.closest("#otProfe")) { guardarFicha(); $("#dlg").close(); preguntarTema(t); }
   };
 }
 
@@ -5054,7 +5495,10 @@ function abrirPegarIndice() {
   function aplicarIndice(sustituir) {
     const r = leerIndice($("#opoIndice").value);
     if (!r.temas.length) { aviso("No he encontrado ningún tema en lo que has pegado.", "mal"); return true; }
-    const hacer = () => { const n = crearTemas(r, sustituir); guardar("oposicion"); opoTab = "temario"; pinta(); aviso(n + (n === 1 ? " tema creado." : " temas creados.")); };
+    const hacer = () => {
+      const n = crearTemas(r, sustituir); guardar("oposicion"); opoTab = "temario"; pinta();
+      aviso(n + (n === 1 ? " tema creado." : " temas creados.") + " Si ya llevabas alguno estudiado, márcalo en «Ya llevo estudiado».");
+    };
     if (sustituir && O.temas.some(t => t.vueltas.length || t.notas)) {
       confirmar("Se sustituye el temario entero, y con él las vueltas y las notas de cada tema.", { titulo: "¿Sustituir el temario?", si: "Sustituir" })
         .then(ok => { if (ok) hacer(); });
@@ -5063,6 +5507,34 @@ function abrirPegarIndice() {
     hacer();
     return false;
   }
+}
+
+/* marcar de golpe lo que ya llevabas estudiado */
+function abrirYaLlevo() {
+  const O = normalizarOpo(), max = O.temas.reduce((m, t) => Math.max(m, t.n), 1);
+  abrirDlg("Ya llevo estudiado", `
+    <p class="meta" style="margin:0 0 14px">Si ya venías estudiando, márcalo de golpe en vez de tema a tema. Las vueltas de antes se apuntan hacia atrás, de dos en dos semanas, para que la app sepa cuándo se te enfrían.</p>
+    <div class="rejilla-campos" style="grid-template-columns:repeat(2,minmax(0,1fr))">
+      <label class="campo">Del tema<input type="number" id="ylDesde" value="1" min="1" max="999" step="1"></label>
+      <label class="campo">Al tema<input type="number" id="ylHasta" value="${max}" min="1" max="999" step="1"></label>
+      <label class="campo">Vueltas que llevas<select id="ylVueltas">${[1, 2, 3, 4, 5, 6].map(v => `<option value="${v}">${v}</option>`).join("")}</select></label>
+      <label class="campo">La última fue<select id="ylHace"><option value="3">Esta semana</option><option value="14">Hace dos semanas</option><option value="30">Hace un mes</option><option value="60">Hace dos meses o más</option></select></label>
+    </div>
+    <label class="ent-linea" style="margin-top:14px"><input type="checkbox" id="ylDominar"><span>Y los tengo dominados</span></label>
+    <p class="meta" id="ylPrevia" style="margin-top:12px"></p>`,
+    [{ txt: "Cancelar", clase: "btn fantasma" },
+     { txt: "Marcar", clase: "btn primario", accion: () => {
+        const n = marcarRango({ desde: $("#ylDesde").value, hasta: $("#ylHasta").value, vueltas: $("#ylVueltas").value,
+          haceDias: $("#ylHace").value, dominar: $("#ylDominar").checked });
+        if (!n) { aviso("En ese rango no hay nada que cambiar: ya tenían esas vueltas.", "mal"); return true; }
+        guardar("oposicion"); pinta(); aviso(n + (n === 1 ? " tema marcado." : " temas marcados."));
+      } }]);
+  const previa = () => {
+    const a = num($("#ylDesde").value), b = num($("#ylHasta").value), k = O.temas.filter(t => t.n >= a && t.n <= b).length;
+    $("#ylPrevia").textContent = !(b >= a) ? "El primero tiene que ser menor o igual que el último."
+      : k ? k + (k === 1 ? " tema" : " temas") + " en ese rango. Los que ya lleven más vueltas se quedan como están." : "En ese rango no hay temas.";
+  };
+  $("#dlgCuerpo").oninput = previa; $("#dlgCuerpo").onchange = previa; previa();
 }
 
 function graficaSimulacros(rs, corte, preguntas) {
@@ -5086,15 +5558,44 @@ function graficaSimulacros(rs, corte, preguntas) {
   </svg>`;
 }
 
+/* el simulacro con reloj: sin empezar, en marcha o recién acabado */
+function opoCronoPanel() {
+  const O = normalizarOpo(), ex = O.examen, c = O.crono;
+  const spp = c => Math.round(num(c.minutos) * 60 / Math.max(1, num(c.preguntas)));
+  if (!c) return `<section class="panel opo-crono">
+    <div><div class="etq">Hazlo como el de verdad</div>
+      <p class="meta" style="margin-top:6px">${ex.preguntas} preguntas en ${ex.minutos} minutos: ${spp(ex)} segundos por pregunta. Sin pausa, como en el examen. Al acabar, apuntas cómo te ha ido.</p></div>
+    <button type="button" class="btn primario" id="opoEmpezarSim">${icono("play")}Empezar · ${relojTxt(num(ex.minutos, 90) * 60)}</button>
+  </section>`;
+  if (!c.fin) return `<section class="panel opo-crono vivo">
+    <div><div class="etq">Simulacro en marcha</div>
+      <div class="opo-reloj" data-opo-crono>${relojTxt(segsSimulacro(c))}</div>
+      <p class="meta">Empezaste a las ${horaDe(c.inicio)}. ${c.preguntas} preguntas: ${spp(c)} segundos por pregunta.</p></div>
+    <div class="barra-btns"><button type="button" class="btn fantasma" id="opoCancelarSim">Cancelar</button><button type="button" class="btn primario" id="opoEntregarSim">Entregar</button></div>
+  </section>`;
+  const m = minutosSimulacro(c);
+  return `<section class="panel opo-crono hecho">
+    <div><div class="etq">Simulacro terminado</div>
+      <p class="meta" style="margin-top:6px">Has tardado ${m} ${m === 1 ? "minuto" : "minutos"} de ${c.minutos}. Corrígelo y apunta los aciertos y los fallos aquí abajo: el tiempo ya está puesto.</p></div>
+    <button type="button" class="btn fantasma" id="opoCancelarSim">Descartar</button>
+  </section>`;
+}
+
 function opoSimulacros() {
   const O = normalizarOpo(), ex = O.examen, pen = penalizacionDe(ex), rs = resumenSimulacros(), corte = corteDe();
+  const hecho = O.crono && O.crono.fin ? O.crono : null, refSel = hecho ? hecho.ref : "";
+  const sel = v => v === refSel ? " selected" : "";
   const todos = O.simulacros.slice().sort((a, b) => (b.fecha || "").localeCompare(a.fecha || ""));
   const refs = [`<option value="">Todo el temario</option>`]
-    .concat(S.modulos.map(m => `<option value="bloque:${m.id}">Bloque · ${esc(m.nombre)}</option>`))
-    .concat(O.temas.slice().sort((a, b) => a.n - b.n).map(t => `<option value="tema:${t.id}">Tema ${t.n} · ${esc(t.titulo.slice(0, 60))}</option>`)).join("");
+    .concat(S.modulos.map(m => `<option value="bloque:${m.id}"${sel("bloque:" + m.id)}>Bloque · ${esc(m.nombre)}</option>`))
+    .concat(O.temas.slice().sort((a, b) => a.n - b.n).map(t => `<option value="tema:${t.id}"${sel("tema:" + t.id)}>Tema ${t.n} · ${esc(t.titulo.slice(0, 60))}</option>`)).join("");
   const refTxt = s => s.tipo === "tema" ? "Tema " + ((O.temas.find(t => t.id === s.ref) || {}).n || "?")
     : s.tipo === "bloque" ? ((modPorId(s.ref) || {}).nombre || "Bloque") : "Completo";
+  /* segundos por pregunta que te has tomado, contra los que da el examen */
+  const ritmo = rs.n && num(rs.ultima.s.minutos) > 0 ? Math.round(num(rs.ultima.s.minutos) * 60 / Math.max(1, rs.ultima.preguntas)) : null;
+  const ritmoEx = Math.round(num(ex.minutos, 90) * 60 / Math.max(1, num(ex.preguntas, 100)));
   return `
+  ${opoCronoPanel()}
   ${rs.n ? `<div class="resumen-mod">
     <div class="panel rm-tile"><div class="rm-etq">Media de los últimos 5</div>
       <div class="rm-cifra">${nota(rs.media5)}<small>sobre 10</small></div>
@@ -5104,22 +5605,24 @@ function opoSimulacros() {
       <div class="rm-sub">${esc(fechaCorta(rs.mejor.s.fecha || hoyISO()))}</div></div>
     <div class="panel rm-tile"><div class="rm-etq">Cuánto arriesgas</div>
       <div class="rm-cifra">${Math.round(rs.ultima.riesgo * 100)}<small>% contestado</small></div>
-      <div class="rm-sub">Aciertas el ${Math.round(rs.ultima.acierto * 100)} % de lo que contestas</div></div>
+      <div class="rm-sub">Aciertas el ${Math.round(rs.ultima.acierto * 100)} % de lo que contestas${ritmo !== null ? ` · ${ritmo} s por pregunta (el examen da ${ritmoEx})` : ""}</div></div>
   </div>
   <section class="panel"><div class="etq">Evolución</div>${graficaSimulacros(rs, corte, ex.preguntas)}</section>` : ""}
 
-  <section class="panel">
+  <section class="panel" id="opoFormSim">
     <div class="etq">Apuntar un simulacro</div>
     <p class="meta" style="margin:6px 0 14px">Cada fallo resta ${textoPenalizacion(pen)}${ex.penalizacion === null ? " (" + ex.opciones + " opciones)" : ""}. Se cambia en «Examen y plan».</p>
     <div class="opo-form">
       <label class="campo">Fecha<input type="date" id="osFecha" value="${hoyISO()}"></label>
       <label class="campo opo-ancho">De qué<select id="osRef">${refs}</select></label>
-      <label class="campo">Preguntas<input type="number" id="osPreg" value="${num(ex.preguntas, 100)}" min="1" max="500" step="1"></label>
+      <label class="campo">Preguntas<input type="number" id="osPreg" value="${hecho ? hecho.preguntas : num(ex.preguntas, 100)}" min="1" max="500" step="1"></label>
       <label class="campo">Aciertos<input type="number" id="osAc" min="0" step="1" placeholder="0"></label>
       <label class="campo">Fallos<input type="number" id="osFa" min="0" step="1" placeholder="0"></label>
-      <label class="campo">Minutos<input type="number" id="osMin" value="${num(ex.minutos, 90)}" min="1" max="600" step="1"></label>
+      <label class="campo">Minutos<input type="number" id="osMin" value="${hecho ? minutosSimulacro(hecho) : num(ex.minutos, 90)}" min="1" max="600" step="1"></label>
+      <label class="campo opo-ancho${refSel.startsWith("tema:") ? " oculto" : ""}" id="osFTCampo"><span>¿De qué temas eran los fallos? <span class="opc">(opcional)</span></span><input type="text" id="osFT" placeholder="3, 7, 7, 12 o 7x2, 12" autocomplete="off" maxlength="400"></label>
     </div>
     <p class="meta" id="osCalc" style="margin-top:12px">Escribe aciertos y fallos: los blancos salen solos.</p>
+    <p class="meta" id="osFTInfo" style="margin-top:4px"></p>
     <div class="barra-btns" style="margin-top:12px"><button type="button" class="btn primario" id="opoNuevoSim">Apuntar simulacro</button></div>
   </section>
 
@@ -5130,28 +5633,29 @@ function opoSimulacros() {
       ${todos.map(s => { const c = calcSimulacro(s, pen); return `<div class="opo-tr" role="row">
         <span>${esc(fechaCorta(s.fecha || hoyISO()))}</span><span>${esc(refTxt(s))}</span>
         <span>${c.aciertos} · ${c.fallos} · ${c.blancos}</span><span><b>${nota(c.neta)}</b></span><span>${nota(c.nota10)}</span>
-        <button type="button" class="icono-btn" data-opo-borrar-sim="${s.id}" aria-label="Borrar este simulacro">${icono("cerrar")}</button></div>`; }).join("")}
+        <button type="button" class="icono-btn" data-opo-borrar-sim="${esc(String(s.id))}" aria-label="Borrar este simulacro">${icono("cerrar")}</button></div>`; }).join("")}
     </div>
   </section>` : `<p class="meta">Todavía no hay simulacros. Apunta el primero aunque salga mal: sin punto de partida no se ve si mejoras.</p>`}`;
 }
+
+const campoOpo = (etq, id, valor, extra = "") => `<label class="campo">${etq}<input id="${id}" data-opo-campo="${id}" value="${valor === null || valor === undefined ? "" : esc(String(valor))}" ${extra}></label>`;
 
 function opoExamen() {
   const O = normalizarOpo(), ex = O.examen, pl = O.plan, cv = O.convocatoria, pen = penalizacionDe(ex), plan = planOpo(), corte = corteDe();
   const c = aciertosParaCorte(ex.preguntas, 0, corte ? corte.valor : num(ex.preguntas) / 2, pen);
   const ev = [0, 1, 2].filter(k => k < num(ex.opciones) - 1).map(k => ({ k, v: valorDeArriesgar(ex.opciones, k, pen) }));
-  const campo = (etq, id, valor, extra = "") => `<label class="campo">${etq}<input id="${id}" data-opo-campo="${id}" value="${valor === null || valor === undefined ? "" : esc(String(valor))}" ${extra}></label>`;
   return `
   <section class="panel">
     <div class="etq">El examen</div>
     <p class="meta" style="margin:6px 0 14px">Lo que dicen las bases de tu convocatoria. Si alguna cosa no la sabes aún, déjala en blanco.</p>
     <div class="opo-form">
-      ${campo("Fecha", "examen.fecha", ex.fecha, 'type="date"')}
-      ${campo("Preguntas", "examen.preguntas", ex.preguntas, 'type="number" min="1" max="500" step="1"')}
+      ${campoOpo("Fecha", "examen.fecha", ex.fecha, 'type="date"')}
+      ${campoOpo("Preguntas", "examen.preguntas", ex.preguntas, 'type="number" min="1" max="500" step="1"')}
       <label class="campo">Opciones por pregunta<select id="examen.opciones" data-opo-campo="examen.opciones">${[2, 3, 4, 5].map(o => `<option value="${o}"${num(ex.opciones) === o ? " selected" : ""}>${o}</option>`).join("")}</select></label>
-      ${campo("Cada fallo resta", "examen.penalizacion", ex.penalizacion, `type="number" min="0" max="5" step="0.01" placeholder="${esc(textoPenalizacion(1 / Math.max(1, num(ex.opciones, 4) - 1)))} (lo normal)"`)}
-      ${campo("Nota de corte (netas)", "examen.corte", ex.corte, 'type="number" min="0" max="500" step="0.01" placeholder="Si la sabes"')}
-      ${campo("Minutos", "examen.minutos", ex.minutos, 'type="number" min="1" max="600" step="1"')}
-      ${campo("Preguntas de reserva", "examen.reserva", ex.reserva, 'type="number" min="0" max="50" step="1"')}
+      ${campoOpo("Cada fallo resta", "examen.penalizacion", ex.penalizacion, `type="number" min="0" max="5" step="0.01" placeholder="${esc(textoPenalizacion(1 / Math.max(1, num(ex.opciones, 4) - 1)))} (lo normal)"`)}
+      ${campoOpo("Nota de corte (netas)", "examen.corte", ex.corte, 'type="number" min="0" max="500" step="0.01" placeholder="Si la sabes"')}
+      ${campoOpo("Minutos", "examen.minutos", ex.minutos, 'type="number" min="1" max="600" step="1"')}
+      ${campoOpo("Preguntas de reserva", "examen.reserva", ex.reserva, 'type="number" min="0" max="50" step="1"')}
     </div>
     <p class="meta" style="margin-top:12px">Cada fallo resta <b>${textoPenalizacion(pen)}</b> de acierto. ${ex.reserva ? "Las " + ex.reserva + " de reserva solo cuentan si anulan alguna: contéstalas igual." : ""}</p>
   </section>
@@ -5177,12 +5681,14 @@ function opoExamen() {
     </div>
   </section>
 
+  ${opoBolasHTML()}
+
   <section class="panel">
     <div class="etq">Plan de vueltas</div>
     <div class="opo-form" style="margin-top:12px">
       <label class="campo">Vueltas que quieres dar<select id="plan.vueltas" data-opo-campo="plan.vueltas">${[1, 2, 3, 4, 5, 6].map(v => `<option value="${v}"${num(pl.vueltas) === v ? " selected" : ""}>${v}</option>`).join("")}</select></label>
       <label class="campo">Días de estudio a la semana<select id="plan.diasSemana" data-opo-campo="plan.diasSemana">${[3, 4, 5, 6, 7].map(v => `<option value="${v}"${num(pl.diasSemana) === v ? " selected" : ""}>${v}</option>`).join("")}</select></label>
-      ${campo("Días finales para simulacros", "plan.diasSimulacro", pl.diasSimulacro, 'type="number" min="0" max="120" step="1"')}
+      ${campoOpo("Días finales para simulacros", "plan.diasSimulacro", pl.diasSimulacro, 'type="number" min="0" max="120" step="1"')}
     </div>
     <p class="meta" style="margin-top:14px">${plan.sinFecha ? "Pon la fecha del examen y te digo el ritmo." : plan.pasado ? "La fecha del examen ya pasó." :
       `Quedan ${plan.dias} días: ${plan.utiles} para dar vueltas y ${plan.reserva} para simulacros. Con ${pl.diasSemana} días de estudio a la semana son ${plan.diasEstudio} días, así que ${plan.porDia ? "toca <b>" + nota(plan.porDia) + " temas por día</b>" : "ya lo tienes"}.` +
@@ -5192,9 +5698,11 @@ function opoExamen() {
   <section class="panel">
     <div class="etq">La convocatoria</div>
     <div class="opo-form" style="margin-top:12px">
-      ${campo("Plazas", "convocatoria.plazas", cv.plazas, 'type="number" min="0" step="1"')}
-      ${campo("Aspirantes (aprox.)", "convocatoria.aspirantes", cv.aspirantes, 'type="number" min="0" step="1"')}
+      ${campoOpo("Plazas", "convocatoria.plazas", cv.plazas, 'type="number" min="0" step="1"')}
+      ${campoOpo("Aspirantes (aprox.)", "convocatoria.aspirantes", cv.aspirantes, 'type="number" min="0" step="1"')}
       <label class="campo opo-ancho">Enlace a las bases<input id="convocatoria.enlace" data-opo-campo="convocatoria.enlace" type="url" value="${esc(cv.enlace)}" placeholder="https://www.boe.es/…"></label>
+      ${campoOpo("Fin del plazo de solicitud", "convocatoria.plazoFin", cv.plazoFin, 'type="date"')}
+      <label class="ent-linea opo-ancho opo-check"><input type="checkbox" id="convocatoria.presentada" data-opo-campo="convocatoria.presentada"${cv.presentada ? " checked" : ""}><span>Solicitud presentada y tasa pagada</span></label>
     </div>
     ${num(cv.plazas) && num(cv.aspirantes) ? `<p class="meta" style="margin-top:12px">${nota(num(cv.aspirantes) / num(cv.plazas))} aspirantes por plaza. No es tu rival: tu rival es el corte.</p>` : ""}
     ${cv.enlace && /^https?:\/\//i.test(cv.enlace) ? `<p class="meta" style="margin-top:6px"><a href="${esc(cv.enlace)}" target="_blank" rel="noopener">Abrir las bases</a></p>` : ""}
@@ -5205,6 +5713,26 @@ function opoExamen() {
       <label class="campo">Corte (netas)<input type="number" id="ocValor" min="0" step="0.01"></label>
       <div class="campo opo-boton"><button type="button" class="btn" id="opoAddCorte">Añadir</button></div>
     </div>
+  </section>`;
+}
+
+/* el tema a desarrollar: cuántos llevar y un sorteo de prueba */
+function opoBolasHTML() {
+  const O = normalizarOpo(), ex = O.examen, n = O.temas.length, b = Math.round(num(ex.bolas)), prep = temasPreparados().length;
+  return `<section class="panel">
+    <div class="etq">Si hay tema a desarrollar</div>
+    <p class="meta" style="margin:6px 0 14px">En muchas oposiciones sacan unas bolas al azar y eliges uno de los temas que salen. Si en la tuya no hay, déjalo vacío.</p>
+    <div class="opo-form">
+      ${campoOpo("Bolas que sacan", "examen.bolas", ex.bolas, 'type="number" min="1" max="10" step="1" placeholder="No hay"')}
+      ${b > 0 && n ? `<label class="campo">Temas que llevas bien<input type="number" id="obSe" value="${prep}" min="0" max="${n}" step="1"></label>` : ""}
+    </div>
+    ${b > 0 && n ? `<p class="opo-calc" id="obSalida" aria-live="polite"></p>
+      <p class="meta" style="margin-top:4px">Cuento como llevados los dominados y los que ya tienen todas las vueltas del plan (${prep}). Cambia el número para ver qué pasaría.</p>
+      <div class="opo-riesgo" style="margin-top:14px">${[.9, .95, .99].map(p => { const k = temasParaProb(n, b, p); return `<div class="opo-r${k <= prep ? " si" : ""}">
+        <b>Para un ${Math.round(p * 100)} %</b><span>${k} temas</span><em>${k <= prep ? "Ya los llevas" : "Te faltan " + (k - prep)}</em></div>`; }).join("")}</div>
+      <div class="barra-btns" style="margin-top:14px"><button type="button" class="btn" id="opoSacarBolas">Sacar ${b} ${b === 1 ? "bola" : "bolas"} de prueba</button></div>
+      <div id="obBolas" class="opo-bolas" aria-live="polite"></div>`
+    : b > 0 ? `<p class="meta">Pega el índice del temario para hacer las cuentas.</p>` : ""}
   </section>`;
 }
 
@@ -5226,22 +5754,37 @@ function opoCalcularSim() {
   const c = calcSimulacro({ preguntas: n, aciertos: a, fallos: f }, penalizacionDe(O.examen));
   out.innerHTML = `${c.blancos} en blanco · <b>${nota(c.neta)} netas</b> · ${nota(c.nota10)} sobre 10`;
 }
+/* lo que se ha entendido de «de qué temas eran los fallos» */
+function opoCalcularFT() {
+  const out = $("#osFTInfo"), inp = $("#osFT"); if (!out || !inp) return;
+  if (!inp.value.trim()) { out.textContent = ""; return; }
+  const r = fallosPorTema(inp.value), nt = Object.keys(r.ids).length;
+  let h = r.total ? r.total + (r.total === 1 ? " fallo" : " fallos") + " en " + nt + (nt === 1 ? " tema." : " temas.") : "No reconozco ningún tema de tu temario.";
+  if (r.sueltos.length) h += " No tienes " + (r.sueltos.length === 1 ? "el tema " : "los temas ") + r.sueltos.join(", ") + ".";
+  if ($("#osFa").value !== "" && r.total > num($("#osFa").value)) h += ` <span class="opo-err">Son más que los fallos del simulacro (${num($("#osFa").value)}).</span>`;
+  out.innerHTML = h;
+}
+function opoCalcularBolas() {
+  const out = $("#obSalida"), inp = $("#obSe"); if (!out || !inp) return;
+  const O = normalizarOpo(), n = O.temas.length, b = Math.round(num(O.examen.bolas)), k = clamp(Math.round(num(inp.value)), 0, n);
+  out.innerHTML = `Llevando ${k} de ${n} temas y sacando ${b} ${b === 1 ? "bola" : "bolas"}: <b>${pctTxt(probAlMenosUno(n, k, b))} %</b> de que te salga al menos uno que llevas.`;
+}
 
 /* guardar un campo del examen, del plan o de la convocatoria */
+const LIM_OPO = { preguntas: [1, 500], opciones: [2, 5], penalizacion: [0, 5], corte: [0, 500], minutos: [1, 600], reserva: [0, 50], bolas: [1, 10],
+  vueltas: [1, 8], diasSemana: [1, 7], diasSimulacro: [0, 120], plazas: [0, 1e6], aspirantes: [0, 1e7] };
+const OPO_VACIABLES = ["penalizacion", "corte", "plazas", "aspirantes", "bolas"];
 function ponCampoOpo(ruta, valor) {
-  const O = normalizarOpo(), [grupo, clave] = ruta.split(".");
-  if (!O[grupo] || !(clave in OPO_DEF()[grupo])) return;
-  const v = String(valor).trim();
-  const numericos = ["preguntas", "opciones", "penalizacion", "corte", "minutos", "reserva", "vueltas", "diasSemana", "diasSimulacro", "plazas", "aspirantes"];
-  if (clave === "fecha") O[grupo][clave] = /^\d{4}-\d{2}-\d{2}$/.test(v) ? v : "";
+  const O = normalizarOpo(), [grupo, clave] = String(ruta).split("."), def = OPO_DEF()[grupo];
+  if (!def || typeof def !== "object" || Array.isArray(def) || !O[grupo] || !Object.prototype.hasOwnProperty.call(def, clave)) return;
+  const v = valor === null || valor === undefined ? "" : String(valor).trim();
+  if (typeof def[clave] === "boolean") O[grupo][clave] = valor === true || valor === "true";
+  else if (clave === "fecha" || clave === "plazoFin") O[grupo][clave] = esFecha(v) ? v : "";
   else if (clave === "enlace") O[grupo][clave] = v.slice(0, 500);
-  else if (numericos.includes(clave)) {
-    const puedeVacio = ["penalizacion", "corte", "plazas", "aspirantes"].includes(clave);
-    if (v === "" && puedeVacio) O[grupo][clave] = null;
+  else if (LIM_OPO[clave]) {
+    if (v === "" && OPO_VACIABLES.includes(clave)) O[grupo][clave] = null;
     else {
-      const lim = { preguntas: [1, 500], opciones: [2, 5], penalizacion: [0, 5], corte: [0, 500], minutos: [1, 600], reserva: [0, 50],
-        vueltas: [1, 8], diasSemana: [1, 7], diasSimulacro: [0, 120], plazas: [0, 1e6], aspirantes: [0, 1e7] }[clave];
-      const n = num(v, OPO_DEF()[grupo][clave]);
+      const lim = LIM_OPO[clave], n = num(v, def[clave] === null ? lim[0] : def[clave]);
       O[grupo][clave] = clamp(["penalizacion", "corte"].includes(clave) ? n : Math.round(n), lim[0], lim[1]);
     }
   }
@@ -5250,19 +5793,59 @@ function ponCampoOpo(ruta, valor) {
 
 alEvento("click", async e => {
   const t = e.target;
-  if (seccion !== "oposicion" && !t.closest("[data-opo-vuelta]")) return;
+  if (seccion !== "oposicion" && !t.closest("[data-opo-vuelta], [data-opo-estudiar], [data-opo-ir], [data-opo-tema], [data-opo-presentada]")) return;
   const tab = t.closest("[data-opo-tab]"); if (tab) { opoTab = tab.dataset.opoTab; pinta(); window.scrollTo({ top: 0 }); return; }
+  const ir = t.closest("[data-opo-ir]"); if (ir) { opoTab = ir.dataset.opoIr; irASeccion("oposicion"); return; }
   if (t.closest("#opoPegar")) { abrirPegarIndice(); return; }
+  if (t.closest("#opoYaLlevo")) { abrirYaLlevo(); return; }
   if (t.closest("#opoNuevoTema")) {
     const O = normalizarOpo(), n = O.temas.reduce((m, x) => Math.max(m, x.n), 0) + 1;
-    const nuevo = { id: uid(), n, titulo: "Tema " + n, grupo: "", modId: (S.modulos[0] || {}).id || "", vueltas: [], dominado: false, dificultad: "normal", notas: "", ley: "" };
+    const nuevo = { id: uid(), n, titulo: "Tema " + n, grupo: "", modId: (S.modulos[0] || {}).id || "", vueltas: [], dominado: false, dificultad: "normal", notas: "", ley: "", minutos: 0 };
     O.temas.push(nuevo); guardar("oposicion"); pinta(); abrirTema(nuevo.id); return;
   }
+  if (t.closest("#opoBajarTemario")) {
+    if (await bajarArchivo("temario-" + hoyISO() + ".csv", csvTemario(), "text/csv;charset=utf-8")) aviso("Temario descargado. Ábrelo con Excel o con Hojas de cálculo.");
+    return;
+  }
+  if (t.closest("#opoRenumerar")) {
+    const O = normalizarOpo();
+    if (!(await confirmar("Los temas se numeran del 1 al " + O.temas.length + " en el orden en que están. Si tu convocatoria numera cada parte desde el 1, quizá prefieras dejarlos como están.", { titulo: "¿Numerar seguido?", si: "Numerar", peligro: false }))) return;
+    renumerar(); guardar("oposicion"); pinta(); aviso("Temas numerados del 1 al " + O.temas.length + "."); return;
+  }
   const tema = t.closest("[data-opo-tema]"); if (tema) { abrirTema(tema.dataset.opoTema); return; }
+  const est = t.closest("[data-opo-estudiar]"); if (est) { estudiarTema(est.dataset.opoEstudiar); return; }
   const vuelta = t.closest("[data-opo-vuelta]");
   if (vuelta) {
-    const x = normalizarOpo().temas.find(y => y.id === vuelta.dataset.opoVuelta);
-    if (x) { darVuelta(x); pinta(); aviso("Vuelta apuntada: tema " + x.n + " · " + vueltasDe(x) + (vueltasDe(x) === 1 ? " vuelta." : " vueltas.")); }
+    const x = temaPorId(vuelta.dataset.opoVuelta);
+    if (x) { darVuelta(x); pinta(); aviso("Vuelta apuntada: tema " + x.n + " · " + txtVueltas(x) + "."); }
+    return;
+  }
+  if (t.closest("[data-opo-presentada]")) { ponCampoOpo("convocatoria.presentada", true); pinta(); aviso("Apuntado: solicitud presentada."); return; }
+  if (t.closest("#opoUnoMas")) {
+    const hoy = hoyISO();
+    opoMas = { fecha: hoy, n: (opoMas.fecha === hoy ? opoMas.n : 0) + 1 };
+    if (!temasDeHoy().lista.length) { opoMas.n--; aviso("No queda ningún tema por adelantar: lo tienes todo al día."); return; }
+    pinta(); return;
+  }
+  if (t.closest("#opoEmpezarSim")) {
+    empezarSimulacro($("#osRef") ? $("#osRef").value : ""); pinta(); window.scrollTo({ top: 0 });
+    aviso("Simulacro en marcha. Suerte."); return;
+  }
+  if (t.closest("#opoEntregarSim")) {
+    entregarSimulacro(); pinta();
+    const a = $("#osAc"); if (a) { a.focus(); a.scrollIntoView({ block: "center" }); }
+    return;
+  }
+  if (t.closest("#opoCancelarSim")) {
+    const c = normalizarOpo().crono; if (!c) return;
+    if (!(await confirmar(c.fin ? "Se descarta el tiempo de este simulacro." : "Se pierde el tiempo que llevas.", { titulo: c.fin ? "¿Descartar el simulacro?" : "¿Cancelar el simulacro?", si: c.fin ? "Descartar" : "Cancelar simulacro", no: "Volver" }))) return;
+    cancelarSimulacro(); pinta(); return;
+  }
+  if (t.closest("#opoSacarBolas")) {
+    const O = normalizarOpo(), prep = new Set(temasPreparados().map(x => x.id)), bolas = sacarBolas(O.examen.bolas), bien = bolas.filter(x => prep.has(x.id)).length;
+    const out = $("#obBolas"); if (!out) return;
+    out.innerHTML = bolas.map(x => `<span class="opo-bola${prep.has(x.id) ? " si" : ""}" title="${esc(x.titulo)}"><b>${x.n}</b>${esc(x.titulo.slice(0, 48))}</span>`).join("")
+      + `<p class="meta">${bien ? "Te sale" + (bien === 1 ? " uno que llevas" : "n " + bien + " que llevas") + ": elige el que mejor te sepas." : "Ninguno de los que llevas. En el examen, el que mejor conozcas: siempre hay algo que escribir."}</p>`;
     return;
   }
   if (t.closest("#opoNuevoSim")) {
@@ -5271,8 +5854,14 @@ alEvento("click", async e => {
     if ($("#osAc").value === "" && $("#osFa").value === "") { aviso("Faltan los aciertos y los fallos.", "mal"); return; }
     if (a < 0 || f < 0 || a + f > n) { aviso("Aciertos y fallos no cuadran con el número de preguntas.", "mal"); return; }
     const ref = $("#osRef").value, [tipo, id] = ref ? ref.split(":") : ["completo", ""];
-    O.simulacros.push({ id: uid(), fecha: /^\d{4}-\d{2}-\d{2}$/.test($("#osFecha").value) ? $("#osFecha").value : hoyISO(),
-      tipo, ref: id || "", preguntas: n, aciertos: a, fallos: f, minutos: Math.round(num($("#osMin").value, 0)) });
+    const ft = tipo === "tema" ? { total: 0 } : fallosPorTema($("#osFT") ? $("#osFT").value : "");
+    if (ft.total > f) { aviso("Has repartido " + ft.total + " fallos por temas y el simulacro tiene " + f + ".", "mal"); return; }
+    const mins = Math.round(num($("#osMin").value, 0));
+    const s = { id: uid(), fecha: esFecha($("#osFecha").value) ? $("#osFecha").value : hoyISO(), tipo, ref: id || "", preguntas: n, aciertos: a, fallos: f, minutos: mins };
+    if (ft.total) s.fallosTema = ft.ids;
+    O.simulacros.push(s);
+    /* si venía del reloj, ese tiempo es estudio de verdad y de hoy */
+    if (O.crono && O.crono.fin) { registrarMinutos(bloqueTest(), clamp(mins, 1, 600)); O.crono = null; }
     guardar("oposicion"); pinta(); aviso("Simulacro apuntado."); return;
   }
   const bs = t.closest("[data-opo-borrar-sim]");
@@ -5292,12 +5881,15 @@ alEvento("click", async e => {
 alEvento("change", e => {
   if (seccion !== "oposicion") return;
   const c = e.target.closest("[data-opo-campo]");
-  if (c) { ponCampoOpo(c.dataset.opoCampo, c.value); pinta(); }
+  if (c) { ponCampoOpo(c.dataset.opoCampo, c.type === "checkbox" ? c.checked : c.value); pinta(); return; }
+  if (e.target.id === "osRef") { const w = $("#osFTCampo"); if (w) w.classList.toggle("oculto", e.target.value.startsWith("tema:")); }
 });
 alEvento("input", e => {
   if (seccion !== "oposicion") return;
   if (e.target.closest("#ocCorte, #ocBlanco")) opoCalcularCorte();
   if (e.target.closest("#osPreg, #osAc, #osFa")) opoCalcularSim();
+  if (e.target.closest("#osFT, #osFa")) opoCalcularFT();
+  if (e.target.closest("#obSe")) opoCalcularBolas();
 });
 
 /* ══════ lo que la oposición pone en otras partes de la app ══════ */
@@ -5311,17 +5903,15 @@ function opoTarjetaInicio() {
       <p class="meta" style="margin-bottom:12px">Pega el índice del temario y las reglas del examen, y aquí verás cada día qué temas te tocan.</p>
       <button type="button" class="btn primario" data-sec="oposicion">Empezar</button></div>
   </section>`;
-  const pl = planOpo(), hoy = temasDeHoy(), rs = resumenSimulacros();
-  return `<section class="panel opo-inicio">
+  const pl = planOpo(), hoy = temasDeHoy(), rs = resumenSimulacros(), frios = temasFrios().length;
+  return `<section class="panel opo-inicio">${opoAlertaPlazo()}
     <div class="opo-cuenta">${pl.dias !== undefined && pl.dias >= 0 ? `<b>${pl.dias}</b><span>${pl.dias === 1 ? "día" : "días"} para el examen</span>` : `<b>—</b><span>Sin fecha de examen</span>`}
-      ${rs.n ? `<span style="margin-top:10px">Último simulacro: ${nota(rs.ultima.neta)} netas</span>` : ""}</div>
+      ${rs.n ? `<span style="margin-top:10px">Último simulacro: ${nota(rs.ultima.neta)} netas</span>` : ""}
+      ${opoMarcha(true)}</div>
     <div class="opo-inicio-hoy">
       <div class="opo-cab-sec"><div class="etq">Hoy te tocan</div><span class="meta">${hoy.hechos} de ${hoy.cupo} hechos</span></div>
-      ${hoy.lista.length ? `<div class="opo-lista">${hoy.lista.slice(0, 3).map(t => `<div class="opo-fila">
-        <button type="button" class="opo-fila-t" data-sec="oposicion"><span class="opo-n">${t.n}</span><span class="opo-titulo">${esc(t.titulo)}</span></button>
-        <span class="opo-fila-e">${vueltasDe(t) ? vueltasDe(t) + (vueltasDe(t) === 1 ? " vuelta" : " vueltas") : "sin empezar"}</span>
-        <button type="button" class="btn mini" data-opo-vuelta="${t.id}">${icono("mas")}Vuelta hecha</button></div>`).join("")}</div>`
-        : `<p class="meta">${hoy.hechos ? (temasFrios().length ? "Plan de hoy hecho. Tienes " + temasFrios().length + " temas enfriándose en tu oposición." : "Plan de hoy hecho.") : "Nada pendiente para hoy."}</p>`}
+      ${hoy.lista.length ? `<div class="opo-lista">${hoy.lista.slice(0, 3).map(t => filaTema(t, txtVueltas(t))).join("")}</div>`
+        : `<p class="meta">${hoy.hechos ? (frios ? "Plan de hoy hecho. Tienes " + frios + (frios === 1 ? " tema enfriándose" : " temas enfriándose") + " en tu oposición." : "Plan de hoy hecho.") : "Nada pendiente para hoy."}</p>`}
     </div>
   </section>`;
 }
@@ -5342,12 +5932,19 @@ function opoPanel() {
    enlaces no se mandan: solo títulos, números y resultados */
 function opoContextoTutor() {
   const O = normalizarOpo();
-  if (!O.temas.length && !O.examen.fecha && !O.simulacros.length) return [];
+  if (!O.temas.length && !O.examen.fecha && !O.simulacros.length && !O.convocatoria.plazoFin) return [];
   const ex = O.examen, pen = penalizacionDe(ex), pl = planOpo(), rs = resumenSimulacros(), corte = corteDe();
   const tema = t => t.n + " «" + t.titulo.slice(0, 90) + "»";
   const L = ["LA OPOSICIÓN"];
   L.push("Examen: " + (ex.fecha ? ex.fecha + " (" + cuandoTxt(pl.dias) + ")" : "sin fecha todavía") + "; " + ex.preguntas + " preguntas de "
     + ex.opciones + " opciones, cada fallo resta " + textoPenalizacion(pen) + (corte ? "; corte de " + nota(corte.valor) + " netas" : "") + ".");
+  if (num(ex.bolas) > 0 && O.temas.length) {
+    const k = temasPreparados().length;
+    L.push("Hay tema a desarrollar: sacan " + ex.bolas + " bolas de " + O.temas.length + " temas. Con los " + k + " que lleva preparados, "
+      + pctTxt(probAlMenosUno(O.temas.length, k, ex.bolas)) + " % de que le salga al menos uno.");
+  }
+  const cv = O.convocatoria;
+  if (esFecha(cv.plazoFin)) L.push("Plazo de solicitud hasta el " + cv.plazoFin + (cv.presentada ? ": ya la ha presentado." : ": todavía NO la ha presentado."));
   if (O.temas.length) {
     const va = vueltaActual();
     L.push("Temario de " + O.temas.length + " temas; va por la " + (va === Infinity ? "última" : va + ".ª") + " vuelta de " + pl.objetivo + "; "
@@ -5372,7 +5969,9 @@ SI OPOSITA:
 - Nunca te inventes un artículo, un número de ley ni una fecha. Si no estás seguro de la redacción exacta, dilo y mándale a la versión consolidada del BOE. Un opositor que memoriza un dato falso pierde puntos.
 - Técnica de examen: con la penalización que tenga, explícale cuándo compensa arriesgar (si descarta una opción, casi siempre) y cuándo dejarla en blanco.
 - Pregúntale tipo test, con cuatro opciones o las que tenga su examen, y corrígele explicando por qué las otras son falsas.
-- Si va tarde con el plan, díselo claro y proponle qué recortar; no le digas que llega si no llega.`;
+- Si va tarde con el plan, díselo claro y proponle qué recortar; no le digas que llega si no llega.
+- Si tiene tema a desarrollar, te paso la probabilidad de que le salga uno que lleva: úsala para aconsejarle cuántos preparar y no te inventes otras cifras.
+- Si no ha presentado la solicitud y el plazo está cerca, recuérdaselo antes que nada.`;
 
 
 /* ══════════════════ pintado ══════════════════ */
@@ -5389,7 +5988,9 @@ function pinta() {
   if (seccion === "tutor") { tutorLeido(); chatAbajo(); }
   if (seccion === "apuntes" && apunteActivo && S.apuntes[apunteActivo]) { contarPalabras(); montarLibreta(); }
   if (seccion === "casillero") completarPrevias();
-  if (seccion === "oposicion") { opoCalcularCorte(); opoCalcularSim(); }
+  if (seccion === "oposicion") { opoCalcularCorte(); opoCalcularSim(); opoCalcularFT(); opoCalcularBolas(); }
+  /* el simulacro con reloj sigue aunque recargues o llegue de otro dispositivo */
+  if (S.opo && S.opo.crono && !S.opo.crono.fin && !cronoOpoTick) arrancarCronoOpo();
 }
 function contarPalabras() {
   const t = $("#apCuerpo"); if (!t) return;
@@ -5449,7 +6050,8 @@ alEvento("click", async e => {
   if (t.closest("#btnReset")) { reiniciarTimer(); return; }
   if (t.closest("#btnManual")) {
     if (!T.modId) { aviso("Elige antes el módulo."); return; }
-    registrarMinutos(T.modId, 30); aviso("30 minutos apuntados."); pinta(); return;
+    registrarMinutos(T.modId, 30); if (T.temaId) registrarMinutosTema(T.temaId, 30);
+    aviso("30 minutos apuntados."); pinta(); return;
   }
 
   if (t.closest("#btnNuevoMod")) { nuevoModulo(); return; }
@@ -5496,11 +6098,9 @@ alEvento("click", async e => {
   }
   if (t.closest("#btnExportarApunte")) {
     const n = S.apuntes[apunteActivo]; if (!n) return;
-    if (!descargas) { aviso("Las descargas no están disponibles en esta vista.", "mal"); return; }
     const m = modPorId(n.modId);
     const md = "# " + (n.titulo || "Apunte") + "\n\n" + (m ? "**Módulo:** " + m.nombre + "\n\n" : "") + htmlATexto(apunteHtml(n), true) + "\n";
-    try { await descargas.save({ filename: (n.titulo || "apunte").replace(/[^\w\sáéíóúñÁÉÍÓÚÑ-]/gi, "").trim().slice(0, 40) + ".md", data: md }); }
-    catch (err) { if (err.code !== "declined") aviso("No se pudo descargar (" + err.code + ").", "mal"); }
+    await bajarArchivo((n.titulo || "apunte").replace(/[^\w\sáéíóúñÁÉÍÓÚÑ-]/gi, "").trim().slice(0, 40) + ".md", md, "text/markdown;charset=utf-8");
     return;
   }
 
@@ -5543,7 +6143,7 @@ alEvento("click", async e => {
       const blob = await (await fetch(srcDoc(d))).blob();
       const ext = (d.mime || "").includes("pdf") ? ".pdf" : (d.mime || "").startsWith("image/") ? ".jpg" : ".txt";
       const base = d.titulo.replace(/[^\w\sáéíóúñÁÉÍÓÚÑ.-]/gi, "").trim().slice(0, 40) || "archivo";
-      await descargas.save({ filename: /\.[a-z0-9]{1,5}$/i.test(base) ? base : base + ext, data: blob });
+      await bajarArchivo(/\.[a-z0-9]{1,5}$/i.test(base) ? base : base + ext, blob);
     } catch (err) { if (err && err.code !== "declined") aviso("No se pudo descargar.", "mal"); }
     return;
   }
@@ -5613,7 +6213,18 @@ alEvento("input", e => {
     const s = t.selectionStart; pinta();
     const n = $("#buscarApuntes"); if (n) { n.focus(); n.setSelectionRange(s, s); }
   }
-  if (t.id === "selTimer") { T.modId = t.value; guardarTimer(); }
+  if (t.id === "selTimer") {
+    T.modId = t.value;
+    /* si el tema elegido era de otro bloque, se suelta */
+    const tm = T.temaId ? temaPorId(T.temaId) : null;
+    if (tm && tm.modId !== T.modId) { T.temaId = ""; const s = $("#selTimerTema"); if (s) s.value = ""; }
+    guardarTimer();
+  }
+  if (t.id === "selTimerTema") {
+    const tm = temaPorId(t.value); T.temaId = tm ? tm.id : "";
+    if (tm && modPorId(tm.modId)) { T.modId = tm.modId; const s = $("#selTimer"); if (s) s.value = tm.modId; }
+    guardarTimer();
+  }
   if (["apTitulo", "apCuerpo", "apTags", "apModulo"].includes(t.id)) {
     const n = S.apuntes[apunteActivo]; if (!n) return;
     if (t.id === "apTitulo") {
@@ -7104,7 +7715,7 @@ function ajAspecto() {
 }
 
 /* los papeles salen de legal/*.md del repositorio: se generan con aplicar-legal.js */
-const LEGAL = [{"id":"privacidad","nombre":"Privacidad","resumen":"Qué datos se guardan, dónde viven y cómo borrarlos","titulo":"Política de privacidad","html":"<p>En vigor desde el 20 de septiembre de 2026.</p><h3>Lo importante, en cinco líneas</h3><p>GritNook <strong>no pide correo, ni contraseña, ni teléfono, ni datos de pago</strong>. Lo que escribes —tus asignaturas, tus notas, tus apuntes y tus archivos— se guarda en tu propio navegador y, si abres la app desde Claude, en tu cuenta de Claude. <strong>No hay publicidad, no hay analítica y no se vende nada a nadie.</strong> Lo único que sale fuera es lo que hace falta para que el profe pueda responderte. Puedes descargarte todo o borrarlo entero cuando quieras, desde Ajustes → Datos.</p><h3>1. Quién responde de tus datos</h3><ul><li><strong>Responsable:</strong> Gabriel Rodríguez Blanco</li><li><strong>NIF:</strong> 09215128V</li><li><strong>Correo para todo lo relacionado con tus datos:</strong> gabriel_gabiz@hotmail.com</li></ul><p>No hace falta delegado de protección de datos. El correo es el canal oficial: por ahí se atienden todas las peticiones, y se responden en un mes como máximo.</p><h3>2. Qué datos se tratan</h3><p>Los que tú escribes en la aplicación: tu nombre o apodo, qué estudias, tus asignaturas con sus notas y sus faltas, tu agenda, tus apuntes y dibujos, los archivos que subes al casillero, tus tarjetas de repaso, tu vocabulario de inglés, tus minutos de estudio y tus conversaciones con el profe.</p><p>El detalle completo, campo por campo, está en el <span class=\"lg-ref\">inventario de datos</span>, que se actualiza cada vez que la aplicación cambia.</p><p><strong>No se tratan</strong> ni datos de pago, ni ubicación, ni identificadores publicitarios, ni nada que tú no escribas.</p><p>Ten en cuenta que entre tus datos puede haber <strong>datos de salud</strong> si tú los escribes (por ejemplo, un apunte que diga por qué faltaste a clase). La app no te los pide y no los necesita; si los escribes, quedan guardados como cualquier otro apunte. Te recomendamos no escribirlos.</p><h3>3. Para qué se usan y con qué base legal</h3><div class=\"lg-tabla\"><table><thead><tr><th>Para qué</th><th>Base legal</th></tr></thead><tbody><tr><td>Que la app funcione: guardar tu perfil, tus notas, tu agenda y tus apuntes, y calcular lo que te falta para aprobar</td><td>Ejecutar el contrato que aceptas al usarla (art. 6.1.b RGPD)</td></tr><tr><td>Que el profe pueda responderte, explicarte y preguntarte</td><td>Ejecutar el contrato (art. 6.1.b RGPD)</td></tr><tr><td>Sincronizar entre tus dispositivos, si abres la app desde Claude</td><td>Ejecutar el contrato (art. 6.1.b RGPD)</td></tr><tr><td>Recordar el tema claro u oscuro y tus preferencias de la libreta</td><td>Interés legítimo en que la app se vea como la dejaste (art. 6.1.f RGPD)</td></tr><tr><td>Atender tus derechos y responder a lo que preguntes</td><td>Obligación legal (art. 6.1.c RGPD)</td></tr></tbody></table></div><p><strong>No se usan</strong> para publicidad, ni para perfilarte, ni para entrenar modelos de inteligencia artificial.</p><p><strong>No hay decisiones automatizadas</strong> con efectos jurídicos sobre ti. Cuando la app dice que una asignatura está «en riesgo» o que un examen es urgente, es una cuenta hecha con los datos que tú has metido, para ayudarte a decidir: no decide nada por ti y no la ve nadie más.</p><h3>4. Cookies y almacenamiento en tu dispositivo</h3><p><strong>No se usan cookies.</strong> La app guarda sus datos en el almacenamiento local del navegador porque es lo que la hace funcionar sin servidor. Es almacenamiento técnico imprescindible para prestar el servicio que pides, así que está exento de pedir consentimiento (art. 22.2 LSSI). No se usa para seguirte ni para medir nada, y se borra entero desde Ajustes → Datos o borrando los datos del sitio en tu navegador.</p><h3>5. Quién más ve tus datos</h3><div class=\"lg-tabla\"><table><thead><tr><th>Quién</th><th>Qué ve</th><th>Dónde está</th></tr></thead><tbody><tr><td>Anthropic (proveedor del profe con IA)</td><td>Solo lo que se le envía en cada pregunta. El detalle exacto, campo por campo, está en cómo funciona el profe: en resumen, tu nombre o apodo, tu curso, tus asignaturas con sus notas, tus entregas y exámenes, tu horario, los títulos de tus apuntes, el contenido del que tengas abierto, los últimos mensajes y los archivos que adjuntes</td><td>Estados Unidos</td></tr><tr><td>Anthropic (almacenamiento de Claude), solo si abres la app desde allí</td><td>Tus datos sincronizados y tus archivos del casillero</td><td>Estados Unidos</td></tr><tr><td>GitHub Pages (GitHub, Inc.)</td><td>Solo sirve los archivos de la app. Como cualquier servidor web, registra la dirección IP y el navegador de quien la abre, por seguridad. <strong>No recibe ninguno de tus datos de estudio</strong></td><td>Estados Unidos</td></tr></tbody></table></div><p>No hay nadie más. No se ceden datos a terceros, ni se venden, ni hay anunciantes. Solo se entregarían a jueces, fuerzas de seguridad o administraciones si una ley lo obligara.</p><h3>6. Datos que salen de la Unión Europea</h3><p>El profe con IA se procesa en Estados Unidos. Esa transferencia está amparada en las <strong>cláusulas contractuales tipo</strong> aprobadas por la Comisión Europea y, en su caso, en el <strong>marco de privacidad UE-EE. UU.</strong> al que esté adherido el proveedor. Puedes pedirnos copia de las garantías escribiendo al correo de contacto.</p><p><mark class=\"lg-falta\">RELLENAR: confirmar el mecanismo exacto al firmar el contrato de encargado de tratamiento con el proveedor, y actualizar este párrafo.</mark></p><p>Si no quieres que nada salga de Europa, no uses el profe: el resto de la aplicación funciona sin él.</p><h3>7. Cuánto tiempo se guardan</h3><p>Mientras tú quieras. No hay borrado automático ni caducidad.</p><ul><li>Si borras un apunte o un documento, se borra en ese momento, también de la nube.</li><li>Si pulsas «Borrar todo», se borra todo: lo de este dispositivo, lo sincronizado y los archivos que hayas subido. No se puede deshacer.</li><li>Si dejas de usar la app y borras los datos del navegador, no queda nada.</li></ul><p>El correo que nos escribas para ejercer tus derechos se guarda mientras haga falta para atenderlo y, después, el tiempo que obliguen las leyes de prescripción.</p><h3>8. Tus derechos</h3><p>Puedes pedir, gratis y en cualquier momento:</p><ul><li><strong>Acceso</strong>: saber qué datos hay sobre ti. De hecho, los tienes tú: están en tu navegador y te los puedes descargar en un clic.</li><li><strong>Rectificación</strong>: corregir lo que esté mal. Se edita directamente en la app.</li><li><strong>Supresión</strong>: que se borre todo. Ajustes → Datos → Borrar todo.</li><li><strong>Portabilidad</strong>: llevarte tus datos. Ajustes → Datos → Descargar copia, que te da un archivo JSON con absolutamente todo.</li><li><strong>Limitación y oposición</strong> al tratamiento.</li></ul><p>Casi todos los puedes ejercer tú solo desde la app, sin pedir permiso a nadie. Si prefieres escribir, el correo es gabriel_gabiz@hotmail.com. Se responde en un mes como máximo.</p><p>Si crees que no se han respetado tus derechos, puedes reclamar ante la <strong>Agencia Española de Protección de Datos</strong> (www.aepd.es, C/ Jorge Juan 6, 28001 Madrid).</p><h3>9. Menores de edad</h3><p>Para usar GritNook hay que tener <strong>14 años cumplidos</strong>. Es la edad que fija la ley española (art. 7 de la Ley Orgánica 3/2018) para que alguien pueda decidir por sí mismo sobre sus datos en un servicio como este.</p><p>Si tienes menos de 14 años, necesitas que tu padre, tu madre o tu tutor lo autoricen y usen la app contigo.</p><p>Si tienes entre 14 y 18, puedes usarla tú solo, pero es buena idea contárselo en casa, sobre todo porque el profe funciona con inteligencia artificial.</p><p>Padres y tutores: podéis escribir al correo de contacto para preguntar qué datos hay, corregirlos o pedir que se borren.</p><h3>10. Seguridad</h3><p>La app se sirve siempre por conexión cifrada (HTTPS). Los datos no viajan a ningún servidor propio porque no lo hay: viven en tu dispositivo y, si usas Claude, en tu cuenta, protegida por tu propia contraseña.</p><p>Eso tiene una consecuencia que conviene entender: <strong>quien tenga acceso a tu dispositivo desbloqueado puede ver tus apuntes</strong>, igual que puede ver tus fotos. Si compartes ordenador, bloquéalo o usa la app desde tu cuenta de Claude.</p><h3>11. Cambios en esta política</h3><p>Si cambia algo —que se añada una función que guarde datos nuevos, que cambie el proveedor de IA o que aparezcan cuentas propias— se actualiza este texto, se cambia la fecha de arriba y se avisa dentro de la aplicación.</p>"},{"id":"ia","nombre":"Cómo funciona el profe","resumen":"Que es una máquina, qué se le manda y en qué se equivoca","titulo":"Cómo funciona el profe","html":"<p>En vigor desde el 20 de septiembre de 2026.</p><h3>Estás hablando con una máquina</h3><p>El profe de GritNook es un programa de inteligencia artificial. <strong>No es una persona</strong>, aunque escriba como si lo fuera, te anime o se acuerde de lo que hablasteis. Te lo decimos claramente porque lo exige el artículo 50 del Reglamento (UE) 2024/1689 de inteligencia artificial, y porque es de justicia saberlo.</p><p>El modelo lo pone <strong>Anthropic</strong>, y las respuestas se generan en servidores de <strong>Estados Unidos</strong>.</p><h3>Qué se le manda cuando le preguntas</h3><p>Para poder responderte con sentido, se le envía:</p><ul><li>tu nombre o apodo, qué estudias y en qué curso;</li><li>si trabajas, cuántas horas de estudio te has propuesto a la semana, qué días dices que puedes ponerte, qué nota buscas, <strong>qué te cuesta más y para qué estudias</strong> (esas dos las escribes tú y son opcionales: si las dejas en blanco, no hay nada que mandar);</li><li>tus asignaturas con sus notas, lo que te falta para aprobar y, cuando las faltas ya aprietan, cuántas llevas;</li><li>las entregas y exámenes que tengas cerca, con sus fechas y su plan;</li><li>tu horario de clases de hoy y de mañana, solo las horas y la asignatura;</li><li><strong>los títulos</strong> de tus apuntes, para que sepa qué has visto ya;</li><li><strong>el contenido del apunte que tengas abierto en ese momento</strong>, hasta unas 1.200 letras, para que pueda hablar de lo que estás mirando. Si no tienes ninguno abierto, no se manda ningún apunte;</li><li>cuántas tarjetas de repaso te tocan hoy y tus objetivos del día;</li><li>los últimos mensajes de vuestra conversación;</li><li>los archivos o capturas que tú le adjuntes;</li><li><strong>si opositas</strong>: el nombre de tu oposición, la fecha y las reglas del examen (preguntas, opciones, lo que resta cada fallo y la nota de corte), cuántos temas tiene tu temario y por qué vuelta vas, el número y el título de los temas que te tocan hoy, de los que se te enfrían y de los que llevas flojos, y los resultados de tus simulacros.</li></ul><p><strong>No se le manda</strong> nada que no esté en esa lista. En concreto, <strong>no</strong> se le envían los archivos de tu casillero, ni tu vocabulario de inglés, ni lo que hay escrito en tus tarjetas de repaso, ni el nombre de tu centro, ni el de tu aula, ni el texto de los apuntes que no tengas abiertos, ni las notas que escribas en cada tema de la oposición, ni los enlaces que guardes a leyes o a las bases.</p><h3>En qué se equivoca</h3><p>Se equivoca. No de vez en cuando: forma parte de cómo funcionan estas máquinas.</p><ul><li>Puede <strong>inventarse</strong> datos, fechas, artículos de ley o funciones de un lenguaje de programación, y contártelo con total seguridad.</li><li>Puede estar <strong>desactualizado</strong> sobre el temario, la convocatoria o la normativa de tu ciclo.</li><li>No conoce las normas de tu centro. <strong>Quien decide cómo te evalúan y cuántas faltas te dejan es tu centro, no la app.</strong></li></ul><p>Regla sencilla: si te lo juegas —una fecha de entrega, una fórmula de un examen, un trámite— <strong>compruébalo en la fuente oficial</strong>.</p><h3>Para qué no sirve</h3><ul><li><strong>No es un médico ni un psicólogo.</strong> Si lo estás pasando mal, habla con alguien de verdad. Teléfono de atención a la conducta suicida: <strong>024</strong>. Emergencias: <strong>112</strong>.</li><li><strong>No es un abogado ni un asesor financiero.</strong></li><li><strong>No atiende emergencias</strong> de ningún tipo.</li><li><strong>No es para copiar.</strong> Está para que entiendas y apruebes. Entregar como tuyo lo que te ha escrito una máquina puede ser una falta académica en tu centro, y el responsable de lo que entregues eres tú.</li></ul><h3>De qué no habla</h3><p>El profe está programado para hablar <strong>solo de tus estudios</strong>: tu ciclo, tus asignaturas y tus dudas profesionales. Si le preguntas por su vida, por la tuya o por cualquier otra cosa, te lo dirá y volverá al tema. No es antipatía: es que un profe de verdad tampoco entra ahí.</p><h3>Qué pasa con lo que le cuentas</h3><ul><li>La conversación se guarda <strong>contigo</strong>, igual que tus apuntes, y se borra con ellos desde Ajustes → Datos.</li><li><strong>No se usa para entrenar modelos.</strong></li><li>El proveedor la procesa para generarte una respuesta y la conserva el tiempo que diga su propia política, en los términos del contrato firmado con él.</li></ul><p><mark class=\"lg-falta\">RELLENAR: confirmar el plazo y las condiciones exactas al firmar el contrato de encargado de tratamiento con el proveedor.</mark></p><h3>Si no lo quieres usar</h3><p>El resto de GritNook —notas, faltas, agenda, apuntes, casillero, repaso— funciona sin el profe.</p><p>Puedes apagarlo del todo en <strong>Ajustes → El profe</strong>, quitando la marca de «Usar el profe con inteligencia artificial». Mientras esté apagado <strong>no sale nada</strong> de la aplicación hacia ninguna IA: ni tu nombre, ni tus notas, ni tus apuntes. Lo que le escribas se guarda en tu dispositivo, pero no se envía a nadie. Se vuelve a encender en el mismo sitio.</p>"},{"id":"terminos","nombre":"Términos de uso","resumen":"Las reglas entre tú y GritNook","titulo":"Términos de uso","html":"<p>En vigor desde el 20 de septiembre de 2026.</p><h3>1. Qué es esto</h3><p>Estas son las reglas entre <strong>Gabriel Rodríguez Blanco</strong>, NIF 09215128V («el titular»), y tú, que usas GritNook. Al usar la aplicación las aceptas. Si no estás de acuerdo con alguna, no la uses.</p><p>Van con ellas la <button type=\"button\" class=\"lg-enlace\" data-lg=\"privacidad\">política de privacidad</button>, el <button type=\"button\" class=\"lg-enlace\" data-lg=\"aviso-legal\">aviso legal</button> y el <button type=\"button\" class=\"lg-enlace\" data-lg=\"ia\">aviso sobre la IA</button>.</p><h3>2. Qué hace la aplicación</h3><p>GritNook te ayuda a organizar los estudios: apuntar asignaturas, notas y faltas, ver qué te falta para aprobar, llevar la agenda de entregas y exámenes, tomar apuntes, guardar documentos y estudiar con un profe que funciona con inteligencia artificial.</p><p>Es una herramienta de apoyo. <strong>No sustituye a tu centro, a tu profesorado ni a las normas de tu ciclo.</strong></p><h3>3. Quién puede usarla</h3><p>Hay que tener <strong>14 años cumplidos</strong>. Con menos, hace falta que tu padre, tu madre o tu tutor lo autoricen y la usen contigo.</p><p>Si tienes entre 14 y 18 años puedes usarla, pero al aceptar estos términos estás diciendo que en casa lo saben.</p><h3>4. Cuánto cuesta</h3><p>Hoy la aplicación es <strong>gratuita</strong>. Si en el futuro hay una versión de pago, se avisará con antelación dentro de la app, y lo que ya tengas guardado seguirá siendo tuyo y descargable en cualquier caso.</p><p><mark class=\"lg-falta\">RELLENAR cuando haya cobro: precio, forma de pago, duración, renovación, cancelación y derecho de desistimiento de 14 días.</mark></p><h3>5. Lo que te damos</h3><p>Un permiso personal para usar la aplicación: no exclusivo, no transferible, revocable y solo para estudiar tú. No incluye poder:</p><ul><li>copiar, distribuir o vender el código, ni entero ni a trozos;</li><li>quitar el nombre, el logotipo o los avisos de autoría;</li><li>usarla para montar un servicio parecido;</li><li>entrar por donde no toca, saltarte límites o hacerle ingeniería inversa más allá de lo que la ley permita.</li></ul><p>Las condiciones completas del código están en el <span class=\"lg-ref\">archivo de licencia</span>.</p><h3>6. Lo que escribes es tuyo</h3><p>Tus apuntes, tus notas, tus archivos y tus conversaciones <strong>son tuyos</strong>. El titular no adquiere ningún derecho sobre ellos: solo los guarda donde tú decides y los envía al proveedor de IA cuando le preguntas, porque si no, no podría responderte.</p><p>No se usan para entrenar modelos, ni para publicidad, ni se enseñan a nadie.</p><h3>7. Lo que no puedes subir</h3><p>Ni contenido ilegal, ni material protegido de otros sin permiso, ni datos personales de terceros (fotos de compañeros, exámenes con nombres, informes médicos de nadie), ni nada que pueda dañar la aplicación o a quien la use.</p><p>Tú respondes de lo que subes.</p><h3>8. El profe con inteligencia artificial</h3><p>Léete el <button type=\"button\" class=\"lg-enlace\" data-lg=\"ia\">aviso sobre la IA</button>. En resumen:</p><ul><li>Es una máquina, no una persona.</li><li><strong>Puede equivocarse.</strong> Comprueba siempre las fechas, las fórmulas y cualquier cosa que te juegues.</li><li>No es asesoramiento médico, legal ni financiero, y no atiende emergencias.</li><li>Está para que aprendas y apruebes, no para hacerte los trabajos. Copiar lo que te dé y entregarlo como tuyo puede ser una falta académica en tu centro: eso es cosa tuya y de las normas de tu escuela.</li></ul><h3>9. Que funcione</h3><p>Se hace lo posible para que la aplicación esté disponible y no falle, pero no se promete que esté siempre ni que no tenga errores. Puede haber cortes por mantenimiento, por cambios o porque falle un proveedor.</p><p><strong>Haz copias.</strong> Ajustes → Datos → Descargar copia. Si borras los datos del navegador, cambias de dispositivo o se estropea, sin copia no hay vuelta atrás.</p><h3>10. Hasta cuándo</h3><p>Puedes dejar de usarla cuando quieras: borrando tus datos desde Ajustes o simplemente cerrando la app. El titular puede retirar la aplicación o dejar de prestar el servicio avisando con antelación razonable dentro de la app, para que te dé tiempo a descargarte tus cosas.</p><h3>11. Responsabilidad</h3><p>El titular responde de los daños que cause por dolo o por negligencia grave, y de todo lo que la ley no permita excluir. Fuera de eso, y en la medida en que la ley lo permita, no responde de:</p><ul><li>la pérdida de datos por borrar el navegador, perder el dispositivo o no hacer copias;</li><li>las consecuencias de fiarse de un cálculo o de una respuesta del profe sin comprobarla;</li><li>los fallos de servicios de terceros de los que depende la aplicación.</li></ul><p><strong>Si eres consumidor, nada de esto te quita los derechos que te da la ley.</strong></p><h3>12. Cambios</h3><p>Estos términos se pueden cambiar. Los cambios importantes se avisan dentro de la aplicación antes de que entren en vigor. Seguir usándola después es aceptarlos.</p><h3>13. Ley y conflictos</h3><p>Se aplica la ley española. Si algo se tuerce, escribe primero al correo de contacto: casi todo se arregla así. Si no, los tribunales competentes serán los que diga la ley y, si eres consumidor, los de tu domicilio. También puedes acudir a las juntas arbitrales de consumo.</p>"},{"id":"aviso-legal","nombre":"Aviso legal","resumen":"Quién está detrás de la aplicación","titulo":"Aviso legal","html":"<p>En vigor desde el 20 de septiembre de 2026.</p><h3>Quién está detrás de GritNook</h3><ul><li><strong>Titular:</strong> Gabriel Rodríguez Blanco</li><li><strong>NIF:</strong> 09215128V</li><li><strong>Correo de contacto:</strong> gabriel_gabiz@hotmail.com</li><li><strong>Dirección de la aplicación:</strong> <mark class=\"lg-falta\">RELLENAR: dirección web</mark></li></ul><p>Esta información se publica para cumplir el artículo 10 de la Ley 34/2002, de servicios de la sociedad de la información y de comercio electrónico.</p><p>GritNook se ofrece <strong>gratis y sin actividad comercial</strong>: no se cobra por ella, no hay publicidad y no se vende nada. Por eso aquí no figura una dirección postal. El día que la aplicación pase a ser de pago se publicará también el domicilio del titular, que es lo que exige ese artículo 10 cuando hay actividad económica. Mientras tanto, para cualquier notificación sirve el correo de contacto, que se lee y se responde.</p><h3>Qué es GritNook</h3><p>GritNook es una aplicación web para organizar los estudios: asignaturas, notas, faltas, entregas, apuntes, documentos y un profe con inteligencia artificial que explica y pregunta. Funciona dentro del navegador, sin instalar nada.</p><h3>Condiciones de uso</h3><p>El uso de la aplicación implica aceptar este aviso, los <button type=\"button\" class=\"lg-enlace\" data-lg=\"terminos\">términos de uso</button>, la <button type=\"button\" class=\"lg-enlace\" data-lg=\"privacidad\">política de privacidad</button> y el <button type=\"button\" class=\"lg-enlace\" data-lg=\"ia\">aviso sobre la inteligencia artificial</button>. Quien no esté de acuerdo, que no la use.</p><p>El titular puede cambiar, suspender o retirar la aplicación o cualquiera de sus partes, y modificar estos textos. Los cambios se publican en esta misma dirección con su fecha.</p><h3>De quién es lo que ves</h3><p>El código, el diseño, los textos, el nombre «GritNook» y su logotipo son del titular. Están publicados para poder leerlos y estudiarlos, no para copiarlos: las condiciones están en el <span class=\"lg-ref\">archivo de licencia</span> del repositorio.</p><p>La aplicación incluye piezas de otros autores —tipografías, iconos y la librería que abre los PDF— que mantienen sus propias licencias libres, detalladas en los <span class=\"lg-ref\">créditos</span>.</p><p><strong>Lo que escribe cada persona sigue siendo suyo.</strong> Los apuntes, las notas y los archivos que se suben pertenecen a quien los crea; el titular no se queda con ningún derecho sobre ellos.</p><h3>Responsabilidad</h3><p>El titular pone todo el cuidado razonable en que la aplicación funcione y en que los cálculos de notas y de faltas sean correctos, pero la aplicación se ofrece «tal cual». En concreto:</p><ul><li>Lo que calcula y lo que responde el profe es <strong>orientativo</strong>. Las normas de evaluación y de asistencia las pone cada centro, y son las que mandan.</li><li>No se garantiza que la aplicación esté disponible sin interrupciones ni que esté libre de errores.</li><li>Cada persona es responsable de guardar una copia de sus datos. La aplicación tiene un botón para descargarla en Ajustes → Datos.</li></ul><p>Nada de lo anterior limita los derechos que la ley reconoce a los consumidores.</p><h3>Enlaces a otros sitios</h3><p>Si la aplicación enlaza a páginas de terceros, el titular no responde de su contenido ni de lo que esas páginas hagan con los datos de quien las visite.</p><h3>Ley aplicable</h3><p>Se aplica la ley española. Para cualquier conflicto, las partes se someten a los juzgados que correspondan según la ley; cuando quien usa la aplicación es consumidor, los de su propio domicilio.</p><p>Quien sea consumidor y tenga una queja puede dirigirse antes al correo de contacto y, si no queda resuelta, a las juntas arbitrales de consumo.</p>"}];
+const LEGAL = [{"id":"privacidad","nombre":"Privacidad","resumen":"Qué datos se guardan, dónde viven y cómo borrarlos","titulo":"Política de privacidad","html":"<p>En vigor desde el 20 de septiembre de 2026.</p><h3>Lo importante, en cinco líneas</h3><p>GritNook <strong>no pide correo, ni contraseña, ni teléfono, ni datos de pago</strong>. Lo que escribes —tus asignaturas, tus notas, tus apuntes y tus archivos— se guarda en tu propio navegador y, si abres la app desde Claude, en tu cuenta de Claude. <strong>No hay publicidad, no hay analítica y no se vende nada a nadie.</strong> Lo único que sale fuera es lo que hace falta para que el profe pueda responderte. Puedes descargarte todo o borrarlo entero cuando quieras, desde Ajustes → Datos.</p><h3>1. Quién responde de tus datos</h3><ul><li><strong>Responsable:</strong> Gabriel Rodríguez Blanco</li><li><strong>NIF:</strong> 09215128V</li><li><strong>Correo para todo lo relacionado con tus datos:</strong> gabriel_gabiz@hotmail.com</li></ul><p>No hace falta delegado de protección de datos. El correo es el canal oficial: por ahí se atienden todas las peticiones, y se responden en un mes como máximo.</p><h3>2. Qué datos se tratan</h3><p>Los que tú escribes en la aplicación: tu nombre o apodo, qué estudias, tus asignaturas con sus notas y sus faltas, tu agenda, tus apuntes y dibujos, los archivos que subes al casillero, tus tarjetas de repaso, tu vocabulario de inglés, tus minutos de estudio y tus conversaciones con el profe.</p><p>El detalle completo, campo por campo, está en el <span class=\"lg-ref\">inventario de datos</span>, que se actualiza cada vez que la aplicación cambia.</p><p><strong>No se tratan</strong> ni datos de pago, ni ubicación, ni identificadores publicitarios, ni nada que tú no escribas.</p><p>Ten en cuenta que entre tus datos puede haber <strong>datos de salud</strong> si tú los escribes (por ejemplo, un apunte que diga por qué faltaste a clase). La app no te los pide y no los necesita; si los escribes, quedan guardados como cualquier otro apunte. Te recomendamos no escribirlos.</p><h3>3. Para qué se usan y con qué base legal</h3><div class=\"lg-tabla\"><table><thead><tr><th>Para qué</th><th>Base legal</th></tr></thead><tbody><tr><td>Que la app funcione: guardar tu perfil, tus notas, tu agenda y tus apuntes, y calcular lo que te falta para aprobar</td><td>Ejecutar el contrato que aceptas al usarla (art. 6.1.b RGPD)</td></tr><tr><td>Que el profe pueda responderte, explicarte y preguntarte</td><td>Ejecutar el contrato (art. 6.1.b RGPD)</td></tr><tr><td>Sincronizar entre tus dispositivos, si abres la app desde Claude</td><td>Ejecutar el contrato (art. 6.1.b RGPD)</td></tr><tr><td>Recordar el tema claro u oscuro y tus preferencias de la libreta</td><td>Interés legítimo en que la app se vea como la dejaste (art. 6.1.f RGPD)</td></tr><tr><td>Atender tus derechos y responder a lo que preguntes</td><td>Obligación legal (art. 6.1.c RGPD)</td></tr></tbody></table></div><p><strong>No se usan</strong> para publicidad, ni para perfilarte, ni para entrenar modelos de inteligencia artificial.</p><p><strong>No hay decisiones automatizadas</strong> con efectos jurídicos sobre ti. Cuando la app dice que una asignatura está «en riesgo» o que un examen es urgente, es una cuenta hecha con los datos que tú has metido, para ayudarte a decidir: no decide nada por ti y no la ve nadie más.</p><h3>4. Cookies y almacenamiento en tu dispositivo</h3><p><strong>No se usan cookies.</strong> La app guarda sus datos en el almacenamiento local del navegador porque es lo que la hace funcionar sin servidor. Es almacenamiento técnico imprescindible para prestar el servicio que pides, así que está exento de pedir consentimiento (art. 22.2 LSSI). No se usa para seguirte ni para medir nada, y se borra entero desde Ajustes → Datos o borrando los datos del sitio en tu navegador.</p><h3>5. Quién más ve tus datos</h3><div class=\"lg-tabla\"><table><thead><tr><th>Quién</th><th>Qué ve</th><th>Dónde está</th></tr></thead><tbody><tr><td>Anthropic (proveedor del profe con IA)</td><td>Solo lo que se le envía en cada pregunta. El detalle exacto, campo por campo, está en cómo funciona el profe: en resumen, tu nombre o apodo, tu curso, tus asignaturas con sus notas, tus entregas y exámenes, tu horario, los títulos de tus apuntes, el contenido del que tengas abierto, los últimos mensajes y los archivos que adjuntes</td><td>Estados Unidos</td></tr><tr><td>Anthropic (almacenamiento de Claude), solo si abres la app desde allí</td><td>Tus datos sincronizados y tus archivos del casillero</td><td>Estados Unidos</td></tr><tr><td>GitHub Pages (GitHub, Inc.)</td><td>Solo sirve los archivos de la app. Como cualquier servidor web, registra la dirección IP y el navegador de quien la abre, por seguridad. <strong>No recibe ninguno de tus datos de estudio</strong></td><td>Estados Unidos</td></tr></tbody></table></div><p>No hay nadie más. No se ceden datos a terceros, ni se venden, ni hay anunciantes. Solo se entregarían a jueces, fuerzas de seguridad o administraciones si una ley lo obligara.</p><h3>6. Datos que salen de la Unión Europea</h3><p>El profe con IA se procesa en Estados Unidos. Esa transferencia está amparada en las <strong>cláusulas contractuales tipo</strong> aprobadas por la Comisión Europea y, en su caso, en el <strong>marco de privacidad UE-EE. UU.</strong> al que esté adherido el proveedor. Puedes pedirnos copia de las garantías escribiendo al correo de contacto.</p><p><mark class=\"lg-falta\">RELLENAR: confirmar el mecanismo exacto al firmar el contrato de encargado de tratamiento con el proveedor, y actualizar este párrafo.</mark></p><p>Si no quieres que nada salga de Europa, no uses el profe: el resto de la aplicación funciona sin él.</p><h3>7. Cuánto tiempo se guardan</h3><p>Mientras tú quieras. No hay borrado automático ni caducidad.</p><ul><li>Si borras un apunte o un documento, se borra en ese momento, también de la nube.</li><li>Si pulsas «Borrar todo», se borra todo: lo de este dispositivo, lo sincronizado y los archivos que hayas subido. No se puede deshacer.</li><li>Si dejas de usar la app y borras los datos del navegador, no queda nada.</li></ul><p>El correo que nos escribas para ejercer tus derechos se guarda mientras haga falta para atenderlo y, después, el tiempo que obliguen las leyes de prescripción.</p><h3>8. Tus derechos</h3><p>Puedes pedir, gratis y en cualquier momento:</p><ul><li><strong>Acceso</strong>: saber qué datos hay sobre ti. De hecho, los tienes tú: están en tu navegador y te los puedes descargar en un clic.</li><li><strong>Rectificación</strong>: corregir lo que esté mal. Se edita directamente en la app.</li><li><strong>Supresión</strong>: que se borre todo. Ajustes → Datos → Borrar todo.</li><li><strong>Portabilidad</strong>: llevarte tus datos. Ajustes → Datos → Descargar copia, que te da un archivo JSON con absolutamente todo.</li><li><strong>Limitación y oposición</strong> al tratamiento.</li></ul><p>Casi todos los puedes ejercer tú solo desde la app, sin pedir permiso a nadie. Si prefieres escribir, el correo es gabriel_gabiz@hotmail.com. Se responde en un mes como máximo.</p><p>Si crees que no se han respetado tus derechos, puedes reclamar ante la <strong>Agencia Española de Protección de Datos</strong> (www.aepd.es, C/ Jorge Juan 6, 28001 Madrid).</p><h3>9. Menores de edad</h3><p>Para usar GritNook hay que tener <strong>14 años cumplidos</strong>. Es la edad que fija la ley española (art. 7 de la Ley Orgánica 3/2018) para que alguien pueda decidir por sí mismo sobre sus datos en un servicio como este.</p><p>Si tienes menos de 14 años, necesitas que tu padre, tu madre o tu tutor lo autoricen y usen la app contigo.</p><p>Si tienes entre 14 y 18, puedes usarla tú solo, pero es buena idea contárselo en casa, sobre todo porque el profe funciona con inteligencia artificial.</p><p>Padres y tutores: podéis escribir al correo de contacto para preguntar qué datos hay, corregirlos o pedir que se borren.</p><h3>10. Seguridad</h3><p>La app se sirve siempre por conexión cifrada (HTTPS). Los datos no viajan a ningún servidor propio porque no lo hay: viven en tu dispositivo y, si usas Claude, en tu cuenta, protegida por tu propia contraseña.</p><p>Eso tiene una consecuencia que conviene entender: <strong>quien tenga acceso a tu dispositivo desbloqueado puede ver tus apuntes</strong>, igual que puede ver tus fotos. Si compartes ordenador, bloquéalo o usa la app desde tu cuenta de Claude.</p><h3>11. Cambios en esta política</h3><p>Si cambia algo —que se añada una función que guarde datos nuevos, que cambie el proveedor de IA o que aparezcan cuentas propias— se actualiza este texto, se cambia la fecha de arriba y se avisa dentro de la aplicación.</p>"},{"id":"ia","nombre":"Cómo funciona el profe","resumen":"Que es una máquina, qué se le manda y en qué se equivoca","titulo":"Cómo funciona el profe","html":"<p>En vigor desde el 20 de septiembre de 2026.</p><h3>Estás hablando con una máquina</h3><p>El profe de GritNook es un programa de inteligencia artificial. <strong>No es una persona</strong>, aunque escriba como si lo fuera, te anime o se acuerde de lo que hablasteis. Te lo decimos claramente porque lo exige el artículo 50 del Reglamento (UE) 2024/1689 de inteligencia artificial, y porque es de justicia saberlo.</p><p>El modelo lo pone <strong>Anthropic</strong>, y las respuestas se generan en servidores de <strong>Estados Unidos</strong>.</p><h3>Qué se le manda cuando le preguntas</h3><p>Para poder responderte con sentido, se le envía:</p><ul><li>tu nombre o apodo, qué estudias y en qué curso;</li><li>si trabajas, cuántas horas de estudio te has propuesto a la semana, qué días dices que puedes ponerte, qué nota buscas, <strong>qué te cuesta más y para qué estudias</strong> (esas dos las escribes tú y son opcionales: si las dejas en blanco, no hay nada que mandar);</li><li>tus asignaturas con sus notas, lo que te falta para aprobar y, cuando las faltas ya aprietan, cuántas llevas;</li><li>las entregas y exámenes que tengas cerca, con sus fechas y su plan;</li><li>tu horario de clases de hoy y de mañana, solo las horas y la asignatura;</li><li><strong>los títulos</strong> de tus apuntes, para que sepa qué has visto ya;</li><li><strong>el contenido del apunte que tengas abierto en ese momento</strong>, hasta unas 1.200 letras, para que pueda hablar de lo que estás mirando. Si no tienes ninguno abierto, no se manda ningún apunte;</li><li>cuántas tarjetas de repaso te tocan hoy y tus objetivos del día;</li><li>los últimos mensajes de vuestra conversación;</li><li>los archivos o capturas que tú le adjuntes;</li><li><strong>si opositas</strong>: el nombre de tu oposición, la fecha y las reglas del examen (preguntas, opciones, lo que resta cada fallo y la nota de corte), cuántos temas tiene tu temario y por qué vuelta vas, el número y el título de los temas que te tocan hoy, de los que se te enfrían y de los que llevas flojos, y los resultados de tus simulacros. Si hay tema a desarrollar, cuántas bolas se sacan y la probabilidad de que te salga uno que llevas. Y si has puesto el plazo de la solicitud, hasta cuándo es y si ya la has presentado.</li></ul><p><strong>No se le manda</strong> nada que no esté en esa lista. En concreto, <strong>no</strong> se le envían los archivos de tu casillero, ni tu vocabulario de inglés, ni lo que hay escrito en tus tarjetas de repaso, ni el nombre de tu centro, ni el de tu aula, ni el texto de los apuntes que no tengas abiertos, ni las notas que escribas en cada tema de la oposición, ni los enlaces que guardes a leyes o a las bases, ni las horas que llevas en cada tema, ni de qué temas eran tus fallos.</p><p>Cuando pulsas «Que el profe me pregunte este tema», la app te deja escrita la petición con el número y el título del tema, pero <strong>no la envía</strong>: la mandas tú.</p><h3>En qué se equivoca</h3><p>Se equivoca. No de vez en cuando: forma parte de cómo funcionan estas máquinas.</p><ul><li>Puede <strong>inventarse</strong> datos, fechas, artículos de ley o funciones de un lenguaje de programación, y contártelo con total seguridad.</li><li>Puede estar <strong>desactualizado</strong> sobre el temario, la convocatoria o la normativa de tu ciclo.</li><li>No conoce las normas de tu centro. <strong>Quien decide cómo te evalúan y cuántas faltas te dejan es tu centro, no la app.</strong></li></ul><p>Regla sencilla: si te lo juegas —una fecha de entrega, una fórmula de un examen, un trámite— <strong>compruébalo en la fuente oficial</strong>.</p><h3>Para qué no sirve</h3><ul><li><strong>No es un médico ni un psicólogo.</strong> Si lo estás pasando mal, habla con alguien de verdad. Teléfono de atención a la conducta suicida: <strong>024</strong>. Emergencias: <strong>112</strong>.</li><li><strong>No es un abogado ni un asesor financiero.</strong></li><li><strong>No atiende emergencias</strong> de ningún tipo.</li><li><strong>No es para copiar.</strong> Está para que entiendas y apruebes. Entregar como tuyo lo que te ha escrito una máquina puede ser una falta académica en tu centro, y el responsable de lo que entregues eres tú.</li></ul><h3>De qué no habla</h3><p>El profe está programado para hablar <strong>solo de tus estudios</strong>: tu ciclo, tus asignaturas y tus dudas profesionales. Si le preguntas por su vida, por la tuya o por cualquier otra cosa, te lo dirá y volverá al tema. No es antipatía: es que un profe de verdad tampoco entra ahí.</p><h3>Qué pasa con lo que le cuentas</h3><ul><li>La conversación se guarda <strong>contigo</strong>, igual que tus apuntes, y se borra con ellos desde Ajustes → Datos.</li><li><strong>No se usa para entrenar modelos.</strong></li><li>El proveedor la procesa para generarte una respuesta y la conserva el tiempo que diga su propia política, en los términos del contrato firmado con él.</li></ul><p><mark class=\"lg-falta\">RELLENAR: confirmar el plazo y las condiciones exactas al firmar el contrato de encargado de tratamiento con el proveedor.</mark></p><h3>Si no lo quieres usar</h3><p>El resto de GritNook —notas, faltas, agenda, apuntes, casillero, repaso— funciona sin el profe.</p><p>Puedes apagarlo del todo en <strong>Ajustes → El profe</strong>, quitando la marca de «Usar el profe con inteligencia artificial». Mientras esté apagado <strong>no sale nada</strong> de la aplicación hacia ninguna IA: ni tu nombre, ni tus notas, ni tus apuntes. Lo que le escribas se guarda en tu dispositivo, pero no se envía a nadie. Se vuelve a encender en el mismo sitio.</p>"},{"id":"terminos","nombre":"Términos de uso","resumen":"Las reglas entre tú y GritNook","titulo":"Términos de uso","html":"<p>En vigor desde el 20 de septiembre de 2026.</p><h3>1. Qué es esto</h3><p>Estas son las reglas entre <strong>Gabriel Rodríguez Blanco</strong>, NIF 09215128V («el titular»), y tú, que usas GritNook. Al usar la aplicación las aceptas. Si no estás de acuerdo con alguna, no la uses.</p><p>Van con ellas la <button type=\"button\" class=\"lg-enlace\" data-lg=\"privacidad\">política de privacidad</button>, el <button type=\"button\" class=\"lg-enlace\" data-lg=\"aviso-legal\">aviso legal</button> y el <button type=\"button\" class=\"lg-enlace\" data-lg=\"ia\">aviso sobre la IA</button>.</p><h3>2. Qué hace la aplicación</h3><p>GritNook te ayuda a organizar los estudios: apuntar asignaturas, notas y faltas, ver qué te falta para aprobar, llevar la agenda de entregas y exámenes, tomar apuntes, guardar documentos y estudiar con un profe que funciona con inteligencia artificial.</p><p>Es una herramienta de apoyo. <strong>No sustituye a tu centro, a tu profesorado ni a las normas de tu ciclo.</strong></p><h3>3. Quién puede usarla</h3><p>Hay que tener <strong>14 años cumplidos</strong>. Con menos, hace falta que tu padre, tu madre o tu tutor lo autoricen y la usen contigo.</p><p>Si tienes entre 14 y 18 años puedes usarla, pero al aceptar estos términos estás diciendo que en casa lo saben.</p><h3>4. Cuánto cuesta</h3><p>Hoy la aplicación es <strong>gratuita</strong>. Si en el futuro hay una versión de pago, se avisará con antelación dentro de la app, y lo que ya tengas guardado seguirá siendo tuyo y descargable en cualquier caso.</p><p><mark class=\"lg-falta\">RELLENAR cuando haya cobro: precio, forma de pago, duración, renovación, cancelación y derecho de desistimiento de 14 días.</mark></p><h3>5. Lo que te damos</h3><p>Un permiso personal para usar la aplicación: no exclusivo, no transferible, revocable y solo para estudiar tú. No incluye poder:</p><ul><li>copiar, distribuir o vender el código, ni entero ni a trozos;</li><li>quitar el nombre, el logotipo o los avisos de autoría;</li><li>usarla para montar un servicio parecido;</li><li>entrar por donde no toca, saltarte límites o hacerle ingeniería inversa más allá de lo que la ley permita.</li></ul><p>Las condiciones completas del código están en el <span class=\"lg-ref\">archivo de licencia</span>.</p><h3>6. Lo que escribes es tuyo</h3><p>Tus apuntes, tus notas, tus archivos y tus conversaciones <strong>son tuyos</strong>. El titular no adquiere ningún derecho sobre ellos: solo los guarda donde tú decides y los envía al proveedor de IA cuando le preguntas, porque si no, no podría responderte.</p><p>No se usan para entrenar modelos, ni para publicidad, ni se enseñan a nadie.</p><h3>7. Lo que no puedes subir</h3><p>Ni contenido ilegal, ni material protegido de otros sin permiso, ni datos personales de terceros (fotos de compañeros, exámenes con nombres, informes médicos de nadie), ni nada que pueda dañar la aplicación o a quien la use.</p><p>Tú respondes de lo que subes.</p><h3>8. El profe con inteligencia artificial</h3><p>Léete el <button type=\"button\" class=\"lg-enlace\" data-lg=\"ia\">aviso sobre la IA</button>. En resumen:</p><ul><li>Es una máquina, no una persona.</li><li><strong>Puede equivocarse.</strong> Comprueba siempre las fechas, las fórmulas y cualquier cosa que te juegues.</li><li>No es asesoramiento médico, legal ni financiero, y no atiende emergencias.</li><li>Está para que aprendas y apruebes, no para hacerte los trabajos. Copiar lo que te dé y entregarlo como tuyo puede ser una falta académica en tu centro: eso es cosa tuya y de las normas de tu escuela.</li></ul><h3>9. Que funcione</h3><p>Se hace lo posible para que la aplicación esté disponible y no falle, pero no se promete que esté siempre ni que no tenga errores. Puede haber cortes por mantenimiento, por cambios o porque falle un proveedor.</p><p><strong>Haz copias.</strong> Ajustes → Datos → Descargar copia. Si borras los datos del navegador, cambias de dispositivo o se estropea, sin copia no hay vuelta atrás.</p><h3>10. Hasta cuándo</h3><p>Puedes dejar de usarla cuando quieras: borrando tus datos desde Ajustes o simplemente cerrando la app. El titular puede retirar la aplicación o dejar de prestar el servicio avisando con antelación razonable dentro de la app, para que te dé tiempo a descargarte tus cosas.</p><h3>11. Responsabilidad</h3><p>El titular responde de los daños que cause por dolo o por negligencia grave, y de todo lo que la ley no permita excluir. Fuera de eso, y en la medida en que la ley lo permita, no responde de:</p><ul><li>la pérdida de datos por borrar el navegador, perder el dispositivo o no hacer copias;</li><li>las consecuencias de fiarse de un cálculo o de una respuesta del profe sin comprobarla;</li><li>los fallos de servicios de terceros de los que depende la aplicación.</li></ul><p><strong>Si eres consumidor, nada de esto te quita los derechos que te da la ley.</strong></p><h3>12. Cambios</h3><p>Estos términos se pueden cambiar. Los cambios importantes se avisan dentro de la aplicación antes de que entren en vigor. Seguir usándola después es aceptarlos.</p><h3>13. Ley y conflictos</h3><p>Se aplica la ley española. Si algo se tuerce, escribe primero al correo de contacto: casi todo se arregla así. Si no, los tribunales competentes serán los que diga la ley y, si eres consumidor, los de tu domicilio. También puedes acudir a las juntas arbitrales de consumo.</p>"},{"id":"aviso-legal","nombre":"Aviso legal","resumen":"Quién está detrás de la aplicación","titulo":"Aviso legal","html":"<p>En vigor desde el 20 de septiembre de 2026.</p><h3>Quién está detrás de GritNook</h3><ul><li><strong>Titular:</strong> Gabriel Rodríguez Blanco</li><li><strong>NIF:</strong> 09215128V</li><li><strong>Correo de contacto:</strong> gabriel_gabiz@hotmail.com</li><li><strong>Dirección de la aplicación:</strong> <mark class=\"lg-falta\">RELLENAR: dirección web</mark></li></ul><p>Esta información se publica para cumplir el artículo 10 de la Ley 34/2002, de servicios de la sociedad de la información y de comercio electrónico.</p><p>GritNook se ofrece <strong>gratis y sin actividad comercial</strong>: no se cobra por ella, no hay publicidad y no se vende nada. Por eso aquí no figura una dirección postal. El día que la aplicación pase a ser de pago se publicará también el domicilio del titular, que es lo que exige ese artículo 10 cuando hay actividad económica. Mientras tanto, para cualquier notificación sirve el correo de contacto, que se lee y se responde.</p><h3>Qué es GritNook</h3><p>GritNook es una aplicación web para organizar los estudios: asignaturas, notas, faltas, entregas, apuntes, documentos y un profe con inteligencia artificial que explica y pregunta. Funciona dentro del navegador, sin instalar nada.</p><h3>Condiciones de uso</h3><p>El uso de la aplicación implica aceptar este aviso, los <button type=\"button\" class=\"lg-enlace\" data-lg=\"terminos\">términos de uso</button>, la <button type=\"button\" class=\"lg-enlace\" data-lg=\"privacidad\">política de privacidad</button> y el <button type=\"button\" class=\"lg-enlace\" data-lg=\"ia\">aviso sobre la inteligencia artificial</button>. Quien no esté de acuerdo, que no la use.</p><p>El titular puede cambiar, suspender o retirar la aplicación o cualquiera de sus partes, y modificar estos textos. Los cambios se publican en esta misma dirección con su fecha.</p><h3>De quién es lo que ves</h3><p>El código, el diseño, los textos, el nombre «GritNook» y su logotipo son del titular. Están publicados para poder leerlos y estudiarlos, no para copiarlos: las condiciones están en el <span class=\"lg-ref\">archivo de licencia</span> del repositorio.</p><p>La aplicación incluye piezas de otros autores —tipografías, iconos y la librería que abre los PDF— que mantienen sus propias licencias libres, detalladas en los <span class=\"lg-ref\">créditos</span>.</p><p><strong>Lo que escribe cada persona sigue siendo suyo.</strong> Los apuntes, las notas y los archivos que se suben pertenecen a quien los crea; el titular no se queda con ningún derecho sobre ellos.</p><h3>Responsabilidad</h3><p>El titular pone todo el cuidado razonable en que la aplicación funcione y en que los cálculos de notas y de faltas sean correctos, pero la aplicación se ofrece «tal cual». En concreto:</p><ul><li>Lo que calcula y lo que responde el profe es <strong>orientativo</strong>. Las normas de evaluación y de asistencia las pone cada centro, y son las que mandan.</li><li>No se garantiza que la aplicación esté disponible sin interrupciones ni que esté libre de errores.</li><li>Cada persona es responsable de guardar una copia de sus datos. La aplicación tiene un botón para descargarla en Ajustes → Datos.</li></ul><p>Nada de lo anterior limita los derechos que la ley reconoce a los consumidores.</p><h3>Enlaces a otros sitios</h3><p>Si la aplicación enlaza a páginas de terceros, el titular no responde de su contenido ni de lo que esas páginas hagan con los datos de quien las visite.</p><h3>Ley aplicable</h3><p>Se aplica la ley española. Para cualquier conflicto, las partes se someten a los juzgados que correspondan según la ley; cuando quien usa la aplicación es consumidor, los de su propio domicilio.</p><p>Quien sea consumidor y tenga una queja puede dirigirse antes al correo de contacto y, si no queda resuelta, a las juntas arbitrales de consumo.</p>"}];
 const LEGAL_V = "20 de septiembre de 2026";
 let lgAbierto = null;
 /* la fecha en la que se aceptaron los papeles, escrita en largo */
@@ -7310,12 +7921,7 @@ alEvento("click", async e => {
   const te = t.closest("[data-aj-tema]");
   if (te) { const v = te.dataset.ajTema; if (v === "auto") { document.documentElement.removeAttribute("data-theme"); guardaLS("tema", "auto"); } else { document.documentElement.setAttribute("data-theme", v); guardaLS("tema", v); } pintaBotonTema(); pinta(); return; }
 
-  if (t.closest("#apExportar")) {
-    if (!descargas) { aviso("Las descargas no están disponibles en esta vista.", "mal"); return; }
-    try { await descargas.save({ filename: "gritnook-" + hoyISO() + ".json", data: JSON.stringify(S, null, 2) }); aviso("Copia descargada."); }
-    catch (err) { if (err.code !== "declined") aviso("No se pudo descargar (" + err.code + ").", "mal"); }
-    return;
-  }
+  if (t.closest("#apExportar")) { bajarCopia(); return; }
   if (t.closest("#apImportar")) { $("#apInputImportar").click(); return; }
   if (t.closest("#apBorrarTodo")) {
     if (!(await confirmar("Se borra todo: perfil, " + voc(true) + ", notas, horas, entregas, apuntes, documentos y la conversación.", { titulo: "¿Borrar todos tus datos?", si: "Borrar todo" }))) return;

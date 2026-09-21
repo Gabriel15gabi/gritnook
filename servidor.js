@@ -26,7 +26,7 @@ http.createServer((req, res) => {
   if (!archivo.startsWith(RAIZ)) { res.writeHead(403).end("Prohibido"); return; }
   fs.readFile(archivo, (err, datos) => {
     if (err) { res.writeHead(404, { "Content-Type": "text/plain; charset=utf-8" }).end("No encontrado"); return; }
-    res.writeHead(200, { "Content-Type": TIPOS[path.extname(archivo).toLowerCase()] || "application/octet-stream" });
+    res.writeHead(200, { "Content-Type": TIPOS[path.extname(archivo).toLowerCase()] || "application/octet-stream", "Cache-Control": "no-cache" });
     res.end(datos);
   });
 }).listen(PUERTO, () => console.log("GritNook en http://localhost:" + PUERTO));

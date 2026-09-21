@@ -422,16 +422,21 @@ const SEMILLA_OPO = String.raw`
   O.temas[14].vueltas = [dia(-26)];
   /* lo de hoy, a medias */
   O.temas[20].vueltas.push(dia(0));
+  /* las horas de cada tema, más o menos según las vueltas */
+  O.temas.forEach(t => { t.minutos = t.vueltas.length * entre(3, 6) * 25; });
 
-  O.examen = { fecha: dia(95), preguntas: 100, opciones: 4, penalizacion: null, corte: null, minutos: 90, reserva: 5 };
+  O.examen = { fecha: dia(95), preguntas: 100, opciones: 4, penalizacion: null, corte: null, minutos: 90, reserva: 5, bolas: null };
   O.plan = { vueltas: 3, diasSemana: 6, diasSimulacro: 14 };
-  O.convocatoria = { plazas: 1500, aspirantes: 28000, enlace: "", cortes: [{ anio: 2023, corte: 54.5 }, { anio: 2024, corte: 58.25 }] };
+  O.convocatoria = { plazas: 1500, aspirantes: 28000, enlace: "", cortes: [{ anio: 2023, corte: 54.5 }, { anio: 2024, corte: 58.25 }], plazoFin: dia(12), presentada: false };
 
   /* simulacros completos, mejorando poco a poco */
   O.simulacros = [];
   for (let i = 0; i < 9; i++) {
     const a = 46 + i * 3 + entre(-2, 2), f = 26 - i + entre(-2, 2);
-    O.simulacros.push({ id: uid(), fecha: dia(-60 + i * 7), tipo: "completo", ref: "", preguntas: 100, aciertos: a, fallos: f, minutos: 90 });
+    const s = { id: uid(), fecha: dia(-60 + i * 7), tipo: "completo", ref: "", preguntas: 100, aciertos: a, fallos: f, minutos: entre(78, 90) };
+    /* en los últimos, apuntado de qué temas eran algunos fallos */
+    if (i >= 5) s.fallosTema = { [O.temas[11].id]: entre(1, 3), [O.temas[22].id]: entre(1, 2), [O.temas[entre(26, 31)].id]: 1 };
+    O.simulacros.push(s);
   }
   /* y alguno por tema, de los flojos */
   [[11, 20, 9, 9], [12, 20, 8, 10], [24, 20, 11, 7], [4, 20, 17, 2]].forEach(([i, n, a, f], k) => {
@@ -449,6 +454,12 @@ const SEMILLA_OPO = String.raw`
       S.horas[id][dia(-i)] = entre(2, 6) * 25;
     });
   }
+
+  /* preguntas falladas del tema 12, convertidas en tarjetas */
+  [["¿Plazo máximo para resolver si la norma no dice nada?", "Tres meses"],
+   ["¿Desde cuándo se cuenta el plazo en los procedimientos de oficio?", "Desde la fecha del acuerdo de iniciación"],
+   ["¿Qué pasa si vence el plazo en un procedimiento iniciado a solicitud del interesado?", "Silencio administrativo, estimatorio por regla general"]]
+    .forEach(([p, r]) => { const c = nuevaTarjeta(O.temas[11].modId, p, r); if (c) c.temaId = O.temas[11].id; });
 
   normalizarTutor().chat = [
     { id: uid(), r: "profe", t: "Lucía, vas por la segunda vuelta y el examen es en 95 días. Hoy toca el tema 21 y el 10, que se te está enfriando.", h: dia(0) + "T08:30:00.000Z" }

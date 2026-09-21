@@ -8,9 +8,9 @@ Eso levanta un servidor, abre un navegador sin ventana y escribe el resultado en
 la consola. Devuelve 1 si algo falla, que es lo que mira un servidor de
 integración continua.
 
-**398 pruebas.** Sin ventana pasan 392 y 6 se quedan en pendiente: son las que
+**474 pruebas.** Sin ventana pasan 468 y 6 se quedan en pendiente: son las que
 dibujan un PDF, y sin tarjeta gráfica eso tarda demasiado. Abriendo
-`pruebas/pruebas.html` en un navegador normal pasan las 398.
+`pruebas/pruebas.html` en un navegador normal pasan las 474.
 
 Para verlas con colores y poder pinchar en cada una, abre
 `pruebas/pruebas.html` con la app servida (`node servidor.js` y luego
@@ -80,7 +80,7 @@ repinte la pantalla.
 | `casos-pdf.js` | Vistas previas: la primera página de un PDF de verdad, los extractos de textos y de código, y los dominios de los enlaces |
 | `casos-agenda2.js` | El tablero por dentro: mover entre columnas, cambiar de día, convertir una entrega en examen |
 | `casos-bola.js` | La bola de papel, con reloj falso: que aparezca, que caiga, que no se salga de la pantalla y que entre en la papelera |
-| `casos-oposicion.js` | El modo opositor: penalizaciones, cuántas acertar para el corte, cuándo compensa arriesgar, pegar el índice en cualquier formato, vueltas, temas que se enfrían, el plan y lo que se le cuenta al profe |
+| `casos-oposicion.js` | El modo opositor: penalizaciones, cuántas acertar para el corte, cuándo compensa arriesgar, pegar el índice en cualquier formato, vueltas, temas que se enfrían, el plan, lo que ya llevabas estudiado, el simulacro con reloj, las horas por tema, las bolas del tema a desarrollar, el plazo de la solicitud, el Excel del temario y lo que se le cuenta al profe |
 | `casos-absurdos.js` | **Datos irreales**: notas de 900, faltas negativas, fechas del año 9999, emojis, árabe, textos de diez mil letras, estados de versiones que no existieron |
 
 ## Rellenar la app para verla funcionando
@@ -115,7 +115,7 @@ no puede pasar es que la pantalla se quede en blanco, y de ahí salió justo eso
 
 ## Lo que han encontrado
 
-Nueve fallos de verdad:
+Once fallos de verdad:
 
 1. **Escribir el ciclo a mano dejaba la app inservible.** Los campos escritos solo
    se leían al cambiar de paso, así que el botón «Seguir» no se encendía nunca y
@@ -153,6 +153,15 @@ Nueve fallos de verdad:
    pendientes y 17 vueltas en dos semanas, 17 / (17 / 14) da
    14,000000000000002 días, y redondeando hacia arriba eran 15. Ahora se
    multiplica antes de dividir.
+10. **Las ventanas arrastraban el `oninput` de la anterior.** `abrirDlg()`
+    limpiaba los clics, los cambios y las teclas, pero no lo que se escribe.
+    Después de abrir «Pegar el índice», escribir en cualquier otra ventana
+    buscaba un cuadro de texto que ya no existía y saltaba un error.
+11. **Cada vez que se leía la oposición, los temas se cambiaban por copias.**
+    Con la ficha de un tema abierta, bastaba que algo repintara la pantalla —una
+    sincronización desde el móvil— para que lo que apuntaras en la ficha se
+    guardara en un objeto que ya no estaba en el estado, y se perdiera. Ahora se
+    arregla en el sitio, sin copiar.
 
 Y en la página de datos de prueba: si le dabas a rellenar dos veces, la segunda
 copia de seguridad guardaba los datos falsos encima de los tuyos y «Devolver» te

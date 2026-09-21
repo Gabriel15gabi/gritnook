@@ -2,7 +2,7 @@
    Las letras y los iconos viajan dentro de la app. La página va primero a la red, para que las versiones nuevas lleguen en
    cuanto las hay, y tira de la copia guardada si no hay conexión. Los iconos
    y la tipografía, al revés: primero la copia, que no cambian. */
-const CACHE = "gritnook-v2";
+const CACHE = "gritnook-v3";
 const BASE = ["./", "index.html", "manifest.webmanifest", "iconos/icono-192.png", "iconos/icono-512.png",
   "fuentes/inter-latin-300-normal.woff2", "fuentes/inter-latin-400-normal.woff2",
   "fuentes/inter-latin-500-normal.woff2", "fuentes/inter-latin-600-normal.woff2"];
@@ -22,7 +22,10 @@ self.addEventListener("fetch", e => {
   const guardable = url.origin === location.origin;   /* las letras van dentro de la app: no se pide nada a Google */
   if (!guardable) return;
   if (r.mode === "navigate") {
-    e.respondWith(fetch(r)
+    /* «no-cache» no quiere decir sin caché: le pregunta al servidor si hay algo
+       nuevo antes de usar lo guardado. GitHub Pages da las páginas por buenas
+       diez minutos, y sin esto una versión nueva podía tardar eso en llegar */
+    e.respondWith(fetch(r.url, { cache: "no-cache", credentials: "same-origin" })
       .then(res => { const copia = res.clone(); caches.open(CACHE).then(c => c.put("index.html", copia)); return res; })
       .catch(() => caches.match("index.html")));
     return;
