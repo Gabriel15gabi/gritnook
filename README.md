@@ -104,6 +104,10 @@ El mismo archivo corre en dos sitios con capacidades distintas:
 
 La versión pública es para verla y probarla. La de Claude usa sus capacidades de sincronización e IA, que solo existen cuando la página se abre desde allí; el código detecta si están disponibles y, si no, esconde o explica lo que no puede funcionar en vez de fallar.
 
+## Dársela a alguien para que la pruebe
+
+[PROBARLA.md](PROBARLA.md) es la página para pasarle a quien vaya a probarla: qué es, cómo instalarla en el móvil, dónde se guardan sus datos y qué mirar. Los fallos se cuentan desde **Ajustes → Datos → Contar un fallo**, que copia el navegador y la versión sin llevarse nada personal.
+
 ## Pruebas
 
 ```bash
