@@ -8,9 +8,9 @@ Eso levanta un servidor, abre un navegador sin ventana y escribe el resultado en
 la consola. Devuelve 1 si algo falla, que es lo que mira un servidor de
 integración continua.
 
-**497 pruebas.** Sin ventana pasan 491 y 6 se quedan en pendiente: son las que
+**527 pruebas.** Sin ventana pasan 521 y 6 se quedan en pendiente: son las que
 dibujan un PDF, y sin tarjeta gráfica eso tarda demasiado. Abriendo
-`pruebas/pruebas.html` en un navegador normal pasan las 497.
+`pruebas/pruebas.html` en un navegador normal pasan las 527.
 
 Para verlas con colores y poder pinchar en cada una, abre
 `pruebas/pruebas.html` con la app servida (`node servidor.js` y luego
@@ -82,6 +82,7 @@ repinte la pantalla.
 | `casos-bola.js` | La bola de papel, con reloj falso: que aparezca, que caiga, que no se salga de la pantalla y que entre en la papelera |
 | `casos-oposicion.js` | El modo opositor: penalizaciones, cuántas acertar para el corte, cuándo compensa arriesgar, pegar el índice en cualquier formato, vueltas, temas que se enfrían, el plan, lo que ya llevabas estudiado, el simulacro con reloj, las horas por tema, las bolas del tema a desarrollar, el plazo de la solicitud, el Excel del temario y lo que se le cuenta al profe |
 | `casos-listo.js` | Dos pestañas abiertas a la vez, el archivo del calendario (.ics) con sus avisos y sus líneas de 75 octetos, el recordatorio de las copias y qué lleva —y qué no— el informe de fallos |
+| `casos-inicio.js` | El Inicio en piezas: mil disposiciones al azar sin que nada quede encima de nada, arrastrar y estirar con eventos de puntero de verdad, el teclado, ocultar y volver a mostrar, el orden propio del móvil, medir el Inicio la primera vez y volver al original |
 | `casos-absurdos.js` | **Datos irreales**: notas de 900, faltas negativas, fechas del año 9999, emojis, árabe, textos de diez mil letras, estados de versiones que no existieron |
 
 ## Rellenar la app para verla funcionando

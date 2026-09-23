@@ -1800,6 +1800,51 @@ dialog.dlg-legal::backdrop{background:rgba(0,0,0,.45)}
 .opo-check{align-self:end; min-height:40px}
 .opo-pie-temario{margin-top:14px}
 .opc{font-weight:400; color:var(--ink-4); margin-left:4px}
+/* ── el Inicio en piezas ── */
+.inicio-libre{container-type:inline-size; position:relative}
+.il-editar{margin-top:12px}
+.il-rejilla{display:grid; grid-template-columns:repeat(12, minmax(0,1fr)); grid-auto-rows:8px; column-gap:16px; position:relative}
+.il-w{grid-column:var(--x) / span var(--w); grid-row:var(--y) / span var(--h); display:flex; flex-direction:column; min-width:0; position:relative}
+.il-w > .panel{flex:1 1 auto; min-height:0; margin:0 0 16px; overflow:auto}
+/* editando: los paneles no se tocan por dentro, se mueven */
+.inicio-libre.editando .il-w > .panel{pointer-events:none; user-select:none; outline:2px dashed var(--acento-borde); outline-offset:-1px; opacity:.9}
+.inicio-libre.editando .il-w:hover > .panel{outline-color:var(--acento)}
+.il-barra{position:sticky; top:8px; z-index:8; margin-bottom:14px}
+.il-barra .banda{box-shadow:0 6px 24px rgba(0,0,0,.18), inset 0 0 0 1px var(--acento-borde); background:var(--surface)}
+.il-ctrl{position:absolute; top:15px; left:17px; right:14px; z-index:3; display:flex; align-items:center; gap:6px; pointer-events:none}
+/* el nombre arrastrable ocupa el sitio del título, que se esconde para no leerse doble */
+.inicio-libre.editando .il-w > .panel > .panel-cab{visibility:hidden}
+.il-ctrl > *{pointer-events:auto}
+.il-grip{display:inline-flex; align-items:center; gap:8px; max-width:100%; padding:6px 12px 6px 9px; border-radius:999px; cursor:grab; touch-action:none;
+  border:1px solid var(--acento-borde); background:var(--acento-suave); color:var(--acento-txt); font:600 12.5px/1.2 var(--sans);
+  overflow:hidden; text-overflow:ellipsis; white-space:nowrap}
+.il-grip:active{cursor:grabbing}
+.il-grip:focus-visible{outline:2px solid var(--acento); outline-offset:2px}
+.il-puntos{font-size:15px; line-height:1; opacity:.8}
+.il-flechas{display:none; gap:4px}
+.il-flechas .icono-btn, .il-quitar{width:30px; height:30px; background:var(--surface); border:1px solid var(--line-2); font:600 14px/1 var(--sans); color:var(--ink-2)}
+.il-quitar{margin-left:auto}
+.il-quitar .i{width:14px; height:14px}
+.il-estirar{position:absolute; right:4px; bottom:20px; z-index:3; width:24px; height:24px; cursor:nwse-resize; touch-action:none; border-radius:6px;
+  background:linear-gradient(135deg, transparent 50%, var(--acento) 50%, var(--acento) 58%, transparent 58%, transparent 68%, var(--acento) 68%, var(--acento) 76%, transparent 76%)}
+.il-estirar:hover{background-color:var(--acento-suave)}
+.il-hueco{grid-column:var(--x) / span var(--w); grid-row:var(--y) / span var(--h); margin-bottom:16px; border-radius:var(--r-l);
+  border:2px dashed var(--acento); background:color-mix(in srgb, var(--acento) 8%, transparent); pointer-events:none}
+.il-w.arrastrando{z-index:6; cursor:grabbing}
+.il-w.arrastrando > .panel{box-shadow:0 18px 48px rgba(0,0,0,.28); opacity:.96}
+.il-w.estirando > .panel{outline-color:var(--acento)}
+body.il-activo{user-select:none; cursor:grabbing}
+.il-ocultos{display:flex; flex-wrap:wrap; align-items:center; gap:8px; margin-top:4px}
+/* estrecho: uno debajo de otro, en el orden de lectura; se suben, se bajan y se ocultan */
+@container (max-width:640px){
+  .il-rejilla{display:flex; flex-direction:column}
+  .il-w{order:var(--o)}
+  .il-w > .panel{flex:none; overflow:visible}
+  .il-flechas{display:inline-flex}
+  .il-estirar{display:none}
+  .il-grip{cursor:default; touch-action:auto}
+  .il-puntos{display:none}
+}
 .cf-info{margin:0; padding:12px 14px; border-radius:var(--r-m); background:var(--surface-2); color:var(--ink-2);
   font:400 12px/1.55 var(--mono, ui-monospace, monospace); white-space:pre-wrap; word-break:break-word; max-height:180px; overflow:auto}
 .sel-tema{margin-top:8px}
@@ -2028,7 +2073,7 @@ function estadoInicial() {
       id: uid(), cod: m.cod, nombre: m.nombre, color: m.color, horas: m.horas,
       faltas: 0, objetivo: 5, metaSemanal: Math.max(1, Math.round(m.horas / 32 / 2)), pesos: PESOS_DEF()
     })),
-    tareas: [], vocab: [], horas: {}, apuntes: {}, casillero: {}, objetivos: OBJ_DEF(), tutor: tutorDef(), perfil: perfilDef(),
+    tareas: [], vocab: [], horas: {}, apuntes: {}, casillero: {}, objetivos: OBJ_DEF(), tutor: tutorDef(), perfil: perfilDef(), inicio: null,
     examenes: [], horario: [], tarjetas: [], progreso: [], opo: OPO_DEF()
   };
 }
@@ -2039,7 +2084,7 @@ let seccion = "escritorio", apunteActivo = null, filtroApuntes = "";
    Mismas claves y mismos documentos que la versión anterior: rediseñar no
    puede costar ni un apunte de lo que ya estuviera guardado. */
 const DOCS = { ajustes: ["config", "modulos"], agenda: ["tareas", "examenes"], ingles: ["vocab"], horas: ["horas"], objetivos: ["objetivos"],
-  tutor: ["tutor"], perfil: ["perfil"], horario: ["horario"], repaso: ["tarjetas"], progreso: ["progreso"], oposicion: ["opo"] };
+  tutor: ["tutor"], perfil: ["perfil"], horario: ["horario"], repaso: ["tarjetas"], progreso: ["progreso"], oposicion: ["opo"], inicio: ["inicio"] };
 let db = null, sample = null, sampleReal = null, descargas = null, almacen = null;
 /* el interruptor del profe: apagado, la app no manda nada a ninguna IA.
    sampleReal guarda la conexión de verdad; sample es la que usa la app. */
@@ -3627,25 +3672,12 @@ function vistaEscritorio() {
   const calc = S.modulos.map(m => ({ m, c: calcModulo(m) }));
   const enRiesgo = calc.filter(x => x.c.est === "riesgo").length;
 
-  return `
-  <header class="cab">
-    <div>
-      <div class="eyebrow">${mayus(ahora.toLocaleDateString("es-ES", { weekday: "long", day: "numeric", month: "long" }))}</div>
-      <h1 class="titulo">${saludo}<em>.</em></h1>
-    </div>
-    <div class="cab-datos">
-      <div class="cab-dato"><span class="cifra">${racha()}</span><span class="meta">Días seguidos</span></div>
-      <div class="cab-dato"><span class="cifra">${pendientesTot}</span><span class="meta">Entregas pendientes</span></div>
-      <div class="cab-dato"><span class="cifra">${enRiesgo}</span><span class="meta">${esc(voc(true, true))} en riesgo</span></div>
-    </div>
-  </header>
-
-  ${bandaCopia()}
-  ${esOpositor() ? opoTarjetaInicio() : ""}
-  <div class="rejilla-12">
-    ${panelObjetivos()}
-    ${panelHoy()}
-    <section class="panel c-5" aria-labelledby="tSesion">
+  /* cada panel, suelto: el Inicio los pone donde siempre o donde tú los hayas dejado */
+  const W = {
+    oposicion: esOpositor() ? opoTarjetaInicio() : "",
+    objetivos: panelObjetivos(),
+    hoy: panelHoy(),
+    sesion: `<section class="panel c-5" aria-labelledby="tSesion">
       <div class="panel-cab"><h2 class="etq" id="tSesion">Sesión de estudio</h2><span class="fase" id="faseTimer">Concentración</span></div>
       <select id="selTimer" aria-label="Módulo que vas a estudiar">
         <option value="">Elige un módulo…</option>
@@ -3661,9 +3693,8 @@ function vistaEscritorio() {
         <button class="btn" id="btnReset">Reiniciar</button>
         <button class="btn fantasma" id="btnManual">${icono("mas")}30 min a mano</button>
       </div>
-    </section>
-
-    <section class="panel c-7" aria-labelledby="tSemana">
+    </section>`,
+    semana: `<section class="panel c-7" aria-labelledby="tSemana">
       <div class="panel-cab"><h2 class="etq" id="tSemana">Esta semana</h2>
         <span class="meta num">${meta ? Math.round(semana / meta * 100) : 0} % de lo previsto</span></div>
       <div style="display:flex; align-items:baseline; gap:12px; flex-wrap:wrap">
@@ -3674,10 +3705,8 @@ function vistaEscritorio() {
         ${dias.map(x => `<span class="dia${x.min ? "" : " sin"}" title="${mayus(x.d.toLocaleDateString("es-ES", { weekday: "long", day: "numeric", month: "short" }))}: ${x.min ? horasTxt(x.min) : "sin estudiar"}"><i style="height:${x.min ? Math.max(6, x.min / maxDia * 100) : 3}%"></i></span>`).join("")}
       </div>
       <div class="dias-eje"><span>Hace 14 días</span><span>Hoy</span></div>
-    </section>
-
-    <div class="c-7 pila">
-      <section class="panel" aria-labelledby="tProx">
+    </section>`,
+    proximo: `<section class="panel" aria-labelledby="tProx">
         <div class="panel-cab"><h2 class="etq" id="tProx">Lo próximo que vence</h2>
           <button class="btn mini fantasma" data-ir="entregas">Ver entregas</button></div>
         ${proximas.length ? `<div class="lista">${proximas.map(t => {
@@ -3689,15 +3718,13 @@ function vistaEscritorio() {
             <span class="fecha">${t.fecha}</span>
             <span class="estado ${cl}"><span class="dot"></span>${txt}</span></div>`;
         }).join("")}</div>` : `<p class="vacio">Nada pendiente apuntado. Añade tus entregas en la sección Entregas.</p>`}
-      </section>
-      <section class="panel" aria-labelledby="tNota">
+      </section>`,
+    nota: `<section class="panel" aria-labelledby="tNota">
         <div class="panel-cab"><h2 class="etq" id="tNota">Nota rápida</h2><span class="meta">Se guarda sola</span></div>
         <textarea class="nota-rapida" id="postit" aria-labelledby="tNota" placeholder="Algo que no se te puede olvidar…">${esc(S.config.postit || "")}</textarea>
-      </section>
-    </div>
-
-    <section class="panel c-5" aria-labelledby="tMods">
-      <div class="panel-cab"><h2 class="etq" id="tMods">Estado de los módulos</h2>
+      </section>`,
+    modulos: `<section class="panel c-5" aria-labelledby="tMods">
+      <div class="panel-cab"><h2 class="etq" id="tMods">Estado de ${esc(vocArt(true))}</h2>
         <button class="btn mini fantasma" data-ir="modulos">Ver todos</button></div>
       <div class="lista">${calc.map(({ m, c }) => `
         <button class="fila fila-boton" data-ir="modulos">
@@ -3706,8 +3733,24 @@ function vistaEscritorio() {
           <span class="num meta">${c.media === null ? "—" : nota(c.media)}</span>
           ${estadoHTML(c)}
         </button>`).join("")}</div>
-    </section>
-  </div>`;
+    </section>`
+  };
+  return `
+  <header class="cab">
+    <div>
+      <div class="eyebrow">${mayus(ahora.toLocaleDateString("es-ES", { weekday: "long", day: "numeric", month: "long" }))}</div>
+      <h1 class="titulo">${saludo}<em>.</em></h1>
+      ${ilEditando ? "" : `<button type="button" class="btn mini fantasma il-editar" id="ilEditar">${icono("escritorio")}Editar Inicio</button>`}
+    </div>
+    <div class="cab-datos">
+      <div class="cab-dato"><span class="cifra">${racha()}</span><span class="meta">Días seguidos</span></div>
+      <div class="cab-dato"><span class="cifra">${pendientesTot}</span><span class="meta">Entregas pendientes</span></div>
+      <div class="cab-dato"><span class="cifra">${enRiesgo}</span><span class="meta">${esc(voc(true, true))} en riesgo</span></div>
+    </div>
+  </header>
+
+  ${bandaCopia()}
+  ${inicioHTML(W)}`;
 }
 
 /* ── módulos, de un vistazo ──
@@ -6245,9 +6288,385 @@ alEvento("click", async e => {
 });
 
 
+/* ══════════════════ el Inicio, a tu manera ══════════════════
+   Cada panel del Inicio es una pieza que se puede mover a cualquier sitio,
+   estirar por la esquina y ocultar. No es posición libre en píxeles, que se
+   rompe al cambiar de pantalla: es una rejilla de 12 columnas y filas de 8 px,
+   la misma idea que las pantallas de widgets del móvil. Así una pieza nunca
+   se monta encima de otra y el mismo Inicio vale en un portátil y en un
+   monitor grande.
+
+   Mientras no toques nada, el Inicio es el de siempre. La primera vez que le
+   das a «Editar Inicio», se mide cómo está ahora y se parte de ahí, así que
+   nada salta de sitio. En pantallas estrechas las piezas van una debajo de
+   otra en el mismo orden de lectura: arrastrar en dos dimensiones con el dedo
+   en 390 px choca con el scroll, así que ahí se suben, se bajan y se ocultan. */
+
+const IL_COLS = 12, IL_FILA = 8, IL_HUECO = 16, IL_ESTRECHO = 640;
+
+/* las piezas: su nombre, lo mínimo para que se lean y su tamaño de partida */
+const WIDGETS = {
+  oposicion: { nombre: "Tu oposición",          minW: 5, minH: 16, w: 12, h: 30, vale: () => esOpositor() },
+  objetivos: { nombre: "Objetivos de hoy",      minW: 4, minH: 14, w: 12, h: 30 },
+  hoy:       { nombre: "Hoy",                   minW: 4, minH: 14, w: 12, h: 34 },
+  sesion:    { nombre: "Sesión de estudio",     minW: 3, minH: 24, w: 5,  h: 38 },
+  semana:    { nombre: "Esta semana",           minW: 3, minH: 20, w: 7,  h: 38 },
+  proximo:   { nombre: "Lo próximo que vence",  minW: 3, minH: 12, w: 7,  h: 36 },
+  nota:      { nombre: "Nota rápida",           minW: 2, minH: 12, w: 7,  h: 22 },
+  modulos:   { nombre: "Estado de las asignaturas", minW: 3, minH: 14, w: 5, h: 44, titulo: () => "Estado de " + vocArt(true) }
+};
+const nombreWidget = id => WIDGETS[id] ? (WIDGETS[id].titulo ? WIDGETS[id].titulo() : WIDGETS[id].nombre) : id;
+const widgetVale = id => !!WIDGETS[id] && (!WIDGETS[id].vale || WIDGETS[id].vale());
+
+let ilEditando = false;
+
+/* ── las cuentas de la rejilla ── */
+const chocan = (a, b) => a.x < b.x + b.w && b.x < a.x + a.w && a.y < b.y + b.h && b.y < a.y + a.h;
+
+/* que una pieza no se salga de la rejilla ni baje de su tamaño mínimo */
+function limitarWidget(it) {
+  const d = WIDGETS[it.id] || { minW: 2, minH: 8 };
+  it.w = clamp(Math.round(num(it.w, d.w || 6)), d.minW, IL_COLS);
+  it.h = clamp(Math.round(num(it.h, d.h || 20)), d.minH, 400);
+  it.x = clamp(Math.round(num(it.x, 0)), 0, IL_COLS - it.w);
+  it.y = clamp(Math.round(num(it.y, 0)), 0, 4000);
+  return it;
+}
+
+/* Nada puede quedar encima de nada. La pieza que mueves se queda donde la
+   dejas y las demás se apartan hacia abajo, lo justo. Si la llevas hacia
+   abajo y pasa por encima de otra, esa otra sube a ocupar su hueco, como al
+   ordenar las apps del móvil. Nunca se sube nada más: los huecos que dejes
+   son tuyos, para eso es libre. */
+function colocar(lista, fijo) {
+  const vivas = lista.filter(i => !i.oculto);
+  const otras = vivas.filter(i => i !== fijo).sort((a, b) => a.y - b.y || a.x - b.x);
+  const puestas = fijo ? [fijo] : [];
+  for (const it of otras) {
+    let vueltas = 0;
+    while (puestas.some(p => chocan(p, it)) && vueltas++ < 400) {
+      if (fijo && chocan(fijo, it) && it.y < fijo.y) {
+        const arriba = fijo.y - it.h;
+        if (arriba >= 0 && !puestas.some(p => chocan(p, Object.assign({}, it, { y: arriba })))) { it.y = arriba; break; }
+      }
+      it.y = Math.max(...puestas.filter(p => chocan(p, it)).map(p => p.y + p.h));
+    }
+    puestas.push(it);
+  }
+  return lista;
+}
+/* «juntar huecos»: cada pieza sube todo lo que pueda sin cambiar el orden */
+function juntar(lista) {
+  const puestas = [];
+  lista.filter(i => !i.oculto).sort((a, b) => a.y - b.y || a.x - b.x).forEach(it => {
+    while (it.y > 0 && !puestas.some(p => chocan(p, Object.assign({}, it, { y: it.y - 1 })))) it.y--;
+    puestas.push(it);
+  });
+  return lista;
+}
+/* el orden en que se leen: de arriba abajo y, en la misma altura, de izquierda a derecha */
+const ordenLectura = lista => lista.filter(i => !i.oculto && widgetVale(i.id)).sort((a, b) => a.y - b.y || a.x - b.x).map(i => i.id);
+
+function moverWidget(lista, id, x, y) {
+  const it = lista.find(i => i.id === id); if (!it) return lista;
+  it.x = x; it.y = y; limitarWidget(it);
+  return colocar(lista, it);
+}
+function estirarWidget(lista, id, w, h) {
+  const it = lista.find(i => i.id === id); if (!it) return lista;
+  it.w = w; it.h = h; limitarWidget(it);
+  if (it.x + it.w > IL_COLS) it.x = IL_COLS - it.w;
+  return colocar(lista, it);
+}
+/* El móvil lleva su propio orden. Subir un panel intercambiando sitios en
+   la rejilla del ordenador no funciona: si dos paneles comparten fila allí,
+   bajar uno le hacía saltar dos puestos. Así, lo que ordenes en el móvil no
+   descoloca el ordenador; y mientras no ordenes nada, el móvil sigue el
+   orden de lectura del ordenador. */
+function ordenMovil(lista) {
+  const vivos = ordenLectura(lista), propio = S.inicio && Array.isArray(S.inicio.orden) ? S.inicio.orden : null;
+  if (!propio) return vivos;
+  return propio.filter(id => vivos.includes(id)).concat(vivos.filter(id => !propio.includes(id)));
+}
+function moverEnOrden(orden, id, paso) {
+  const o = orden.slice(), i = o.indexOf(id), j = i + (paso < 0 ? -1 : 1);
+  if (i < 0 || j < 0 || j >= o.length) return o;
+  [o[i], o[j]] = [o[j], o[i]];
+  return o;
+}
+function moverEnMovil(id, paso) {
+  if (!S.inicio) return;
+  S.inicio.orden = moverEnOrden(ordenMovil(listaInicio()), id, paso);
+  guardar("inicio");
+}
+
+/* el Inicio de siempre, en piezas: lo mismo que pinta la rejilla de 12 */
+function layoutPorDefecto() {
+  const L = [];
+  let y = 0;
+  const pon = (id, x, w, h) => { L.push({ id, x, y, w, h }); return h; };
+  if (esOpositor()) y += pon("oposicion", 0, 12, WIDGETS.oposicion.h);
+  y += pon("objetivos", 0, 12, WIDGETS.objetivos.h);
+  y += pon("hoy", 0, 12, WIDGETS.hoy.h);
+  y += Math.max(pon("sesion", 0, 5, WIDGETS.sesion.h), (L.push({ id: "semana", x: 5, y, w: 7, h: WIDGETS.semana.h }), WIDGETS.semana.h));
+  const alto = pon("proximo", 0, 7, WIDGETS.proximo.h);
+  L.push({ id: "nota", x: 0, y: y + alto, w: 7, h: WIDGETS.nota.h });
+  L.push({ id: "modulos", x: 7, y, w: 5, h: WIDGETS.modulos.h });
+  return L;
+}
+
+/* lo guardado, de otra versión o de una copia a medias, se deja con su forma */
+function normalizarInicio() {
+  const I = S.inicio;
+  if (!I || typeof I !== "object" || Array.isArray(I) || !Array.isArray(I.lg)) { S.inicio = null; return null; }
+  const ya = new Set();
+  I.lg = I.lg.filter(i => i && typeof i === "object" && WIDGETS[i.id] && !ya.has(i.id) && ya.add(i.id))
+    .map(i => limitarWidget({ id: i.id, x: i.x, y: i.y, w: i.w, h: i.h }));
+  I.ocultos = Array.isArray(I.ocultos) ? [...new Set(I.ocultos.filter(id => WIDGETS[id]))] : [];
+  I.orden = Array.isArray(I.orden) ? [...new Set(I.orden.filter(id => WIDGETS[id]))] : null;
+  /* las piezas que no estaban (una nueva, o la oposición si ahora opositas), al final */
+  let fondo = I.lg.reduce((m, i) => Math.max(m, i.y + i.h), 0);
+  Object.keys(WIDGETS).forEach(id => {
+    if (ya.has(id)) return;
+    const d = WIDGETS[id]; I.lg.push({ id, x: 0, y: fondo, w: d.w, h: d.h }); fondo += d.h;
+  });
+  I.lg.forEach(i => { i.oculto = I.ocultos.includes(i.id) || !widgetVale(i.id); });
+  colocar(I.lg, null);
+  I.lg.forEach(i => delete i.oculto);
+  return I;
+}
+/* la lista con la marca de oculto, que es con lo que trabajan las cuentas */
+function listaInicio() {
+  const I = normalizarInicio(); if (!I) return null;
+  return I.lg.map(i => Object.assign({}, i, { oculto: I.ocultos.includes(i.id) || !widgetVale(i.id) }));
+}
+function guardarLista(lista) {
+  if (!S.inicio) S.inicio = { lg: [], ocultos: [] };
+  S.inicio.lg = lista.map(i => ({ id: i.id, x: i.x, y: i.y, w: i.w, h: i.h }));
+  guardar("inicio");
+}
+
+/* La primera vez que editas: se mide el Inicio tal y como se ve, para que
+   nada cambie de sitio. En una pantalla estrecha todo está en una columna y
+   medirlo daría un Inicio de una columna para el ordenador: ahí se parte del
+   de siempre. */
+function medirInicio() {
+  const cont = $("#inicioLibre");
+  if (!cont || !cont.querySelector(".rejilla-12")) return null;
+  const c = cont.getBoundingClientRect();
+  if (c.width < IL_ESTRECHO) return null;
+  const paso = (c.width - (IL_COLS - 1) * IL_HUECO) / IL_COLS + IL_HUECO;
+  const lista = [];
+  cont.querySelectorAll("[data-widget]").forEach(el => {
+    const r = el.getBoundingClientRect(), id = el.dataset.widget;
+    if (!WIDGETS[id] || !r.width) return;
+    lista.push(limitarWidget({ id,
+      x: Math.round((r.left - c.left) / paso), w: Math.round((r.width + IL_HUECO) / paso),
+      y: Math.round((r.top - c.top) / IL_FILA), h: Math.ceil((r.height + IL_HUECO) / IL_FILA) }));
+  });
+  return lista.length ? colocar(lista, null) : null;
+}
+function empezarAEditar() {
+  if (!S.inicio) {
+    const medido = medirInicio() || layoutPorDefecto();
+    S.inicio = { lg: medido.map(i => ({ id: i.id, x: i.x, y: i.y, w: i.w, h: i.h })), ocultos: [] };
+    normalizarInicio();
+    guardar("inicio");
+  }
+  ilEditando = true;
+}
+function volverAlOriginal() { S.inicio = null; ilEditando = false; guardar("inicio"); }
+
+/* ── pintarlo ── */
+const marcarWidget = (id, html) => html ? html.replace(/^(\s*<\w+)/, `$1 data-widget="${id}"`) : "";
+const ilEstrecho = () => { const c = $("#inicioLibre"); return !!c && c.getBoundingClientRect().width < IL_ESTRECHO; };
+
+function inicioHTML(W) {
+  const lista = listaInicio();
+  /* sin tocar: el Inicio de siempre, con cada pieza marcada para poder medirla */
+  if (!lista && !ilEditando) return `<div class="inicio-libre" id="inicioLibre">
+    ${marcarWidget("oposicion", W.oposicion)}
+    <div class="rejilla-12">
+      ${marcarWidget("objetivos", W.objetivos)}${marcarWidget("hoy", W.hoy)}${marcarWidget("sesion", W.sesion)}${marcarWidget("semana", W.semana)}
+      <div class="c-7 pila">${marcarWidget("proximo", W.proximo)}${marcarWidget("nota", W.nota)}</div>
+      ${marcarWidget("modulos", W.modulos)}
+    </div>
+  </div>`;
+  const L = lista || listaInicio() || [];
+  const orden = ordenMovil(L), estrecho = ilEstrecho();
+  const vivas = L.filter(i => !i.oculto);
+  const ocultas = L.filter(i => i.oculto && widgetVale(i.id));
+  const ctrl = it => `<div class="il-ctrl">
+      <button type="button" class="il-grip" data-il-grip="${it.id}"
+        aria-label="Mover ${esc(nombreWidget(it.id))}. Con las flechas se mueve; con Mayúsculas y las flechas, cambia de tamaño">
+        <span class="il-puntos" aria-hidden="true">⠿</span>${esc(nombreWidget(it.id))}</button>
+      <span class="il-flechas">
+        <button type="button" class="icono-btn" data-il-subir="${it.id}" aria-label="Subir ${esc(nombreWidget(it.id))}">↑</button>
+        <button type="button" class="icono-btn" data-il-bajar="${it.id}" aria-label="Bajar ${esc(nombreWidget(it.id))}">↓</button>
+      </span>
+      <button type="button" class="icono-btn il-quitar" data-il-ocultar="${it.id}" aria-label="Ocultar ${esc(nombreWidget(it.id))}" title="Ocultar">${icono("cerrar")}</button>
+    </div>
+    <span class="il-estirar" data-il-estirar="${it.id}" role="presentation" title="Arrastra para cambiar el tamaño; doble clic para ajustarlo a lo que tiene dentro"></span>`;
+  return `<div class="inicio-libre${ilEditando ? " editando" : ""}" id="inicioLibre">
+    ${ilEditando ? `<div class="il-barra">${banda("escritorio", estrecho
+      ? "Estás ordenando el Inicio del móvil: sube, baja u oculta cada panel. Para ponerlos en cualquier sitio y estirarlos, edítalo desde el ordenador."
+      : "Estás editando el Inicio: arrastra cada panel por su nombre y estíralo por la esquina de abajo.",
+      `${estrecho ? "" : `<button type="button" class="btn mini fantasma" id="ilJuntar">Juntar huecos</button>`}
+       <button type="button" class="btn mini fantasma" id="ilOriginal">Volver al original</button>
+       <button type="button" class="btn mini primario" id="ilListo">Listo</button>`)}
+      <span class="oculto" id="ilVoz" aria-live="polite"></span></div>` : ""}
+    <div class="il-rejilla">
+      ${vivas.map(it => `<div class="il-w" data-w="${it.id}" style="--x:${it.x + 1};--w:${it.w};--y:${it.y + 1};--h:${it.h};--o:${orden.indexOf(it.id)}">
+        ${ilEditando ? ctrl(it) : ""}${W[it.id] || ""}</div>`).join("")}
+    </div>
+    ${ilEditando && ocultas.length ? `<div class="il-ocultos"><span class="meta">Ocultos:</span>
+      ${ocultas.map(it => `<button type="button" class="btn mini" data-il-mostrar="${it.id}">${icono("mas")}${esc(nombreWidget(it.id))}</button>`).join("")}</div>` : ""}
+  </div>`;
+}
+
+/* ── arrastrar y estirar ──
+   Mientras arrastras, la pieza sigue al dedo o al ratón y un recuadro marca
+   dónde va a caer; las demás se apartan en directo. Al soltar se guarda. Las
+   cuentas se hacen siempre desde cómo estaba al empezar, para que no se
+   acumulen errores de redondeo por el camino. */
+let IL = null;
+function ilPosiciones(lista, salvo) {
+  lista.forEach(it => {
+    const el = document.querySelector(`.il-w[data-w="${it.id}"]`);
+    if (!el || it.id === salvo) return;
+    el.style.setProperty("--x", it.x + 1); el.style.setProperty("--y", it.y + 1);
+    el.style.setProperty("--w", it.w); el.style.setProperty("--h", it.h);
+  });
+}
+function ilEmpezar(e, id, modo) {
+  const rej = $(".il-rejilla"), el = document.querySelector(`.il-w[data-w="${id}"]`);
+  if (!rej || !el || ilEstrecho()) return false;
+  const r = rej.getBoundingClientRect();
+  const base = listaInicio();
+  IL = { id, modo, px: e.clientX, py: e.clientY, paso: (r.width - (IL_COLS - 1) * IL_HUECO) / IL_COLS + IL_HUECO,
+    base, lista: base, el, scrollY0: window.scrollY };
+  const b = base.find(i => i.id === id);
+  const hueco = document.createElement("div");
+  hueco.className = "il-hueco"; hueco.setAttribute("aria-hidden", "true");
+  hueco.style.cssText = `--x:${b.x + 1};--w:${b.w};--y:${b.y + 1};--h:${b.h}`;
+  rej.append(hueco); IL.hueco = hueco;
+  el.classList.add(modo === "mover" ? "arrastrando" : "estirando");
+  document.body.classList.add("il-activo");
+  try { e.target.setPointerCapture(e.pointerId); } catch (x) {}
+  return true;
+}
+function ilMover(e) {
+  if (!IL) return;
+  const dx = e.clientX - IL.px, dy = e.clientY - IL.py + (window.scrollY - IL.scrollY0);
+  const lista = IL.base.map(i => Object.assign({}, i)), it = lista.find(i => i.id === IL.id), b = IL.base.find(i => i.id === IL.id);
+  if (IL.modo === "mover") { it.x = b.x + Math.round(dx / IL.paso); it.y = b.y + Math.round(dy / IL_FILA); }
+  else { it.w = b.w + Math.round(dx / IL.paso); it.h = b.h + Math.round(dy / IL_FILA); }
+  limitarWidget(it);
+  if (it.x + it.w > IL_COLS) it.x = IL_COLS - it.w;
+  colocar(lista, it);
+  IL.lista = lista;
+  ilPosiciones(lista, IL.modo === "mover" ? IL.id : null);
+  IL.hueco.style.cssText = `--x:${it.x + 1};--w:${it.w};--y:${it.y + 1};--h:${it.h}`;
+  if (IL.modo === "mover") IL.el.style.transform = `translate(${e.clientX - IL.px}px, ${dy}px)`;
+  /* cerca del borde de la ventana, la página se desplaza sola */
+  const borde = 70;
+  if (e.clientY > innerHeight - borde) window.scrollBy(0, 14);
+  else if (e.clientY < borde) window.scrollBy(0, -14);
+}
+function ilSoltar() {
+  if (!IL) return;
+  const lista = IL.lista, id = IL.id;
+  IL.el.style.transform = "";
+  IL.el.classList.remove("arrastrando", "estirando");
+  if (IL.hueco) IL.hueco.remove();
+  document.body.classList.remove("il-activo");
+  IL = null;
+  guardarLista(lista); pinta();
+  const g = document.querySelector(`[data-il-grip="${id}"]`); if (g) g.focus({ preventScroll: true });
+}
+/* doble clic en la esquina: que mida justo lo que tiene dentro */
+function ajustarAlContenido(id) {
+  const el = document.querySelector(`.il-w[data-w="${id}"] > .panel`); if (!el) return;
+  const alto = el.scrollHeight;
+  const lista = listaInicio(), it = lista.find(i => i.id === id); if (!it) return;
+  estirarWidget(lista, id, it.w, Math.ceil((alto + IL_HUECO) / IL_FILA));
+  guardarLista(lista); pinta();
+}
+/* lo que se oye con lector de pantalla al mover con el teclado */
+function ilDecir(id) {
+  const v = $("#ilVoz"), it = (listaInicio() || []).find(i => i.id === id);
+  if (v && it) v.textContent = nombreWidget(id) + ": columna " + (it.x + 1) + ", " + it.w + " de ancho, " + Math.round(it.h * IL_FILA) + " píxeles de alto.";
+}
+
+let ilEraEstrecho = null, ilTRes = 0;
+alEvento("resize", () => {
+  clearTimeout(ilTRes);
+  ilTRes = setTimeout(() => {
+    if (!ilEditando || seccion !== "escritorio" || IL) return;
+    const e = ilEstrecho();
+    if (ilEraEstrecho !== null && e !== ilEraEstrecho) pinta();
+    ilEraEstrecho = e;
+  }, 200);
+}, window);
+alEvento("pointerdown", e => {
+  if (!ilEditando || seccion !== "escritorio" || e.button > 0) return;
+  const g = e.target.closest("[data-il-grip]"), s = e.target.closest("[data-il-estirar]");
+  if (!g && !s) return;
+  if (ilEmpezar(e, g ? g.dataset.ilGrip : s.dataset.ilEstirar, g ? "mover" : "estirar")) e.preventDefault();
+});
+alEvento("pointermove", e => { if (IL) ilMover(e); });
+alEvento("pointerup", () => { if (IL) ilSoltar(); });
+alEvento("pointercancel", () => { if (IL) ilSoltar(); });
+alEvento("dblclick", e => { const s = ilEditando && e.target.closest("[data-il-estirar]"); if (s) ajustarAlContenido(s.dataset.ilEstirar); });
+alEvento("keydown", e => {
+  const g = ilEditando && e.target.closest && e.target.closest("[data-il-grip]");
+  if (!g || !["ArrowLeft", "ArrowRight", "ArrowUp", "ArrowDown"].includes(e.key)) return;
+  e.preventDefault();
+  const id = g.dataset.ilGrip, lista = listaInicio(), it = lista.find(i => i.id === id); if (!it) return;
+  const dx = e.key === "ArrowLeft" ? -1 : e.key === "ArrowRight" ? 1 : 0, dy = e.key === "ArrowUp" ? -4 : e.key === "ArrowDown" ? 4 : 0;
+  if (e.shiftKey) estirarWidget(lista, id, it.w + dx, it.h + dy);
+  else if (ilEstrecho() && dy) { moverEnMovil(id, dy); pinta(); const g3 = document.querySelector(`[data-il-grip="${id}"]`); if (g3) g3.focus({ preventScroll: true }); return; }
+  else moverWidget(lista, id, it.x + dx, it.y + dy);
+  guardarLista(lista); pinta();
+  const g2 = document.querySelector(`[data-il-grip="${id}"]`); if (g2) g2.focus({ preventScroll: true });
+  ilDecir(id);
+});
+alEvento("click", async e => {
+  const t = e.target;
+  if (t.closest("#ilEditar")) { empezarAEditar(); pinta(); return; }
+  if (!ilEditando) return;
+  if (t.closest("#ilListo")) { ilEditando = false; pinta(); aviso("Inicio guardado."); return; }
+  if (t.closest("#ilJuntar")) { const l = listaInicio(); juntar(l); guardarLista(l); pinta(); return; }
+  if (t.closest("#ilOriginal")) {
+    if (!(await confirmar("Los paneles vuelven a su sitio y a su tamaño de siempre, y se ven todos.", { titulo: "¿Volver al Inicio original?", si: "Volver al original", peligro: false }))) return;
+    volverAlOriginal(); pinta(); aviso("Inicio como al principio."); return;
+  }
+  const sub = t.closest("[data-il-subir], [data-il-bajar]");
+  if (sub) {
+    const id = sub.dataset.ilSubir || sub.dataset.ilBajar, dir = sub.dataset.ilSubir ? -1 : 1;
+    moverEnMovil(id, dir); pinta();
+    const b = document.querySelector(`[data-il-${dir < 0 ? "subir" : "bajar"}="${id}"]`); if (b) b.focus({ preventScroll: true });
+    return;
+  }
+  const oc = t.closest("[data-il-ocultar]");
+  if (oc) { S.inicio.ocultos = [...new Set(S.inicio.ocultos.concat(oc.dataset.ilOcultar))]; guardar("inicio"); pinta(); return; }
+  const mo = t.closest("[data-il-mostrar]");
+  if (mo) {
+    const id = mo.dataset.ilMostrar;
+    S.inicio.ocultos = S.inicio.ocultos.filter(x => x !== id);
+    /* vuelve abajo del todo, donde se ve y no empuja nada */
+    const l = listaInicio(), it = l.find(i => i.id === id);
+    if (it) { it.oculto = false; it.y = l.filter(i => !i.oculto && i !== it).reduce((m, i) => Math.max(m, i.y + i.h), 0); colocar(l, it); guardarLista(l); }
+    else guardar("inicio");
+    pinta(); return;
+  }
+});
+
+
 /* ══════════════════ pintado ══════════════════ */
 function pinta() {
   if (BV) { pintaEntrada(); return; }
+  if (seccion !== "escritorio") ilEditando = false;
   if (seccion === "oposicion" && !esOpositor()) seccion = "escritorio";
   evaluarObjetivos();
   pintaNav();

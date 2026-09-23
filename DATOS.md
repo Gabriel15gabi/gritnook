@@ -27,7 +27,7 @@ dirección**, no tiene publicidad, no hay analítica y no hay cookies de tercero
 | Inglés | Vocabulario propio: palabra, traducción y cuándo toca repasarla | El alumno |
 | Objetivos del día | Los objetivos y si están cumplidos | El alumno y la app |
 | Tutor | **La conversación entera** con el profe, los archivos y capturas que se le pasen, los temas trabajados y los repasos que pone | El alumno |
-| Ajustes | Tema claro u oscuro, preferencias de la libreta, minutos del cronómetro y cómo debe tratarle el tutor | El alumno |
+| Ajustes | Tema claro u oscuro, preferencias de la libreta, minutos del cronómetro, cómo debe tratarle el tutor y, si lo has cambiado, cómo tienes colocado el Inicio (dónde va cada panel, su tamaño, cuáles se ven y en qué orden en el móvil) | El alumno |
 | De la propia app | La fecha de la última copia de seguridad, qué avisos ya se han visto y los últimos 20 fallos que haya dado la app (con su mensaje y dónde pasó) | La app |
 | Oposición (solo si opositas) | El temario (número, título y bloque de cada tema, sus vueltas con fecha, si está dominado, su dificultad, los minutos estudiados, tus notas y un enlace a la ley), las reglas del examen (fecha, preguntas, opciones, penalización, corte, minutos, preguntas de reserva y bolas si hay tema a desarrollar), el plan de vueltas, los simulacros (fecha, de qué, preguntas, aciertos, fallos, minutos y, si lo apuntas, de qué temas eran los fallos), el simulacro con reloj que esté en marcha (hora de inicio y de entrega) y la convocatoria (plazas, aspirantes, enlace a las bases, cortes de otros años, fin del plazo de solicitud y si ya la has presentado). Las tarjetas de repaso que crees desde un tema llevan apuntado de qué tema son | El opositor |
 

@@ -58,6 +58,8 @@ Quien ya tenía datos no pasa por ahí: el perfil se rellena con lo que había y
 
 **Menú.** En el ordenador, un riel con cada sección y su nombre, siempre en el mismo sitio, y al lado un panel con lo que hay dentro de la sección en la que estás: tus apuntes con buscador, lo pendiente de la agenda agrupado por fechas, tus asignaturas con su estado… En el móvil, una barra de pestañas abajo y un «Más» con el resto de secciones y su dato al día. Las confirmaciones (borrar algo, cargar una copia) son ventanas de la propia app, nunca las del navegador.
 
+**Un Inicio a tu manera.** Con *Editar Inicio*, cada panel se arrastra por su nombre a cualquier sitio y se estira por la esquina, como los widgets del móvil; los que no uses se ocultan. Por debajo es una rejilla de 12 columnas, así que nunca queda un panel encima de otro y el mismo Inicio vale en un portátil y en un monitor grande. En el móvil los paneles van uno debajo de otro, con su propio orden. También con el teclado: flechas para mover y Mayúsculas con flechas para el tamaño. Mientras no toques nada, el Inicio es el de siempre.
+
 **Ajustes.** Perfil, asignaturas con su color, plantilla de evaluación, cronómetro, el tutor —con un interruptor para apagarlo del todo, y entonces no sale nada hacia ninguna IA—, tema, copia de seguridad en JSON y los cuatro documentos legales, que se leen dentro de la app.
 
 ## Cómo está hecho
@@ -114,7 +116,7 @@ La versión pública es para verla y probarla. La de Claude usa sus capacidades 
 node pruebas/correr.js
 ```
 
-497 pruebas que corren **dentro de la app de verdad**, cargada en un iframe, sin
+527 pruebas que corren **dentro de la app de verdad**, cargada en un iframe, sin
 instalar nada. Cubren las cuentas de las notas, entender las fechas escritas a
 mano, el sanitizador, el estado, la libreta, el repaso espaciado, la pantalla de
 bienvenida entera y el modo opositor y una tanda de datos absurdos a propósito. El cómo y lo que han encontrado, en [pruebas/](pruebas/LEEME.md).
