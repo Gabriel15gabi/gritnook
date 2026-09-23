@@ -105,7 +105,7 @@ qué país y con qué contrato. Habría que rehacer `legal/` y `DATOS.md`.
 - [x] Capturas nuevas para el README.
 - [ ] `gh auth login` y subir el repositorio como `gritnook` (lo hace Gabriel).
 - [ ] Activar GitHub Pages en *Settings → Pages*, rama `main`, carpeta raíz.
-- [ ] Poner la dirección publicada en `legal/AVISO-LEGAL.md`, donde pone
+- [x] Poner la dirección publicada en `legal/AVISO-LEGAL.md`, donde pone
       «dirección web», y volver a pasar `legal/generar.js`.
 - [ ] Crear el proyecto de Supabase en región europea y pasar la URL y la clave
       `anon`: los pasos están en [backend/LEEME.md](backend/LEEME.md).
