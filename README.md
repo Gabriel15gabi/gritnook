@@ -4,7 +4,7 @@ App de estudio que se acomoda a lo que estudies: le dices si vas a la ESO, a Bac
 
 **[Probarla en vivo →](https://gabriel15gabi.github.io/gritnook/)**
 
-La versión pública funciona entera y no pide registrarse: todo se guarda en tu propio navegador. **No lleva el profe con inteligencia artificial ni la sincronización entre dispositivos**, porque esas dos cosas son capacidades de Claude y solo existen abriéndola desde allí.
+La versión pública funciona entera y no pide registrarse: todo se guarda en tu propio navegador y no sale de él. **El profe con inteligencia artificial está hecho y probado, pero sale apagado** hasta tener los papeles del proveedor de IA: un solo interruptor en el código (`PROFE_ACTIVO`) lo esconde de todas las pantallas y corta cualquier envío a la IA. Cómo encenderlo, en [CUENTAS.md](CUENTAS.md#encender-el-profe). Tampoco hay sincronización entre dispositivos: de momento, cada uno guarda lo suyo en su navegador.
 
 ![GritNook](capturas/escritorio.png)
 
@@ -116,7 +116,7 @@ La versión pública es para verla y probarla. La de Claude usa sus capacidades 
 node pruebas/correr.js
 ```
 
-527 pruebas que corren **dentro de la app de verdad**, cargada en un iframe, sin
+545 pruebas que corren **dentro de la app de verdad**, cargada en un iframe, sin
 instalar nada. Cubren las cuentas de las notas, entender las fechas escritas a
 mano, el sanitizador, el estado, la libreta, el repaso espaciado, la pantalla de
 bienvenida entera y el modo opositor y una tanda de datos absurdos a propósito. El cómo y lo que han encontrado, en [pruebas/](pruebas/LEEME.md).

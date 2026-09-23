@@ -114,8 +114,16 @@ grupo("Entrada: la puerta de los 14 años", () => {
       const enlaces = [...document.querySelectorAll("#entrada [data-lg-dlg]")].map(b => b.dataset.lgDlg);
       esperar(enlaces).contiene("terminos");
       esperar(enlaces).contiene("privacidad");
-      esperar(enlaces).contiene("ia");
+      esperar(enlaces).contiene("aviso-legal");
+      /* el de cómo funciona el profe, solo si hay profe */
+      esperar(enlaces).noContiene("ia");
     });
+  });
+  prueba("con el profe encendido, también se enlaza cómo funciona", async () => {
+    await conProfe(() => enLaEntrada(6, "ciclo-sup", async () => {
+      const enlaces = [...document.querySelectorAll("#entrada [data-lg-dlg]")].map(b => b.dataset.lgDlg);
+      esperar(enlaces).contiene("ia");
+    }));
   });
 });
 

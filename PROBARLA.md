@@ -13,6 +13,11 @@ tu temario. **No hay que registrarse ni dar el correo**: se abre y ya está.
 
 Entra en la dirección que te haya pasado. Va en el móvil y en el ordenador.
 
+**Si te ha llegado por Instagram, ábrela en tu navegador.** Instagram abre los
+enlaces por dentro, y ahí no se puede instalar y lo que guardes puede perderse:
+toca los tres puntos de arriba y elige *Abrir en el navegador*. La propia app te
+lo recuerda.
+
 **En el móvil, instálala.** Menú del navegador → *Añadir a pantalla de inicio*.
 Se abre como una app, funciona sin conexión y ocupa nada.
 
@@ -25,9 +30,6 @@ Se abre como una app, funciona sin conexión y ocupa nada.
 hay cuentas, no hay publicidad y no se envía nada a nadie. Eso tiene una pega:
 si borras los datos del navegador, se van. Hay copia de seguridad en
 **Ajustes → Datos → Descargar copia**.
-
-En la versión pública **no está el profe con inteligencia artificial**: esa
-parte solo funciona dentro de Claude.
 
 ## Qué me vendría bien que mires
 

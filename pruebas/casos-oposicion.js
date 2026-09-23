@@ -998,7 +998,7 @@ grupo("Oposición: tarjetas y profe desde un tema", () => {
     });
   });
   prueba("«que el profe me pregunte» deja la pregunta escrita, sin mandarla", () => {
-    conEstado(() => {
+    conEstado(() => conProfe(() => {
       const antes = seccion;
       try {
         opositorDePrueba();
@@ -1009,11 +1009,11 @@ grupo("Oposición: tarjetas y profe desde un tema", () => {
         esperar($("#chatTexto").value).contiene("El Gobierno y la Administración");
         esperar(tutorVivo).nulo();
       } finally { tutorBorrador = ""; const ta = $("#chatTexto"); if (ta) ta.value = ""; seccion = antes; pinta(); }
-    });
+    }));
   });
   /* este lo encontró la prueba a mano: al cerrarse la ficha la app repinta, y
      el cuadro del chat se volvía a dibujar vacío */
-  prueba("desde la ficha, la pregunta llega al chat aunque la pantalla se repinte al cerrarla", async () => {
+  prueba("desde la ficha, la pregunta llega al chat aunque la pantalla se repinte al cerrarla", () => conProfe(async () => {
     const copia = JSON.parse(JSON.stringify(S)), antes = seccion;
     try {
       opositorDePrueba();
@@ -1030,7 +1030,7 @@ grupo("Oposición: tarjetas y profe desde un tema", () => {
       const d = $("#dlg"); if (d.open) d.close();
       S = JSON.parse(JSON.stringify(copia)); seccion = antes; pinta();
     }
-  });
+  }));
   prueba("abrir otra ventana después de pegar el índice ya no arrastra su «oninput»", () => {
     conEstado(() => {
       try {

@@ -82,6 +82,18 @@ function esperar(valor) {
 
 /* Los tests tocan S. Esto lo devuelve como estaba, pase lo que pase,
    para que un test no le estropee el siguiente. */
+/* El profe sale apagado. Sus pruebas lo encienden solo mientras duran, para
+   que su código siga funcionando el día que se saque. Vale para pruebas async. */
+function conProfe(fn) {
+  const antes = PROFE_ACTIVO;
+  PROFE_ACTIVO = true;
+  let r;
+  try { r = fn(); } catch (e) { PROFE_ACTIVO = antes; throw e; }
+  if (r && typeof r.then === "function") return r.finally(() => { PROFE_ACTIVO = antes; });
+  PROFE_ACTIVO = antes;
+  return r;
+}
+
 function conEstado(fn) {
   const antes = JSON.parse(JSON.stringify(S));
   try { return fn(); } finally { S = JSON.parse(JSON.stringify(antes)); }

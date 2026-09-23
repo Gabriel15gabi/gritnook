@@ -44,6 +44,10 @@ nacimiento, datos de pago, ubicación ni ningún identificador publicitario.
 
 ## 3. Qué sale de la aplicación
 
+- **El profe con IA está apagado por ahora** (un interruptor en el código,
+  `PROFE_ACTIVO`). Mientras lo esté, **no se envía nada a ninguna IA**, tampoco
+  abriendo la app desde Claude, y no aparece en ninguna pantalla. Lo que sigue
+  describe lo que se enviaría el día que se encienda.
 - **Al usar el tutor** se envía a Anthropic, para poder responder: el nombre o
   apodo, el curso y las asignaturas, las notas y el riesgo de cada una, las
   entregas pendientes, los títulos de los apuntes, los últimos mensajes de la

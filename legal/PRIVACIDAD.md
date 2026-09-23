@@ -7,9 +7,10 @@ En vigor desde el 20 de septiembre de 2026.
 GritNook **no pide correo, ni contraseña, ni teléfono, ni datos de pago**. Lo que
 escribes —tus asignaturas, tus notas, tus apuntes y tus archivos— se guarda en tu
 propio navegador y, si abres la app desde Claude, en tu cuenta de Claude. **No hay
-publicidad, no hay analítica y no se vende nada a nadie.** Lo único que sale fuera
-es lo que hace falta para que el profe pueda responderte. Puedes descargarte todo
-o borrarlo entero cuando quieras, desde Ajustes → Datos.
+publicidad, no hay analítica y no se vende nada a nadie.** El profe con
+inteligencia artificial está **apagado por ahora**, así que la app no envía nada a
+ninguna IA: lo que escribes no sale de tu dispositivo. Puedes descargarte todo o
+borrarlo entero cuando quieras, desde Ajustes → Datos.
 
 ## 1. Quién responde de tus datos
 
@@ -75,7 +76,7 @@ ande justo de espacio.
 
 | Quién | Qué ve | Dónde está |
 |---|---|---|
-| Anthropic (proveedor del profe con IA) | Solo lo que se le envía en cada pregunta. El detalle exacto, campo por campo, está en cómo funciona el profe: en resumen, tu nombre o apodo, tu curso, tus asignaturas con sus notas, tus entregas y exámenes, tu horario, los títulos de tus apuntes, el contenido del que tengas abierto, los últimos mensajes y los archivos que adjuntes | Estados Unidos |
+| Anthropic (proveedor del profe con IA) | **Ahora mismo, nada: el profe está apagado.** Cuando se encienda, solo lo que se le envíe en cada pregunta. El detalle exacto, campo por campo, está en cómo funciona el profe: en resumen, tu nombre o apodo, tu curso, tus asignaturas con sus notas, tus entregas y exámenes, tu horario, los títulos de tus apuntes, el contenido del que tengas abierto, los últimos mensajes y los archivos que adjuntes | Estados Unidos |
 | Anthropic (almacenamiento de Claude), solo si abres la app desde allí | Tus datos sincronizados y tus archivos del casillero | Estados Unidos |
 | GitHub Pages (GitHub, Inc.) | Solo sirve los archivos de la app. Como cualquier servidor web, registra la dirección IP y el navegador de quien la abre, por seguridad. **No recibe ninguno de tus datos de estudio** | Estados Unidos |
 
@@ -92,6 +93,9 @@ Solo se entregarían a jueces, fuerzas de seguridad o administraciones si una le
 lo obligara.
 
 ## 6. Datos que salen de la Unión Europea
+
+**Mientras el profe esté apagado, no sale ningún dato tuyo hacia ninguna IA.** Lo
+que sigue es lo que pasará cuando se encienda.
 
 El profe con IA se procesa en Estados Unidos. Esa transferencia está amparada en
 las **cláusulas contractuales tipo** aprobadas por la Comisión Europea y, en su

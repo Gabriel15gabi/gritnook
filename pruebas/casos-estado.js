@@ -160,12 +160,19 @@ grupo("El interruptor de la IA", () => {
   });
 
   prueba("el aviso habla según dónde estés", () => {
-    conEstado(() => {
+    conEstado(() => conProfe(() => {
       S.config.ia = false;
       esperar(avisoIA()).contiene("apagado");
       S.config.ia = true;
       /* en los tests no hay Claude, así que toca el texto de la versión pública */
       esperar(avisoIA()).contiene("Esta versión");
+    }));
+  });
+  prueba("con el profe apagado, el aviso no lo nombra", () => {
+    conEstado(() => {
+      S.config.ia = true;
+      esperar(avisoIA()).noContiene("profe");
+      esperar(avisoIA("Las tarjetas a mano funcionan igual.")).contiene("Las tarjetas a mano");
     });
   });
 });

@@ -84,6 +84,31 @@ Esto no cambia el plan de publicarla gratis: la capa gratuita de Supabase cuesta
 0 €. Lo que sí cambia es la responsabilidad, porque pasas a guardar tú los datos
 de otra gente. Está todo apuntado en [backend/LEEME.md](backend/LEEME.md).
 
+## Encender el profe
+
+GritNook sale **sin el profe**. Su código está entero y probado; lo esconde un
+solo interruptor al principio de la app:
+
+```js
+let PROFE_ACTIVO = false;
+```
+
+Apagado, el profe no aparece en ninguna pantalla (menú, bienvenida, Ajustes,
+apuntes, casillero, repaso, oposición) y no se envía nada a ninguna IA, ni
+abriendo la app desde Claude. Las pruebas de `pruebas/casos-sinprofe.js` fallan
+si alguna pantalla lo nombra, y las del profe lo encienden solo mientras duran,
+para que su código siga funcionando.
+
+Antes de ponerlo a `true`:
+
+- [ ] Contrato de encargado de tratamiento con el proveedor de IA y mecanismo de
+      transferencia a Estados Unidos (los dos huecos de `legal/IA.md` y
+      `legal/PRIVACIDAD.md`).
+- [ ] Quitar de `legal/PRIVACIDAD.md` y de `DATOS.md` las frases que dicen que el
+      profe está apagado, y volver a pasar `legal/generar.js`.
+- [ ] Decidir quién paga el uso: fuera de Claude hace falta lo de la sección de
+      abajo.
+
 ## Y si hiciera falta el profe fuera de Claude
 
 Solo tendría sentido con suscripción, nunca con pago único. Haría falta:

@@ -275,3 +275,36 @@ grupo("Cómo habla la app", () => {
     });
   });
 });
+
+grupo("Abierta desde Instagram", () => {
+  const UA = {
+    instaIOS: "Mozilla/5.0 (iPhone; CPU iPhone OS 17_5 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Mobile/15E148 Instagram 330.0.0.40.92 (iPhone15,3; iOS 17_5; es_ES; es; scale=3.00; 1290x2796; 590426347)",
+    instaAndroid: "Mozilla/5.0 (Linux; Android 14; SM-S918B Build/UP1A.231005.007; wv) AppleWebKit/537.36 (KHTML, like Gecko) Version/4.0 Chrome/126.0.6478.71 Mobile Safari/537.36 Instagram 330.0.0.40.92 Android",
+    facebook: "Mozilla/5.0 (iPhone; CPU iPhone OS 17_5 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Mobile/15E148 [FBAN/FBIOS;FBAV/470.0.0.43.109;FBBV/612345678;FBDV/iPhone15,3;FBMD/iPhone;FBSN/iOS;FBSV/17.5]",
+    tiktok: "Mozilla/5.0 (Linux; Android 13; SM-A536B Build/TP1A.220624.014; wv) AppleWebKit/537.36 (KHTML, like Gecko) Version/4.0 Chrome/124.0 Mobile Safari/537.36 musical_ly_2023405030 JsSdk/1.0 NetType/WIFI Channel/googleplay AppName/musical_ly BytedanceWebview/d8a21c6",
+    safari: "Mozilla/5.0 (iPhone; CPU iPhone OS 17_5 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/17.5 Mobile/15E148 Safari/604.1",
+    chrome: "Mozilla/5.0 (Linux; Android 14; SM-S918B) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/126.0.0.0 Mobile Safari/537.36"
+  };
+  prueba("reconoce el navegador de dentro de Instagram, Facebook y TikTok", () => {
+    esperar(navegadorDeApp(UA.instaIOS)).igualA("Instagram");
+    esperar(navegadorDeApp(UA.instaAndroid)).igualA("Instagram");
+    esperar(navegadorDeApp(UA.facebook)).igualA("Facebook");
+    esperar(navegadorDeApp(UA.tiktok)).igualA("TikTok");
+  });
+  prueba("en Safari o en Chrome normales no dice nada", () => {
+    esperar(navegadorDeApp(UA.safari)).igualA("");
+    esperar(navegadorDeApp(UA.chrome)).igualA("");
+    esperar(bandaDeApp(UA.safari)).igualA("");
+  });
+  prueba("el aviso trae el enlace para copiar, y «Entendido» lo quita", () => {
+    const antes = appEntendido;
+    try {
+      appEntendido = false;
+      const b = bandaDeApp(UA.instaIOS);
+      esperar(b).contiene("Estás dentro de Instagram");
+      esperar(b).contiene("appCopiar");
+      appEntendido = true;
+      esperar(bandaDeApp(UA.instaIOS)).igualA("");
+    } finally { appEntendido = antes; }
+  });
+});
