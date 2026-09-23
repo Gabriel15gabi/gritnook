@@ -100,7 +100,7 @@ El mismo archivo corre en dos sitios con capacidades distintas:
 | | GitHub Pages | Dentro de Claude |
 |---|---|---|
 | Apuntes, libreta, notas, horas, entregas, ajustes | Sí | Sí |
-| Dónde se guarda | En ese navegador | En tu cuenta, sincronizado entre dispositivos |
+| Dónde se guarda | En tu cuenta de GritNook (correo y contraseña), sincronizado entre dispositivos y también sin conexión | En tu cuenta de Claude, sincronizado entre dispositivos |
 | Tutor, lista de asignaturas por IA, tarjetas y tests del tutor, traductor | No | Sí |
 | Instalable y sin conexión | Sí | No |
 
@@ -116,16 +116,19 @@ La versión pública es para verla y probarla. La de Claude usa sus capacidades 
 node pruebas/correr.js
 ```
 
-545 pruebas que corren **dentro de la app de verdad**, cargada en un iframe, sin
+573 pruebas que corren **dentro de la app de verdad**, cargada en un iframe, sin
 instalar nada. Cubren las cuentas de las notas, entender las fechas escritas a
 mano, el sanitizador, el estado, la libreta, el repaso espaciado, la pantalla de
-bienvenida entera y el modo opositor y una tanda de datos absurdos a propósito. El cómo y lo que han encontrado, en [pruebas/](pruebas/LEEME.md).
+bienvenida entera, el modo opositor, las cuentas contra un servidor de mentira y una tanda de datos absurdos a propósito. Las reglas de la base de datos, aparte, contra un Postgres de verdad. El cómo y lo que han encontrado, en [pruebas/](pruebas/LEEME.md).
 
 ## Base de datos
 
-Hoy todo vive en el navegador de cada uno. El paso a PostgreSQL con cuentas de
-usuario está escrito y listo en [backend/](backend/LEEME.md): el esquema, las
-reglas de seguridad por usuario y qué cambia al guardar datos de otra gente.
+Cuentas de usuario con **Supabase** (PostgreSQL, en Frankfurt): cada uno entra con
+su correo y su contraseña, y la base de datos solo le deja leer y escribir lo
+suyo (Row Level Security). El creador tiene un panel con cuántos la usan y cuánto,
+sin ver el contenido de nadie. Todo en [backend/](backend/LEEME.md): el SQL, sus
+pruebas y qué cambia al guardar datos de otra gente. Sin configurar, la app
+funciona como antes, cada navegador con lo suyo.
 
 ## El plan
 

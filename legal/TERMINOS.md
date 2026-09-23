@@ -1,6 +1,6 @@
 # Términos de uso
 
-En vigor desde el 20 de septiembre de 2026.
+En vigor desde el 23 de septiembre de 2026.
 
 ## 1. Qué es esto
 
@@ -29,7 +29,18 @@ o tu tutor lo autoricen y la usen contigo.
 Si tienes entre 14 y 18 años puedes usarla, pero al aceptar estos términos estás
 diciendo que en casa lo saben.
 
-## 4. Cuánto cuesta
+## 4. Tu cuenta
+
+- Una cuenta es de **una sola persona**. Usa un correo tuyo y una contraseña que
+  no uses en otro sitio, y no se la dejes a nadie.
+- Tú respondes de lo que se haga con tu cuenta. Si crees que alguien ha entrado
+  en ella, cambia la contraseña y escribe al correo de contacto.
+- Puedes borrarla cuando quieras desde Ajustes → Datos → Borrar mi cuenta.
+- El titular puede suspender o borrar una cuenta que se use para romper estos
+  términos (por ejemplo, para subir contenido ilegal o para atacar la
+  aplicación), avisándote antes salvo que haya un motivo grave.
+
+## 5. Cuánto cuesta
 
 Hoy la aplicación es **gratuita**. Si en el futuro hay una versión de pago, se
 avisará con antelación dentro de la app, y lo que ya tengas guardado seguirá
@@ -38,7 +49,7 @@ siendo tuyo y descargable en cualquier caso.
 [RELLENAR cuando haya cobro: precio, forma de pago, duración, renovación,
 cancelación y derecho de desistimiento de 14 días.]
 
-## 5. Lo que te damos
+## 6. Lo que te damos
 
 Un permiso personal para usar la aplicación: no exclusivo, no transferible,
 revocable y solo para estudiar tú. No incluye poder:
@@ -51,7 +62,7 @@ revocable y solo para estudiar tú. No incluye poder:
 
 Las condiciones completas del código están en el [archivo de licencia](../LICENSE).
 
-## 6. Lo que escribes es tuyo
+## 7. Lo que escribes es tuyo
 
 Tus apuntes, tus notas, tus archivos y tus conversaciones **son tuyos**. El titular
 no adquiere ningún derecho sobre ellos: solo los guarda donde tú decides y los
@@ -59,7 +70,7 @@ envía al proveedor de IA cuando le preguntas, porque si no, no podría responde
 
 No se usan para entrenar modelos, ni para publicidad, ni se enseñan a nadie.
 
-## 7. Lo que no puedes subir
+## 8. Lo que no puedes subir
 
 Ni contenido ilegal, ni material protegido de otros sin permiso, ni datos
 personales de terceros (fotos de compañeros, exámenes con nombres, informes
@@ -67,7 +78,7 @@ médicos de nadie), ni nada que pueda dañar la aplicación o a quien la use.
 
 Tú respondes de lo que subes.
 
-## 8. El profe con inteligencia artificial
+## 9. El profe con inteligencia artificial
 
 Léete el [aviso sobre la IA](IA.md). En resumen:
 
@@ -79,7 +90,7 @@ Léete el [aviso sobre la IA](IA.md). En resumen:
   te dé y entregarlo como tuyo puede ser una falta académica en tu centro: eso es
   cosa tuya y de las normas de tu escuela.
 
-## 9. Que funcione
+## 10. Que funcione
 
 Se hace lo posible para que la aplicación esté disponible y no falle, pero no se
 promete que esté siempre ni que no tenga errores. Puede haber cortes por
@@ -88,14 +99,14 @@ mantenimiento, por cambios o porque falle un proveedor.
 **Haz copias.** Ajustes → Datos → Descargar copia. Si borras los datos del
 navegador, cambias de dispositivo o se estropea, sin copia no hay vuelta atrás.
 
-## 10. Hasta cuándo
+## 11. Hasta cuándo
 
-Puedes dejar de usarla cuando quieras: borrando tus datos desde Ajustes o
-simplemente cerrando la app. El titular puede retirar la aplicación o dejar de
+Puedes dejar de usarla cuando quieras: borrando tu cuenta desde Ajustes → Datos
+o simplemente dejando de entrar. El titular puede retirar la aplicación o dejar de
 prestar el servicio avisando con antelación razonable dentro de la app, para que
 te dé tiempo a descargarte tus cosas.
 
-## 11. Responsabilidad
+## 12. Responsabilidad
 
 El titular responde de los daños que cause por dolo o por negligencia grave, y de
 todo lo que la ley no permita excluir. Fuera de eso, y en la medida en que la ley
@@ -109,12 +120,12 @@ lo permita, no responde de:
 
 **Si eres consumidor, nada de esto te quita los derechos que te da la ley.**
 
-## 12. Cambios
+## 13. Cambios
 
 Estos términos se pueden cambiar. Los cambios importantes se avisan dentro de la
 aplicación antes de que entren en vigor. Seguir usándola después es aceptarlos.
 
-## 13. Ley y conflictos
+## 14. Ley y conflictos
 
 Se aplica la ley española. Si algo se tuerce, escribe primero al correo de
 contacto: casi todo se arregla así. Si no, los tribunales competentes serán los

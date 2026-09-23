@@ -1,3 +1,8 @@
+-- ⚠ NO LO EJECUTES EN SUPABASE. Es un borrador de un diseño relacional
+--   (una tabla por cosa) que no usa la app. Choca con el que sí vale,
+--   ../supabase.sql: los dos crean una tabla «documentos» distinta.
+--   Se queda aquí como idea para más adelante.
+
 -- ════════════════════════════════════════════════════════════════════
 --  GritNook · base de datos
 --  PostgreSQL (Supabase). Se pega entero en el editor SQL y se ejecuta.

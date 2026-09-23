@@ -8,9 +8,12 @@ Eso levanta un servidor, abre un navegador sin ventana y escribe el resultado en
 la consola. Devuelve 1 si algo falla, que es lo que mira un servidor de
 integración continua.
 
-**545 pruebas.** Sin ventana pasan 539 y 6 se quedan en pendiente: son las que
+**573 pruebas.** Sin ventana pasan 567 y 6 se quedan en pendiente: son las que
 dibujan un PDF, y sin tarjeta gráfica eso tarda demasiado. Abriendo
-`pruebas/pruebas.html` en un navegador normal pasan las 545.
+`pruebas/pruebas.html` en un navegador normal pasan las 573.
+
+Aparte, las reglas de seguridad de la base de datos se prueban contra un
+Postgres de verdad: `node backend/probar-sql.js` (18 comprobaciones).
 
 Para verlas con colores y poder pinchar en cada una, abre
 `pruebas/pruebas.html` con la app servida (`node servidor.js` y luego
@@ -84,6 +87,7 @@ repinte la pantalla.
 | `casos-listo.js` | Abrirla desde Instagram, Facebook o TikTok; dos pestañas abiertas a la vez, el archivo del calendario (.ics) con sus avisos y sus líneas de 75 octetos, el recordatorio de las copias y qué lleva —y qué no— el informe de fallos |
 | `casos-inicio.js` | El Inicio en piezas: mil disposiciones al azar sin que nada quede encima de nada, arrastrar y estirar con eventos de puntero de verdad, el teclado, ocultar y volver a mostrar, el orden propio del móvil, medir el Inicio la primera vez y volver al original |
 | `casos-sinprofe.js` | **El profe sale apagado**: recorre todas las secciones, las pestañas de Ajustes y la ficha de un tema buscando «profe» o «tutor» en lo que se ve y en lo que lee un lector de pantalla; que no se use la IA aunque esté disponible; y que al encender el interruptor vuelva todo. Las pruebas del propio profe lo encienden solo mientras duran, con `conProfe()` |
+| `casos-cuentas.js` | **Las cuentas**, contra un Supabase de mentira que se porta como el de verdad: crear cuenta y entrar (con sus errores en castellano), olvidar la contraseña, que lo tuyo suba y llegue a otro dispositivo, que lo pendiente no se pise, sin conexión y al volver, tokens que caducan, salir, cambiar de persona en el mismo navegador, borrar la cuenta, y el panel del creador: que solo lo vea él y que no enseñe el contenido de nadie |
 | `casos-absurdos.js` | **Datos irreales**: notas de 900, faltas negativas, fechas del año 9999, emojis, árabe, textos de diez mil letras, estados de versiones que no existieron |
 
 ## Rellenar la app para verla funcionando
@@ -172,6 +176,19 @@ Doce fallos de verdad (el último, probando a mano lo que ninguna prueba miraba)
     verdad. Ahora cada pestaña escucha lo que guardan las demás y se pone al
     día, respetando el apunte que estés escribiendo en ese momento.
 
+13. **«Borrar todo» no borraba todo de la nube.** Ponía a cero siete de los
+    doce documentos; el horario, las tarjetas, el progreso, la oposición y el
+    Inicio seguían en la cuenta y reaparecían al volver a entrar.
+14. **Cargar una copia se deshacía sola.** Subía los mismos siete documentos, así
+    que la nube pisaba después lo recién cargado; y los apuntes y archivos que no
+    estaban en la copia volvían a aparecer. Ahora sube la copia entera y borra de
+    la nube lo que ya no está.
+15. **Lo que llegaba de otro dispositivo en el medio segundo después de guardar
+    se perdía.** La espera para no confundir los propios cambios con los de
+    fuera es cosa de la nube de Claude; con la cuenta no hace falta, y se quitó.
+    Y la barra de arriba decía «En tu cuenta» con cambios aún por subir: ahora
+    dice «Guardando…» hasta que suben.
+
 Y en la página de datos de prueba: si le dabas a rellenar dos veces, la segunda
 copia de seguridad guardaba los datos falsos encima de los tuyos y «Devolver» te
 devolvía los falsos. Ahora la copia solo se hace la primera vez.
@@ -193,7 +210,8 @@ cuando algo falla, lo primero es decidir quién se equivoca.
 - [x] Las vistas previas de PDF, con un PDF escrito a mano en el propio test.
 - [x] La agenda por dentro: columnas, fechas y cambiar de tipo.
 - [x] La bola de papel, con un reloj falso para la física.
-- [ ] La sincronización, cuando haya backend.
+- [x] La sincronización con la cuenta, contra un servidor de mentira; y las
+  reglas de la base de datos, contra Postgres de verdad.
 - [x] Arrastrar de verdad con el ratón en el tablero: **probado a mano por
   Gabriel el 21 de septiembre de 2026** y funciona, incluido el tachado al
   soltar la tarjeta en «hecho». Los tests cubren las funciones que mueven las

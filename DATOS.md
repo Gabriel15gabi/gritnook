@@ -10,13 +10,17 @@ se añade algo que guarde información.
 ## En una frase
 
 GritNook guarda **lo que el alumno escribe**: su curso, sus asignaturas, sus
-notas, su agenda, sus apuntes y sus archivos. **No pide correo, ni teléfono, ni
-dirección**, no tiene publicidad, no hay analítica y no hay cookies de terceros.
+notas, su agenda, sus apuntes y sus archivos, en **su cuenta** (correo y
+contraseña) y en su navegador. Del uso solo apunta **qué días entra**. **No pide
+teléfono ni dirección**, no tiene publicidad, no hay analítica de terceros y no
+hay cookies.
 
 ## 1. Datos que se guardan
 
 | Qué | Detalle | Lo pone |
 |---|---|---|
+| Cuenta | Correo electrónico, contraseña (cifrada con un resumen que no se puede deshacer: no la ve nadie) y fecha de alta. La guarda Supabase. Mientras dura la sesión, el navegador guarda un token para no pedir la contraseña cada vez | El alumno, al crear la cuenta |
+| Actividad | Los días que entra en la app y cuántas veces cada día (como mucho una cada media hora). Nada de lo que hace dentro | La app, al abrirla |
 | Perfil | Nombre o apodo, etapa (ESO, Bachillerato, FP, universidad, oposición, idiomas), curso, ciclo o grado, modalidad, centro (opcional), si trabaja, horas de estudio a la semana, nota a la que apunta, qué le cuesta más y para qué estudia | El alumno, en la bienvenida |
 | Asignaturas | Nombre, código, horas del curso, nota objetivo, meta semanal, color, apartados de evaluación con sus pesos y **sus notas**, y **faltas de asistencia** | El alumno |
 | Agenda | Entregas y exámenes (título, asignatura, fecha, hora, estado, pasos y notas) y el horario de clases | El alumno o el tutor, si se le autoriza |
@@ -31,19 +35,24 @@ dirección**, no tiene publicidad, no hay analítica y no hay cookies de tercero
 | De la propia app | La fecha de la última copia de seguridad, qué avisos ya se han visto y los últimos 20 fallos que haya dado la app (con su mensaje y dónde pasó) | La app |
 | Oposición (solo si opositas) | El temario (número, título y bloque de cada tema, sus vueltas con fecha, si está dominado, su dificultad, los minutos estudiados, tus notas y un enlace a la ley), las reglas del examen (fecha, preguntas, opciones, penalización, corte, minutos, preguntas de reserva y bolas si hay tema a desarrollar), el plan de vueltas, los simulacros (fecha, de qué, preguntas, aciertos, fallos, minutos y, si lo apuntas, de qué temas eran los fallos), el simulacro con reloj que esté en marcha (hora de inicio y de entrega) y la convocatoria (plazas, aspirantes, enlace a las bases, cortes de otros años, fin del plazo de solicitud y si ya la has presentado). Las tarjetas de repaso que crees desde un tema llevan apuntado de qué tema son | El opositor |
 
-**No se guarda:** correo electrónico, contraseña, teléfono, dirección, fecha de
-nacimiento, datos de pago, ubicación ni ningún identificador publicitario.
+**No se guarda:** teléfono, dirección, fecha de nacimiento, datos de pago,
+ubicación ni ningún identificador publicitario.
 
 ## 2. Dónde se guardan
 
 | Sitio | Qué hay | Quién puede verlo |
 |---|---|---|
-| El navegador del alumno | Todo, en el almacenamiento local (claves `desk-daw:*`). La app le pide al navegador que no lo borre cuando ande justo de espacio | Solo quien use ese dispositivo |
-| El almacén de Claude (solo si se abre desde ahí) | Los mismos datos, para sincronizar entre dispositivos, y los archivos del casillero | La cuenta de Claude del alumno; el proveedor es Anthropic (Estados Unidos) |
+| La cuenta del alumno (Supabase, en Frankfurt, Alemania) | Todo lo de arriba, en la tabla `documentos`: una fila por trozo (`escritorio/agenda`, `apuntes/<id>`, `casillero/<id>`…), con su dueño. La actividad, en `actividad` | El alumno, desde cualquier dispositivo. Nadie más: lo impide la base de datos (Row Level Security). Supabase es el encargado de tratamiento |
+| El panel del creador | **Solo** el correo, la fecha de alta, la última vez que entró, los días que ha entrado en 7 y 30 días, qué estudia (etapa) y cuánto ocupa. **Nunca el contenido** | El creador de la app (la tabla `administradores`, que nadie puede tocar desde la app) |
+| El navegador del alumno | Todo, en el almacenamiento local (claves `desk-daw:*`), para que funcione sin conexión, y la lista de cambios por subir. La app le pide al navegador que no lo borre cuando ande justo de espacio. Al cerrar sesión se borra | Solo quien use ese dispositivo |
+| El almacén de Claude (solo si se abre desde ahí, en lugar de la cuenta) | Los mismos datos, para sincronizar entre dispositivos, y los archivos del casillero | La cuenta de Claude del alumno; el proveedor es Anthropic (Estados Unidos) |
 | GitHub Pages | **Nada.** Es una página estática: no hay servidor ni base de datos | Nadie |
 
 ## 3. Qué sale de la aplicación
 
+- **A su cuenta** (Supabase, Frankfurt) va todo lo que guarda, cifrado por el
+  camino, y al abrir la app un «he entrado hoy», como mucho una vez cada media
+  hora. Es lo que cuenta el panel del creador.
 - **El profe con IA está apagado por ahora** (un interruptor en el código,
   `PROFE_ACTIVO`). Mientras lo esté, **no se envía nada a ninguna IA**, tampoco
   abriendo la app desde Claude, y no aparece en ninguna pantalla. Lo que sigue
@@ -77,14 +86,18 @@ nacimiento, datos de pago, ubicación ni ningún identificador publicitario.
 - **Descargar una copia**: Ajustes → Datos → Descargar copia (un archivo JSON con todo).
 - **Borrar un apunte o un documento**: desde su propia pantalla, con confirmación.
 - **Borrar todo**: Ajustes → Datos → Borrar todo. Borra lo del dispositivo, lo
-  sincronizado y los archivos subidos.
+  de la cuenta y los archivos subidos. La cuenta sigue, vacía.
+- **Borrar mi cuenta**: Ajustes → Datos → Borrar mi cuenta. Borra del servidor
+  el usuario, su correo, su contraseña, todos sus documentos y su actividad
+  (`on delete cascade`), y lo del navegador.
+- **Cerrar sesión**: borra lo de ese navegador; lo suyo sigue en la cuenta.
 
 ## 5. Pendiente para cuando se venda
 
 - [x] Edad mínima de 14 años y aviso a menores de 18, al entrar.
 - [x] Interruptor para apagar el tutor (no enviar nada a la IA), en Ajustes → El profe.
-- [ ] Cuentas propias: al cambiar el almacén de Claude por uno propio, este
-      documento cambia entero (proveedor, país, contratos y seguridad).
-- [ ] Contrato de encargado de tratamiento con el proveedor de IA y con el del servidor.
+- [x] Cuentas propias (Supabase, Frankfurt), con borrado de la cuenta de verdad.
+- [ ] Contrato de encargado de tratamiento con el proveedor de IA y con Supabase (su DPA).
 - [ ] Registro de actividades de tratamiento y evaluación de impacto (hay datos de menores).
-- [ ] Canal para ejercer derechos (acceso, rectificación, supresión, portabilidad y oposición).
+- [x] Canal para ejercer derechos: casi todos desde la app (descargar copia,
+      editar, borrar la cuenta) y el resto por el correo de contacto.

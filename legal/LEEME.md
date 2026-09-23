@@ -62,7 +62,7 @@ por qué no está, y se vuelve a pasar `generar.js`.
 - **La dirección de la web**, en cuanto esté publicada (`AVISO-LEGAL.md`).
 - **El domicilio**, el día que la app deje de ser gratis.
 - **Las condiciones de pago** el día que se cobre: precio, renovación,
-  cancelación y el desistimiento de 14 días (`TERMINOS.md`, punto 4).
+  cancelación y el desistimiento de 14 días (`TERMINOS.md`, punto 5).
 - **El mecanismo exacto de transferencia de datos a Estados Unidos** y los plazos
   de conservación del proveedor de IA, al firmar el contrato de encargado de
   tratamiento (`PRIVACIDAD.md` punto 6 e `IA.md`).
@@ -72,6 +72,10 @@ por qué no está, y se vuelve a pasar `generar.js`.
 - [x] Edad mínima de 14 años al entrar, y aviso a menores de 18.
 - [x] Un interruptor para apagar el profe (no enviar nada a la IA).
 - [x] Enlace a estos cuatro documentos desde Ajustes.
+- [x] Cuentas: el panel del creador solo enseña correo y actividad, nunca el
+      contenido, que es lo que promete `PRIVACIDAD.md` (punto 5).
+- [x] Borrar la cuenta de verdad, también del servidor (Ajustes → Datos).
+- [ ] Firmar el DPA de Supabase (Organization Settings → Legal Documents).
 - [ ] Leer de verdad el correo de contacto: ahí llegan las peticiones del RGPD, y
       hay un mes para responderlas.
 

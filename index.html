@@ -163,7 +163,7 @@ svg.i{width:16px; height:16px; flex:0 0 16px; fill:none; stroke:currentColor; st
 .barra-btns{display:flex; gap:8px; flex-wrap:wrap; align-items:center}
 
 .campo{display:flex; flex-direction:column; gap:7px; font:500 12.5px/1 var(--sans); color:var(--ink-2); min-width:0}
-input[type=text],input[type=date],input[type=number],input[type=url],select,textarea{
+input[type=text],input[type=date],input[type=number],input[type=url],input[type=email],input[type=password],select,textarea{
   width:100%; height:36px; padding:0 11px; border:1px solid var(--line-2); border-radius:var(--r-m);
   background:var(--surface); color:var(--ink); font:400 14px/1.4 var(--sans);
   transition:border-color .12s, box-shadow .12s}
@@ -1848,6 +1848,30 @@ body.il-activo{user-select:none; cursor:grabbing}
 .ent-caja > .banda{margin-bottom:18px}
 /* los avisos del Inicio, con aire entre ellos y con lo de abajo */
 #contenido > .banda{margin-bottom:12px}
+/* ── entrar en tu cuenta ── */
+.acceso{z-index:80}
+.acc-caja{max-width:460px}
+.acc-tabs{margin:4px 0 18px}
+.acc-form{display:grid; gap:14px}
+.acc-form .ent-linea{margin-top:2px}
+.acc-enviar{justify-self:start; min-width:160px}
+.acc-olvido{justify-self:start}
+.acc-aviso{min-height:1.3em; margin:0; font:500 13.5px/1.45 var(--sans); color:var(--riesgo-txt)}
+.acc-aviso.ok{color:var(--verde-texto)}
+.acc-aviso:empty{display:none}
+/* ── el panel del creador ── */
+.pa-graf{width:100%; height:auto; margin-top:8px}
+.pa-barra{fill:var(--acento, #7C6CF0); opacity:.85}
+.pa-alta{fill:var(--verde)}
+.pa-ley{display:inline-block; width:10px; height:10px; border-radius:3px; margin:0 5px 0 12px; vertical-align:-1px}
+.pa-ley-barra{background:var(--acento, #7C6CF0)}
+.pa-ley-alta{background:var(--verde); border-radius:50%}
+.pa-tabla{display:grid; margin-top:6px; overflow-x:auto}
+.pa-tr{display:grid; grid-template-columns:minmax(180px,2.2fr) minmax(90px,1fr) minmax(80px,.9fr) 56px 56px 56px minmax(90px,1fr) 64px; gap:10px; align-items:center;
+  min-width:760px; padding:9px 4px; border-top:1px solid var(--line); font:400 13.5px/1.3 var(--sans); color:var(--ink-2)}
+.pa-tr span{overflow:hidden; text-overflow:ellipsis; white-space:nowrap; font-variant-numeric:tabular-nums}
+.pa-th{border-top:0; font:500 12px/1 var(--sans); color:var(--ink-3)}
+.pa-correo{color:var(--ink); font-weight:500}
 .cf-info{margin:0; padding:12px 14px; border-radius:var(--r-m); background:var(--surface-2); color:var(--ink-2);
   font:400 12px/1.55 var(--mono, ui-monospace, monospace); white-space:pre-wrap; word-break:break-word; max-height:180px; overflow:auto}
 .sel-tema{margin-top:8px}
@@ -2039,7 +2063,8 @@ const ICON = {
   cerrar: '<path d="M4.3 4.3l7.4 7.4M11.7 4.3l-7.4 7.4"/>',
   clip: '<path d="M12.6 7.6 7.8 12.4a3.1 3.1 0 0 1-4.4-4.4l5.1-5.1a2 2 0 0 1 2.9 2.9L6.3 10.9a.9.9 0 0 1-1.3-1.3l4.4-4.4"/>',
   imagen: '<rect x="2.5" y="3" width="11" height="10" rx="1.6"/><circle cx="6" cy="6.6" r="1.1"/><path d="M13.5 10.4 10.4 7.4 4.2 13"/>',
-  archivo: '<path d="M4 2.5h5.2L12 5.3v8.2H4z"/><path d="M9 2.5v3h3"/>'
+  archivo: '<path d="M4 2.5h5.2L12 5.3v8.2H4z"/><path d="M9 2.5v3h3"/>',
+  panel: '<circle cx="6" cy="5.4" r="2.3"/><path d="M1.8 13.2c.4-2.5 2.1-3.9 4.2-3.9s3.8 1.4 4.2 3.9"/><circle cx="11.4" cy="6" r="1.8"/><path d="M11.6 9.4c1.6.2 2.6 1.4 2.9 3.4"/>'
 };
 const icono = (n, cls = "i") => `<svg class="${cls}" viewBox="0 0 16 16" aria-hidden="true">${ICON[n]}</svg>`;
 /* el color que le toca a una asignatura, listo para meter en un style */
@@ -2138,6 +2163,7 @@ const empaqueta = nd => { const o = {}; DOCS[nd].forEach(k => o[k] = S[k]); retu
 function guardar(nd) {
   guardarLocal();
   if (!db) return;
+  if (db.pendiente) db.pendiente("escritorio/" + nd);
   clearTimeout(pendientes[nd]);
   pendientes[nd] = setTimeout(() => {
     subiendo.add(nd);
@@ -2167,10 +2193,15 @@ async function conectar() {
   refrescaUso();
   if (!db) { marcaSync("Este dispositivo", false); pinta(); return; }
   marcaSync("Sincronizado", true);
+  suscribir();
+}
 
+/* Escuchar la nube y ponerse al día: la de Claude o la de la cuenta, que
+   entienden las mismas órdenes */
+function suscribir() {
   Object.keys(DOCS).forEach(nd => {
     db.doc("escritorio/" + nd).onSnapshot(snap => {
-      if (subiendo.has(nd)) return;
+      if (subiendo.has(nd) && !db.nube) return;
       if (!snap.exists) { db.doc("escritorio/" + nd).set(empaqueta(nd)).catch(() => {}); return; }
       const d = snap.data(); let cambio = false;
       DOCS[nd].forEach(k => { if (d[k] !== undefined) { S[k] = clonar(d[k]); cambio = true; } });
@@ -3574,6 +3605,8 @@ const SECCIONES = [
   { id: "entregas", txt: "Agenda" }, { id: "apuntes", txt: "Apuntes" },
   { id: "repaso", txt: "Repaso" }, { id: "progreso", txt: "Progreso" },
   { id: "casillero", txt: "Casillero" }, { id: "ingles", txt: "Inglés" },
+  /* solo para el creador: el servidor decide quién lo es */
+  { id: "panel", txt: "Panel", admin: true },
   /* aparte y al final: esto es una conversación, no una pantalla más */
   { id: "tutor", txt: "Tutor", aparte: true },
   { id: "ajustes", txt: "Ajustes", pie: true }
@@ -3587,7 +3620,7 @@ const SECCIONES = [
 const enBarra = () => profeActivo() ? ["escritorio", "entregas", "apuntes", "tutor"]
   : ["escritorio", "entregas", "apuntes", esOpositor() ? "oposicion" : "modulos"];
 /* las secciones que se ven: la de la oposición, solo si opositas */
-const secVisibles = () => SECCIONES.filter(s => (!s.solo || normalizarPerfil().etapa === s.solo) && (s.id !== "tutor" || profeActivo()));
+const secVisibles = () => SECCIONES.filter(s => (!s.solo || normalizarPerfil().etapa === s.solo) && (s.id !== "tutor" || profeActivo()) && (!s.admin || esAdminNube));
 const nombreSec = id => id === "modulos" ? voc(true, true) : (SECCIONES.find(s => s.id === id) || { txt: id }).txt;
 /* el curso en pocas letras: «DAW · 1.º», «ESO · 3.º», «Bach · 2.º», «B2» */
 function etiquetaCorta() {
@@ -4729,6 +4762,13 @@ function dlgAjustes() {
    Dentro de Claude, con su permiso de descargas. Fuera (GitHub Pages, un
    servidor cualquiera), con un enlace de descarga normal, como cualquier web.
    Devuelve si ha salido bien. */
+/* una celda para Excel: punto y coma y comillas se protegen, y lo que empieza
+   por = + - @ lleva un apóstrofo delante para que no se tome por una fórmula */
+function celdaCSV(v) {
+  let s = v === null || v === undefined ? "" : String(v);
+  if (/^[=+\-@\t\r]/.test(s)) s = "'" + s;
+  return /[";\n\r]/.test(s) ? '"' + s.replace(/"/g, '""') + '"' : s;
+}
 async function bajarArchivo(nombre, data, tipo = "application/octet-stream") {
   if (!descargas && enClaude()) { aviso("Las descargas no están disponibles en esta vista.", "mal"); return false; }
   try {
@@ -5268,16 +5308,11 @@ function semanaOpo(hoy = hoyISO()) {
    toma por una fórmula, y una fórmula pegada en un título puede hacer cosas */
 function csvTemario() {
   const O = normalizarOpo(), sim = fallosSimDe();
-  const celda = v => {
-    let s = v === null || v === undefined ? "" : String(v);
-    if (/^[=+\-@\t\r]/.test(s)) s = "'" + s;
-    return /[";\n\r]/.test(s) ? '"' + s.replace(/"/g, '""') + '"' : s;
-  };
   const dif = { facil: "fácil", normal: "normal", dificil: "difícil" };
   const filas = [["Nº", "Tema", "Grupo", "Bloque", "Vueltas", "Primera vuelta", "Última vuelta", "Dominado", "Dificultad", "Minutos estudiados", "Fallos en simulacros"]];
   O.temas.slice().sort((a, b) => a.n - b.n).forEach(t => filas.push([t.n, t.titulo, t.grupo, (modPorId(t.modId) || {}).nombre || "",
     vueltasDe(t), t.vueltas[0] || "", ultimaVuelta(t), t.dominado ? "sí" : "no", dif[t.dificultad] || "normal", Math.round(num(t.minutos)), sim[t.id] || 0]));
-  return "﻿" + filas.map(f => f.map(celda).join(";")).join("\r\n") + "\r\n";
+  return "\uFEFF" + filas.map(f => f.map(celdaCSV).join(";")).join("\r\n") + "\r\n";
 }
 
 /* ══════ la pantalla ══════ */
@@ -6224,7 +6259,7 @@ function informeTecnico() {
     "Navegador: " + (navigator.userAgent || "?"),
     "Pantalla: " + innerWidth + "×" + innerHeight + (instalada() ? " · instalada" : ""),
     "Idioma: " + (navigator.language || "?"),
-    "Dónde: " + (db ? "Claude, sincronizado" : enClaude() ? "Claude, sin sincronizar" : "web"),
+    "Dónde: " + (db && db.nube ? "cuenta de GritNook" : db ? "Claude, sincronizado" : enClaude() ? "Claude, sin sincronizar" : "web"),
     "Datos: " + Math.round(JSON.stringify(S).length / 1024) + " KB · "
       + (S.modulos || []).length + " " + voc(true) + " · " + Object.keys(S.apuntes || {}).length + " apuntes · "
       + Object.keys(S.casillero || {}).length + " documentos",
@@ -6708,18 +6743,542 @@ alEvento("click", async e => {
 });
 
 
+/* ══════════════════ cuentas ══════════════════
+   Fuera de Claude, GritNook tiene cuentas propias: cada uno entra con su
+   correo y su contraseña, y sus datos viven en su cuenta (Supabase, en
+   Frankfurt) además de en el navegador.
+
+   La sincronización es la misma que con Claude: la app habla con «db» y
+   aquí se pone detrás otra nube que entiende las mismas cuatro órdenes
+   (guardar un documento, borrarlo, y avisar de cambios en un documento o en
+   una colección). La seguridad no está aquí, que es código que cualquiera
+   puede tocar: está en la base de datos (backend/supabase.sql), que no deja
+   a nadie leer ni escribir lo de otro.
+
+   Sin NUBE rellenado, la app funciona como siempre: sin cuentas. */
+
+/* La dirección del proyecto y su clave pública (la «anon»). Esa clave está
+   pensada para ir en la página: sola no abre nada, porque manda la
+   seguridad de la base de datos. La otra, la «service_role», no va nunca aquí. */
+const NUBE = { url: "", clave: "" };
+const nubeLista = () => !!(NUBE.url && NUBE.clave) && !enClaude();
+/* las pruebas lo cambian por un servidor de mentira */
+let nubeFetch = (url, opciones) => fetch(url, opciones);
+let SESION = null, esAdminNube = false;
+
+/* ── hablar con el servidor ── */
+class ErrorNube extends Error {
+  constructor(msg, codigo, estado) { super(msg); this.codigo = codigo || ""; this.estado = estado || 0; }
+}
+const MENSAJES_NUBE = {
+  invalid_credentials: "El correo o la contraseña no son correctos.",
+  invalid_grant: "El correo o la contraseña no son correctos.",
+  user_already_exists: "Ya hay una cuenta con ese correo. Entra con tu contraseña.",
+  email_exists: "Ya hay una cuenta con ese correo. Entra con tu contraseña.",
+  weak_password: "La contraseña es demasiado floja: pon al menos 8 caracteres.",
+  email_address_invalid: "Ese correo no parece válido.",
+  validation_failed: "Revisa el correo y la contraseña.",
+  email_not_confirmed: "Te falta confirmar el correo: mira tu bandeja de entrada.",
+  over_email_send_rate_limit: "Se han mandado demasiados correos. Prueba dentro de un rato.",
+  over_request_rate_limit: "Demasiados intentos seguidos. Espera un minuto y prueba otra vez.",
+  signup_disabled: "Ahora mismo no se pueden crear cuentas.",
+  sin_red: "No hay conexión. Prueba cuando vuelvas a tener internet.",
+  sin_sesion: "Tienes que entrar en tu cuenta."
+};
+function errorNube(estado, datos) {
+  const d = datos && typeof datos === "object" ? datos : {};
+  const codigo = d.error_code || (typeof d.code === "string" && /^[a-z_]+$/.test(d.code) ? d.code : "") || d.error
+    || (estado === 429 ? "over_request_rate_limit" : "");
+  const msg = MENSAJES_NUBE[codigo]
+    || (estado === 401 ? "Tu sesión ha caducado: vuelve a entrar."
+      : "No se ha podido hacer: " + String(d.msg || d.message || d.error_description || "error " + estado).slice(0, 160) + ".");
+  return new ErrorNube(msg, codigo || String(d.code || ""), estado);
+}
+async function nubePedir(ruta, { metodo = "GET", cuerpo, conSesion = true, prefer } = {}) {
+  if (conSesion) await nubeRefrescar();
+  const cab = { apikey: NUBE.clave, "Content-Type": "application/json",
+    Authorization: "Bearer " + (conSesion && SESION ? SESION.access_token : NUBE.clave) };
+  if (prefer) cab.Prefer = prefer;
+  let r;
+  try { r = await nubeFetch(NUBE.url.replace(/\/+$/, "") + ruta, { method: metodo, headers: cab, body: cuerpo === undefined ? undefined : JSON.stringify(cuerpo) }); }
+  catch (e) { throw new ErrorNube(MENSAJES_NUBE.sin_red, "sin_red", 0); }
+  const txt = await r.text();
+  let datos = null;
+  try { datos = txt ? JSON.parse(txt) : null; } catch (e) { datos = { message: txt }; }
+  if (!r.ok) throw errorNube(r.status, datos);
+  return datos;
+}
+const nubeRPC = (nombre, args = {}) => nubePedir("/rest/v1/rpc/" + nombre, { metodo: "POST", cuerpo: args });
+
+/* ── la sesión ──
+   El token dura una hora; un minuto antes de caducar se pide otro. Si el
+   servidor dice que la sesión ya no vale, se vuelve a la pantalla de entrar
+   sin tocar lo guardado: al entrar otra vez, sigue todo ahí. */
+function guardarSesion(s) {
+  SESION = s || null;
+  if (s) guardaLS("sesion", s);
+  else try { localStorage.removeItem("desk-daw:sesion"); } catch (e) {}
+}
+const sesionDe = r => ({ access_token: String(r.access_token || ""), refresh_token: String(r.refresh_token || ""),
+  expira: Date.now() + num(r.expires_in, 3600) * 1000,
+  usuario: { id: String((r.user && r.user.id) || ""), email: String((r.user && r.user.email) || "") } });
+let refrescando = null;
+async function nubeRefrescar(forzar) {
+  if (!SESION) throw new ErrorNube(MENSAJES_NUBE.sin_sesion, "sin_sesion", 401);
+  if (!forzar && SESION.expira - Date.now() > 60000) return;
+  if (refrescando) return refrescando;
+  refrescando = (async () => {
+    try {
+      const r = await nubePedir("/auth/v1/token?grant_type=refresh_token", { metodo: "POST", cuerpo: { refresh_token: SESION.refresh_token }, conSesion: false });
+      guardarSesion(Object.assign(sesionDe(r), { usuario: r.user ? sesionDe(r).usuario : SESION.usuario }));
+    } catch (e) {
+      if (e.estado === 400 || e.estado === 401) sesionPerdida();
+      throw e;
+    } finally { refrescando = null; }
+  })();
+  return refrescando;
+}
+function sesionPerdida() {
+  guardarSesion(null); db = null; esAdminNube = false;
+  abrirAcceso("entrar", "Tu sesión ha caducado. Vuelve a entrar: lo tuyo sigue ahí.");
+}
+/* lo que hay en este navegador es de quien entró la última vez: si entra
+   otra persona, se limpia antes de traer lo suyo */
+function tomarSesion(r) {
+  const s = sesionDe(r), dueno = leeLS("dueno");
+  if (dueno && dueno !== s.usuario.id) olvidarLocal();
+  guardarSesion(s); guardaLS("dueno", s.usuario.id);
+  return s;
+}
+function olvidarLocal() {
+  try {
+    Object.keys(localStorage).filter(k => k.startsWith("desk-daw:") && !["desk-daw:tema", "desk-daw:vistos"].includes(k))
+      .forEach(k => localStorage.removeItem(k));
+  } catch (e) {}
+  S = estadoInicial();
+}
+
+const CORREO_OK = /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/;
+async function nubeEntrar(email, clave) {
+  return tomarSesion(await nubePedir("/auth/v1/token?grant_type=password", { metodo: "POST", cuerpo: { email, password: clave }, conSesion: false }));
+}
+async function nubeCrearCuenta(email, clave) {
+  const r = await nubePedir("/auth/v1/signup", { metodo: "POST", cuerpo: { email, password: clave }, conSesion: false });
+  /* si el proyecto pide confirmar el correo, no hay sesión hasta que se confirme */
+  if (!r || !r.access_token) throw new ErrorNube("Te hemos mandado un correo para confirmar la cuenta. Ábrelo y luego entra aquí.", "confirmar", 200);
+  return tomarSesion(r);
+}
+const nubeOlvide = email => nubePedir("/auth/v1/recover?redirect_to=" + encodeURIComponent(location.href.split("#")[0]),
+  { metodo: "POST", cuerpo: { email }, conSesion: false });
+const nubeNuevaClave = clave => nubePedir("/auth/v1/user", { metodo: "PUT", cuerpo: { password: clave } });
+async function nubeSalir() {
+  try { await nubePedir("/auth/v1/logout", { metodo: "POST" }); } catch (e) { /* aunque falle, aquí se sale */ }
+  guardarSesion(null);
+}
+
+/* ── la nube: las mismas órdenes que la de Claude ──
+   Cada cambio se sube en el acto. Si no hay conexión, se apunta como
+   pendiente y se sube al volver: nada de avisos de error a cada letra. Al
+   traer, lo pendiente de aquí manda sobre lo de la nube, y de la nube solo
+   se trae lo que haya cambiado desde la última vez (otro dispositivo), que
+   es lo que avisa a la app como avisaría Claude. */
+function datosLocales(clave) {
+  const [tipo, id] = clave.split("/");
+  if (tipo === "escritorio") return DOCS[id] ? empaqueta(id) : null;
+  if (tipo === "apuntes") return (S.apuntes || {})[id] || null;
+  if (tipo === "casillero") return (S.casillero || {})[id] || null;
+  return null;
+}
+function crearNube() {
+  const escuchaDoc = new Map(), escuchaCol = new Map();
+  const conocido = leeLS("nube-conocido") || {};             /* clave → hora de la última versión que tenemos */
+  const pend = new Set(leeLS("nube-pend") || []);             /* claves con cambios sin subir */
+  let primera = true, trayendo = null, sinRed = false;
+  /* «En tu cuenta» solo cuando no queda nada por subir */
+  const estado = () => { if (db === yo) estadoNube(sinRed ? "sin-red" : pend.size ? "guardando" : "ok"); };
+  const fallo = e => { if (e.codigo === "sin_red") { sinRed = true; estado(); } else if (e.codigo !== "sin_sesion" && db === yo) estadoNube("error", e); };
+  const marcas = () => { guardaLS("nube-conocido", conocido); guardaLS("nube-pend", [...pend]); };
+  const escuchar = (mapa, clave, fn) => { if (!mapa.has(clave)) mapa.set(clave, []); mapa.get(clave).push(fn); return () => mapa.set(clave, mapa.get(clave).filter(f => f !== fn)); };
+
+  async function subir(clave, datos) {
+    pend.add(clave); marcas(); estado();
+    try {
+      const r = await nubePedir("/rest/v1/documentos?on_conflict=usuario,clave",
+        { metodo: "POST", cuerpo: { clave, datos }, prefer: "resolution=merge-duplicates,return=representation" });
+      const fila = Array.isArray(r) ? r[0] : r;
+      if (fila && fila.actualizado) conocido[clave] = fila.actualizado;
+      pend.delete(clave); sinRed = false; marcas(); estado();
+    } catch (e) { fallo(e); }
+  }
+  async function quitar(clave) {
+    pend.add(clave); marcas(); estado();
+    try {
+      await nubePedir("/rest/v1/documentos?clave=eq." + encodeURIComponent(clave), { metodo: "DELETE" });
+      delete conocido[clave]; pend.delete(clave); sinRed = false; marcas(); estado();
+    } catch (e) { fallo(e); }
+  }
+  async function reintentar() {
+    for (const clave of [...pend]) {
+      const d = datosLocales(clave);
+      await (d ? subir(clave, d) : quitar(clave));
+      if (pend.has(clave)) return;                            /* sigue sin haber red: ya se intentará */
+    }
+  }
+  async function traer() {
+    if (trayendo) return trayendo;
+    trayendo = (async () => {
+      try {
+        await reintentar();
+        /* primero solo la lista con sus horas, que pesa poco; luego el contenido de lo que haya cambiado */
+        const lista = await nubePedir("/rest/v1/documentos?select=clave,actualizado");
+        const hora = new Map(lista.map(f => [f.clave, f.actualizado]));
+        const cambiadas = lista.filter(f => !pend.has(f.clave) && (primera || f.actualizado !== conocido[f.clave])).map(f => f.clave);
+        const datos = new Map();
+        if (cambiadas.length) {
+          const filtro = primera ? "" : "&clave=in.(" + cambiadas.map(c => '"' + c + '"').join(",") + ")";
+          (await nubePedir("/rest/v1/documentos?select=clave,datos,actualizado" + filtro)).forEach(f => datos.set(f.clave, f));
+        }
+        const esPrimera = primera; primera = false;
+        for (const [clave, fns] of escuchaDoc) {
+          if (pend.has(clave)) continue;
+          const f = datos.get(clave);
+          if (!esPrimera && !f && hora.has(clave)) continue;          /* no ha cambiado */
+          if (!esPrimera && !f && !conocido[clave]) continue;          /* ni está ni estaba */
+          if (f) conocido[clave] = f.actualizado; else delete conocido[clave];
+          const snap = { exists: !!f, data: () => f ? f.datos : undefined };
+          fns.forEach(fn => fn(snap));
+        }
+        for (const [nombre, fns] of escuchaCol) {
+          const pre = nombre + "/";
+          const borradas = Object.keys(conocido).filter(c => c.startsWith(pre) && !hora.has(c) && !pend.has(c));
+          const nuevas = [...datos.keys()].filter(c => c.startsWith(pre));
+          if (!esPrimera && !borradas.length && !nuevas.length) continue;
+          borradas.forEach(c => delete conocido[c]);
+          nuevas.forEach(c => { conocido[c] = datos.get(c).actualizado; });
+          /* la colección entera: lo de la nube, con lo pendiente de aquí encima */
+          const docs = [];
+          lista.filter(f => f.clave.startsWith(pre) && !pend.has(f.clave)).forEach(f => {
+            const id = f.clave.slice(pre.length), d = datos.has(f.clave) ? datos.get(f.clave).datos : datosLocales(f.clave);
+            if (d) docs.push({ id, data: () => d });
+          });
+          [...pend].filter(c => c.startsWith(pre)).forEach(c => { const d = datosLocales(c); if (d) docs.push({ id: c.slice(pre.length), data: () => d }); });
+          fns.forEach(fn => fn({ docs }));
+        }
+        sinRed = false; marcas(); estado();
+      } catch (e) { fallo(e); }
+      finally { trayendo = null; }
+    })();
+    return trayendo;
+  }
+  const yo = {
+    doc: clave => ({
+      set: datos => subir(clave, datos),
+      delete: () => quitar(clave),
+      onSnapshot: (fn) => escuchar(escuchaDoc, clave, fn)
+    }),
+    collection: nombre => ({ onSnapshot: (fn) => escuchar(escuchaCol, nombre, fn) }),
+    /* un cambio que va a subir enseguida: si llega algo de la nube mientras, no lo pisa */
+    pendiente: clave => { pend.add(clave); marcas(); },
+    pendientes: () => [...pend],
+    traer, reintentar,
+    nube: true
+  };
+  return yo;
+}
+let nubeUltimoEstado = "";
+function estadoNube(estado, e) {
+  if (estado === "ok") marcaSync("En tu cuenta", true);
+  else if (estado === "guardando") marcaSync("Guardando…", false);
+  else if (estado === "sin-red") marcaSync("Sin conexión · se sube al volver", false);
+  else {
+    marcaSync("Sin sincronizar", false);
+    if (nubeUltimoEstado !== "error" && e) aviso("No se ha podido guardar en tu cuenta: " + e.message + " Lo tuyo sigue en este dispositivo.", "mal");
+  }
+  nubeUltimoEstado = estado;
+}
+
+/* «he entrado hoy», como mucho una vez cada media hora: es lo que cuenta el panel */
+let nubeLatidoEn = 0;
+function nubeLatido() {
+  if (!SESION || Date.now() - nubeLatidoEn < 30 * 60000) return;
+  nubeLatidoEn = Date.now();
+  nubeRPC("latido").catch(() => { nubeLatidoEn = 0; });
+}
+
+/* ── arrancar ── */
+async function arrancarNube() {
+  SESION = leeLS("sesion");
+  /* ¿venimos del enlace de «he olvidado la contraseña»? */
+  const frag = new URLSearchParams(location.hash.replace(/^#/, ""));
+  if (frag.get("access_token") || frag.get("error_description")) {
+    history.replaceState(null, "", location.pathname + location.search);
+    if (frag.get("error_description")) { abrirAcceso("entrar", "Ese enlace ha caducado o ya se usó. Pide otro desde «He olvidado la contraseña»."); return; }
+    try {
+      const token = frag.get("access_token");
+      SESION = { access_token: token, refresh_token: frag.get("refresh_token") || "", expira: Date.now() + num(frag.get("expires_in"), 3600) * 1000, usuario: {} };
+      const u = await nubePedir("/auth/v1/user");
+      tomarSesion({ access_token: token, refresh_token: frag.get("refresh_token"), expires_in: frag.get("expires_in"), user: u });
+      if (frag.get("type") === "recovery") { abrirAcceso("nueva"); return; }
+    } catch (e) { guardarSesion(null); abrirAcceso("entrar", e.message); return; }
+  }
+  if (!SESION) { marcaSync("Sin entrar", false); abrirAcceso("entrar"); return; }
+  await conectarNube();
+}
+async function conectarNube() {
+  db = crearNube();
+  marcaSync("Conectando…", false);
+  suscribir();
+  await db.traer();
+  /* una cuenta nueva empieza por la bienvenida; una que ya tenía curso, no */
+  if (!normalizarPerfil().listo && !BV) bvAbrir(false);
+  nubeLatido();
+  try { esAdminNube = (await nubeRPC("es_admin")) === true; } catch (e) { esAdminNube = false; }
+  if (esAdminNube) pinta();
+}
+alEvento("visibilitychange", () => { if (!document.hidden && db && db.nube) { db.traer(); nubeLatido(); } });
+alEvento("online", () => { if (db && db.nube) db.traer(); }, window);
+setInterval(() => { if (!document.hidden && db && db.nube) db.traer(); }, 120000);
+
+/* ── la pantalla de entrar ──
+   Igual que la bienvenida: a pantalla completa y con la marca arriba. */
+let ACC = null;
+function abrirAcceso(modo = "entrar", aviso = "") {
+  ACC = { modo, aviso, ok: "", cargando: false, email: (ACC && ACC.email) || "" };
+  pintaAcceso();
+}
+function cerrarAcceso() {
+  ACC = null;
+  const c = $("#acceso"); if (c) c.hidden = true;
+  if (!BV) document.body.classList.remove("en-entrada");
+}
+function pintaAcceso() {
+  if (!ACC) return;
+  let caja = $("#acceso");
+  if (!caja) { caja = document.createElement("div"); caja.className = "entrada acceso"; caja.id = "acceso"; document.body.append(caja); }
+  caja.hidden = false; document.body.classList.add("en-entrada");
+  const logo = (document.querySelector(".lateral .marca-palabra") || { outerHTML: "" }).outerHTML;
+  const m = ACC.modo, crear = m === "crear";
+  const pie = `<p class="acc-aviso${ACC.ok ? " ok" : ""}" id="accAviso" role="alert">${esc(ACC.ok || ACC.aviso)}</p>`;
+  let cuerpo;
+  if (m === "entrar" || m === "crear") cuerpo = `
+    <h1 class="ent-tit">${crear ? "Crea tu cuenta" : "Entra en GritNook"}</h1>
+    <p class="ent-lead">${crear ? "Gratis y en un minuto. Con tu cuenta, lo tuyo te sigue del móvil al ordenador." : "Con el correo y la contraseña de tu cuenta."}</p>
+    <div class="aj-tabs acc-tabs" role="tablist">
+      <button type="button" class="aj-tab" role="tab" aria-selected="${!crear}" data-acc="entrar">Entrar</button>
+      <button type="button" class="aj-tab" role="tab" aria-selected="${crear}" data-acc="crear">Crear cuenta</button>
+    </div>
+    <form class="acc-form" id="accForm" novalidate>
+      <label class="campo">Correo<input type="email" id="accCorreo" autocomplete="email" inputmode="email" required value="${esc(ACC.email)}"></label>
+      <label class="campo">Contraseña<input type="password" id="accClave" autocomplete="${crear ? "new-password" : "current-password"}" minlength="8" required
+        placeholder="${crear ? "Al menos 8 caracteres" : ""}"></label>
+      ${crear ? `<label class="ent-linea"><input type="checkbox" id="accLegal">
+        <span>Tengo <strong>14 años</strong> o más y acepto los <button type="button" class="lg-enlace" data-lg-dlg="terminos">términos de uso</button> y la <button type="button" class="lg-enlace" data-lg-dlg="privacidad">política de privacidad</button>.</span></label>` : ""}
+      ${pie}
+      <button type="submit" class="btn primario acc-enviar"${ACC.cargando ? " disabled" : ""}>${ACC.cargando ? "Un momento…" : crear ? "Crear mi cuenta" : "Entrar"}</button>
+      ${crear ? "" : `<button type="button" class="lg-enlace acc-olvido" data-acc="olvido">He olvidado la contraseña</button>`}
+    </form>`;
+  else if (m === "olvido") cuerpo = `
+    <h1 class="ent-tit">¿Has olvidado la contraseña?</h1>
+    <p class="ent-lead">Pon tu correo y te mandamos un enlace para poner una nueva.</p>
+    <form class="acc-form" id="accForm" novalidate>
+      <label class="campo">Correo<input type="email" id="accCorreo" autocomplete="email" inputmode="email" required value="${esc(ACC.email)}"></label>
+      ${pie}
+      <button type="submit" class="btn primario acc-enviar"${ACC.cargando ? " disabled" : ""}>${ACC.cargando ? "Un momento…" : "Mandarme el enlace"}</button>
+      <button type="button" class="lg-enlace acc-olvido" data-acc="entrar">Volver a entrar</button>
+    </form>`;
+  else cuerpo = `
+    <h1 class="ent-tit">Pon una contraseña nueva</h1>
+    <p class="ent-lead">Para tu cuenta ${esc((SESION && SESION.usuario && SESION.usuario.email) || "")}.</p>
+    <form class="acc-form" id="accForm" novalidate>
+      <label class="campo">Contraseña nueva<input type="password" id="accClave" autocomplete="new-password" minlength="8" required placeholder="Al menos 8 caracteres"></label>
+      ${pie}
+      <button type="submit" class="btn primario acc-enviar"${ACC.cargando ? " disabled" : ""}>${ACC.cargando ? "Un momento…" : "Guardar y entrar"}</button>
+    </form>`;
+  caja.innerHTML = `<div class="ent-caja acc-caja">${bandaDeApp()}<div class="ent-cab"><div class="marca">${logo}</div></div>${cuerpo}</div>`;
+}
+alEvento("click", e => {
+  const b = e.target.closest("[data-acc]");
+  if (!b || !ACC) return;
+  const correo = $("#accCorreo"); if (correo) ACC.email = correo.value.trim();
+  ACC.modo = b.dataset.acc; ACC.aviso = ""; ACC.ok = "";
+  pintaAcceso();
+  const f = $("#accCorreo") || $("#accClave"); if (f) f.focus();
+});
+alEvento("submit", async e => {
+  if (e.target.id !== "accForm" || !ACC) return;
+  e.preventDefault();
+  if (ACC.cargando) return;
+  const correo = $("#accCorreo"), clave = $("#accClave");
+  const email = correo ? correo.value.trim().toLowerCase() : "", pass = clave ? clave.value : "";
+  if (correo) ACC.email = email;
+  const decir = (txt, ok) => { ACC.aviso = ok ? "" : txt; ACC.ok = ok ? txt : ""; ACC.cargando = false; pintaAcceso(); };
+  const m = ACC.modo;
+  if (m !== "nueva" && !CORREO_OK.test(email)) return decir("Ese correo no parece válido.");
+  if ((m === "entrar" || m === "crear" || m === "nueva") && !pass) return decir("Falta la contraseña.");
+  if ((m === "crear" || m === "nueva") && pass.length < 8) return decir("La contraseña tiene que tener al menos 8 caracteres.");
+  if (m === "crear" && !($("#accLegal") || {}).checked) return decir("Para crear la cuenta tienes que tener 14 años o más y aceptar los términos.");
+  ACC.cargando = true; ACC.aviso = ""; pintaAcceso();
+  try {
+    if (m === "olvido") { await nubeOlvide(email); return decir("Si hay una cuenta con ese correo, te llega un enlace para poner una contraseña nueva. Mira también en correo no deseado.", true); }
+    if (m === "nueva") await nubeNuevaClave(pass);
+    else if (m === "crear") await nubeCrearCuenta(email, pass);
+    else await nubeEntrar(email, pass);
+    const nueva = m === "crear";
+    cerrarAcceso();
+    await conectarNube();
+    /* quien acaba de aceptar al crear la cuenta no tiene que volver a marcarlo en la bienvenida */
+    if (nueva && BV) { BV.edadOk = true; BV.legalOk = true; pintaEntrada(); }
+    aviso(nueva ? "Cuenta creada. Vamos a montar tu curso." : m === "nueva" ? "Contraseña cambiada." : "Hola de nuevo.");
+  } catch (err) { decir(err.message); }
+});
+
+/* ── tu cuenta, en Ajustes → Datos ── */
+function bloqueCuenta() {
+  if (!nubeLista() || !SESION) return "";
+  const pend = db && db.pendientes ? db.pendientes().length : 0;
+  return `<div class="etq">Tu cuenta</div>
+    <p class="meta" style="margin:6px 0 12px">Has entrado como <strong>${esc(SESION.usuario.email)}</strong>.
+      Tus datos se guardan en tu cuenta y en este navegador${pend ? `. Hay ${pend} ${pend === 1 ? "cambio" : "cambios"} esperando a tener conexión para subirse` : ""}.</p>
+    <div class="barra-btns">
+      <button type="button" class="btn" id="accSalir">Cerrar sesión</button>
+      <button type="button" class="btn borrar fantasma" id="accBorrar">Borrar mi cuenta</button>
+    </div>
+    <hr class="separador">`;
+}
+async function salirCuenta() {
+  if (db && db.pendientes && db.pendientes().length) {
+    await db.reintentar();
+    if (db.pendientes().length && !(await confirmar("Hay cambios que todavía no se han subido a tu cuenta porque no hay conexión. Si sales ahora, se pierden.", { titulo: "¿Salir de todas formas?", si: "Salir" }))) return;
+  }
+  await nubeSalir();
+  /* lo de este navegador se va: puede ser un ordenador compartido */
+  olvidarLocal(); db = null; esAdminNube = false; PANEL = { datos: null, cargando: false, error: "" };
+  seccion = "escritorio"; pinta();
+  abrirAcceso("entrar", "Has salido de tu cuenta.");
+}
+async function borrarCuenta() {
+  if (!(await confirmar("Se borran tu cuenta y todo lo que hay en ella: perfil, notas, apuntes, archivos… No se puede deshacer.", { titulo: "¿Borrar tu cuenta?", si: "Borrar mi cuenta" }))) return;
+  if (!(await confirmar("No hay forma de recuperarla. Si quieres guardar algo, descarga antes una copia desde aquí mismo.", { titulo: "¿Seguro del todo?", si: "Sí, borrarla" }))) return;
+  try { await nubeRPC("borrar_mi_cuenta"); }
+  catch (e) { aviso(e.message, "mal"); return; }
+  guardarSesion(null); olvidarLocal(); db = null; esAdminNube = false; PANEL = { datos: null, cargando: false, error: "" };
+  seccion = "escritorio"; pinta();
+  abrirAcceso("entrar", "Tu cuenta y todos sus datos se han borrado.");
+}
+alEvento("click", e => {
+  if (e.target.closest("#accSalir")) { salirCuenta(); return; }
+  if (e.target.closest("#accBorrar")) { borrarCuenta(); return; }
+});
+
+/* ══════ el panel del creador ══════
+   Solo lo ve tu cuenta, y no porque la app lo esconda: el servidor solo se
+   lo da a quien esté en la lista de administradores. Nada de lo que la gente
+   escribe: el correo, cuándo se apuntó, cuándo entra, qué estudia y cuánto
+   ocupa. Es lo que dice la política de privacidad. */
+let PANEL = { datos: null, cargando: false, error: "" };
+const LIMITE_GRATIS = 500 * 1024 * 1024;                     /* la base de datos del plan gratis de Supabase */
+async function cargarPanel() {
+  PANEL.cargando = true; PANEL.error = "";
+  if (seccion === "panel") pinta();
+  try { PANEL.datos = await nubeRPC("panel_admin"); }
+  catch (e) { PANEL.error = e.message; }
+  PANEL.cargando = false;
+  if (seccion === "panel") pinta();
+}
+const pesoTxt = b => { b = num(b); return b >= 1048576 ? nota(b / 1048576) + " MB" : Math.max(1, Math.round(b / 1024)) + " KB"; };
+function haceTxt(iso, hoy) {
+  if (!iso) return "Nunca";
+  const d = diasEntre(hoy, String(iso).slice(0, 10));
+  return d <= 0 ? "Hoy" : d === 1 ? "Ayer" : "Hace " + d + " días";
+}
+function graficaPanel(dias) {
+  const L = Array.isArray(dias) ? dias : [];
+  if (!L.length) return "";
+  const W = 640, H = 150, pad = 22, tope = Math.max(1, ...L.map(d => Math.max(num(d.activos), num(d.altas))));
+  const paso = (W - 2 * pad) / L.length, ancho = Math.max(3, paso - 4);
+  const y = v => H - pad - num(v) / tope * (H - 2 * pad);
+  return `<svg class="pa-graf" viewBox="0 0 ${W} ${H}" role="img" aria-label="Personas que entran cada día y altas nuevas, últimos ${L.length} días">
+    <line x1="${pad}" y1="${H - pad}" x2="${W - pad}" y2="${H - pad}" class="opo-graf-eje"/>
+    ${L.map((d, i) => `<rect x="${(pad + i * paso + 2).toFixed(1)}" y="${y(d.activos).toFixed(1)}" width="${ancho.toFixed(1)}" height="${(H - pad - y(d.activos)).toFixed(1)}" rx="2" class="pa-barra"><title>${esc(fechaCorta(d.dia))}: ${num(d.activos)} ${num(d.activos) === 1 ? "persona" : "personas"}${num(d.altas) ? ", " + num(d.altas) + (num(d.altas) === 1 ? " alta" : " altas") : ""}</title></rect>
+      ${num(d.altas) ? `<circle cx="${(pad + i * paso + paso / 2).toFixed(1)}" cy="${(y(d.altas) - 6).toFixed(1)}" r="4" class="pa-alta"/>` : ""}`).join("")}
+    <text x="${pad}" y="${H - 4}" class="opo-graf-eje-txt">${esc(fechaCorta(L[0].dia))}</text>
+    <text x="${W - pad}" y="${H - 4}" text-anchor="end" class="opo-graf-eje-txt">Hoy</text>
+  </svg>`;
+}
+function vistaPanel() {
+  if (!PANEL.datos && !PANEL.cargando && !PANEL.error) setTimeout(cargarPanel, 0);
+  const d = PANEL.datos, hoy = hoyISO();
+  const cab = `<header class="cab">
+    <div>
+      <div class="eyebrow">Solo para ti</div>
+      <h1 class="titulo">Panel del creador</h1>
+      <p class="lead">Quién está probando GritNook y cuánto la usa. Sin notas ni apuntes de nadie: solo el correo y la actividad, que es lo que dice la política de privacidad.</p>
+    </div>
+    <div class="barra-btns"><button type="button" class="btn" id="paActualizar"${PANEL.cargando ? " disabled" : ""}>${PANEL.cargando ? "Cargando…" : "Actualizar"}</button>
+      ${d ? `<button type="button" class="btn fantasma" id="paCSV">Descargar para Excel</button>` : ""}</div>
+  </header>`;
+  if (!d) return cab + (PANEL.error ? banda("cerrar", PANEL.error, "", "urgente") : `<p class="meta">Cargando…</p>`);
+  const t = d.totales || {}, us = Array.isArray(d.usuarios) ? d.usuarios : [];
+  const pct = Math.min(100, num(t.ocupa) / LIMITE_GRATIS * 100);
+  return cab + `
+  <div class="resumen-mod cuatro">
+    <div class="panel rm-tile"><div class="rm-etq">Cuentas</div><div class="rm-cifra">${num(t.usuarios)}</div><div class="rm-sub">${num(t.altas7)} nuevas esta semana</div></div>
+    <div class="panel rm-tile"><div class="rm-etq">Hoy</div><div class="rm-cifra">${num(t.hoy)}</div><div class="rm-sub">han entrado</div></div>
+    <div class="panel rm-tile"><div class="rm-etq">Últimos 7 días</div><div class="rm-cifra">${num(t.semana)}</div><div class="rm-sub">activos</div></div>
+    <div class="panel rm-tile"><div class="rm-etq">Últimos 30 días</div><div class="rm-cifra">${num(t.mes)}</div><div class="rm-sub">activos</div></div>
+  </div>
+  <section class="panel">
+    <div class="opo-cab-sec"><div class="etq">Cada día</div><span class="meta"><i class="pa-ley pa-ley-barra"></i>Entran <i class="pa-ley pa-ley-alta"></i>Altas</span></div>
+    ${graficaPanel(d.dias)}
+  </section>
+  <section class="panel">
+    <div class="opo-cab-sec"><div class="etq">Cuentas · ${us.length}</div><span class="meta">Espacio: ${pesoTxt(t.ocupa)} de 500 MB del plan gratis (${nota(pct)} %)</span></div>
+    ${us.length ? `<div class="pa-tabla" role="table">
+      <div class="pa-tr pa-th" role="row"><span>Correo</span><span>Se apuntó</span><span>Última vez</span><span title="Días que ha entrado en la última semana">7 días</span><span title="Días que ha entrado en el último mes">30 días</span><span title="Veces que ha abierto la app">Veces</span><span>Estudia</span><span>Ocupa</span></div>
+      ${us.map(u => `<div class="pa-tr" role="row">
+        <span class="pa-correo">${esc(u.email || "—")}</span>
+        <span>${esc(u.alta ? fechaCorta(String(u.alta).slice(0, 10)) : "—")}</span>
+        <span>${esc(haceTxt(u.ultimo, hoy))}</span>
+        <span>${num(u.dias7)}</span><span>${num(u.dias30)}</span><span>${num(u.veces)}</span>
+        <span>${esc(u.etapa ? etapaDe(u.etapa).nombre : "Sin montar")}</span>
+        <span>${esc(pesoTxt(u.ocupa))}</span></div>`).join("")}
+    </div>` : `<p class="meta">Todavía no hay nadie. Cuando alguien cree su cuenta, sale aquí.</p>`}
+  </section>`;
+}
+function csvPanel() {
+  const us = PANEL.datos && Array.isArray(PANEL.datos.usuarios) ? PANEL.datos.usuarios : [];
+  const filas = [["Correo", "Se apuntó", "Último día", "Días (7)", "Días (30)", "Veces", "Estudia", "Ocupa (KB)"]]
+    .concat(us.map(u => [u.email, String(u.alta || "").slice(0, 10), u.ultimo || "", num(u.dias7), num(u.dias30), num(u.veces),
+      u.etapa ? etapaDe(u.etapa).nombre : "", Math.round(num(u.ocupa) / 1024)]));
+  return "\uFEFF" + filas.map(f => f.map(celdaCSV).join(";")).join("\r\n") + "\r\n";
+}
+alEvento("click", async e => {
+  if (seccion !== "panel") return;
+  if (e.target.closest("#paActualizar")) { cargarPanel(); return; }
+  if (e.target.closest("#paCSV")) { if (await bajarArchivo("gritnook-cuentas-" + hoyISO() + ".csv", csvPanel(), "text/csv;charset=utf-8")) aviso("Descargado."); }
+});
+function panelLateralAdmin() {
+  const t = PANEL.datos && PANEL.datos.totales;
+  return pnCab("Panel", "Solo para ti")
+    + pnGrupo("De un vistazo")
+    + (t ? [["Cuentas", t.usuarios], ["Hoy", t.hoy], ["Esta semana", t.semana], ["Este mes", t.mes]]
+        .map(([k, v]) => pnFila("", "", k, String(num(v)))).join("") : pnVacio("Cargando…"));
+}
+
+
 /* ══════════════════ pintado ══════════════════ */
 function pinta() {
   if (BV) { pintaEntrada(); return; }
   if (seccion !== "escritorio") ilEditando = false;
   if (seccion === "oposicion" && !esOpositor()) seccion = "escritorio";
   if (seccion === "tutor" && !profeActivo()) seccion = "escritorio";
+  if (seccion === "panel" && !esAdminNube) seccion = "escritorio";
   evaluarObjetivos();
   pintaNav();
   const c = $("#contenido");
   c.innerHTML = { escritorio: vistaEscritorio, oposicion: vistaOposicion, tutor: vistaTutor, modulos: vistaModulos, apuntes: vistaApuntes,
     entregas: vistaAgenda, repaso: vistaRepaso, progreso: vistaProgreso,
-    casillero: vistaCasillero, ingles: vistaIngles, ajustes: vistaAjustes }[seccion]();
+    casillero: vistaCasillero, ingles: vistaIngles, ajustes: vistaAjustes, panel: vistaPanel }[seccion]();
   if (seccion === "escritorio") pintaReloj();
   if (seccion === "tutor") { tutorLeido(); chatAbajo(); }
   if (seccion === "apuntes" && apunteActivo && S.apuntes[apunteActivo]) { contarPalabras(); montarLibreta(); }
@@ -8462,8 +9021,8 @@ function ajAspecto() {
 }
 
 /* los papeles salen de legal/*.md del repositorio: se generan con aplicar-legal.js */
-const LEGAL = [{"id":"privacidad","nombre":"Privacidad","resumen":"Qué datos se guardan, dónde viven y cómo borrarlos","titulo":"Política de privacidad","html":"<p>En vigor desde el 20 de septiembre de 2026.</p><h3>Lo importante, en cinco líneas</h3><p>GritNook <strong>no pide correo, ni contraseña, ni teléfono, ni datos de pago</strong>. Lo que escribes —tus asignaturas, tus notas, tus apuntes y tus archivos— se guarda en tu propio navegador y, si abres la app desde Claude, en tu cuenta de Claude. <strong>No hay publicidad, no hay analítica y no se vende nada a nadie.</strong> El profe con inteligencia artificial está <strong>apagado por ahora</strong>, así que la app no envía nada a ninguna IA: lo que escribes no sale de tu dispositivo. Puedes descargarte todo o borrarlo entero cuando quieras, desde Ajustes → Datos.</p><h3>1. Quién responde de tus datos</h3><ul><li><strong>Responsable:</strong> Gabriel Rodríguez Blanco</li><li><strong>NIF:</strong> 09215128V</li><li><strong>Correo para todo lo relacionado con tus datos:</strong> gabriel_gabiz@hotmail.com</li></ul><p>No hace falta delegado de protección de datos. El correo es el canal oficial: por ahí se atienden todas las peticiones, y se responden en un mes como máximo.</p><h3>2. Qué datos se tratan</h3><p>Los que tú escribes en la aplicación: tu nombre o apodo, qué estudias, tus asignaturas con sus notas y sus faltas, tu agenda, tus apuntes y dibujos, los archivos que subes al casillero, tus tarjetas de repaso, tu vocabulario de inglés, tus minutos de estudio y tus conversaciones con el profe.</p><p>El detalle completo, campo por campo, está en el <span class=\"lg-ref\">inventario de datos</span>, que se actualiza cada vez que la aplicación cambia.</p><p><strong>No se tratan</strong> ni datos de pago, ni ubicación, ni identificadores publicitarios, ni nada que tú no escribas.</p><p>Ten en cuenta que entre tus datos puede haber <strong>datos de salud</strong> si tú los escribes (por ejemplo, un apunte que diga por qué faltaste a clase). La app no te los pide y no los necesita; si los escribes, quedan guardados como cualquier otro apunte. Te recomendamos no escribirlos.</p><h3>3. Para qué se usan y con qué base legal</h3><div class=\"lg-tabla\"><table><thead><tr><th>Para qué</th><th>Base legal</th></tr></thead><tbody><tr><td>Que la app funcione: guardar tu perfil, tus notas, tu agenda y tus apuntes, y calcular lo que te falta para aprobar</td><td>Ejecutar el contrato que aceptas al usarla (art. 6.1.b RGPD)</td></tr><tr><td>Que el profe pueda responderte, explicarte y preguntarte</td><td>Ejecutar el contrato (art. 6.1.b RGPD)</td></tr><tr><td>Sincronizar entre tus dispositivos, si abres la app desde Claude</td><td>Ejecutar el contrato (art. 6.1.b RGPD)</td></tr><tr><td>Recordar el tema claro u oscuro y tus preferencias de la libreta</td><td>Interés legítimo en que la app se vea como la dejaste (art. 6.1.f RGPD)</td></tr><tr><td>Atender tus derechos y responder a lo que preguntes</td><td>Obligación legal (art. 6.1.c RGPD)</td></tr></tbody></table></div><p><strong>No se usan</strong> para publicidad, ni para perfilarte, ni para entrenar modelos de inteligencia artificial.</p><p><strong>No hay decisiones automatizadas</strong> con efectos jurídicos sobre ti. Cuando la app dice que una asignatura está «en riesgo» o que un examen es urgente, es una cuenta hecha con los datos que tú has metido, para ayudarte a decidir: no decide nada por ti y no la ve nadie más.</p><h3>4. Cookies y almacenamiento en tu dispositivo</h3><p><strong>No se usan cookies.</strong> La app guarda sus datos en el almacenamiento local del navegador porque es lo que la hace funcionar sin servidor. Es almacenamiento técnico imprescindible para prestar el servicio que pides, así que está exento de pedir consentimiento (art. 22.2 LSSI). No se usa para seguirte ni para medir nada, y se borra entero desde Ajustes → Datos o borrando los datos del sitio en tu navegador.</p><p>Ahí se guardan también tres cosas pequeñas de la propia app: la fecha de tu última copia de seguridad (para recordártela), qué avisos ya has visto (para no repetirlos) y los últimos fallos que haya dado, que no salen de tu dispositivo. Si tu navegador lo permite, la app le pide que <strong>no borre estos datos</strong> cuando ande justo de espacio.</p><h3>5. Quién más ve tus datos</h3><div class=\"lg-tabla\"><table><thead><tr><th>Quién</th><th>Qué ve</th><th>Dónde está</th></tr></thead><tbody><tr><td>Anthropic (proveedor del profe con IA)</td><td><strong>Ahora mismo, nada: el profe está apagado.</strong> Cuando se encienda, solo lo que se le envíe en cada pregunta. El detalle exacto, campo por campo, está en cómo funciona el profe: en resumen, tu nombre o apodo, tu curso, tus asignaturas con sus notas, tus entregas y exámenes, tu horario, los títulos de tus apuntes, el contenido del que tengas abierto, los últimos mensajes y los archivos que adjuntes</td><td>Estados Unidos</td></tr><tr><td>Anthropic (almacenamiento de Claude), solo si abres la app desde allí</td><td>Tus datos sincronizados y tus archivos del casillero</td><td>Estados Unidos</td></tr><tr><td>GitHub Pages (GitHub, Inc.)</td><td>Solo sirve los archivos de la app. Como cualquier servidor web, registra la dirección IP y el navegador de quien la abre, por seguridad. <strong>No recibe ninguno de tus datos de estudio</strong></td><td>Estados Unidos</td></tr></tbody></table></div><p>A eso se suma una cosa que decides tú: si usas <strong>Ajustes → Datos → Contar un fallo</strong> y le das a enviar, se abre tu programa de correo con un mensaje ya escrito para el responsable de la app. Lleva lo que tú cuentes y unos datos técnicos —versión, navegador, tamaño de pantalla, idioma, cuántos apuntes y documentos tienes y los últimos fallos que la app haya apuntado—, pero <strong>ni tu nombre, ni tus notas, ni tus apuntes</strong>. Puedes leerlo entero antes de mandarlo, y no se envía nada si no le das tú a enviar.</p><p>No hay nadie más. No se ceden datos a terceros, ni se venden, ni hay anunciantes. Solo se entregarían a jueces, fuerzas de seguridad o administraciones si una ley lo obligara.</p><h3>6. Datos que salen de la Unión Europea</h3><p><strong>Mientras el profe esté apagado, no sale ningún dato tuyo hacia ninguna IA.</strong> Lo que sigue es lo que pasará cuando se encienda.</p><p>El profe con IA se procesa en Estados Unidos. Esa transferencia está amparada en las <strong>cláusulas contractuales tipo</strong> aprobadas por la Comisión Europea y, en su caso, en el <strong>marco de privacidad UE-EE. UU.</strong> al que esté adherido el proveedor. Puedes pedirnos copia de las garantías escribiendo al correo de contacto.</p><p><mark class=\"lg-falta\">RELLENAR: confirmar el mecanismo exacto al firmar el contrato de encargado de tratamiento con el proveedor, y actualizar este párrafo.</mark></p><p>Si no quieres que nada salga de Europa, no uses el profe: el resto de la aplicación funciona sin él.</p><h3>7. Cuánto tiempo se guardan</h3><p>Mientras tú quieras. No hay borrado automático ni caducidad.</p><ul><li>Si borras un apunte o un documento, se borra en ese momento, también de la nube.</li><li>Si pulsas «Borrar todo», se borra todo: lo de este dispositivo, lo sincronizado y los archivos que hayas subido. No se puede deshacer.</li><li>Si dejas de usar la app y borras los datos del navegador, no queda nada.</li></ul><p>El correo que nos escribas para ejercer tus derechos se guarda mientras haga falta para atenderlo y, después, el tiempo que obliguen las leyes de prescripción.</p><h3>8. Tus derechos</h3><p>Puedes pedir, gratis y en cualquier momento:</p><ul><li><strong>Acceso</strong>: saber qué datos hay sobre ti. De hecho, los tienes tú: están en tu navegador y te los puedes descargar en un clic.</li><li><strong>Rectificación</strong>: corregir lo que esté mal. Se edita directamente en la app.</li><li><strong>Supresión</strong>: que se borre todo. Ajustes → Datos → Borrar todo.</li><li><strong>Portabilidad</strong>: llevarte tus datos. Ajustes → Datos → Descargar copia, que te da un archivo JSON con absolutamente todo.</li><li><strong>Limitación y oposición</strong> al tratamiento.</li></ul><p>Casi todos los puedes ejercer tú solo desde la app, sin pedir permiso a nadie. Si prefieres escribir, el correo es gabriel_gabiz@hotmail.com. Se responde en un mes como máximo.</p><p>Si crees que no se han respetado tus derechos, puedes reclamar ante la <strong>Agencia Española de Protección de Datos</strong> (www.aepd.es, C/ Jorge Juan 6, 28001 Madrid).</p><h3>9. Menores de edad</h3><p>Para usar GritNook hay que tener <strong>14 años cumplidos</strong>. Es la edad que fija la ley española (art. 7 de la Ley Orgánica 3/2018) para que alguien pueda decidir por sí mismo sobre sus datos en un servicio como este.</p><p>Si tienes menos de 14 años, necesitas que tu padre, tu madre o tu tutor lo autoricen y usen la app contigo.</p><p>Si tienes entre 14 y 18, puedes usarla tú solo, pero es buena idea contárselo en casa, sobre todo porque el profe funciona con inteligencia artificial.</p><p>Padres y tutores: podéis escribir al correo de contacto para preguntar qué datos hay, corregirlos o pedir que se borren.</p><h3>10. Seguridad</h3><p>La app se sirve siempre por conexión cifrada (HTTPS). Los datos no viajan a ningún servidor propio porque no lo hay: viven en tu dispositivo y, si usas Claude, en tu cuenta, protegida por tu propia contraseña.</p><p>Eso tiene una consecuencia que conviene entender: <strong>quien tenga acceso a tu dispositivo desbloqueado puede ver tus apuntes</strong>, igual que puede ver tus fotos. Si compartes ordenador, bloquéalo o usa la app desde tu cuenta de Claude.</p><h3>11. Cambios en esta política</h3><p>Si cambia algo —que se añada una función que guarde datos nuevos, que cambie el proveedor de IA o que aparezcan cuentas propias— se actualiza este texto, se cambia la fecha de arriba y se avisa dentro de la aplicación.</p>"},{"id":"ia","nombre":"Cómo funciona el profe","resumen":"Que es una máquina, qué se le manda y en qué se equivoca","titulo":"Cómo funciona el profe","html":"<p>En vigor desde el 20 de septiembre de 2026.</p><h3>Estás hablando con una máquina</h3><p>El profe de GritNook es un programa de inteligencia artificial. <strong>No es una persona</strong>, aunque escriba como si lo fuera, te anime o se acuerde de lo que hablasteis. Te lo decimos claramente porque lo exige el artículo 50 del Reglamento (UE) 2024/1689 de inteligencia artificial, y porque es de justicia saberlo.</p><p>El modelo lo pone <strong>Anthropic</strong>, y las respuestas se generan en servidores de <strong>Estados Unidos</strong>.</p><h3>Qué se le manda cuando le preguntas</h3><p>Para poder responderte con sentido, se le envía:</p><ul><li>tu nombre o apodo, qué estudias y en qué curso;</li><li>si trabajas, cuántas horas de estudio te has propuesto a la semana, qué días dices que puedes ponerte, qué nota buscas, <strong>qué te cuesta más y para qué estudias</strong> (esas dos las escribes tú y son opcionales: si las dejas en blanco, no hay nada que mandar);</li><li>tus asignaturas con sus notas, lo que te falta para aprobar y, cuando las faltas ya aprietan, cuántas llevas;</li><li>las entregas y exámenes que tengas cerca, con sus fechas y su plan;</li><li>tu horario de clases de hoy y de mañana, solo las horas y la asignatura;</li><li><strong>los títulos</strong> de tus apuntes, para que sepa qué has visto ya;</li><li><strong>el contenido del apunte que tengas abierto en ese momento</strong>, hasta unas 1.200 letras, para que pueda hablar de lo que estás mirando. Si no tienes ninguno abierto, no se manda ningún apunte;</li><li>cuántas tarjetas de repaso te tocan hoy y tus objetivos del día;</li><li>los últimos mensajes de vuestra conversación;</li><li>los archivos o capturas que tú le adjuntes;</li><li><strong>si opositas</strong>: el nombre de tu oposición, la fecha y las reglas del examen (preguntas, opciones, lo que resta cada fallo y la nota de corte), cuántos temas tiene tu temario y por qué vuelta vas, el número y el título de los temas que te tocan hoy, de los que se te enfrían y de los que llevas flojos, y los resultados de tus simulacros. Si hay tema a desarrollar, cuántas bolas se sacan y la probabilidad de que te salga uno que llevas. Y si has puesto el plazo de la solicitud, hasta cuándo es y si ya la has presentado.</li></ul><p><strong>No se le manda</strong> nada que no esté en esa lista. En concreto, <strong>no</strong> se le envían los archivos de tu casillero, ni tu vocabulario de inglés, ni lo que hay escrito en tus tarjetas de repaso, ni el nombre de tu centro, ni el de tu aula, ni el texto de los apuntes que no tengas abiertos, ni las notas que escribas en cada tema de la oposición, ni los enlaces que guardes a leyes o a las bases, ni las horas que llevas en cada tema, ni de qué temas eran tus fallos.</p><p>Cuando pulsas «Que el profe me pregunte este tema», la app te deja escrita la petición con el número y el título del tema, pero <strong>no la envía</strong>: la mandas tú.</p><h3>En qué se equivoca</h3><p>Se equivoca. No de vez en cuando: forma parte de cómo funcionan estas máquinas.</p><ul><li>Puede <strong>inventarse</strong> datos, fechas, artículos de ley o funciones de un lenguaje de programación, y contártelo con total seguridad.</li><li>Puede estar <strong>desactualizado</strong> sobre el temario, la convocatoria o la normativa de tu ciclo.</li><li>No conoce las normas de tu centro. <strong>Quien decide cómo te evalúan y cuántas faltas te dejan es tu centro, no la app.</strong></li></ul><p>Regla sencilla: si te lo juegas —una fecha de entrega, una fórmula de un examen, un trámite— <strong>compruébalo en la fuente oficial</strong>.</p><h3>Para qué no sirve</h3><ul><li><strong>No es un médico ni un psicólogo.</strong> Si lo estás pasando mal, habla con alguien de verdad. Teléfono de atención a la conducta suicida: <strong>024</strong>. Emergencias: <strong>112</strong>.</li><li><strong>No es un abogado ni un asesor financiero.</strong></li><li><strong>No atiende emergencias</strong> de ningún tipo.</li><li><strong>No es para copiar.</strong> Está para que entiendas y apruebes. Entregar como tuyo lo que te ha escrito una máquina puede ser una falta académica en tu centro, y el responsable de lo que entregues eres tú.</li></ul><h3>De qué no habla</h3><p>El profe está programado para hablar <strong>solo de tus estudios</strong>: tu ciclo, tus asignaturas y tus dudas profesionales. Si le preguntas por su vida, por la tuya o por cualquier otra cosa, te lo dirá y volverá al tema. No es antipatía: es que un profe de verdad tampoco entra ahí.</p><h3>Qué pasa con lo que le cuentas</h3><ul><li>La conversación se guarda <strong>contigo</strong>, igual que tus apuntes, y se borra con ellos desde Ajustes → Datos.</li><li><strong>No se usa para entrenar modelos.</strong></li><li>El proveedor la procesa para generarte una respuesta y la conserva el tiempo que diga su propia política, en los términos del contrato firmado con él.</li></ul><p><mark class=\"lg-falta\">RELLENAR: confirmar el plazo y las condiciones exactas al firmar el contrato de encargado de tratamiento con el proveedor.</mark></p><h3>Si no lo quieres usar</h3><p>El resto de GritNook —notas, faltas, agenda, apuntes, casillero, repaso— funciona sin el profe.</p><p>Puedes apagarlo del todo en <strong>Ajustes → El profe</strong>, quitando la marca de «Usar el profe con inteligencia artificial». Mientras esté apagado <strong>no sale nada</strong> de la aplicación hacia ninguna IA: ni tu nombre, ni tus notas, ni tus apuntes. Lo que le escribas se guarda en tu dispositivo, pero no se envía a nadie. Se vuelve a encender en el mismo sitio.</p>"},{"id":"terminos","nombre":"Términos de uso","resumen":"Las reglas entre tú y GritNook","titulo":"Términos de uso","html":"<p>En vigor desde el 20 de septiembre de 2026.</p><h3>1. Qué es esto</h3><p>Estas son las reglas entre <strong>Gabriel Rodríguez Blanco</strong>, NIF 09215128V («el titular»), y tú, que usas GritNook. Al usar la aplicación las aceptas. Si no estás de acuerdo con alguna, no la uses.</p><p>Van con ellas la <button type=\"button\" class=\"lg-enlace\" data-lg=\"privacidad\">política de privacidad</button>, el <button type=\"button\" class=\"lg-enlace\" data-lg=\"aviso-legal\">aviso legal</button> y el <button type=\"button\" class=\"lg-enlace\" data-lg=\"ia\">aviso sobre la IA</button>.</p><h3>2. Qué hace la aplicación</h3><p>GritNook te ayuda a organizar los estudios: apuntar asignaturas, notas y faltas, ver qué te falta para aprobar, llevar la agenda de entregas y exámenes, tomar apuntes, guardar documentos y estudiar con un profe que funciona con inteligencia artificial.</p><p>Es una herramienta de apoyo. <strong>No sustituye a tu centro, a tu profesorado ni a las normas de tu ciclo.</strong></p><h3>3. Quién puede usarla</h3><p>Hay que tener <strong>14 años cumplidos</strong>. Con menos, hace falta que tu padre, tu madre o tu tutor lo autoricen y la usen contigo.</p><p>Si tienes entre 14 y 18 años puedes usarla, pero al aceptar estos términos estás diciendo que en casa lo saben.</p><h3>4. Cuánto cuesta</h3><p>Hoy la aplicación es <strong>gratuita</strong>. Si en el futuro hay una versión de pago, se avisará con antelación dentro de la app, y lo que ya tengas guardado seguirá siendo tuyo y descargable en cualquier caso.</p><p><mark class=\"lg-falta\">RELLENAR cuando haya cobro: precio, forma de pago, duración, renovación, cancelación y derecho de desistimiento de 14 días.</mark></p><h3>5. Lo que te damos</h3><p>Un permiso personal para usar la aplicación: no exclusivo, no transferible, revocable y solo para estudiar tú. No incluye poder:</p><ul><li>copiar, distribuir o vender el código, ni entero ni a trozos;</li><li>quitar el nombre, el logotipo o los avisos de autoría;</li><li>usarla para montar un servicio parecido;</li><li>entrar por donde no toca, saltarte límites o hacerle ingeniería inversa más allá de lo que la ley permita.</li></ul><p>Las condiciones completas del código están en el <span class=\"lg-ref\">archivo de licencia</span>.</p><h3>6. Lo que escribes es tuyo</h3><p>Tus apuntes, tus notas, tus archivos y tus conversaciones <strong>son tuyos</strong>. El titular no adquiere ningún derecho sobre ellos: solo los guarda donde tú decides y los envía al proveedor de IA cuando le preguntas, porque si no, no podría responderte.</p><p>No se usan para entrenar modelos, ni para publicidad, ni se enseñan a nadie.</p><h3>7. Lo que no puedes subir</h3><p>Ni contenido ilegal, ni material protegido de otros sin permiso, ni datos personales de terceros (fotos de compañeros, exámenes con nombres, informes médicos de nadie), ni nada que pueda dañar la aplicación o a quien la use.</p><p>Tú respondes de lo que subes.</p><h3>8. El profe con inteligencia artificial</h3><p>Léete el <button type=\"button\" class=\"lg-enlace\" data-lg=\"ia\">aviso sobre la IA</button>. En resumen:</p><ul><li>Es una máquina, no una persona.</li><li><strong>Puede equivocarse.</strong> Comprueba siempre las fechas, las fórmulas y cualquier cosa que te juegues.</li><li>No es asesoramiento médico, legal ni financiero, y no atiende emergencias.</li><li>Está para que aprendas y apruebes, no para hacerte los trabajos. Copiar lo que te dé y entregarlo como tuyo puede ser una falta académica en tu centro: eso es cosa tuya y de las normas de tu escuela.</li></ul><h3>9. Que funcione</h3><p>Se hace lo posible para que la aplicación esté disponible y no falle, pero no se promete que esté siempre ni que no tenga errores. Puede haber cortes por mantenimiento, por cambios o porque falle un proveedor.</p><p><strong>Haz copias.</strong> Ajustes → Datos → Descargar copia. Si borras los datos del navegador, cambias de dispositivo o se estropea, sin copia no hay vuelta atrás.</p><h3>10. Hasta cuándo</h3><p>Puedes dejar de usarla cuando quieras: borrando tus datos desde Ajustes o simplemente cerrando la app. El titular puede retirar la aplicación o dejar de prestar el servicio avisando con antelación razonable dentro de la app, para que te dé tiempo a descargarte tus cosas.</p><h3>11. Responsabilidad</h3><p>El titular responde de los daños que cause por dolo o por negligencia grave, y de todo lo que la ley no permita excluir. Fuera de eso, y en la medida en que la ley lo permita, no responde de:</p><ul><li>la pérdida de datos por borrar el navegador, perder el dispositivo o no hacer copias;</li><li>las consecuencias de fiarse de un cálculo o de una respuesta del profe sin comprobarla;</li><li>los fallos de servicios de terceros de los que depende la aplicación.</li></ul><p><strong>Si eres consumidor, nada de esto te quita los derechos que te da la ley.</strong></p><h3>12. Cambios</h3><p>Estos términos se pueden cambiar. Los cambios importantes se avisan dentro de la aplicación antes de que entren en vigor. Seguir usándola después es aceptarlos.</p><h3>13. Ley y conflictos</h3><p>Se aplica la ley española. Si algo se tuerce, escribe primero al correo de contacto: casi todo se arregla así. Si no, los tribunales competentes serán los que diga la ley y, si eres consumidor, los de tu domicilio. También puedes acudir a las juntas arbitrales de consumo.</p>"},{"id":"aviso-legal","nombre":"Aviso legal","resumen":"Quién está detrás de la aplicación","titulo":"Aviso legal","html":"<p>En vigor desde el 20 de septiembre de 2026.</p><h3>Quién está detrás de GritNook</h3><ul><li><strong>Titular:</strong> Gabriel Rodríguez Blanco</li><li><strong>NIF:</strong> 09215128V</li><li><strong>Correo de contacto:</strong> gabriel_gabiz@hotmail.com</li><li><strong>Dirección de la aplicación:</strong> https://gabriel15gabi.github.io/gritnook/</li></ul><p>Esta información se publica para cumplir el artículo 10 de la Ley 34/2002, de servicios de la sociedad de la información y de comercio electrónico.</p><p>GritNook se ofrece <strong>gratis y sin actividad comercial</strong>: no se cobra por ella, no hay publicidad y no se vende nada. Por eso aquí no figura una dirección postal. El día que la aplicación pase a ser de pago se publicará también el domicilio del titular, que es lo que exige ese artículo 10 cuando hay actividad económica. Mientras tanto, para cualquier notificación sirve el correo de contacto, que se lee y se responde.</p><h3>Qué es GritNook</h3><p>GritNook es una aplicación web para organizar los estudios: asignaturas, notas, faltas, entregas, apuntes, documentos y un profe con inteligencia artificial que explica y pregunta. Funciona dentro del navegador, sin instalar nada.</p><h3>Condiciones de uso</h3><p>El uso de la aplicación implica aceptar este aviso, los <button type=\"button\" class=\"lg-enlace\" data-lg=\"terminos\">términos de uso</button>, la <button type=\"button\" class=\"lg-enlace\" data-lg=\"privacidad\">política de privacidad</button> y el <button type=\"button\" class=\"lg-enlace\" data-lg=\"ia\">aviso sobre la inteligencia artificial</button>. Quien no esté de acuerdo, que no la use.</p><p>El titular puede cambiar, suspender o retirar la aplicación o cualquiera de sus partes, y modificar estos textos. Los cambios se publican en esta misma dirección con su fecha.</p><h3>De quién es lo que ves</h3><p>El código, el diseño, los textos, el nombre «GritNook» y su logotipo son del titular. Están publicados para poder leerlos y estudiarlos, no para copiarlos: las condiciones están en el <span class=\"lg-ref\">archivo de licencia</span> del repositorio.</p><p>La aplicación incluye piezas de otros autores —tipografías, iconos y la librería que abre los PDF— que mantienen sus propias licencias libres, detalladas en los <span class=\"lg-ref\">créditos</span>.</p><p><strong>Lo que escribe cada persona sigue siendo suyo.</strong> Los apuntes, las notas y los archivos que se suben pertenecen a quien los crea; el titular no se queda con ningún derecho sobre ellos.</p><h3>Responsabilidad</h3><p>El titular pone todo el cuidado razonable en que la aplicación funcione y en que los cálculos de notas y de faltas sean correctos, pero la aplicación se ofrece «tal cual». En concreto:</p><ul><li>Lo que calcula y lo que responde el profe es <strong>orientativo</strong>. Las normas de evaluación y de asistencia las pone cada centro, y son las que mandan.</li><li>No se garantiza que la aplicación esté disponible sin interrupciones ni que esté libre de errores.</li><li>Cada persona es responsable de guardar una copia de sus datos. La aplicación tiene un botón para descargarla en Ajustes → Datos.</li></ul><p>Nada de lo anterior limita los derechos que la ley reconoce a los consumidores.</p><h3>Enlaces a otros sitios</h3><p>Si la aplicación enlaza a páginas de terceros, el titular no responde de su contenido ni de lo que esas páginas hagan con los datos de quien las visite.</p><h3>Ley aplicable</h3><p>Se aplica la ley española. Para cualquier conflicto, las partes se someten a los juzgados que correspondan según la ley; cuando quien usa la aplicación es consumidor, los de su propio domicilio.</p><p>Quien sea consumidor y tenga una queja puede dirigirse antes al correo de contacto y, si no queda resuelta, a las juntas arbitrales de consumo.</p>"}];
-const LEGAL_V = "20 de septiembre de 2026";
+const LEGAL = [{"id":"privacidad","nombre":"Privacidad","resumen":"Qué datos se guardan, dónde viven y cómo borrarlos","titulo":"Política de privacidad","html":"<p>En vigor desde el 23 de septiembre de 2026.</p><h3>Lo importante, en pocas líneas</h3><p>Para usar GritNook te haces una <strong>cuenta con tu correo y una contraseña</strong>. No se pide teléfono, ni dirección, ni datos de pago. Lo que escribes —tus asignaturas, tus notas, tus apuntes y tus archivos— se guarda <strong>en tu cuenta, en un servidor de la Unión Europea (Frankfurt, Alemania)</strong>, y en tu navegador, para que funcione también sin conexión. Si abres la app desde Claude, se guarda en tu cuenta de Claude en su lugar.</p><p>El responsable de la app ve <strong>tu correo y cuánto la usas, nunca lo que escribes</strong>. <strong>No hay publicidad, ni analítica de terceros, y no se vende nada a nadie.</strong> El profe con inteligencia artificial está <strong>apagado por ahora</strong>, así que la app no envía nada a ninguna IA. Puedes descargarte todo o borrar tu cuenta entera cuando quieras, desde Ajustes → Datos.</p><h3>1. Quién responde de tus datos</h3><ul><li><strong>Responsable:</strong> Gabriel Rodríguez Blanco</li><li><strong>NIF:</strong> 09215128V</li><li><strong>Correo para todo lo relacionado con tus datos:</strong> gabriel_gabiz@hotmail.com</li></ul><p>No hace falta delegado de protección de datos. El correo es el canal oficial: por ahí se atienden todas las peticiones, y se responden en un mes como máximo.</p><h3>2. Qué datos se tratan</h3><p>Los que tú escribes en la aplicación: tu nombre o apodo, qué estudias, tus asignaturas con sus notas y sus faltas, tu agenda, tus apuntes y dibujos, los archivos que subes al casillero, tus tarjetas de repaso, tu vocabulario de inglés, tus minutos de estudio y tus conversaciones con el profe.</p><p>Para tu cuenta: tu <strong>correo electrónico</strong> y tu <strong>contraseña</strong>, que no se guarda tal cual sino cifrada de forma que no se puede leer (nadie puede verla, tampoco el responsable). Y, para saber cuánto se usa la app, <strong>qué días entras</strong> (el día y cuántas veces), cuándo te diste de alta y la última vez que entraste.</p><p>Como cualquier servidor, el de las cuentas apunta durante un tiempo corto la dirección IP y el navegador de cada conexión, por seguridad.</p><p>El detalle completo, campo por campo, está en el <span class=\"lg-ref\">inventario de datos</span>, que se actualiza cada vez que la aplicación cambia.</p><p><strong>No se tratan</strong> ni datos de pago, ni ubicación, ni identificadores publicitarios, ni nada que tú no escribas.</p><p>Ten en cuenta que entre tus datos puede haber <strong>datos de salud</strong> si tú los escribes (por ejemplo, un apunte que diga por qué faltaste a clase). La app no te los pide y no los necesita; si los escribes, quedan guardados como cualquier otro apunte. Te recomendamos no escribirlos.</p><h3>3. Para qué se usan y con qué base legal</h3><div class=\"lg-tabla\"><table><thead><tr><th>Para qué</th><th>Base legal</th></tr></thead><tbody><tr><td>Que la app funcione: guardar tu perfil, tus notas, tu agenda y tus apuntes, y calcular lo que te falta para aprobar</td><td>Ejecutar el contrato que aceptas al usarla (art. 6.1.b RGPD)</td></tr><tr><td>Que el profe pueda responderte, explicarte y preguntarte</td><td>Ejecutar el contrato (art. 6.1.b RGPD)</td></tr><tr><td>Crear y mantener tu cuenta, y guardar ahí tus datos para que los veas desde cualquier dispositivo</td><td>Ejecutar el contrato (art. 6.1.b RGPD)</td></tr><tr><td>Mandarte los correos del servicio: cambiar la contraseña o avisarte de un cambio importante</td><td>Ejecutar el contrato (art. 6.1.b RGPD)</td></tr><tr><td>Saber cuánta gente usa la app y cuánto (qué días entra cada cuenta), para mejorarla</td><td>Interés legítimo en conocer el uso de un servicio que está empezando (art. 6.1.f RGPD). Solo se apunta el día, nunca lo que haces. Puedes oponerte escribiendo al correo de contacto</td></tr><tr><td>Sincronizar entre tus dispositivos, si abres la app desde Claude</td><td>Ejecutar el contrato (art. 6.1.b RGPD)</td></tr><tr><td>Recordar el tema claro u oscuro y tus preferencias de la libreta</td><td>Interés legítimo en que la app se vea como la dejaste (art. 6.1.f RGPD)</td></tr><tr><td>Atender tus derechos y responder a lo que preguntes</td><td>Obligación legal (art. 6.1.c RGPD)</td></tr></tbody></table></div><p><strong>No se usan</strong> para publicidad, ni para perfilarte, ni para entrenar modelos de inteligencia artificial.</p><p><strong>No hay decisiones automatizadas</strong> con efectos jurídicos sobre ti. Cuando la app dice que una asignatura está «en riesgo» o que un examen es urgente, es una cuenta hecha con los datos que tú has metido, para ayudarte a decidir: no decide nada por ti y no la ve nadie más.</p><h3>4. Cookies y almacenamiento en tu dispositivo</h3><p><strong>No se usan cookies.</strong> La app guarda sus datos en el almacenamiento local del navegador porque es lo que la hace funcionar sin conexión. Si tienes cuenta, ahí se guarda también la sesión (lo que te mantiene dentro sin volver a poner la contraseña) y la lista de cambios que faltan por subir. Es almacenamiento técnico imprescindible para prestar el servicio que pides, así que está exento de pedir consentimiento (art. 22.2 LSSI). No se usa para seguirte ni para medir nada, y se borra entero desde Ajustes → Datos o borrando los datos del sitio en tu navegador.</p><p>Ahí se guardan también tres cosas pequeñas de la propia app: la fecha de tu última copia de seguridad (para recordártela), qué avisos ya has visto (para no repetirlos) y los últimos fallos que haya dado, que no salen de tu dispositivo. Si tu navegador lo permite, la app le pide que <strong>no borre estos datos</strong> cuando ande justo de espacio.</p><h3>5. Quién más ve tus datos</h3><div class=\"lg-tabla\"><table><thead><tr><th>Quién</th><th>Qué ve</th><th>Dónde está</th></tr></thead><tbody><tr><td>Anthropic (proveedor del profe con IA)</td><td><strong>Ahora mismo, nada: el profe está apagado.</strong> Cuando se encienda, solo lo que se le envíe en cada pregunta. El detalle exacto, campo por campo, está en cómo funciona el profe: en resumen, tu nombre o apodo, tu curso, tus asignaturas con sus notas, tus entregas y exámenes, tu horario, los títulos de tus apuntes, el contenido del que tengas abierto, los últimos mensajes y los archivos que adjuntes</td><td>Estados Unidos</td></tr><tr><td>Anthropic (almacenamiento de Claude), solo si abres la app desde allí</td><td>Tus datos sincronizados y tus archivos del casillero</td><td>Estados Unidos</td></tr><tr><td>Supabase, Inc. (el servidor de las cuentas), como encargado de tratamiento</td><td>Tu correo, tu contraseña cifrada, tus datos, tus archivos y los días que entras, para guardarlos. No los usa para nada más</td><td>Unión Europea (Frankfurt, Alemania)</td></tr><tr><td>GitHub Pages (GitHub, Inc.)</td><td>Solo sirve los archivos de la app. Como cualquier servidor web, registra la dirección IP y el navegador de quien la abre, por seguridad. <strong>No recibe ninguno de tus datos de estudio</strong></td><td>Estados Unidos</td></tr></tbody></table></div><p><strong>Lo que ve el responsable de la app.</strong> Tiene un panel con, de cada cuenta: el correo, cuándo se dio de alta, la última vez que entró, cuántos días ha entrado en la última semana y en el último mes, qué estudia (ESO, Bachillerato, FP, universidad, oposición…) y cuánto espacio ocupa. <strong>No ve tus apuntes, tus notas, tus archivos ni nada de lo que escribes</strong>: el panel no los lee. Si algún día hiciera falta mirar algo tuyo para arreglar un fallo, se te pedirá que mandes tú una copia.</p><p>A eso se suma una cosa que decides tú: si usas <strong>Ajustes → Datos → Contar un fallo</strong> y le das a enviar, se abre tu programa de correo con un mensaje ya escrito para el responsable de la app. Lleva lo que tú cuentes y unos datos técnicos —versión, navegador, tamaño de pantalla, idioma, cuántos apuntes y documentos tienes y los últimos fallos que la app haya apuntado—, pero <strong>ni tu nombre, ni tus notas, ni tus apuntes</strong>. Puedes leerlo entero antes de mandarlo, y no se envía nada si no le das tú a enviar.</p><p>No hay nadie más. No se ceden datos a terceros, ni se venden, ni hay anunciantes. Solo se entregarían a jueces, fuerzas de seguridad o administraciones si una ley lo obligara.</p><h3>6. Datos que salen de la Unión Europea</h3><p><strong>Tu cuenta</strong> se guarda en Frankfurt (Alemania). Supabase es una empresa de Estados Unidos: si su personal tuviera que entrar desde fuera de Europa para dar soporte o mantenimiento, lo cubre su contrato de encargado de tratamiento, con las <strong>cláusulas contractuales tipo</strong> de la Comisión Europea.</p><p><strong>Mientras el profe esté apagado, no sale ningún dato tuyo hacia ninguna IA.</strong> Lo que sigue es lo que pasará cuando se encienda.</p><p>El profe con IA se procesa en Estados Unidos. Esa transferencia está amparada en las <strong>cláusulas contractuales tipo</strong> aprobadas por la Comisión Europea y, en su caso, en el <strong>marco de privacidad UE-EE. UU.</strong> al que esté adherido el proveedor. Puedes pedirnos copia de las garantías escribiendo al correo de contacto.</p><p><mark class=\"lg-falta\">RELLENAR: confirmar el mecanismo exacto al firmar el contrato de encargado de tratamiento con el proveedor, y actualizar este párrafo.</mark></p><p>Si no quieres que nada salga de Europa, no uses el profe: el resto de la aplicación funciona sin él.</p><h3>7. Cuánto tiempo se guardan</h3><p>Mientras tú quieras. No hay borrado automático ni caducidad.</p><ul><li>Si borras un apunte o un documento, se borra en ese momento, también de tu cuenta.</li><li>Si pulsas «Borrar todo», se borran tus datos: lo de este dispositivo, lo de tu cuenta y los archivos que hayas subido. La cuenta sigue, vacía.</li><li>Si pulsas <strong>«Borrar mi cuenta»</strong>, se borra al momento del servidor: tu correo, tu contraseña, todos tus datos, tus archivos y los días que entraste. No se puede deshacer.</li><li>Si cierras sesión, se borra lo de ese navegador; lo tuyo sigue en tu cuenta.</li><li>Si la app cierra algún día, se avisará con tiempo para que te descargues lo tuyo, y después se borrarán todas las cuentas.</li></ul><p>El correo que nos escribas para ejercer tus derechos se guarda mientras haga falta para atenderlo y, después, el tiempo que obliguen las leyes de prescripción.</p><h3>8. Tus derechos</h3><p>Puedes pedir, gratis y en cualquier momento:</p><ul><li><strong>Acceso</strong>: saber qué datos hay sobre ti. De hecho, los tienes tú: están en tu cuenta y te los puedes descargar en un clic.</li><li><strong>Rectificación</strong>: corregir lo que esté mal. Se edita directamente en la app.</li><li><strong>Supresión</strong>: que se borre todo. Ajustes → Datos → Borrar mi cuenta.</li><li><strong>Portabilidad</strong>: llevarte tus datos. Ajustes → Datos → Descargar copia, que te da un archivo JSON con absolutamente todo.</li><li><strong>Limitación y oposición</strong> al tratamiento, también a que se cuenten los días que entras.</li></ul><p>Casi todos los puedes ejercer tú solo desde la app, sin pedir permiso a nadie. Si prefieres escribir, el correo es gabriel_gabiz@hotmail.com. Se responde en un mes como máximo.</p><p>Si crees que no se han respetado tus derechos, puedes reclamar ante la <strong>Agencia Española de Protección de Datos</strong> (www.aepd.es, C/ Jorge Juan 6, 28001 Madrid).</p><h3>9. Menores de edad</h3><p>Para usar GritNook hay que tener <strong>14 años cumplidos</strong>. Es la edad que fija la ley española (art. 7 de la Ley Orgánica 3/2018) para que alguien pueda decidir por sí mismo sobre sus datos en un servicio como este.</p><p>Si tienes menos de 14 años, necesitas que tu padre, tu madre o tu tutor lo autoricen y usen la app contigo.</p><p>Si tienes entre 14 y 18, puedes usarla tú solo, pero es buena idea contárselo en casa, sobre todo porque el profe funciona con inteligencia artificial.</p><p>Padres y tutores: podéis escribir al correo de contacto para preguntar qué datos hay, corregirlos o pedir que se borren.</p><h3>10. Seguridad</h3><p>La app se sirve siempre por conexión cifrada (HTTPS), y todo lo que va y viene de tu cuenta viaja cifrado también. En el servidor, <strong>cada cuenta solo puede leer y escribir lo suyo</strong>: no lo decide la app, que es código que cualquiera puede tocar, sino la propia base de datos. Las contraseñas se guardan cifradas de forma que no se pueden leer.</p><p>Aun así, <strong>quien tenga acceso a tu dispositivo desbloqueado puede ver tus apuntes</strong>, igual que puede ver tus fotos. Si compartes ordenador, <strong>cierra sesión</strong> al terminar (Ajustes → Datos → Cerrar sesión): se borra lo de ese navegador y lo tuyo sigue en tu cuenta.</p><p>Si un día hubiera un problema de seguridad que afectara a tus datos, se avisará a la Agencia Española de Protección de Datos en 72 horas y, si te afecta, también a ti.</p><h3>11. Cambios en esta política</h3><p>Si cambia algo —que se añada una función que guarde datos nuevos, o que cambie el proveedor de IA o el del servidor— se actualiza este texto, se cambia la fecha de arriba y se avisa dentro de la aplicación.</p>"},{"id":"ia","nombre":"Cómo funciona el profe","resumen":"Que es una máquina, qué se le manda y en qué se equivoca","titulo":"Cómo funciona el profe","html":"<p>En vigor desde el 20 de septiembre de 2026.</p><h3>Estás hablando con una máquina</h3><p>El profe de GritNook es un programa de inteligencia artificial. <strong>No es una persona</strong>, aunque escriba como si lo fuera, te anime o se acuerde de lo que hablasteis. Te lo decimos claramente porque lo exige el artículo 50 del Reglamento (UE) 2024/1689 de inteligencia artificial, y porque es de justicia saberlo.</p><p>El modelo lo pone <strong>Anthropic</strong>, y las respuestas se generan en servidores de <strong>Estados Unidos</strong>.</p><h3>Qué se le manda cuando le preguntas</h3><p>Para poder responderte con sentido, se le envía:</p><ul><li>tu nombre o apodo, qué estudias y en qué curso;</li><li>si trabajas, cuántas horas de estudio te has propuesto a la semana, qué días dices que puedes ponerte, qué nota buscas, <strong>qué te cuesta más y para qué estudias</strong> (esas dos las escribes tú y son opcionales: si las dejas en blanco, no hay nada que mandar);</li><li>tus asignaturas con sus notas, lo que te falta para aprobar y, cuando las faltas ya aprietan, cuántas llevas;</li><li>las entregas y exámenes que tengas cerca, con sus fechas y su plan;</li><li>tu horario de clases de hoy y de mañana, solo las horas y la asignatura;</li><li><strong>los títulos</strong> de tus apuntes, para que sepa qué has visto ya;</li><li><strong>el contenido del apunte que tengas abierto en ese momento</strong>, hasta unas 1.200 letras, para que pueda hablar de lo que estás mirando. Si no tienes ninguno abierto, no se manda ningún apunte;</li><li>cuántas tarjetas de repaso te tocan hoy y tus objetivos del día;</li><li>los últimos mensajes de vuestra conversación;</li><li>los archivos o capturas que tú le adjuntes;</li><li><strong>si opositas</strong>: el nombre de tu oposición, la fecha y las reglas del examen (preguntas, opciones, lo que resta cada fallo y la nota de corte), cuántos temas tiene tu temario y por qué vuelta vas, el número y el título de los temas que te tocan hoy, de los que se te enfrían y de los que llevas flojos, y los resultados de tus simulacros. Si hay tema a desarrollar, cuántas bolas se sacan y la probabilidad de que te salga uno que llevas. Y si has puesto el plazo de la solicitud, hasta cuándo es y si ya la has presentado.</li></ul><p><strong>No se le manda</strong> nada que no esté en esa lista. En concreto, <strong>no</strong> se le envían los archivos de tu casillero, ni tu vocabulario de inglés, ni lo que hay escrito en tus tarjetas de repaso, ni el nombre de tu centro, ni el de tu aula, ni el texto de los apuntes que no tengas abiertos, ni las notas que escribas en cada tema de la oposición, ni los enlaces que guardes a leyes o a las bases, ni las horas que llevas en cada tema, ni de qué temas eran tus fallos.</p><p>Cuando pulsas «Que el profe me pregunte este tema», la app te deja escrita la petición con el número y el título del tema, pero <strong>no la envía</strong>: la mandas tú.</p><h3>En qué se equivoca</h3><p>Se equivoca. No de vez en cuando: forma parte de cómo funcionan estas máquinas.</p><ul><li>Puede <strong>inventarse</strong> datos, fechas, artículos de ley o funciones de un lenguaje de programación, y contártelo con total seguridad.</li><li>Puede estar <strong>desactualizado</strong> sobre el temario, la convocatoria o la normativa de tu ciclo.</li><li>No conoce las normas de tu centro. <strong>Quien decide cómo te evalúan y cuántas faltas te dejan es tu centro, no la app.</strong></li></ul><p>Regla sencilla: si te lo juegas —una fecha de entrega, una fórmula de un examen, un trámite— <strong>compruébalo en la fuente oficial</strong>.</p><h3>Para qué no sirve</h3><ul><li><strong>No es un médico ni un psicólogo.</strong> Si lo estás pasando mal, habla con alguien de verdad. Teléfono de atención a la conducta suicida: <strong>024</strong>. Emergencias: <strong>112</strong>.</li><li><strong>No es un abogado ni un asesor financiero.</strong></li><li><strong>No atiende emergencias</strong> de ningún tipo.</li><li><strong>No es para copiar.</strong> Está para que entiendas y apruebes. Entregar como tuyo lo que te ha escrito una máquina puede ser una falta académica en tu centro, y el responsable de lo que entregues eres tú.</li></ul><h3>De qué no habla</h3><p>El profe está programado para hablar <strong>solo de tus estudios</strong>: tu ciclo, tus asignaturas y tus dudas profesionales. Si le preguntas por su vida, por la tuya o por cualquier otra cosa, te lo dirá y volverá al tema. No es antipatía: es que un profe de verdad tampoco entra ahí.</p><h3>Qué pasa con lo que le cuentas</h3><ul><li>La conversación se guarda <strong>contigo</strong>, igual que tus apuntes, y se borra con ellos desde Ajustes → Datos.</li><li><strong>No se usa para entrenar modelos.</strong></li><li>El proveedor la procesa para generarte una respuesta y la conserva el tiempo que diga su propia política, en los términos del contrato firmado con él.</li></ul><p><mark class=\"lg-falta\">RELLENAR: confirmar el plazo y las condiciones exactas al firmar el contrato de encargado de tratamiento con el proveedor.</mark></p><h3>Si no lo quieres usar</h3><p>El resto de GritNook —notas, faltas, agenda, apuntes, casillero, repaso— funciona sin el profe.</p><p>Puedes apagarlo del todo en <strong>Ajustes → El profe</strong>, quitando la marca de «Usar el profe con inteligencia artificial». Mientras esté apagado <strong>no sale nada</strong> de la aplicación hacia ninguna IA: ni tu nombre, ni tus notas, ni tus apuntes. Lo que le escribas se guarda en tu dispositivo, pero no se envía a nadie. Se vuelve a encender en el mismo sitio.</p>"},{"id":"terminos","nombre":"Términos de uso","resumen":"Las reglas entre tú y GritNook","titulo":"Términos de uso","html":"<p>En vigor desde el 23 de septiembre de 2026.</p><h3>1. Qué es esto</h3><p>Estas son las reglas entre <strong>Gabriel Rodríguez Blanco</strong>, NIF 09215128V («el titular»), y tú, que usas GritNook. Al usar la aplicación las aceptas. Si no estás de acuerdo con alguna, no la uses.</p><p>Van con ellas la <button type=\"button\" class=\"lg-enlace\" data-lg=\"privacidad\">política de privacidad</button>, el <button type=\"button\" class=\"lg-enlace\" data-lg=\"aviso-legal\">aviso legal</button> y el <button type=\"button\" class=\"lg-enlace\" data-lg=\"ia\">aviso sobre la IA</button>.</p><h3>2. Qué hace la aplicación</h3><p>GritNook te ayuda a organizar los estudios: apuntar asignaturas, notas y faltas, ver qué te falta para aprobar, llevar la agenda de entregas y exámenes, tomar apuntes, guardar documentos y estudiar con un profe que funciona con inteligencia artificial.</p><p>Es una herramienta de apoyo. <strong>No sustituye a tu centro, a tu profesorado ni a las normas de tu ciclo.</strong></p><h3>3. Quién puede usarla</h3><p>Hay que tener <strong>14 años cumplidos</strong>. Con menos, hace falta que tu padre, tu madre o tu tutor lo autoricen y la usen contigo.</p><p>Si tienes entre 14 y 18 años puedes usarla, pero al aceptar estos términos estás diciendo que en casa lo saben.</p><h3>4. Tu cuenta</h3><ul><li>Una cuenta es de <strong>una sola persona</strong>. Usa un correo tuyo y una contraseña que no uses en otro sitio, y no se la dejes a nadie.</li><li>Tú respondes de lo que se haga con tu cuenta. Si crees que alguien ha entrado en ella, cambia la contraseña y escribe al correo de contacto.</li><li>Puedes borrarla cuando quieras desde Ajustes → Datos → Borrar mi cuenta.</li><li>El titular puede suspender o borrar una cuenta que se use para romper estos términos (por ejemplo, para subir contenido ilegal o para atacar la aplicación), avisándote antes salvo que haya un motivo grave.</li></ul><h3>5. Cuánto cuesta</h3><p>Hoy la aplicación es <strong>gratuita</strong>. Si en el futuro hay una versión de pago, se avisará con antelación dentro de la app, y lo que ya tengas guardado seguirá siendo tuyo y descargable en cualquier caso.</p><p><mark class=\"lg-falta\">RELLENAR cuando haya cobro: precio, forma de pago, duración, renovación, cancelación y derecho de desistimiento de 14 días.</mark></p><h3>6. Lo que te damos</h3><p>Un permiso personal para usar la aplicación: no exclusivo, no transferible, revocable y solo para estudiar tú. No incluye poder:</p><ul><li>copiar, distribuir o vender el código, ni entero ni a trozos;</li><li>quitar el nombre, el logotipo o los avisos de autoría;</li><li>usarla para montar un servicio parecido;</li><li>entrar por donde no toca, saltarte límites o hacerle ingeniería inversa más allá de lo que la ley permita.</li></ul><p>Las condiciones completas del código están en el <span class=\"lg-ref\">archivo de licencia</span>.</p><h3>7. Lo que escribes es tuyo</h3><p>Tus apuntes, tus notas, tus archivos y tus conversaciones <strong>son tuyos</strong>. El titular no adquiere ningún derecho sobre ellos: solo los guarda donde tú decides y los envía al proveedor de IA cuando le preguntas, porque si no, no podría responderte.</p><p>No se usan para entrenar modelos, ni para publicidad, ni se enseñan a nadie.</p><h3>8. Lo que no puedes subir</h3><p>Ni contenido ilegal, ni material protegido de otros sin permiso, ni datos personales de terceros (fotos de compañeros, exámenes con nombres, informes médicos de nadie), ni nada que pueda dañar la aplicación o a quien la use.</p><p>Tú respondes de lo que subes.</p><h3>9. El profe con inteligencia artificial</h3><p>Léete el <button type=\"button\" class=\"lg-enlace\" data-lg=\"ia\">aviso sobre la IA</button>. En resumen:</p><ul><li>Es una máquina, no una persona.</li><li><strong>Puede equivocarse.</strong> Comprueba siempre las fechas, las fórmulas y cualquier cosa que te juegues.</li><li>No es asesoramiento médico, legal ni financiero, y no atiende emergencias.</li><li>Está para que aprendas y apruebes, no para hacerte los trabajos. Copiar lo que te dé y entregarlo como tuyo puede ser una falta académica en tu centro: eso es cosa tuya y de las normas de tu escuela.</li></ul><h3>10. Que funcione</h3><p>Se hace lo posible para que la aplicación esté disponible y no falle, pero no se promete que esté siempre ni que no tenga errores. Puede haber cortes por mantenimiento, por cambios o porque falle un proveedor.</p><p><strong>Haz copias.</strong> Ajustes → Datos → Descargar copia. Si borras los datos del navegador, cambias de dispositivo o se estropea, sin copia no hay vuelta atrás.</p><h3>11. Hasta cuándo</h3><p>Puedes dejar de usarla cuando quieras: borrando tu cuenta desde Ajustes → Datos o simplemente dejando de entrar. El titular puede retirar la aplicación o dejar de prestar el servicio avisando con antelación razonable dentro de la app, para que te dé tiempo a descargarte tus cosas.</p><h3>12. Responsabilidad</h3><p>El titular responde de los daños que cause por dolo o por negligencia grave, y de todo lo que la ley no permita excluir. Fuera de eso, y en la medida en que la ley lo permita, no responde de:</p><ul><li>la pérdida de datos por borrar el navegador, perder el dispositivo o no hacer copias;</li><li>las consecuencias de fiarse de un cálculo o de una respuesta del profe sin comprobarla;</li><li>los fallos de servicios de terceros de los que depende la aplicación.</li></ul><p><strong>Si eres consumidor, nada de esto te quita los derechos que te da la ley.</strong></p><h3>13. Cambios</h3><p>Estos términos se pueden cambiar. Los cambios importantes se avisan dentro de la aplicación antes de que entren en vigor. Seguir usándola después es aceptarlos.</p><h3>14. Ley y conflictos</h3><p>Se aplica la ley española. Si algo se tuerce, escribe primero al correo de contacto: casi todo se arregla así. Si no, los tribunales competentes serán los que diga la ley y, si eres consumidor, los de tu domicilio. También puedes acudir a las juntas arbitrales de consumo.</p>"},{"id":"aviso-legal","nombre":"Aviso legal","resumen":"Quién está detrás de la aplicación","titulo":"Aviso legal","html":"<p>En vigor desde el 20 de septiembre de 2026.</p><h3>Quién está detrás de GritNook</h3><ul><li><strong>Titular:</strong> Gabriel Rodríguez Blanco</li><li><strong>NIF:</strong> 09215128V</li><li><strong>Correo de contacto:</strong> gabriel_gabiz@hotmail.com</li><li><strong>Dirección de la aplicación:</strong> https://gabriel15gabi.github.io/gritnook/</li></ul><p>Esta información se publica para cumplir el artículo 10 de la Ley 34/2002, de servicios de la sociedad de la información y de comercio electrónico.</p><p>GritNook se ofrece <strong>gratis y sin actividad comercial</strong>: no se cobra por ella, no hay publicidad y no se vende nada. Por eso aquí no figura una dirección postal. El día que la aplicación pase a ser de pago se publicará también el domicilio del titular, que es lo que exige ese artículo 10 cuando hay actividad económica. Mientras tanto, para cualquier notificación sirve el correo de contacto, que se lee y se responde.</p><h3>Qué es GritNook</h3><p>GritNook es una aplicación web para organizar los estudios: asignaturas, notas, faltas, entregas, apuntes, documentos y un profe con inteligencia artificial que explica y pregunta. Funciona dentro del navegador, sin instalar nada.</p><h3>Condiciones de uso</h3><p>El uso de la aplicación implica aceptar este aviso, los <button type=\"button\" class=\"lg-enlace\" data-lg=\"terminos\">términos de uso</button>, la <button type=\"button\" class=\"lg-enlace\" data-lg=\"privacidad\">política de privacidad</button> y el <button type=\"button\" class=\"lg-enlace\" data-lg=\"ia\">aviso sobre la inteligencia artificial</button>. Quien no esté de acuerdo, que no la use.</p><p>El titular puede cambiar, suspender o retirar la aplicación o cualquiera de sus partes, y modificar estos textos. Los cambios se publican en esta misma dirección con su fecha.</p><h3>De quién es lo que ves</h3><p>El código, el diseño, los textos, el nombre «GritNook» y su logotipo son del titular. Están publicados para poder leerlos y estudiarlos, no para copiarlos: las condiciones están en el <span class=\"lg-ref\">archivo de licencia</span> del repositorio.</p><p>La aplicación incluye piezas de otros autores —tipografías, iconos y la librería que abre los PDF— que mantienen sus propias licencias libres, detalladas en los <span class=\"lg-ref\">créditos</span>.</p><p><strong>Lo que escribe cada persona sigue siendo suyo.</strong> Los apuntes, las notas y los archivos que se suben pertenecen a quien los crea; el titular no se queda con ningún derecho sobre ellos.</p><h3>Responsabilidad</h3><p>El titular pone todo el cuidado razonable en que la aplicación funcione y en que los cálculos de notas y de faltas sean correctos, pero la aplicación se ofrece «tal cual». En concreto:</p><ul><li>Lo que calcula y lo que responde el profe es <strong>orientativo</strong>. Las normas de evaluación y de asistencia las pone cada centro, y son las que mandan.</li><li>No se garantiza que la aplicación esté disponible sin interrupciones ni que esté libre de errores.</li><li>Cada persona es responsable de guardar una copia de sus datos. La aplicación tiene un botón para descargarla en Ajustes → Datos.</li></ul><p>Nada de lo anterior limita los derechos que la ley reconoce a los consumidores.</p><h3>Enlaces a otros sitios</h3><p>Si la aplicación enlaza a páginas de terceros, el titular no responde de su contenido ni de lo que esas páginas hagan con los datos de quien las visite.</p><h3>Ley aplicable</h3><p>Se aplica la ley española. Para cualquier conflicto, las partes se someten a los juzgados que correspondan según la ley; cuando quien usa la aplicación es consumidor, los de su propio domicilio.</p><p>Quien sea consumidor y tenga una queja puede dirigirse antes al correo de contacto y, si no queda resuelta, a las juntas arbitrales de consumo.</p>"}];
+const LEGAL_V = "23 de septiembre de 2026";
 let lgAbierto = null;
 /* la fecha en la que se aceptaron los papeles, escrita en largo */
 const fechaLarga = iso => { const d = new Date(iso); return isNaN(d) ? "—" : d.toLocaleDateString("es-ES", { day: "numeric", month: "long", year: "numeric" }); };
@@ -8549,6 +9108,7 @@ function ajDatos() {
   const tam = Math.round(JSON.stringify(S).length / 1024);
   return `
   <section class="panel">
+    ${bloqueCuenta()}
     <div class="etq">Copia de seguridad</div>
     <p class="meta" style="margin:6px 0 14px">Un curso entero de apuntes merece una copia. El archivo se puede volver a cargar aquí mismo.</p>
     <div class="barra-btns">
@@ -8564,7 +9124,8 @@ function ajDatos() {
     <button type="button" class="btn" id="apICS">${icono("calendario")}Descargar mis fechas (.ics)</button>
     <hr class="separador">
     <div class="etq">Dónde están tus datos</div>
-    <p class="meta" style="margin:6px 0 0">${db ? "En tu cuenta de Claude: los ves igual desde el móvil y desde cualquier ordenador."
+    <p class="meta" style="margin:6px 0 0">${db && db.nube ? "En tu cuenta de GritNook (en un servidor de Frankfurt) y en este navegador: los ves igual desde el móvil y desde cualquier ordenador."
+      : db ? "En tu cuenta de Claude: los ves igual desde el móvil y desde cualquier ordenador."
       : enClaude() ? "Solo en este navegador. Para que te sigan entre dispositivos, abre la app desde tu enlace de Claude."
       : "Solo en este navegador y en este dispositivo. Si vas a usarla en el móvil y en el ordenador, descárgate la copia aquí y cárgala allí."}</p>
     <p class="meta" style="margin:6px 0 0">Ocupan ${tam} KB, con ${Object.keys(S.apuntes || {}).length} apuntes y ${Object.keys(S.casillero || {}).length} documentos.</p>
@@ -8686,7 +9247,7 @@ alEvento("click", async e => {
     /* también lo sincronizado y los archivos subidos: si no, al volver a conectar reaparecerían */
     const apuntesIds = Object.keys(S.apuntes), docs = Object.values(S.casillero);
     S = estadoInicial(); guardarLocal();
-    ["ajustes", "agenda", "ingles", "horas", "objetivos", "tutor", "perfil"].forEach(nd => guardar(nd));
+    Object.keys(DOCS).forEach(nd => guardar(nd));
     if (db) {
       apuntesIds.forEach(id => db.doc("apuntes/" + id).delete().catch(() => {}));
       docs.forEach(d => db.doc("casillero/" + d.id).delete().catch(() => {}));
@@ -8706,9 +9267,15 @@ alEvento("change", async e => {
       const datos = JSON.parse(await f.text());
       if (!datos || typeof datos !== "object" || !Array.isArray(datos.modulos)) throw new Error("formato");
       if (!(await confirmar("Lo que tienes ahora se reemplaza por el contenido de la copia.", { titulo: "¿Cargar la copia?", si: "Cargar copia" }))) { t.value = ""; return; }
+      const antesAp = Object.keys(S.apuntes || {}), antesCas = Object.keys(S.casillero || {});
       S = datos; normalizarPerfil(); normalizarObjetivos(); normalizarTutor(); guardarLocal();
-      ["ajustes", "agenda", "ingles", "horas", "objetivos", "tutor", "perfil"].forEach(nd => guardar(nd));
+      Object.keys(DOCS).forEach(nd => guardar(nd));
       Object.values(S.apuntes || {}).forEach(n => guardarApunte(n));
+      if (db) {
+        Object.values(S.casillero || {}).forEach(d => db.doc("casillero/" + d.id).set(d).catch(() => {}));
+        antesAp.filter(id => !(S.apuntes || {})[id]).forEach(id => db.doc("apuntes/" + id).delete().catch(() => {}));
+        antesCas.filter(id => !(S.casillero || {})[id]).forEach(id => db.doc("casillero/" + id).delete().catch(() => {}));
+      }
       aviso("Copia cargada."); pinta();
     } catch (err) { aviso("Ese archivo no parece una copia de GritNook.", "mal"); }
     t.value = ""; return;
@@ -9698,6 +10265,7 @@ const RIEL_TXT = { escritorio: "Inicio" };
 const ICON_RIEL = {"escritorio":"<path d=\"M184,128a56,56,0,1,1-56-56A56,56,0,0,1,184,128Z\" opacity=\"0.2\"/><path d=\"M120,40V16a8,8,0,0,1,16,0V40a8,8,0,0,1-16,0Zm72,88a64,64,0,1,1-64-64A64.07,64.07,0,0,1,192,128Zm-16,0a48,48,0,1,0-48,48A48.05,48.05,0,0,0,176,128ZM58.34,69.66A8,8,0,0,0,69.66,58.34l-16-16A8,8,0,0,0,42.34,53.66Zm0,116.68-16,16a8,8,0,0,0,11.32,11.32l16-16a8,8,0,0,0-11.32-11.32ZM192,72a8,8,0,0,0,5.66-2.34l16-16a8,8,0,0,0-11.32-11.32l-16,16A8,8,0,0,0,192,72Zm5.66,114.34a8,8,0,0,0-11.32,11.32l16,16a8,8,0,0,0,11.32-11.32ZM48,128a8,8,0,0,0-8-8H16a8,8,0,0,0,0,16H40A8,8,0,0,0,48,128Zm80,80a8,8,0,0,0-8,8v24a8,8,0,0,0,16,0V216A8,8,0,0,0,128,208Zm112-88H216a8,8,0,0,0,0,16h24a8,8,0,0,0,0-16Z\"/>","modulos":"<path d=\"M48,72h64V184H48ZM190.64,38.39a8,8,0,0,0-9.5-6.21l-46.81,10a8.07,8.07,0,0,0-6.15,9.57L139.79,107l62.46-13.42Z\" opacity=\"0.2\"/><path d=\"M231.65,194.55,198.46,36.75a16,16,0,0,0-19-12.39L132.65,34.42a16.08,16.08,0,0,0-12.3,19l33.19,157.8A16,16,0,0,0,169.16,224a16.25,16.25,0,0,0,3.38-.36l46.81-10.06A16.09,16.09,0,0,0,231.65,194.55ZM136,50.15c0-.06,0-.09,0-.09l46.8-10,3.33,15.87L139.33,66Zm6.62,31.47,46.82-10.05,3.34,15.9L146,97.53Zm6.64,31.57,46.82-10.06,13.3,63.24-46.82,10.06ZM216,197.94l-46.8,10-3.33-15.87L212.67,182,216,197.85C216,197.91,216,197.94,216,197.94ZM104,32H56A16,16,0,0,0,40,48V208a16,16,0,0,0,16,16h48a16,16,0,0,0,16-16V48A16,16,0,0,0,104,32ZM56,48h48V64H56Zm0,32h48v96H56Zm48,128H56V192h48v16Z\"/>","entregas":"<path d=\"M216,48V88H40V48a8,8,0,0,1,8-8H208A8,8,0,0,1,216,48Z\" opacity=\"0.2\"/><path d=\"M208,32H184V24a8,8,0,0,0-16,0v8H88V24a8,8,0,0,0-16,0v8H48A16,16,0,0,0,32,48V208a16,16,0,0,0,16,16H208a16,16,0,0,0,16-16V48A16,16,0,0,0,208,32ZM72,48v8a8,8,0,0,0,16,0V48h80v8a8,8,0,0,0,16,0V48h24V80H48V48ZM208,208H48V96H208V208Z\"/>","apuntes":"<path d=\"M80,40V216H48a8,8,0,0,1-8-8V48a8,8,0,0,1,8-8Z\" opacity=\"0.2\"/><path d=\"M184,112a8,8,0,0,1-8,8H112a8,8,0,0,1,0-16h64A8,8,0,0,1,184,112Zm-8,24H112a8,8,0,0,0,0,16h64a8,8,0,0,0,0-16Zm48-88V208a16,16,0,0,1-16,16H48a16,16,0,0,1-16-16V48A16,16,0,0,1,48,32H208A16,16,0,0,1,224,48ZM48,208H72V48H48Zm160,0V48H88V208H208Z\"/>","repaso":"<path d=\"M192,88V200a8,8,0,0,1-8,8H40a8,8,0,0,1-8-8V88a8,8,0,0,1,8-8H184A8,8,0,0,1,192,88Z\" opacity=\"0.2\"/><path d=\"M184,72H40A16,16,0,0,0,24,88V200a16,16,0,0,0,16,16H184a16,16,0,0,0,16-16V88A16,16,0,0,0,184,72Zm0,128H40V88H184V200ZM232,56V176a8,8,0,0,1-16,0V56H64a8,8,0,0,1,0-16H216A16,16,0,0,1,232,56Z\"/>","progreso":"<path d=\"M224,64V208H32V48H208A16,16,0,0,1,224,64Z\" opacity=\"0.2\"/><path d=\"M232,208a8,8,0,0,1-8,8H32a8,8,0,0,1-8-8V48a8,8,0,0,1,16,0V156.69l50.34-50.35a8,8,0,0,1,11.32,0L128,132.69,180.69,80H160a8,8,0,0,1,0-16h40a8,8,0,0,1,8,8v40a8,8,0,0,1-16,0V91.31l-58.34,58.35a8,8,0,0,1-11.32,0L96,123.31l-56,56V200H224A8,8,0,0,1,232,208Z\"/>","casillero":"<path d=\"M216,96v96a8,8,0,0,1-8,8H48a8,8,0,0,1-8-8V96Z\" opacity=\"0.2\"/><path d=\"M224,48H32A16,16,0,0,0,16,64V88a16,16,0,0,0,16,16v88a16,16,0,0,0,16,16H208a16,16,0,0,0,16-16V104a16,16,0,0,0,16-16V64A16,16,0,0,0,224,48ZM208,192H48V104H208ZM224,88H32V64H224V88ZM96,136a8,8,0,0,1,8-8h48a8,8,0,0,1,0,16H104A8,8,0,0,1,96,136Z\"/>","ingles":"<path d=\"M224,184H144l40-80ZM96,127.56h0A95.78,95.78,0,0,0,128,56H64A95.78,95.78,0,0,0,96,127.56Z\" opacity=\"0.2\"/><path d=\"M247.15,212.42l-56-112a8,8,0,0,0-14.31,0l-21.71,43.43A88,88,0,0,1,108,126.93,103.65,103.65,0,0,0,135.69,64H160a8,8,0,0,0,0-16H104V32a8,8,0,0,0-16,0V48H32a8,8,0,0,0,0,16h87.63A87.7,87.7,0,0,1,96,116.35a87.74,87.74,0,0,1-19-31,8,8,0,1,0-15.08,5.34A103.63,103.63,0,0,0,84,127a87.55,87.55,0,0,1-52,17,8,8,0,0,0,0,16,103.46,103.46,0,0,0,64-22.08,104.18,104.18,0,0,0,51.44,21.31l-26.6,53.19a8,8,0,0,0,14.31,7.16L148.94,192h70.11l13.79,27.58A8,8,0,0,0,240,224a8,8,0,0,0,7.15-11.58ZM156.94,176,184,121.89,211.05,176Z\"/>","ajustes":"<path d=\"M230.1,108.76,198.25,90.62c-.64-1.16-1.31-2.29-2-3.41l-.12-36A104.61,104.61,0,0,0,162,32L130,49.89c-1.34,0-2.69,0-4,0L94,32A104.58,104.58,0,0,0,59.89,51.25l-.16,36c-.7,1.12-1.37,2.26-2,3.41l-31.84,18.1a99.15,99.15,0,0,0,0,38.46l31.85,18.14c.64,1.16,1.31,2.29,2,3.41l.12,36A104.61,104.61,0,0,0,94,224l32-17.87c1.34,0,2.69,0,4,0L162,224a104.58,104.58,0,0,0,34.08-19.25l.16-36c.7-1.12,1.37-2.26,2-3.41l31.84-18.1A99.15,99.15,0,0,0,230.1,108.76ZM128,168a40,40,0,1,1,40-40A40,40,0,0,1,128,168Z\" opacity=\"0.2\"/><path d=\"M128,80a48,48,0,1,0,48,48A48.05,48.05,0,0,0,128,80Zm0,80a32,32,0,1,1,32-32A32,32,0,0,1,128,160Zm109.94-52.79a8,8,0,0,0-3.89-5.4l-29.83-17-.12-33.62a8,8,0,0,0-2.83-6.08,111.91,111.91,0,0,0-36.72-20.67,8,8,0,0,0-6.46.59L128,41.85,97.88,25a8,8,0,0,0-6.47-.6A111.92,111.92,0,0,0,54.73,45.15a8,8,0,0,0-2.83,6.07l-.15,33.65-29.83,17a8,8,0,0,0-3.89,5.4,106.47,106.47,0,0,0,0,41.56,8,8,0,0,0,3.89,5.4l29.83,17,.12,33.63a8,8,0,0,0,2.83,6.08,111.91,111.91,0,0,0,36.72,20.67,8,8,0,0,0,6.46-.59L128,214.15,158.12,231a7.91,7.91,0,0,0,3.9,1,8.09,8.09,0,0,0,2.57-.42,112.1,112.1,0,0,0,36.68-20.73,8,8,0,0,0,2.83-6.07l.15-33.65,29.83-17a8,8,0,0,0,3.89-5.4A106.47,106.47,0,0,0,237.94,107.21Zm-15,34.91-28.57,16.25a8,8,0,0,0-3,3c-.58,1-1.19,2.06-1.81,3.06a7.94,7.94,0,0,0-1.22,4.21l-.15,32.25a95.89,95.89,0,0,1-25.37,14.3L134,199.13a8,8,0,0,0-3.91-1h-.19c-1.21,0-2.43,0-3.64,0a8.1,8.1,0,0,0-4.1,1l-28.84,16.1A96,96,0,0,1,67.88,201l-.11-32.2a8,8,0,0,0-1.22-4.22c-.62-1-1.23-2-1.8-3.06a8.09,8.09,0,0,0-3-3.06l-28.6-16.29a90.49,90.49,0,0,1,0-28.26L61.67,97.63a8,8,0,0,0,3-3c.58-1,1.19-2.06,1.81-3.06a7.94,7.94,0,0,0,1.22-4.21l.15-32.25a95.89,95.89,0,0,1,25.37-14.3L122,56.87a8,8,0,0,0,4.1,1c1.21,0,2.43,0,3.64,0a8,8,0,0,0,4.1-1l28.84-16.1A96,96,0,0,1,188.12,55l.11,32.2a8,8,0,0,0,1.22,4.22c.62,1,1.23,2,1.8,3.06a8.09,8.09,0,0,0,3,3.06l28.6,16.29A90.49,90.49,0,0,1,222.9,142.12Z\"/>"};
 /* Inicio lleva la misma anilla morada que la «o» de GritNook: mismo color
    (--acento-txt) y la misma proporción de agujero que las del logo */
+ICON_RIEL.panel = '<circle cx="96" cy="92" r="40" opacity="0.2"/><circle cx="96" cy="92" r="40" fill="none" stroke="currentColor" stroke-width="16"/><path d="M24 208c10-36 38-58 72-58s62 22 72 58" fill="none" stroke="currentColor" stroke-width="16" stroke-linecap="round"/><circle cx="180" cy="100" r="28" fill="none" stroke="currentColor" stroke-width="16"/><path d="M200 152c20 8 32 26 36 56" fill="none" stroke="currentColor" stroke-width="16" stroke-linecap="round"/>';
 ICON_RIEL.escritorio = '<circle cx="128" cy="128" r="70" fill="none" stroke="var(--acento-txt)" stroke-width="41"/>';
 ICON_RIEL.oposicion = '<circle cx="128" cy="128" r="96" opacity="0.2"/><circle cx="128" cy="128" r="96" fill="none" stroke="currentColor" stroke-width="16"/><circle cx="128" cy="128" r="56" fill="none" stroke="currentColor" stroke-width="16"/><circle cx="128" cy="128" r="18"/>';
 function iconoRiel(id) {
@@ -9726,7 +10294,8 @@ function metaMas(id, c) {
   if (id === "progreso") return horasTxt(S.modulos.reduce((t, m) => t + minutosSemana(m.id), 0)) + " esta semana · racha de " + racha() + (racha() === 1 ? " día" : " días");
   if (id === "casillero") { const n = Object.keys(S.casillero).length; return n ? n + (n === 1 ? " documento" : " documentos") : "Nada guardado todavía"; }
   if (id === "ingles") { const v = S.vocab || []; return v.length ? v.filter(x => !x.proximo || x.proximo <= hoy).length + " palabras para hoy" : "Sin palabras todavía"; }
-  if (id === "ajustes") return "Perfil, colores, profe y datos";
+  if (id === "ajustes") return "Perfil, colores" + siProfe(", profe") + " y datos";
+  if (id === "panel") return "Solo para ti";
   return "";
 }
 const filaMas = (id, c) => `<button type="button" class="hm-fila" data-sec="${id}" aria-current="${seccion === id ? "page" : "false"}">
@@ -9841,6 +10410,7 @@ function panelHTML(c) {
       + pnVacio("Te da pistas antes que la respuesta, sabe lo que ya has visto y puede ponerte repasos y tareas.")
       + pnGrupo("Pídele") + pedir.map(t => pnFila(` data-pn-pedir="${esc(t)}"`, "", t, "")).join("");
   }
+  if (seccion === "panel") return panelLateralAdmin();
   if (seccion === "ajustes") {
     return pnCab("Ajustes", "")
       + ajTabs().map(([id, t]) => pnFila(` data-pn-aj="${id}"`, "", t, "", ajTab === id)).join("");
@@ -9910,6 +10480,7 @@ setTimeout(irAlEnlace, 0);
   avisosDeEntrada();
   setInterval(() => { if (seccion === "escritorio" && !T.activo) pintaReloj(); }, 30000);
   if (window.claude && typeof claude.use === "function") conectar();
+  else if (nubeLista()) arrancarNube();
   else marcaSync("Este dispositivo", false);
 })();
 </script>

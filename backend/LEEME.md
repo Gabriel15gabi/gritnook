@@ -1,98 +1,133 @@
 # El backend de GritNook
 
-Aquí está lo que convierte GritNook en una aplicación full stack: cuentas de
-usuario, base de datos PostgreSQL y almacenamiento de archivos.
+Las cuentas: cada persona entra con su correo y su contraseña, lo suyo se
+guarda en su cuenta y lo ve igual desde el móvil y desde el ordenador. Y tú,
+como creador, tienes un **Panel** en el menú con cuántos están probando la
+app, sus correos y cuánto la usan.
 
-- [esquema.sql](esquema.sql) — las tablas, los índices y las reglas de seguridad.
-- Proveedor: **Supabase**. Capa gratuita, PostgreSQL de verdad.
+- [supabase.sql](supabase.sql) — la base de datos entera: tablas, reglas de
+  seguridad y las funciones del panel. Es lo único que se pega en Supabase.
+- [probar-sql.js](probar-sql.js) — lo prueba contra un Postgres de verdad (18
+  comprobaciones: que nadie ve lo de otro, que el panel solo es tuyo, que
+  borrar la cuenta lo borra todo…).
+- [borrador/](borrador/) — un diseño antiguo con una tabla por cosa. **No lo
+  ejecutes**: choca con `supabase.sql`.
+- Proveedor: **Supabase**, plan gratis. PostgreSQL de verdad.
 
-Hasta que esto esté montado, la app sigue funcionando como hasta ahora: cada
-navegador guarda lo suyo y, dentro de Claude, se sincroniza por ahí.
+Mientras la app no tenga puestos la dirección y la clave del proyecto, funciona
+como siempre: sin cuentas, cada navegador con lo suyo, y dentro de Claude
+sincronizada por Claude.
 
-## Lo que tienes que hacer tú (10 minutos)
+## Lo que tienes que hacer tú (15 minutos)
 
-Tiene que ir a tu nombre, así que estos pasos no los puede dar nadie por ti.
+Va a tu nombre, así que estos pasos no los puede dar nadie por ti.
 
 1. Entra en **supabase.com** y crea una cuenta.
 2. **New project**. Nombre: `gritnook`.
-3. **Región: `eu-central-1` (Frankfurt)** o cualquier otra europea. Esto no es
-   un detalle: si eliges Estados Unidos, los datos de estudio de menores salen
-   de Europa y hay que rehacer la política de privacidad y firmar más papeles.
-   Una vez creado el proyecto **la región no se puede cambiar**.
-4. Guarda la contraseña de la base de datos que te dé. No la vas a usar desde la
-   app, pero es la única forma de entrar por la puerta de atrás.
-5. Ve a **SQL Editor → New query**, pega entero [esquema.sql](esquema.sql) y
-   pulsa *Run*. Debería decir «Success. No rows returned».
-6. **Authentication → Providers**: deja activado *Email*. Dentro, quita
-   *Confirm email* solo si quieres probar rápido; para publicar, déjalo puesto.
-7. **Project Settings → API**: copia estas dos cosas y pásamelas:
+3. **Región: Central EU (Frankfurt)**. No es un detalle: fuera de Europa hay
+   que rehacer la política de privacidad. **Luego no se puede cambiar.**
+4. Guarda la contraseña de la base de datos que te pide. La app no la usa.
+5. **SQL Editor → New query**: pega entero [supabase.sql](supabase.sql) y pulsa
+   **Run**. Tiene que decir *Success*.
+   - La última línea te hace administrador con `gabriel_gabiz@hotmail.com`. Si
+     vas a entrar con otro correo, cámbialo ahí antes de darle a Run.
+6. **Authentication → Sign In / Providers → Email**: activado, y **quita
+   «Confirm email»**. Con el correo de serie Supabase solo manda unos pocos
+   correos por hora, y si cada alta tuviera que confirmar, a la tercera
+   persona ya no le llegaría.
+7. **Authentication → URL Configuration**:
+   - **Site URL**: `https://gabriel15gabi.github.io/gritnook/`
+   - **Redirect URLs**: añade esa misma y `http://localhost:4174/`
+   Es adonde vuelve quien pide cambiar la contraseña.
+8. **Project Settings → API**: pásame estas dos cosas:
    - **Project URL** (algo como `https://xxxxx.supabase.co`)
    - **anon public** key
+9. Cuando esté puesto, **crea tu cuenta en la app con el correo del paso 5**.
+   En el menú te aparece **Panel**. A los demás no.
+10. **Organization Settings → Legal Documents**: firma el acuerdo de
+    tratamiento de datos (DPA) de Supabase. La política de privacidad lo da
+    por hecho.
 
 La clave `anon` es **pública por diseño**: va dentro de la app y cualquiera
-puede verla. No es un secreto y no pasa nada. Lo que protege los datos son las
-reglas de seguridad del esquema, que hacen que PostgreSQL solo devuelva las
-filas de quien pregunta.
+puede verla. Sola no abre nada: la base de datos solo le devuelve a cada uno
+sus propias filas, y el panel solo al correo que está en `administradores`.
 
-La otra clave, la **`service_role`**, esa sí es secreta: salta todas las reglas.
-No me la mandes y no la pongas nunca en el navegador.
+La otra, la **`service_role`**, sí es secreta: se salta todas las reglas.
+**No me la mandes y no la pongas nunca en la app.**
 
-## Lo que hago yo después
+## Recomendado antes de compartirla con mucha gente: tu propio correo
 
-1. Cambiar la capa de guardado de la app. Ahora mismo `guardar()` escribe en
-   `localStorage` y, si hay Claude, sincroniza por ahí. Pasa a haber tres modos:
-   sin cuenta (como hoy), dentro de Claude (como hoy) y con cuenta de Supabase.
-   **El resto de las 7.400 líneas no se toca.**
-2. Una pantalla de entrada con «Entrar con tu correo», sin contraseñas: te llega
-   un enlace, pulsas y estás dentro.
-3. Subir lo que ya tengas guardado en el navegador a tu cuenta la primera vez,
-   sin perder nada.
-4. Los archivos del casillero al almacenamiento, con su carpeta por usuario.
-5. Sincronización en vivo entre dispositivos.
+El correo de serie de Supabase **solo manda a direcciones de tu equipo** y
+unos pocos por hora. Para lo del día a día da igual (sin confirmación, el alta
+no manda nada), pero el correo de «he olvidado la contraseña» **no les
+llegaría a los demás**. Se arregla con un servicio de correo gratis:
 
-## Lo que esto cambia, y no es poco
+1. Crea una cuenta en **Resend** o **Brevo** (los dos tienen plan gratis).
+2. Te dan unos datos SMTP (servidor, puerto, usuario y contraseña).
+3. En Supabase: **Authentication → Emails → SMTP Settings** → actívalo y
+   pégalos. Remitente: `GritNook`.
 
-Hoy tú no guardas datos de nadie: todo vive en el dispositivo de cada uno. Con
-backend pasas a ser **el que custodia los datos de estudio de gente menor de
-edad en un servidor**. Eso trae obligaciones nuevas:
+Mientras no lo hagas, si alguien olvida la contraseña: en **Authentication →
+Users** puedes borrar su usuario y que se haga otra cuenta (perdería lo suyo,
+salvo que tenga una copia de Ajustes → Datos).
 
-- [ ] Reescribir `PRIVACIDAD.md` y `DATOS.md` enteros: cambia quién guarda qué,
-      dónde y con qué contrato.
-- [ ] Firmar el contrato de encargado de tratamiento con Supabase (lo tienen
-      preparado, se acepta desde el panel).
-- [ ] Saber qué hacer si hay una brecha de seguridad: hay **72 horas** para
-      avisar a la Agencia Española de Protección de Datos.
-- [ ] Un botón de «bórrame la cuenta» que borre de verdad, también del servidor.
-- [ ] Copias de seguridad: en el plan gratis no hay copias automáticas.
+## Lo que ves en el Panel, y lo que no
+
+Ves: el correo, cuándo se apuntó, la última vez que entró, cuántos días entró
+en los últimos 7 y 30, qué estudia (ESO, grado superior, oposición…) y cuánto
+espacio ocupa. Y los totales: cuentas, activos hoy, esta semana, este mes, y
+una gráfica de los últimos 30 días. Se puede bajar para Excel.
+
+**No** ves sus apuntes, notas, horarios ni nada de lo que escriben. La función
+del panel no lo lee, y así lo dice la política de privacidad. Si algún día lo
+necesitas para arreglar un fallo, se le pide a esa persona que te mande una
+copia desde Ajustes → Datos.
+
+## Lo que cambia para ti
+
+Hasta ahora no guardabas datos de nadie. Con cuentas, **custodias los datos de
+estudio de otras personas, algunas menores**. Eso trae obligaciones:
+
+- [x] Política de privacidad y ficha de datos, reescritas para las cuentas.
+- [x] Botón de «Borrar mi cuenta» que borra de verdad, también del servidor
+      (Ajustes → Datos).
+- [ ] Firmar el DPA de Supabase (paso 10).
+- [ ] Si un día hay una brecha de seguridad: **72 horas** para avisar a la
+      Agencia Española de Protección de Datos.
+- [ ] El plan gratis **no hace copias automáticas**. De vez en cuando, en
+      *SQL Editor*: `select * from documentos` → *Export → CSV*, y guárdalo en
+      un sitio seguro (lleva los datos de todos: no lo compartas).
 
 ## Dos avisos del plan gratis
 
-- **El proyecto se pausa a los 7 días sin actividad** y hay que despertarlo a
-  mano desde el panel. Para un portfolio es un incordio: el día que lo abra un
-  reclutador puede estar dormido. Entrar una vez por semana lo evita.
-- Los límites: 500 MB de base de datos, 1 GB de archivos y 50.000 usuarios
-  activos al mes. Para empezar sobra de largo.
+- **El proyecto se pausa a los 7 días sin que nadie entre.** Mientras haya
+  gente probando no pasa; si un día se para, se despierta desde el panel de
+  Supabase con un botón.
+- Límites: 500 MB de base de datos y 50.000 usuarios al mes. El Panel te
+  enseña cuánto llevas gastado de los 500 MB.
 
-## Por qué el esquema está así
+## Cómo funciona por dentro
 
-**Claves primarias de texto, no UUID.** La app ya genera sus identificadores en
-el navegador con `uid()`. Manteniéndolos, lo que la gente tenga guardado se
-puede subir tal cual, sin renumerar nada.
+**Una tabla, `documentos`.** La app ya guardaba sus datos en trozos con nombre
+(`escritorio/agenda`, `apuntes/<id>`, `casillero/<id>`…) para la nube de
+Claude. Con cuentas, cada trozo es una fila con su dueño. Así la app no ha
+cambiado por dentro: habla con la cuenta igual que hablaba con Claude.
 
-**Tablas de verdad para lo relacional.** Asignaturas, apartados de nota,
-entregas, exámenes, horas y tarjetas son tablas con sus claves ajenas. Borrar
-una asignatura se lleva por delante sus apartados y sus horas sin que la app
-tenga que acordarse (`on delete cascade`).
+**La seguridad, en Postgres y no en la app.** Row Level Security: cada fila
+solo la ven y la tocan su dueño. Aunque alguien copie la clave pública y
+consulte a mano, no recibe nada de otro. Si dependiera del JavaScript,
+cualquiera con las herramientas de desarrollador se la saltaría.
 
-**`jsonb` solo donde toca.** Los trazos de un dibujo, el plan de un examen o los
-pasos de una entrega son documentos: no se consultan por campos ni se cruzan con
-nada. Meterlos en tablas sería complicarse sin ganar nada.
+**El panel, con una función que decide quién eres.** `panel_admin()` mira tu
+correo en la tabla `administradores`, que nadie puede leer ni escribir desde
+la app. Si no estás, contesta «Solo el creador puede ver el panel».
 
-**Los archivos, fuera de la base de datos.** En `documentos` solo está la ficha
-—nombre, tipo, tamaño y dónde está—; el archivo va al almacenamiento. Guardar
-binarios en PostgreSQL se paga caro en espacio y en velocidad.
+**La actividad, sin espiar.** Al abrir la app se apunta «hoy he entrado»
+(`latido()`, como mucho una vez cada media hora). Eso es todo lo que se mide.
 
-**La seguridad, en la base de datos y no en la app.** Row Level Security filtra
-por usuario dentro de PostgreSQL. Aunque alguien copie la clave pública y
-consulte a mano, solo recibe sus propias filas. Si la seguridad dependiera del
-JavaScript, cualquiera con las herramientas de desarrollador se la saltaría.
+**Sin conexión, sigue funcionando.** Lo que haces se guarda en el navegador y
+se sube al volver la conexión; arriba lo pone («Sin conexión · se sube al
+volver»).
+
+**La hora la pone el servidor**, no el reloj del móvil, para que dos
+dispositivos no se pisen por tener la hora mal.

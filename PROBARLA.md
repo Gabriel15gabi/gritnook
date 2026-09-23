@@ -7,7 +7,8 @@ Gracias por echarle un rato. Esto es lo que necesito saber y lo que te pido.
 Una app para llevar el curso: asignaturas y notas, agenda de entregas y
 exámenes, apuntes en libreta (se puede escribir a mano con el dedo), horas de
 estudio con cronómetro, tarjetas de repaso y, si opositas, un modo entero para
-tu temario. **No hay que registrarse ni dar el correo**: se abre y ya está.
+tu temario. Te haces una cuenta con tu correo y una contraseña, y en un minuto
+estás dentro.
 
 ## Cómo se abre
 
@@ -26,10 +27,13 @@ Se abre como una app, funciona sin conexión y ocupa nada.
 
 ## Dónde se guardan tus cosas
 
-**En tu propio móvil u ordenador, y en ningún sitio más.** No hay servidor, no
-hay cuentas, no hay publicidad y no se envía nada a nadie. Eso tiene una pega:
-si borras los datos del navegador, se van. Hay copia de seguridad en
-**Ajustes → Datos → Descargar copia**.
+**En tu cuenta**, en un servidor de Europa, y en tu móvil u ordenador para que
+funcione también sin conexión. Entras con tu correo desde donde quieras y lo
+tienes todo. No hay publicidad y no se vende nada.
+
+Yo veo tu correo y cuántos días entras, para saber cuánta gente la prueba.
+**Tus notas, tus apuntes y lo que escribas no los veo.** Puedes borrar tu cuenta
+cuando quieras en **Ajustes → Datos**.
 
 ## Qué me vendría bien que mires
 
@@ -42,7 +46,9 @@ si borras los datos del navegador, se van. Hay copia de seguridad en
 4. **La libreta**: un apunte a mano, con el dedo o con lápiz.
 5. **El calendario**: Agenda → *Añadir al calendario*, ábrelo y mira si te
    entran las fechas en el calendario del móvil.
-6. **Déjala y vuelve mañana.** ¿Sigue todo ahí?
+6. **Entra desde otro sitio.** Si lo has apuntado en el móvil, entra con tu
+   cuenta en el ordenador (o al revés). ¿Está todo?
+7. **Déjala y vuelve mañana.** ¿Sigue todo ahí?
 
 ## Si algo se rompe
 

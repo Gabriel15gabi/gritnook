@@ -2,9 +2,9 @@
 
 Decidido el 20 de septiembre de 2026.
 
-GritNook se publica **gratis** en GitHub Pages. Sin cobrar, sin cuentas, sin
-servidores y sin papeleo. Se mide cuánta gente la usa de verdad y, solo si sale
-el número, se monta lo de cobrar.
+GritNook se publica **gratis** en GitHub Pages, con cuentas gratis en Supabase.
+Sin cobrar. Se mide cuánta gente la usa de verdad (el Panel del creador) y, solo
+si sale el número, se monta lo de cobrar.
 
 ## Por qué gratis
 
@@ -113,17 +113,14 @@ Antes de ponerlo a `true`:
 
 Solo tendría sentido con suscripción, nunca con pago único. Haría falta:
 
-1. **Cuentas propias.** Supabase tiene capa gratuita, entrada con correo (enlace
-   mágico, sin contraseñas) o con Google, y reglas por usuario. Una tabla
-   `documentos` (usuario, nombre, datos en JSON, fecha) con una regla que solo
-   deje leer y escribir a su dueño. La app ya guarda todo por documentos
-   (`ajustes`, `agenda`, `horas`, `perfil`…), así que el cambio está acotado.
+1. **Cuentas propias.** Hechas: Supabase, correo y contraseña, una tabla
+   `documentos` que solo deja leer y escribir a su dueño. Ver [backend/](backend/LEEME.md).
 2. **La IA en el servidor**, con la clave de la API de Anthropic guardada allí y
    nunca en el navegador, más un límite de uso por alumno.
 3. **Stripe** o la pasarela que sea, con un webhook que marque quién ha pagado.
 
-Eso cambia entera la política de privacidad: cambia quién guarda los datos, en
-qué país y con qué contrato. Habría que rehacer `legal/` y `DATOS.md`.
+La privacidad ya está rehecha para las cuentas; con el profe fuera de Claude
+habría que añadir el proveedor de IA y el cobro.
 
 ## Lo que hay que hacer ahora
 
@@ -132,6 +129,11 @@ qué país y con qué contrato. Habría que rehacer `legal/` y `DATOS.md`.
 - [ ] Activar GitHub Pages en *Settings → Pages*, rama `main`, carpeta raíz.
 - [x] Poner la dirección publicada en `legal/AVISO-LEGAL.md`, donde pone
       «dirección web», y volver a pasar `legal/generar.js`.
-- [ ] Crear el proyecto de Supabase en región europea y pasar la URL y la clave
-      `anon`: los pasos están en [backend/LEEME.md](backend/LEEME.md).
+- [ ] Crear el proyecto de Supabase en Frankfurt, pegar `backend/supabase.sql` y
+      pasar la URL y la clave `anon` (nunca la `service_role`): los pasos están
+      en [backend/LEEME.md](backend/LEEME.md).
+- [ ] Crear tu cuenta en la app con el correo de administrador y mirar el Panel.
+- [ ] Firmar el DPA de Supabase.
+- [ ] Recomendado: correo propio (Resend o Brevo) para que llegue el de «he
+      olvidado la contraseña».
 - [ ] La tarjeta de la app en el portfolio.
