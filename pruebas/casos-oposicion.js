@@ -1155,8 +1155,8 @@ grupo("Oposición: el plazo de la solicitud", () => {
       const antesTab = opoTab;
       try {
         plazo(4); S.opo.temas = [temaDe(1)]; opoTab = "resumen";
-        esperar(vistaOposicion()).contiene("opo-alerta urgente");
-        esperar(vistaEscritorio()).contiene("opo-alerta urgente");
+        esperar(vistaOposicion()).contiene("banda urgente");
+        esperar(vistaEscritorio()).contiene("banda urgente");
       } finally { opoTab = antesTab; }
     });
   });

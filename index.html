@@ -1757,15 +1757,15 @@ dialog.dlg-legal::backdrop{background:rgba(0,0,0,.45)}
 .opo-fila .icono-btn{width:30px; height:30px; color:var(--ink-3)}
 .opo-fila .icono-btn:hover{color:var(--ink)}
 .opo-hecho{display:flex; align-items:center; justify-content:space-between; gap:12px; flex-wrap:wrap}
-.opo-alerta{display:flex; align-items:center; gap:12px; flex-wrap:wrap; padding:12px 14px; border-radius:var(--r-l); background:var(--surface-2);
+.banda{display:flex; align-items:center; gap:12px; flex-wrap:wrap; padding:12px 14px; border-radius:var(--r-l); background:var(--surface-2);
   font:500 14px/1.4 var(--sans); color:var(--ink)}
-.opo-alerta > span{flex:1 1 220px}
-.opo-alerta .i{flex:0 0 auto; width:18px; height:18px}
-.opo-alerta.urgente{background:color-mix(in srgb, #DC2626 9%, var(--surface)); box-shadow:inset 0 0 0 1px color-mix(in srgb, #DC2626 40%, transparent)}
-.opo-alerta.urgente .i{color:#DC2626}
-.opo-alerta.pronto, .opo-alerta.pasado{background:color-mix(in srgb, #F59E0B 11%, var(--surface)); box-shadow:inset 0 0 0 1px color-mix(in srgb, #F59E0B 45%, transparent)}
-.opo-alerta.pronto .i, .opo-alerta.pasado .i{color:#D97706}
-.opo-inicio > .opo-alerta{grid-column:1 / -1}
+.banda > span{flex:1 1 220px}
+.banda .i{flex:0 0 auto; width:18px; height:18px}
+.banda.urgente{background:color-mix(in srgb, #DC2626 9%, var(--surface)); box-shadow:inset 0 0 0 1px color-mix(in srgb, #DC2626 40%, transparent)}
+.banda.urgente .i{color:#DC2626}
+.banda.pronto, .banda.pasado{background:color-mix(in srgb, #F59E0B 11%, var(--surface)); box-shadow:inset 0 0 0 1px color-mix(in srgb, #F59E0B 45%, transparent)}
+.banda.pronto .i, .banda.pasado .i{color:#D97706}
+.opo-inicio > .banda{grid-column:1 / -1}
 .opo-marcha{display:inline-flex; align-items:center; gap:10px; margin-top:12px; padding:8px 14px; border:0; border-radius:999px; cursor:pointer;
   background:var(--surface-2); color:var(--ink); font:500 13.5px/1 var(--sans)}
 .opo-marcha.vivo{background:color-mix(in srgb, var(--acento, #7C6CF0) 13%, var(--surface)); box-shadow:inset 0 0 0 1px var(--acento, #7C6CF0)}
@@ -1800,6 +1800,8 @@ dialog.dlg-legal::backdrop{background:rgba(0,0,0,.45)}
 .opo-check{align-self:end; min-height:40px}
 .opo-pie-temario{margin-top:14px}
 .opc{font-weight:400; color:var(--ink-4); margin-left:4px}
+.cf-info{margin:0; padding:12px 14px; border-radius:var(--r-m); background:var(--surface-2); color:var(--ink-2);
+  font:400 12px/1.55 var(--mono, ui-monospace, monospace); white-space:pre-wrap; word-break:break-word; max-height:180px; overflow:auto}
 .sel-tema{margin-top:8px}
 @media (max-width:700px){
   .opo-semana{grid-template-columns:repeat(2, minmax(0,1fr))}
@@ -1918,11 +1920,12 @@ const leeLS = k => { try { const v = localStorage.getItem("desk-daw:" + k); retu
    De paso, si una mano falla se apunta en el registro de errores en vez
    de morirse en silencio en la consola de alguien que nunca la mira. */
 const MANOS = new Map();
-function alEvento(tipo, mano) {
-  let lista = MANOS.get(tipo);
+function alEvento(tipo, mano, destino = document) {
+  const llave = destino === document ? tipo : tipo + "@otro";
+  let lista = MANOS.get(llave);
   if (!lista) {
-    MANOS.set(tipo, lista = []);
-    document.addEventListener(tipo, ev => {
+    MANOS.set(llave, lista = []);
+    destino.addEventListener(tipo, ev => {
       for (const fn of lista) {
         try {
           const r = fn(ev);
@@ -3637,6 +3640,7 @@ function vistaEscritorio() {
     </div>
   </header>
 
+  ${bandaCopia()}
   ${esOpositor() ? opoTarjetaInicio() : ""}
   <div class="rejilla-12">
     ${panelObjetivos()}
@@ -4683,7 +4687,7 @@ async function bajarArchivo(nombre, data, tipo = "application/octet-stream") {
 }
 /* la copia de todo, que se pide desde dos sitios */
 async function bajarCopia() {
-  if (await bajarArchivo("gritnook-" + hoyISO() + ".json", JSON.stringify(S, null, 2), "application/json")) aviso("Copia descargada.");
+  if (await bajarArchivo("gritnook-" + hoyISO() + ".json", JSON.stringify(S, null, 2), "application/json")) { marcarCopia(); aviso("Copia descargada."); }
 }
 
 /* ══════════════════ oposiciones ══════════════════
@@ -5239,8 +5243,7 @@ function opoMarcha(irA) {
 }
 function opoAlertaPlazo() {
   const a = avisoPlazo(); if (!a) return "";
-  return `<div class="opo-alerta ${a.tipo}" role="status">${icono("calendario")}<span>${esc(a.txt)}</span>
-    <button type="button" class="btn mini" data-opo-presentada>Ya la he presentado</button></div>`;
+  return banda("calendario", a.txt, `<button type="button" class="btn mini" data-opo-presentada>Ya la he presentado</button>`, a.tipo);
 }
 
 function vistaOposicion() {
@@ -5972,6 +5975,274 @@ SI OPOSITA:
 - Si va tarde con el plan, díselo claro y proponle qué recortar; no le digas que llega si no llega.
 - Si tiene tema a desarrollar, te paso la probabilidad de que le salga uno que lleva: úsala para aconsejarle cuántos preparar y no te inventes otras cifras.
 - Si no ha presentado la solicitud y el plazo está cerca, recuérdaselo antes que nada.`;
+
+
+/* ══════════════════ para usarla de verdad ══════════════════
+   Lo que hace falta cuando la app deja de ser una demo y pasa a llevarte el
+   curso: que dos pestañas no se pisen, que el navegador no tire tus datos,
+   que las fechas salten en el calendario del móvil y que quien la pruebe
+   pueda contarte lo que se ha roto. */
+
+const VERSION = "1.0";
+
+/* ── dónde se está usando ── */
+const instalada = () => {
+  try { return matchMedia("(display-mode: standalone)").matches || navigator.standalone === true; } catch (e) { return false; }
+};
+const enIOS = () => /iPhone|iPad|iPod/.test(navigator.userAgent || "");
+/* la app usa color-mix, :has y consultas de contenedor: todo de finales de
+   2022. En un navegador más viejo no se rompe, pero se ve regular */
+const navegadorViejo = () => {
+  try { return !(window.CSS && CSS.supports && CSS.supports("color", "color-mix(in srgb, red 50%, blue)")); }
+  catch (e) { return true; }
+};
+
+/* lo ya avisado, para no repetirse cada vez que abres la app */
+const vistos = () => leeLS("vistos") || {};
+const marcarVisto = (k, v = hoyISO()) => { const o = vistos(); o[k] = v; guardaLS("vistos", o); };
+
+/* ── que el navegador no tire tus datos ──
+   Sin esto, el navegador puede vaciar el almacenamiento cuando le falta
+   espacio. Se pide una sola vez y en silencio: si dice que no, todo sigue
+   igual. En el iPhone no existe, y de ahí el aviso de abajo. */
+async function pedirPersistencia() {
+  try {
+    if (!navigator.storage || !navigator.storage.persist) return false;
+    if (await navigator.storage.persisted()) return true;
+    return await navigator.storage.persist();
+  } catch (e) { return false; }
+}
+
+/* ── las otras pestañas ──
+   Todo se guarda en una sola clave, así que dos pestañas abiertas se pisaban:
+   la última en guardar borraba lo que hubiera escrito la otra. Ahora, cuando
+   otra pestaña guarda, esta se entera y se pone al día. Es lo mismo que hace
+   la sincronización de Claude entre dispositivos. */
+function estadoDeOtraPestana(txt) {
+  let nuevo;
+  try { nuevo = JSON.parse(txt); } catch (e) { return false; }
+  if (!nuevo || typeof nuevo !== "object" || !Array.isArray(nuevo.modulos)) return false;
+  /* lo que estés escribiendo ahora mismo manda: ese apunte no se toca */
+  const escribiendo = editando() && apunteActivo && S.apuntes && S.apuntes[apunteActivo];
+  const mio = escribiendo ? clonar(S.apuntes[apunteActivo]) : null;
+  S = nuevo;
+  normalizarPerfil(); normalizarObjetivos(); normalizarTutor();
+  if (mio) { if (!S.apuntes || typeof S.apuntes !== "object") S.apuntes = {}; S.apuntes[mio.id] = mio; }
+  if (editando()) pintaNav(); else pinta();
+  return true;
+}
+function escucharOtrasPestanas() {
+  alEvento("storage", e => {
+    if (!e || !e.newValue) return;
+    if (e.key === "desk-daw:estado") estadoDeOtraPestana(e.newValue);
+    else if (e.key === "desk-daw:timer") { cargarTimer(); pintaReloj(); }
+  }, window);
+}
+
+/* ── las copias de seguridad ──
+   Fuera de Claude los datos viven solo en este navegador. Si no hay copia
+   desde hace semanas, se avisa. El iPhone además borra lo guardado si pasas
+   siete días sin abrir la web, salvo que la tengas en la pantalla de inicio. */
+const DIAS_COPIA = 21;
+const copiaInfo = () => { const c = leeLS("copia"); return c && typeof c === "object" ? c : {}; };
+function marcarCopia(dia = hoyISO()) { const c = copiaInfo(); c.fecha = dia; delete c.pospuesta; guardaLS("copia", c); }
+function posponerCopia(dia = hoyISO()) { const c = copiaInfo(); c.pospuesta = dia; guardaLS("copia", c); }
+function diasSinCopia(hoy = hoyISO()) {
+  const c = copiaInfo();
+  if (!esFecha(c.fecha)) return null;
+  const d = diasEntre(hoy, c.fecha);
+  return isFinite(d) ? Math.max(0, d) : null;
+}
+/* hay algo que perder: un perfil hecho y datos escritos */
+function hayCosasQuePerder() {
+  const p = normalizarPerfil();
+  if (!p.listo) return false;
+  return Object.keys(S.apuntes || {}).length > 0 || (S.tareas || []).length > 0 || (S.examenes || []).length > 0
+    || Object.keys(S.horas || {}).length > 0 || (normalizarOpo().temas.length > 0);
+}
+function tocaRecordarCopia(hoy = hoyISO()) {
+  if (db || !hayCosasQuePerder()) return false;          /* con la cuenta de Claude, ya hay copia */
+  const c = copiaInfo();
+  if (esFecha(c.pospuesta) && diasEntre(hoy, c.pospuesta) < 7) return false;
+  const d = diasSinCopia(hoy);
+  if (d === null) {
+    /* nunca ha hecho una: se espera a que lleve una semana usándola */
+    const p = normalizarPerfil();
+    const desde = String(p.creado || "").slice(0, 10);
+    return esFecha(desde) ? diasEntre(hoy, desde) >= 7 : false;
+  }
+  return d >= DIAS_COPIA;
+}
+
+/* ── el calendario del móvil ──
+   Un archivo .ics con los exámenes, las entregas y, si opositas, la fecha del
+   examen y el plazo de la solicitud. Se abre en el calendario del teléfono y
+   ahí sí avisa, que es de lo que se trata: la app no puede avisarte si no la
+   abres. */
+const escapaICS = s => String(s === null || s === undefined ? "" : s)
+  .replace(/\\/g, "\\\\").replace(/;/g, "\\;").replace(/,/g, "\\,").replace(/\r?\n/g, "\\n");
+/* el formato manda líneas de 75 octetos como mucho; las largas se parten y
+   siguen con un espacio delante */
+function plegarICS(linea) {
+  const trozos = [];
+  let actual = "", bytes = 0, tope = 73;
+  for (const ch of String(linea)) {
+    const b = new Blob([ch]).size;
+    if (bytes + b > tope) { trozos.push(actual); actual = " "; bytes = 1; tope = 74; }
+    actual += ch; bytes += b;
+  }
+  trozos.push(actual);
+  return trozos.join("\r\n");
+}
+const dosDig = n => String(n).padStart(2, "0");
+const selloICS = (d = new Date()) => d.getUTCFullYear() + dosDig(d.getUTCMonth() + 1) + dosDig(d.getUTCDate())
+  + "T" + dosDig(d.getUTCHours()) + dosDig(d.getUTCMinutes()) + dosDig(d.getUTCSeconds()) + "Z";
+const fechaICS = iso => String(iso).replace(/-/g, "");
+const horaICS = h => { const [hh, mm] = String(h || "").split(":"); return dosDig(num(hh, 0)) + dosDig(num(mm, 0)) + "00"; };
+
+/* todo lo que tiene fecha de hoy en adelante */
+function eventosCalendario(hoy = hoyISO()) {
+  const ev = [];
+  const mod = id => { const m = modPorId(id); return m ? m.cod + " · " + m.nombre : ""; };
+  (S.examenes || []).forEach(x => {
+    if (!esFecha(x.fecha) || x.fecha < hoy) return;
+    ev.push({ uid: "ex-" + x.id, titulo: "Examen: " + (x.titulo || "Examen"), fecha: x.fecha, hora: /^\d{1,2}:\d{2}$/.test(x.hora || "") ? x.hora : "",
+      minutos: 90, desc: [mod(x.modId), x.temas ? "Entra: " + x.temas : ""].filter(Boolean).join("\n") });
+  });
+  (S.tareas || []).forEach(t => {
+    if (t.hecha || !esFecha(t.fecha) || t.fecha < hoy) return;
+    ev.push({ uid: "en-" + t.id, titulo: "Entregar: " + (t.titulo || "Entrega"), fecha: t.fecha, hora: /^\d{1,2}:\d{2}$/.test(t.hora || "") ? t.hora : "",
+      minutos: 30, desc: [mod(t.modId), t.peso ? "Vale el " + num(t.peso) + " % de la nota" : ""].filter(Boolean).join("\n") });
+  });
+  if (esOpositor()) {
+    const O = normalizarOpo(), p = normalizarPerfil();
+    if (esFecha(O.examen.fecha) && O.examen.fecha >= hoy)
+      ev.push({ uid: "opo-examen", titulo: "Examen de la oposición" + (p.ciclo ? ": " + p.ciclo : ""), fecha: O.examen.fecha, hora: "",
+        minutos: 0, desc: O.examen.preguntas + " preguntas · " + O.examen.minutos + " minutos" });
+    const cv = O.convocatoria;
+    if (esFecha(cv.plazoFin) && cv.plazoFin >= hoy && !cv.presentada)
+      ev.push({ uid: "opo-plazo", titulo: "Último día para presentar la solicitud", fecha: cv.plazoFin, hora: "", minutos: 0,
+        desc: "Presentar la instancia y pagar la tasa" + (cv.enlace ? "\n" + cv.enlace : "") });
+  }
+  return ev.sort((a, b) => (a.fecha + (a.hora || "")).localeCompare(b.fecha + (b.hora || "")));
+}
+function textoICS(eventos, ahora = new Date()) {
+  const L = ["BEGIN:VCALENDAR", "VERSION:2.0", "PRODID:-//GritNook//ES", "CALSCALE:GREGORIAN", "METHOD:PUBLISH", "X-WR-CALNAME:GritNook"];
+  (eventos || []).forEach(e => {
+    if (!esFecha(e.fecha)) return;
+    const conHora = /^\d{1,2}:\d{2}$/.test(e.hora || "");
+    L.push("BEGIN:VEVENT", "UID:" + escapaICS(e.uid) + "@gritnook", "DTSTAMP:" + selloICS(ahora));
+    if (conHora) {
+      const ini = new Date(e.fecha + "T" + e.hora + ":00");
+      const fin = new Date(ini.getTime() + Math.max(15, num(e.minutos, 60)) * 60000);
+      const local = d => d.getFullYear() + dosDig(d.getMonth() + 1) + dosDig(d.getDate()) + "T" + dosDig(d.getHours()) + dosDig(d.getMinutes()) + "00";
+      L.push("DTSTART:" + local(ini), "DTEND:" + local(fin));
+    } else {
+      L.push("DTSTART;VALUE=DATE:" + fechaICS(e.fecha), "DTEND;VALUE=DATE:" + fechaICS(sumaDias(e.fecha, 1)));
+    }
+    L.push("SUMMARY:" + escapaICS(e.titulo));
+    if (e.desc) L.push("DESCRIPTION:" + escapaICS(e.desc));
+    /* el aviso: el día antes, y una hora antes si tiene hora */
+    L.push("BEGIN:VALARM", "ACTION:DISPLAY", "DESCRIPTION:" + escapaICS(e.titulo), "TRIGGER:" + (conHora ? "-P1D" : "-PT15H"), "END:VALARM");
+    if (conHora) L.push("BEGIN:VALARM", "ACTION:DISPLAY", "DESCRIPTION:" + escapaICS(e.titulo), "TRIGGER:-PT1H", "END:VALARM");
+    L.push("END:VEVENT");
+  });
+  L.push("END:VCALENDAR");
+  return L.map(plegarICS).join("\r\n") + "\r\n";
+}
+async function bajarCalendario() {
+  const ev = eventosCalendario();
+  if (!ev.length) { aviso("No tienes nada con fecha de hoy en adelante.", "mal"); return; }
+  const ok = await bajarArchivo("gritnook-" + hoyISO() + ".ics", textoICS(ev), "text/calendar;charset=utf-8");
+  if (ok) aviso(ev.length + (ev.length === 1 ? " fecha descargada. Ábrela" : " fechas descargadas. Ábrelas") + " y tu móvil te ofrecerá meterlas en el calendario.");
+}
+
+/* ── contar un fallo ──
+   Quien prueba la app necesita poder decirte qué se ha roto, y tú necesitas
+   saber en qué navegador fue. No lleva ni nombres, ni notas, ni apuntes. */
+function informeTecnico() {
+  const L = ["GritNook " + VERSION,
+    "Navegador: " + (navigator.userAgent || "?"),
+    "Pantalla: " + innerWidth + "×" + innerHeight + (instalada() ? " · instalada" : ""),
+    "Idioma: " + (navigator.language || "?"),
+    "Dónde: " + (db ? "Claude, sincronizado" : enClaude() ? "Claude, sin sincronizar" : "web"),
+    "Datos: " + Math.round(JSON.stringify(S).length / 1024) + " KB · "
+      + (S.modulos || []).length + " " + voc(true) + " · " + Object.keys(S.apuntes || {}).length + " apuntes · "
+      + Object.keys(S.casillero || {}).length + " documentos",
+    "Fallos apuntados: " + ERRORES.length];
+  ERRORES.slice(-3).forEach(x => L.push("· " + (x.donde || "") + ": " + String(x.que || "").slice(0, 160)));
+  return L.join("\n");
+}
+function dlgContarFallo() {
+  const info = informeTecnico();
+  abrirDlg("Contar un fallo", `
+    <p class="meta" style="margin:0 0 12px">Cuéntame qué hacías y qué ha pasado. Al copiarlo se añade abajo en qué navegador estabas, que es lo que hace falta para encontrarlo. <strong>No se manda nada solo</strong>: lo pegas tú donde quieras.</p>
+    <label class="campo">¿Qué ha pasado?<textarea id="cfTexto" rows="4" maxlength="1000" placeholder="Le di a «Vuelta hecha» y se quedó la pantalla en blanco…"></textarea></label>
+    <div class="etq" style="margin:16px 0 6px">Lo que se copia contigo</div>
+    <pre class="cf-info">${esc(info)}</pre>
+    <p class="meta" style="margin-top:8px">Ni tu nombre, ni tus notas, ni tus apuntes: solo lo técnico.</p>`,
+    [{ txt: "Cerrar", clase: "btn fantasma" },
+     { txt: "Copiar", clase: "btn", accion: () => { copiarFallo(); return true; } },
+     { txt: "Enviar por correo", clase: "btn primario", accion: () => {
+        const t = $("#cfTexto").value.trim();
+        const cuerpo = (t ? t + "\n\n" : "") + "— datos técnicos —\n" + info;
+        location.href = "mailto:" + CORREO_FALLOS + "?subject=" + encodeURIComponent("GritNook: un fallo")
+          + "&body=" + encodeURIComponent(cuerpo);
+      } }]);
+}
+const CORREO_FALLOS = "gabriel_gabiz@hotmail.com";
+async function copiarFallo() {
+  const t = ($("#cfTexto") && $("#cfTexto").value.trim()) || "";
+  const txt = (t ? t + "\n\n" : "") + "— datos técnicos —\n" + informeTecnico();
+  try { await navigator.clipboard.writeText(txt); aviso("Copiado. Pégalo donde quieras contármelo."); }
+  catch (e) {
+    const ta = $("#cfTexto"); if (ta) { ta.value = txt; ta.select(); aviso("Selecciónalo y cópialo con Ctrl+C."); }
+  }
+}
+
+/* ── los avisos de la primera vez ──
+   Se enseñan una sola vez, al abrir, y nunca dos a la vez. */
+function avisosDeEntrada() {
+  if (BV) return;                                        /* durante la bienvenida, no se molesta */
+  const v = vistos();
+  if (navegadorViejo() && !v.viejo) {
+    marcarVisto("viejo");
+    abrirDlg("Tu navegador es antiguo", `
+      <p>GritNook usa cosas que llegaron a los navegadores a finales de 2022. En el tuyo va a funcionar, pero <strong>algunos colores y cajas se verán raros</strong>.</p>
+      <p class="meta" style="margin-top:10px">Si puedes, actualiza el navegador o abre la app en otro. En el móvil suele bastar con actualizar el sistema.</p>`,
+      [{ txt: "Entendido", clase: "btn primario" }]);
+    return;
+  }
+  if (enIOS() && !instalada() && !db && !v.ios) {
+    marcarVisto("ios");
+    abrirDlg("Añádela a tu pantalla de inicio", `
+      <p>En el iPhone, <strong>Safari borra lo guardado por una web si pasas siete días sin abrirla</strong>. Tus notas y tus apuntes se irían con ello.</p>
+      <p style="margin-top:10px">Se arregla en diez segundos: toca <strong>Compartir</strong> ${icono("clip")} abajo y luego <strong>«Añadir a pantalla de inicio»</strong>. Desde ahí se abre como una app y ya no se borra nada.</p>
+      <p class="meta" style="margin-top:10px">Y descárgate una copia de vez en cuando desde Ajustes → Datos.</p>`,
+      [{ txt: "Ahora lo hago", clase: "btn primario" }]);
+  }
+}
+
+/* la banda de «hazte una copia», en Inicio */
+function bandaCopia() {
+  if (!tocaRecordarCopia()) return "";
+  const d = diasSinCopia();
+  return banda("archivo", d === null
+    ? "Llevas un tiempo usando GritNook y tus datos viven solo en este navegador. Descárgate una copia."
+    : "Hace " + d + " días que no guardas una copia de tus datos.",
+    `<button type="button" class="btn mini primario" id="bcCopia">Descargar copia</button>
+     <button type="button" class="btn mini fantasma" id="bcLuego">Ahora no</button>`, "pronto");
+}
+/* una banda de aviso, la misma que usa la oposición */
+const banda = (ico, txt, botones = "", tipo = "") => `<div class="banda${tipo ? " " + tipo : ""}" role="status">${icono(ico)}<span>${esc(txt)}</span>${botones}</div>`;
+
+alEvento("click", async e => {
+  const t = e.target;
+  if (t.closest("#btnICS, #apICS")) { bajarCalendario(); return; }
+  if (t.closest("#bcCopia")) { await bajarCopia(); pinta(); return; }
+  if (t.closest("#bcLuego")) { posponerCopia(); pinta(); aviso("Vale. Te lo recuerdo en una semana."); return; }
+  if (t.closest("#apFallo")) { dlgContarFallo(); return; }
+});
 
 
 /* ══════════════════ pintado ══════════════════ */
@@ -6937,6 +7208,12 @@ const ETAPAS = [
 ];
 const etapaDe = id => ETAPAS.find(e => e.id === id) || ETAPAS[ETAPAS.length - 1];
 /* la palabra que toca: se usa en el menú, en los títulos y en lo que dice el profe */
+/* con su artículo: «los módulos», «las asignaturas», «el bloque» */
+function vocArt(plural, mayus) {
+  const t = voc(plural), fem = /^(asignatura|destreza)/.test(t);
+  const s = (plural ? (fem ? "las" : "los") : (fem ? "la" : "el")) + " " + t;
+  return mayus ? s.charAt(0).toUpperCase() + s.slice(1) : s;
+}
 function voc(plural, mayus) {
   const p = normalizarPerfil(), v = etapaDe(p.etapa).voc;
   let t = plural ? (v === "módulo" ? "módulos" : v === "bloque" ? "bloques" : v === "destreza" ? "destrezas" : "asignaturas") : v;
@@ -7268,7 +7545,7 @@ function bvPaso2() {
   </div>
   <p class="meta" style="margin-top:12px">${marcadas} ${marcadas === 1 ? esc(voc()) : esc(voc(true))} ${marcadas === 1 ? "marcada" : "marcadas"}.</p>
   ${hay ? `<label class="ent-linea" style="margin-top:16px"><input type="checkbox" id="bvReemplazar"${BV.reemplazar ? " checked" : ""}>
-    <span>Reemplazar las ${esc(voc(true))} que ya tengo (se borran sus notas y sus horas). Si lo dejas sin marcar, solo se añaden las que no tengas.</span></label>` : ""}`;
+    <span>Reemplazar ${esc(vocArt(true))} que ya tengo (se borran sus notas y sus horas). Si lo dejas sin marcar, solo se añaden las que no tengas.</span></label>` : ""}`;
 }
 function bvPaso3() {
   const p = BV.p;
@@ -7809,6 +8086,12 @@ function ajDatos() {
       <button type="button" class="btn fantasma" id="apImportar">Cargar una copia</button>
       <input type="file" id="apInputImportar" accept="application/json,.json" class="oculto">
     </div>
+    <p class="meta" style="margin:10px 0 0">${(() => { const d = diasSinCopia();
+      return d === null ? "Todavía no has descargado ninguna copia." : d === 0 ? "Última copia: hoy." : "Última copia: hace " + d + (d === 1 ? " día." : " días."); })()}</p>
+    <hr class="separador">
+    <div class="etq">Tus fechas, en el calendario del móvil</div>
+    <p class="meta" style="margin:6px 0 12px">La app no puede avisarte si no la abres. Esto descarga tus exámenes y entregas en un archivo que el móvil mete en su calendario, con aviso el día antes.</p>
+    <button type="button" class="btn" id="apICS">${icono("calendario")}Descargar mis fechas (.ics)</button>
     <hr class="separador">
     <div class="etq">Dónde están tus datos</div>
     <p class="meta" style="margin:6px 0 0">${db ? "En tu cuenta de Claude: los ves igual desde el móvil y desde cualquier ordenador."
@@ -7816,14 +8099,18 @@ function ajDatos() {
       : "Solo en este navegador y en este dispositivo. Si vas a usarla en el móvil y en el ordenador, descárgate la copia aquí y cárgala allí."}</p>
     <p class="meta" style="margin:6px 0 0">Ocupan ${tam} KB, con ${Object.keys(S.apuntes || {}).length} apuntes y ${Object.keys(S.casillero || {}).length} documentos.</p>
     <p class="meta" style="margin:10px 0 0">El detalle de qué se guarda y qué sale fuera está en <button type="button" class="lg-enlace" data-lg="privacidad">la política de privacidad</button>.</p>
-    ${ERRORES.length ? `
     <hr class="separador">
-    <div class="etq">Si algo ha fallado</div>
-    <p class="meta" style="margin:6px 0 12px">La app ha apuntado ${ERRORES.length} fallo${ERRORES.length === 1 ? "" : "s"} mientras la usabas. No salen de este dispositivo: están aquí para saber qué hay que arreglar.</p>
-    <button type="button" class="btn fantasma" id="apVerErrores">Ver los fallos</button>` : ""}
+    <div class="etq">Si algo va mal</div>
+    <p class="meta" style="margin:6px 0 12px">Cuéntamelo y lo arreglo. Se copia también en qué navegador estabas: ni tu nombre, ni tus notas, ni tus apuntes.${ERRORES.length
+      ? " La app ha apuntado " + ERRORES.length + (ERRORES.length === 1 ? " fallo" : " fallos") + " mientras la usabas, y no salen de este dispositivo." : ""}</p>
+    <div class="barra-btns">
+      <button type="button" class="btn" id="apFallo">Contar un fallo</button>
+      ${ERRORES.length ? `<button type="button" class="btn fantasma" id="apVerErrores">Ver los ${ERRORES.length === 1 ? "detalles" : "fallos"}</button>` : ""}
+    </div>
+    <p class="meta" style="margin:10px 0 0">GritNook ${VERSION}${instalada() ? " · instalada" : ""}</p>
     <hr class="separador">
     <div class="etq">Empezar de cero</div>
-    <p class="meta" style="margin:6px 0 14px">Borra el perfil, las ${esc(voc(true))}, las notas, las horas, las entregas, los apuntes y la conversación con el profe. No se puede deshacer.</p>
+    <p class="meta" style="margin:6px 0 14px">Borra el perfil, ${esc(vocArt(true))}, las notas, las horas, las entregas, los apuntes y la conversación con el profe. No se puede deshacer.</p>
     <button type="button" class="btn borrar" id="apBorrarTodo">Borrar todo y volver a empezar</button>
   </section>`;
 }
@@ -8206,6 +8493,7 @@ function vistaAgenda() {
       <div class="eyebrow">Lo que tiene fecha</div>
       <h1 class="titulo">Agenda</h1>
     </div>
+    <button type="button" class="btn" id="btnICS" title="Descarga tus fechas para meterlas en el calendario del móvil">${icono("calendario")}Añadir al calendario</button>
   </header>
   <div class="ag-vistas" role="tablist">${vistas.map(([id, t, ic]) => `<button type="button" class="ag-vista" role="tab" aria-selected="${agTab === id}" data-ag="${id}">${icono(ic)}${t}</button>`).join("")}</div>
   ${conDatos ? `
@@ -9144,6 +9432,9 @@ setTimeout(irAlEnlace, 0);
   /* primera vez: se monta el curso antes de nada */
   if (!normalizarPerfil().listo) bvAbrir(false);
   else registrarProgreso();
+  escucharOtrasPestanas();
+  pedirPersistencia();
+  avisosDeEntrada();
   setInterval(() => { if (seccion === "escritorio" && !T.activo) pintaReloj(); }, 30000);
   if (window.claude && typeof claude.use === "function") conectar();
   else marcaSync("Este dispositivo", false);

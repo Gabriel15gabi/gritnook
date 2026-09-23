@@ -65,6 +65,12 @@ pedir consentimiento (art. 22.2 LSSI). No se usa para seguirte ni para medir nad
 y se borra entero desde Ajustes → Datos o borrando los datos del sitio en tu
 navegador.
 
+Ahí se guardan también tres cosas pequeñas de la propia app: la fecha de tu
+última copia de seguridad (para recordártela), qué avisos ya has visto (para no
+repetirlos) y los últimos fallos que haya dado, que no salen de tu dispositivo.
+Si tu navegador lo permite, la app le pide que **no borre estos datos** cuando
+ande justo de espacio.
+
 ## 5. Quién más ve tus datos
 
 | Quién | Qué ve | Dónde está |
@@ -72,6 +78,14 @@ navegador.
 | Anthropic (proveedor del profe con IA) | Solo lo que se le envía en cada pregunta. El detalle exacto, campo por campo, está en cómo funciona el profe: en resumen, tu nombre o apodo, tu curso, tus asignaturas con sus notas, tus entregas y exámenes, tu horario, los títulos de tus apuntes, el contenido del que tengas abierto, los últimos mensajes y los archivos que adjuntes | Estados Unidos |
 | Anthropic (almacenamiento de Claude), solo si abres la app desde allí | Tus datos sincronizados y tus archivos del casillero | Estados Unidos |
 | GitHub Pages (GitHub, Inc.) | Solo sirve los archivos de la app. Como cualquier servidor web, registra la dirección IP y el navegador de quien la abre, por seguridad. **No recibe ninguno de tus datos de estudio** | Estados Unidos |
+
+A eso se suma una cosa que decides tú: si usas **Ajustes → Datos → Contar un
+fallo** y le das a enviar, se abre tu programa de correo con un mensaje ya
+escrito para el responsable de la app. Lleva lo que tú cuentes y unos datos
+técnicos —versión, navegador, tamaño de pantalla, idioma, cuántos apuntes y
+documentos tienes y los últimos fallos que la app haya apuntado—, pero **ni tu
+nombre, ni tus notas, ni tus apuntes**. Puedes leerlo entero antes de mandarlo,
+y no se envía nada si no le das tú a enviar.
 
 No hay nadie más. No se ceden datos a terceros, ni se venden, ni hay anunciantes.
 Solo se entregarían a jueces, fuerzas de seguridad o administraciones si una ley

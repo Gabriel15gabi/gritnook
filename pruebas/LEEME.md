@@ -8,9 +8,9 @@ Eso levanta un servidor, abre un navegador sin ventana y escribe el resultado en
 la consola. Devuelve 1 si algo falla, que es lo que mira un servidor de
 integración continua.
 
-**474 pruebas.** Sin ventana pasan 468 y 6 se quedan en pendiente: son las que
+**497 pruebas.** Sin ventana pasan 491 y 6 se quedan en pendiente: son las que
 dibujan un PDF, y sin tarjeta gráfica eso tarda demasiado. Abriendo
-`pruebas/pruebas.html` en un navegador normal pasan las 474.
+`pruebas/pruebas.html` en un navegador normal pasan las 497.
 
 Para verlas con colores y poder pinchar en cada una, abre
 `pruebas/pruebas.html` con la app servida (`node servidor.js` y luego
@@ -81,6 +81,7 @@ repinte la pantalla.
 | `casos-agenda2.js` | El tablero por dentro: mover entre columnas, cambiar de día, convertir una entrega en examen |
 | `casos-bola.js` | La bola de papel, con reloj falso: que aparezca, que caiga, que no se salga de la pantalla y que entre en la papelera |
 | `casos-oposicion.js` | El modo opositor: penalizaciones, cuántas acertar para el corte, cuándo compensa arriesgar, pegar el índice en cualquier formato, vueltas, temas que se enfrían, el plan, lo que ya llevabas estudiado, el simulacro con reloj, las horas por tema, las bolas del tema a desarrollar, el plazo de la solicitud, el Excel del temario y lo que se le cuenta al profe |
+| `casos-listo.js` | Dos pestañas abiertas a la vez, el archivo del calendario (.ics) con sus avisos y sus líneas de 75 octetos, el recordatorio de las copias y qué lleva —y qué no— el informe de fallos |
 | `casos-absurdos.js` | **Datos irreales**: notas de 900, faltas negativas, fechas del año 9999, emojis, árabe, textos de diez mil letras, estados de versiones que no existieron |
 
 ## Rellenar la app para verla funcionando
@@ -115,7 +116,7 @@ no puede pasar es que la pantalla se quede en blanco, y de ahí salió justo eso
 
 ## Lo que han encontrado
 
-Once fallos de verdad:
+Doce fallos de verdad (el último, probando a mano lo que ninguna prueba miraba):
 
 1. **Escribir el ciclo a mano dejaba la app inservible.** Los campos escritos solo
    se leían al cambiar de paso, así que el botón «Seguir» no se encendía nunca y
@@ -162,6 +163,12 @@ Once fallos de verdad:
     sincronización desde el móvil— para que lo que apuntaras en la ficha se
     guardara en un objeto que ya no estaba en el estado, y se perdiera. Ahora se
     arregla en el sitio, sin copiar.
+12. **Dos pestañas abiertas se pisaban los datos.** Todo se guarda en una sola
+    clave, así que la última pestaña en guardar escribía encima de lo que
+    hubiera hecho la otra: apuntabas una entrega en una, y desaparecía en
+    cuanto la otra guardaba cualquier cosa. Se reprodujo con dos pestañas de
+    verdad. Ahora cada pestaña escucha lo que guardan las demás y se pone al
+    día, respetando el apunte que estés escribiendo en ese momento.
 
 Y en la página de datos de prueba: si le dabas a rellenar dos veces, la segunda
 copia de seguridad guardaba los datos falsos encima de los tuyos y «Devolver» te

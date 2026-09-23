@@ -83,9 +83,13 @@ node servidor.js
 
 Y abre http://localhost:4173
 
+**Tus datos, a salvo.** Todo vive en tu navegador, así que la app se ocupa de que no se pierda: le pide al navegador que **no borre** lo guardado cuando ande justo de espacio, avisa si llevas semanas sin descargar una copia y, en el iPhone, te explica por qué conviene añadirla a la pantalla de inicio (Safari borra lo de las webs que no abres en siete días). Con **dos pestañas abiertas a la vez** ninguna pisa a la otra: cada una se entera de lo que guardan las demás. Y si algo se rompe, **Ajustes → Datos → Contar un fallo** copia lo técnico —navegador, versión, tamaño de pantalla— sin tu nombre, tus notas ni tus apuntes.
+
+**Tus fechas, en el calendario del móvil.** La app no puede avisarte si no la abres, así que exporta tus exámenes y entregas en un archivo `.ics` que el teléfono mete en su calendario, con aviso el día antes y otro una hora antes de un examen. Si opositas, también la fecha del examen y el último día para presentar la solicitud.
+
 ## Instalarla en el móvil
 
-Desde GitHub Pages, o en local con `node servidor.js`, la app se instala como una más: en el móvil, menú del navegador → *Añadir a pantalla de inicio*; en el ordenador, el icono de instalar de la barra de direcciones. Funciona sin conexión.
+Desde GitHub Pages, o en local con `node servidor.js`, la app se instala como una más: en el móvil, menú del navegador → *Añadir a pantalla de inicio*; en el ordenador, el icono de instalar de la barra de direcciones. Funciona sin conexión. **En el iPhone conviene hacerlo**: Safari borra lo que guarda una web si pasas siete días sin abrirla, y desde la pantalla de inicio eso no pasa.
 
 ## Dos versiones, una base
 
@@ -106,7 +110,7 @@ La versión pública es para verla y probarla. La de Claude usa sus capacidades 
 node pruebas/correr.js
 ```
 
-474 pruebas que corren **dentro de la app de verdad**, cargada en un iframe, sin
+497 pruebas que corren **dentro de la app de verdad**, cargada en un iframe, sin
 instalar nada. Cubren las cuentas de las notas, entender las fechas escritas a
 mano, el sanitizador, el estado, la libreta, el repaso espaciado, la pantalla de
 bienvenida entera y el modo opositor y una tanda de datos absurdos a propósito. El cómo y lo que han encontrado, en [pruebas/](pruebas/LEEME.md).
