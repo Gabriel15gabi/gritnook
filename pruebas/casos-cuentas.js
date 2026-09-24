@@ -115,6 +115,7 @@ async function conNube(fn) {
   nubeFetch = srv.fetch; SESION = null; db = null; esAdminNube = false; nubeLatidoEn = 0; nubeUltimoEstado = "";
   PANEL = { datos: null, cargando: false, error: "" };
   Object.keys(localStorage).filter(k => k.startsWith("desk-daw:")).forEach(k => localStorage.removeItem(k));
+  try { sessionStorage.removeItem("desk-daw:sesion"); } catch (e) {}
   S = estadoInicial();
   try { return await fn(srv); }
   finally {
@@ -128,6 +129,7 @@ async function conNube(fn) {
     const d = $("#dlg"); if (d.open) d.close();
     Object.keys(localStorage).filter(k => k.startsWith("desk-daw:")).forEach(k => localStorage.removeItem(k));
     Object.entries(ls).forEach(([k, v]) => localStorage.setItem(k, v));
+    try { sessionStorage.removeItem("desk-daw:sesion"); } catch (e) {}
     S = JSON.parse(JSON.stringify(copia)); seccion = antes.seccion; pinta();
   }
 }
@@ -339,6 +341,102 @@ grupo("Cuentas: lo tuyo, en tu cuenta", () => {
       await hasta(() => accesoVisible());
       esperar(avisoAcceso()).contiene("caducado");
       esperar(S.tareas.map(t => t.id)).contiene("mia");
+    });
+  });
+});
+
+grupo("Cuentas: mantener la sesión iniciada", () => {
+  const enSesion = () => { try { return sessionStorage.getItem("desk-daw:sesion"); } catch (e) { return null; } };
+  prueba("la casilla sale marcada al entrar y al crear la cuenta, y la sesión se queda en el dispositivo", async () => {
+    await conNube(async srv => {
+      abrirAcceso("crear");
+      esperar($("#accRecordar").checked).cierto();
+      abrirAcceso("entrar");
+      esperar($("#accRecordar").checked).cierto();
+      srv.crear("marta@correo.es", "contraseña-larga");
+      await formulario({ correo: "marta@correo.es", clave: "contraseña-larga" });
+      esperar(accesoVisible()).falso();
+      esperar(!!localStorage.getItem("desk-daw:sesion")).cierto();
+      esperar(enSesion()).nulo();
+      esperar(sesionTemporal()).falso();
+    });
+  });
+
+  prueba("desmarcada, la sesión solo vive mientras el navegador está abierto", async () => {
+    await conNube(async srv => {
+      srv.crear("luis@correo.es", "contraseña-larga");
+      abrirAcceso("entrar");
+      $("#accRecordar").checked = false;
+      await formulario({ correo: "luis@correo.es", clave: "contraseña-larga" });
+      esperar(accesoVisible()).falso();
+      esperar(sesionTemporal()).cierto();
+      esperar(localStorage.getItem("desk-daw:sesion")).nulo();
+      esperar(!!enSesion()).cierto();
+      esperar(leerSesion().usuario.email).igualA("luis@correo.es");
+      esperar(bloqueCuenta()).contiene("al cerrarlo se cierra la sesión");
+    });
+  });
+
+  prueba("la casilla no se desmarca sola si el formulario se repinta por un error", async () => {
+    await conNube(async () => {
+      abrirAcceso("entrar");
+      const c = $("#accRecordar"); c.checked = false; c.dispatchEvent(new Event("change", { bubbles: true }));
+      await formulario({ correo: "mal", clave: "x" });
+      esperar(avisoAcceso()).contiene("no parece válido");
+      esperar($("#accRecordar").checked).falso();
+    });
+  });
+
+  prueba("al cerrar la pestaña, la copia de este ordenador se va (y la sesión sigue si solo recargas)", async () => {
+    await conNube(async srv => {
+      srv.crear("eva@correo.es", "contraseña-larga");
+      abrirAcceso("entrar"); $("#accRecordar").checked = false;
+      await formulario({ correo: "eva@correo.es", clave: "contraseña-larga" });
+      await hasta(() => db && db.pendientes().length === 0);
+      guardaLS("tema", "oscuro");
+      window.dispatchEvent(new Event("pagehide"));
+      const quedan = Object.keys(localStorage).filter(k => k.startsWith("desk-daw:")).sort();
+      esperar(quedan.filter(k => !["desk-daw:tema", "desk-daw:vistos", "desk-daw:sesion-temporal"].includes(k))).igualA([]);
+      esperar(leeLS("tema")).igualA("oscuro");
+      esperar(!!enSesion()).cierto();
+    });
+  });
+
+  prueba("si queda algo sin subir, no se borra al cerrar: se sube al volver", async () => {
+    await conNube(async () => {
+      guardaLS("sesion-temporal", true); guardaLS("nube-pend", ["apuntes/a1"]); guardaLS("dueno", "u1");
+      SESION = { access_token: "t", refresh_token: "r", expira: Date.now() + 3600000, usuario: { id: "u1", email: "x@y.es" } };
+      window.dispatchEvent(new Event("pagehide"));
+      esperar(leeLS("nube-pend")).igualA(["apuntes/a1"]);
+      SESION = null;
+    });
+  });
+
+  prueba("al abrir otra vez con el navegador cerrado, no queda nada de la persona anterior", async () => {
+    await conNube(async () => {
+      guardaLS("sesion-temporal", true); guardaLS("dueno", "u-anterior");
+      S.apuntes.a1 = { id: "a1", titulo: "De otra persona", cuerpo: "privado" };
+      guardarLocal();
+      await arrancarNube();
+      esperar(accesoVisible()).cierto();
+      esperar(leeLS("dueno")).nulo();
+      esperar(Object.keys(S.apuntes).length).igualA(0);
+      esperar(JSON.stringify(localStorage)).noContiene("De otra persona");
+      /* quien venga después también la ve desmarcada: es un ordenador compartido */
+      esperar($("#accRecordar").checked).falso();
+    });
+  });
+
+  prueba("cerrar sesión la quita de los dos sitios", async () => {
+    await conNube(async srv => {
+      srv.crear("ana@correo.es", "contraseña-larga");
+      abrirAcceso("entrar"); $("#accRecordar").checked = false;
+      await formulario({ correo: "ana@correo.es", clave: "contraseña-larga" });
+      await hasta(() => db && db.pendientes().length === 0);
+      await salirCuenta();
+      esperar(enSesion()).nulo();
+      esperar(localStorage.getItem("desk-daw:sesion")).nulo();
+      esperar(accesoVisible()).cierto();
     });
   });
 });

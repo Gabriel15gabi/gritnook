@@ -2487,6 +2487,8 @@ body.en-chat .contenedor{max-width:1120px}
   box-shadow:0 2px 8px -2px rgba(0,0,0,.28), inset 0 0 0 1px var(--acento-borde); transition:transform .34s var(--ease-salto)}
 .acc-tabs[data-modo="crear"] .acc-tab-ind{transform:translateX(100%)}
 .acc-form{gap:14px}
+.acc-recordar span{color:var(--ink)}
+.acc-recordar small{display:block; margin-top:2px; font:400 12px/1.45 var(--sans); color:var(--ink-3)}
 .acc-form input[type=email], .acc-form input[type=password], .acc-form input[type=text]{height:46px; font-size:15px}
 .acc-clave{position:relative; display:block}
 .acc-clave input{padding-right:46px}
@@ -7641,11 +7643,32 @@ const nubeRPC = (nombre, args = {}) => nubePedir("/rest/v1/rpc/" + nombre, { met
    El token dura una hora; un minuto antes de caducar se pide otro. Si el
    servidor dice que la sesión ya no vale, se vuelve a la pantalla de entrar
    sin tocar lo guardado: al entrar otra vez, sigue todo ahí. */
+/* «Mantener la sesión iniciada». Si se desmarca (el ordenador del instituto,
+   el de la biblioteca…), la sesión vive solo mientras el navegador está
+   abierto y lo de esa persona no se queda guardado en el ordenador. */
+const sesionTemporal = () => leeLS("sesion-temporal") === true;
 function guardarSesion(s) {
   SESION = s || null;
-  if (s) guardaLS("sesion", s);
-  else try { localStorage.removeItem("desk-daw:sesion"); } catch (e) {}
+  try { sessionStorage.removeItem("desk-daw:sesion"); } catch (e) {}
+  try { localStorage.removeItem("desk-daw:sesion"); } catch (e) {}
+  if (!s) return;
+  if (!sesionTemporal()) { guardaLS("sesion", s); return; }
+  try { sessionStorage.setItem("desk-daw:sesion", JSON.stringify(s)); } catch (e) { /* si ni eso, solo en memoria */ }
 }
+function leerSesion() {
+  try { const v = sessionStorage.getItem("desk-daw:sesion"); if (v) return JSON.parse(v); } catch (e) {}
+  return leeLS("sesion");
+}
+/* con la sesión temporal, al cerrar la pestaña se va la copia de este ordenador
+   (salvo que quede algo sin subir: eso se sube al volver) */
+function borrarCopiaLocal() {
+  try {
+    if ((leeLS("nube-pend") || []).length) return;
+    Object.keys(localStorage).filter(k => k.startsWith("desk-daw:") && !["desk-daw:tema", "desk-daw:vistos", "desk-daw:sesion-temporal"].includes(k))
+      .forEach(k => localStorage.removeItem(k));
+  } catch (e) {}
+}
+window.addEventListener("pagehide", () => { if (SESION && sesionTemporal()) borrarCopiaLocal(); });
 const sesionDe = r => ({ access_token: String(r.access_token || ""), refresh_token: String(r.refresh_token || ""),
   expira: Date.now() + num(r.expires_in, 3600) * 1000,
   usuario: { id: String((r.user && r.user.id) || ""), email: String((r.user && r.user.email) || "") } });
@@ -7672,8 +7695,9 @@ function sesionPerdida() {
 /* lo que hay en este navegador es de quien entró la última vez: si entra
    otra persona, se limpia antes de traer lo suyo */
 function tomarSesion(r) {
-  const s = sesionDe(r), dueno = leeLS("dueno");
+  const s = sesionDe(r), dueno = leeLS("dueno"), temporal = sesionTemporal();
   if (dueno && dueno !== s.usuario.id) olvidarLocal();
+  guardaLS("sesion-temporal", temporal);
   guardarSesion(s); guardaLS("dueno", s.usuario.id);
   return s;
 }
@@ -7892,12 +7916,15 @@ function bloqueEstadisticas() {
     <label class="ent-linea" style="margin:8px 0 16px"><input type="checkbox" id="acEstad"${sinEstadisticas() ? "" : " checked"}${gpc ? " disabled" : ""}>
       <span>Contar, sin saber quién soy, cuándo abro la app: el día y la hora, de dónde llega el enlace y si es móvil u ordenador. Sirve para saber cuánta gente la usa.${gpc ? " Tu navegador pide que no se rastree, así que no se cuenta." : ""}</span></label>`;
 }
+alEvento("change", e => { if (e.target.id === "accRecordar" && ACC) ACC.recordar = e.target.checked; });
 alEvento("change", e => { if (e.target.id === "acEstad") { guardaLS("sin-estadisticas", !e.target.checked); aviso(e.target.checked ? "Gracias: tus visitas cuentan, sin saber quién eres." : "Hecho: tus visitas ya no se cuentan."); } });
 
 /* ── arrancar ── */
 async function arrancarNube() {
   contarVisita();
-  SESION = leeLS("sesion");
+  SESION = leerSesion();
+  /* la última sesión era temporal y ya se cerró: lo de esa persona se va de este ordenador */
+  if (!SESION && sesionTemporal()) { olvidarLocal(); guardaLS("sesion-temporal", true); }
   /* ¿venimos del enlace de «he olvidado la contraseña»? */
   const frag = new URLSearchParams(location.hash.replace(/^#/, ""));
   if (frag.get("access_token") || frag.get("error_description")) {
@@ -8000,6 +8027,8 @@ function accesoFormHTML() {
       ${crear ? `<div class="acc-fuerza" id="accFuerza" data-n="0" aria-live="polite"><i></i><i></i><i></i><span></span></div>
       <label class="ent-linea"><input type="checkbox" id="accLegal">
         <span>Tengo <strong>14 años</strong> o más y acepto los <button type="button" class="lg-enlace" data-lg-dlg="terminos">términos de uso</button> y la <button type="button" class="lg-enlace" data-lg-dlg="privacidad">política de privacidad</button>.</span></label>` : ""}
+      <label class="ent-linea acc-recordar"><input type="checkbox" id="accRecordar"${(ACC.recordar !== undefined ? ACC.recordar : !sesionTemporal()) ? " checked" : ""}>
+        <span>Mantener la sesión iniciada<small>Desmárcalo si el ordenador no es tuyo: al cerrar el navegador se cierra la sesión y no queda nada tuyo guardado.</small></span></label>
       ${pie}
       ${enviar(crear ? "Crear mi cuenta" : "Entrar")}
       ${crear ? "" : `<button type="button" class="lg-enlace acc-olvido" data-acc="olvido">He olvidado la contraseña</button>`}
@@ -8088,6 +8117,8 @@ alEvento("submit", async e => {
   if ((m === "entrar" || m === "crear" || m === "nueva") && !pass) return decir("Falta la contraseña.");
   if ((m === "crear" || m === "nueva") && pass.length < 8) return decir("La contraseña tiene que tener al menos 8 caracteres.");
   if (m === "crear" && !($("#accLegal") || {}).checked) return decir("Para crear la cuenta tienes que tener 14 años o más y aceptar los términos.");
+  /* lo de mantener la sesión se decide antes de entrar: tomarSesion() ya lo guarda donde toca */
+  const rec = $("#accRecordar"); if (rec && (m === "entrar" || m === "crear")) guardaLS("sesion-temporal", !rec.checked);
   ACC.cargando = true; ACC.aviso = ""; pintaAcceso();
   try {
     if (m === "olvido") { await nubeOlvide(email); return decir("Si hay una cuenta con ese correo, te llega un enlace para poner una contraseña nueva. Mira también en correo no deseado.", true); }
@@ -8110,7 +8141,7 @@ function bloqueCuenta() {
   const pend = db && db.pendientes ? db.pendientes().length : 0;
   return `<div class="etq">Tu cuenta</div>
     <p class="meta" style="margin:6px 0 12px">Has entrado como <strong>${esc(SESION.usuario.email)}</strong>.
-      Tus datos se guardan en tu cuenta y en este navegador${pend ? `. Hay ${pend} ${pend === 1 ? "cambio" : "cambios"} esperando a tener conexión para subirse` : ""}.</p>
+      Tus datos se guardan en tu cuenta y en este navegador${sesionTemporal() ? " mientras esté abierto: al cerrarlo se cierra la sesión y no queda nada tuyo aquí" : ""}${pend ? `. Hay ${pend} ${pend === 1 ? "cambio" : "cambios"} esperando a tener conexión para subirse` : ""}.</p>
     <div class="barra-btns">
       <button type="button" class="btn" id="accSalir">Cerrar sesión</button>
       <button type="button" class="btn borrar fantasma" id="accBorrar">Borrar mi cuenta</button>

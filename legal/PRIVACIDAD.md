@@ -95,7 +95,10 @@ ti y no la ve nadie más.
 **No se usan cookies.** La app guarda sus datos en el almacenamiento local del
 navegador porque es lo que la hace funcionar sin conexión. Si tienes cuenta,
 ahí se guarda también la sesión (lo que te mantiene dentro sin volver a poner la
-contraseña) y la lista de cambios que faltan por subir. Para contar las
+contraseña) y la lista de cambios que faltan por subir. Si al entrar desmarcas
+**«Mantener la sesión iniciada»**, la sesión se guarda solo mientras el navegador
+está abierto (almacenamiento de sesión) y, al cerrarlo, se borra también la copia
+de tus datos de ese navegador. Para contar las
 aperturas de la app **no se guarda nada** en tu dispositivo. Es almacenamiento
 técnico imprescindible para prestar el servicio que pides, así que está exento de
 pedir consentimiento (art. 22.2 LSSI). No se usa para seguirte ni para medir nada,
@@ -226,9 +229,11 @@ tocar, sino la propia base de datos. Las contraseñas se guardan cifradas de for
 que no se pueden leer.
 
 Aun así, **quien tenga acceso a tu dispositivo desbloqueado puede ver tus
-apuntes**, igual que puede ver tus fotos. Si compartes ordenador, **cierra sesión**
-al terminar (Ajustes → Datos → Cerrar sesión): se borra lo de ese navegador y lo
-tuyo sigue en tu cuenta.
+apuntes**, igual que puede ver tus fotos. Si compartes ordenador, al entrar
+**desmarca «Mantener la sesión iniciada»** (al cerrar el navegador se cierra la
+sesión y no queda nada tuyo) o **cierra sesión** al terminar (Ajustes → Datos →
+Cerrar sesión): en los dos casos se borra lo de ese navegador y lo tuyo sigue en
+tu cuenta.
 
 Si un día hubiera un problema de seguridad que afectara a tus datos, se avisará a
 la Agencia Española de Protección de Datos en 72 horas y, si te afecta, también a

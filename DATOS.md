@@ -20,7 +20,7 @@ hay cookies.
 
 | Qué | Detalle | Lo pone |
 |---|---|---|
-| Cuenta | Correo electrónico, contraseña (cifrada con un resumen que no se puede deshacer: no la ve nadie) y fecha de alta. La guarda Supabase. Mientras dura la sesión, el navegador guarda un token para no pedir la contraseña cada vez | El alumno, al crear la cuenta |
+| Cuenta | Correo electrónico, contraseña (cifrada con un resumen que no se puede deshacer: no la ve nadie) y fecha de alta. La guarda Supabase. Mientras dura la sesión, el navegador guarda un token para no pedir la contraseña cada vez: en el almacenamiento local o, si se desmarca «Mantener la sesión iniciada», solo mientras el navegador está abierto (`sessionStorage`) | El alumno, al crear la cuenta |
 | Actividad | Los días que entra en la app y cuántas veces cada día (como mucho una cada media hora). Nada de lo que hace dentro | La app, al abrirla |
 | De dónde llegó | Al crear la cuenta, una vez: de dónde venía el enlace (Instagram, WhatsApp, TikTok, directo…) y si era móvil, tableta u ordenador. Tabla `origenes` | La app, al crear la cuenta |
 | Aperturas (anónimas) | Contadores por día y hora: de dónde llega el enlace, móvil, tableta u ordenador y si está instalada. **Sin cuenta, sin IP, sin identificador** y sin guardar nada en el dispositivo. Tabla `visitas`. No se cuenta si se apaga en Ajustes → Datos o si el navegador pide «no rastrear» | La app, al abrirse |
@@ -106,6 +106,10 @@ ubicación ni ningún identificador publicitario.
   el usuario, su correo, su contraseña, todos sus documentos y su actividad
   (`on delete cascade`), y lo del navegador.
 - **Cerrar sesión**: borra lo de ese navegador; lo suyo sigue en la cuenta.
+- **Sin «Mantener la sesión iniciada»** (ordenadores compartidos): la sesión va en
+  `sessionStorage` y se va al cerrar el navegador; al cerrar la pestaña se borra
+  la copia local (salvo cambios sin subir, que se suben al volver) y, al abrir la
+  app otra vez sin sesión, se borra todo lo de la persona anterior.
 
 ## 5. Pendiente para cuando se venda
 

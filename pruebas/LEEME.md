@@ -8,9 +8,9 @@ Eso levanta un servidor, abre un navegador sin ventana y escribe el resultado en
 la consola. Devuelve 1 si algo falla, que es lo que mira un servidor de
 integración continua.
 
-**716 pruebas.** Sin ventana pasan 710 y 6 se quedan en pendiente: son las que
+**723 pruebas.** Sin ventana pasan 717 y 6 se quedan en pendiente: son las que
 dibujan un PDF, y sin tarjeta gráfica eso tarda demasiado. Abriendo
-`pruebas/pruebas.html` en un navegador normal pasan las 716.
+`pruebas/pruebas.html` en un navegador normal pasan las 723.
 
 Aparte, las reglas de seguridad de la base de datos se prueban contra un
 Postgres de verdad: `node backend/probar-sql.js` (22 comprobaciones), y las del chat con
@@ -88,7 +88,7 @@ repinte la pantalla.
 | `casos-listo.js` | Abrirla desde Instagram, Facebook o TikTok; dos pestañas abiertas a la vez, el archivo del calendario (.ics) con sus avisos y sus líneas de 75 octetos, el recordatorio de las copias y qué lleva —y qué no— el informe de fallos |
 | `casos-inicio.js` | El Inicio en piezas: mil disposiciones al azar sin que nada quede encima de nada, arrastrar y estirar con eventos de puntero de verdad, el teclado, ocultar y volver a mostrar, el orden propio del móvil, medir el Inicio la primera vez y volver al original |
 | `casos-sinprofe.js` | **El profe sale apagado**: recorre todas las secciones, las pestañas de Ajustes y la ficha de un tema buscando «profe» o «tutor» en lo que se ve y en lo que lee un lector de pantalla; que no se use la IA aunque esté disponible; y que al encender el interruptor vuelva todo. Las pruebas del propio profe lo encienden solo mientras duran, con `conProfe()` |
-| `casos-cuentas.js` | **Las cuentas**, contra un Supabase de mentira que se porta como el de verdad: crear cuenta y entrar (con sus errores en castellano), olvidar la contraseña, que lo tuyo suba y llegue a otro dispositivo, que lo pendiente no se pise, sin conexión y al volver, tokens que caducan, salir, cambiar de persona en el mismo navegador, borrar la cuenta, y el panel del creador: que solo lo vea él y que no enseñe el contenido de nadie |
+| `casos-cuentas.js` | **Las cuentas**, contra un Supabase de mentira que se porta como el de verdad: crear cuenta y entrar (con sus errores en castellano), olvidar la contraseña, que lo tuyo suba y llegue a otro dispositivo, que lo pendiente no se pise, sin conexión y al volver, tokens que caducan, «Mantener la sesión iniciada» (marcada, desmarcada, al cerrar la pestaña y al volver a abrir en un ordenador compartido), salir, cambiar de persona en el mismo navegador, borrar la cuenta, y el panel del creador: que solo lo vea él y que no enseñe el contenido de nadie |
 | `casos-yo.js` | **Tu foto y tu menú**: el círculo donde estaba el engranaje, el menú con el ratón y el teclado, colocar una foto de verdad (una imagen mitad roja y mitad azul, para comprobar qué parte queda dentro), arrastrar, la rueda, quitarla, lo que no es una imagen, y que no entre un SVG ni un enlace ni código disfrazado de foto, ni se le mande al profe ni al panel del creador |
 | `casos-chat.js` | **ChatClase**: que salga «Próximamente», aparte y en naranja, sin llamar a nada; y encendido, contra un servidor de mentira: apodo y normas, canales en el panel o en el cajón del móvil, enviar con Intro, el formato sin que se cuele código, menciones, emojis y reacciones, responder, editar, borrar, fotos y PDF, lo que no se puede adjuntar, pegar capturas, compartir tareas hechas o no, lo que llega de otros, sin leer, cargar lo anterior, reportar, bloquear, fijar, dejar sin chat, Anuncios, ir muy rápido, sin red y dejar de mirar al salir |
 | `casos-lanzamiento.js` | **El Inicio de «tu día»** (sin saludos; si trabajas, si no es día de estudio, lo que vence), **el tiempo** (sin ciudad no se pide nada; la ubicación redondeada y solo en el dispositivo; buscar ciudad; media hora guardado; fallos sin insistir; dentro de Claude, nada), **las libretas** (paleta, color propio, quitarlo, tapas claras, colores que no son colores) y **la pantalla de entrar** |
