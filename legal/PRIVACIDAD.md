@@ -12,7 +12,7 @@ también sin conexión. Si abres la app desde Claude, se guarda en tu cuenta de
 Claude en su lugar.
 
 El responsable de la app ve **tu correo y cuánto la usas, nunca lo que
-escribes**. **No hay publicidad, ni analítica de terceros, y no se vende nada a
+escribes**, y cuenta **de forma anónima** cuántas veces se abre la app. **No hay publicidad, ni analítica de terceros, y no se vende nada a
 nadie.** El profe con inteligencia artificial está **apagado por ahora**, así que
 la app no envía nada a ninguna IA. Puedes descargarte todo o borrar tu cuenta
 entera cuando quieras, desde Ajustes → Datos.
@@ -36,7 +36,17 @@ tus minutos de estudio y tus conversaciones con el profe.
 Para tu cuenta: tu **correo electrónico** y tu **contraseña**, que no se guarda
 tal cual sino cifrada de forma que no se puede leer (nadie puede verla, tampoco el
 responsable). Y, para saber cuánto se usa la app, **qué días entras** (el día y
-cuántas veces), cuándo te diste de alta y la última vez que entraste.
+cuántas veces), cuándo te diste de alta, la última vez que entraste y **de dónde
+llegaste** al crear la cuenta (por ejemplo, desde Instagram o desde un enlace de
+WhatsApp).
+
+**Las aperturas, sin saber quién eres.** Cada vez que se abre la app se suma 1 a
+un contador: el día y la hora, de dónde llega el enlace, si es un móvil, una
+tableta o un ordenador y si la tienes instalada. No lleva tu nombre, ni tu cuenta,
+ni tu dirección IP, ni ningún identificador, y no se guarda nada en tu dispositivo
+para reconocerte: con esos contadores no se puede saber quién es nadie. Puedes
+apagarlo en **Ajustes → Datos → Estadísticas anónimas**, y si tu navegador pide
+«no rastrear» no se cuenta nada.
 
 Como cualquier servidor, el de las cuentas apunta durante un tiempo corto la
 dirección IP y el navegador de cada conexión, por seguridad.
@@ -66,7 +76,7 @@ apunte. Te recomendamos no escribirlos.
 | Que el profe pueda responderte, explicarte y preguntarte | Ejecutar el contrato (art. 6.1.b RGPD) |
 | Crear y mantener tu cuenta, y guardar ahí tus datos para que los veas desde cualquier dispositivo | Ejecutar el contrato (art. 6.1.b RGPD) |
 | Mandarte los correos del servicio: cambiar la contraseña o avisarte de un cambio importante | Ejecutar el contrato (art. 6.1.b RGPD) |
-| Saber cuánta gente usa la app y cuánto (qué días entra cada cuenta), para mejorarla | Interés legítimo en conocer el uso de un servicio que está empezando (art. 6.1.f RGPD). Solo se apunta el día, nunca lo que haces. Puedes oponerte escribiendo al correo de contacto |
+| Saber cuánta gente usa la app y cuánto: qué días entra cada cuenta y de dónde llegó, y cuántas veces se abre la app (de forma anónima), para mejorarla | Interés legítimo en conocer el uso de un servicio que está empezando (art. 6.1.f RGPD). Nunca se apunta lo que haces dentro. Puedes oponerte en Ajustes → Datos o escribiendo al correo de contacto |
 | Sincronizar entre tus dispositivos, si abres la app desde Claude | Ejecutar el contrato (art. 6.1.b RGPD) |
 | Enseñarte el tiempo de tu zona en el Inicio, si lo pides | Tu consentimiento, que das al elegir tu ciudad o tu ubicación y retiras quitándola (art. 6.1.a RGPD) |
 | Recordar el tema claro u oscuro y tus preferencias de la libreta | Interés legítimo en que la app se vea como la dejaste (art. 6.1.f RGPD) |
@@ -85,7 +95,8 @@ ti y no la ve nadie más.
 **No se usan cookies.** La app guarda sus datos en el almacenamiento local del
 navegador porque es lo que la hace funcionar sin conexión. Si tienes cuenta,
 ahí se guarda también la sesión (lo que te mantiene dentro sin volver a poner la
-contraseña) y la lista de cambios que faltan por subir. Es almacenamiento
+contraseña) y la lista de cambios que faltan por subir. Para contar las
+aperturas de la app **no se guarda nada** en tu dispositivo. Es almacenamiento
 técnico imprescindible para prestar el servicio que pides, así que está exento de
 pedir consentimiento (art. 22.2 LSSI). No se usa para seguirte ni para medir nada,
 y se borra entero desde Ajustes → Datos o borrando los datos del sitio en tu
@@ -110,7 +121,9 @@ ande justo de espacio.
 **Lo que ve el responsable de la app.** Tiene un panel con, de cada cuenta: el
 correo, cuándo se dio de alta, la última vez que entró, cuántos días ha entrado en
 la última semana y en el último mes, qué estudia (ESO, Bachillerato, FP,
-universidad, oposición…) y cuánto espacio ocupa. **No ve tu foto, ni tus apuntes,
+universidad, oposición…), de dónde llegó y cuánto espacio ocupa. Y cifras de
+conjunto: cuántas veces se abre la app y a qué horas, desde dónde, con qué
+dispositivo y cuánta gente vuelve. **No ve tu foto, ni tus apuntes,
 ni tus notas, ni tus archivos, ni nada de lo que escribes**: el panel no los lee. Si algún día
 hiciera falta mirar algo tuyo para arreglar un fallo, se te pedirá que mandes tú
 una copia.
@@ -180,7 +193,7 @@ Puedes pedir, gratis y en cualquier momento:
 - **Portabilidad**: llevarte tus datos. Ajustes → Datos → Descargar copia, que te
   da un archivo JSON con absolutamente todo.
 - **Limitación y oposición** al tratamiento, también a que se cuenten los días
-  que entras.
+  que entras o tus aperturas (esto último, en Ajustes → Datos).
 
 Casi todos los puedes ejercer tú solo desde la app, sin pedir permiso a nadie. Si
 prefieres escribir, el correo es gabriel_gabiz@hotmail.com. Se responde en un mes como

@@ -142,6 +142,43 @@ const esperar = (v, msg) => { if (!v) throw new Error(msg || "no se cumple"); };
     esperar(p.usuarios[0].email !== "Gabriel_Gabiz@hotmail.com", "el que lleva más sin entrar sale primero");
   });
 
+  console.log("\nLas estadísticas del fundador");
+  await prueba("abrir la app se cuenta aunque no tengas cuenta, y lo raro va a «otro»", async () => {
+    await como(null, "select public.contar_visita('instagram', 'movil', false)");
+    await como(null, "select public.contar_visita('instagram', 'movil', false)");
+    await como(ana, "select public.contar_visita('whatsapp', 'ordenador', true)");
+    await como(null, "select public.contar_visita('<script>', 'nevera', null)");
+    const r = await db.query("select origen, dispositivo, instalada, veces from public.visitas order by origen");
+    const t = r.rows.map(x => [x.origen, x.dispositivo, x.instalada, x.veces].join(":")).join(" ");
+    esperar(t === "instagram:movil:false:2 otro:ordenador:false:1 whatsapp:ordenador:true:1", t);
+  });
+  await prueba("los contadores no los lee nadie desde la app, ni con cuenta ni sin ella", async () => {
+    await falla(() => como(null, "select * from public.visitas"), /permission denied/);
+    await falla(() => como(ana, "select * from public.visitas"), /permission denied/);
+    await falla(() => como(ana, "insert into public.visitas (dia, hora, origen, dispositivo, instalada, veces) values (current_date, 1, 'x', 'movil', false, 9999)"), /permission denied/);
+  });
+  await prueba("de dónde llegó cada cuenta: una vez, la suya, y sin cuenta no se apunta", async () => {
+    await como(ana, "select public.apuntar_origen('instagram', 'movil')");
+    await como(ana, "select public.apuntar_origen('tiktok', 'ordenador')");
+    await falla(() => como(null, "select public.apuntar_origen('instagram', 'movil')"), /permission denied/);
+    const r = await db.query("select origen from public.origenes where usuario = $1", [ana]);
+    esperar(r.rows.length === 1 && r.rows[0].origen === "instagram", JSON.stringify(r.rows));
+    await falla(() => como(ana, "select * from public.origenes"), /permission denied/);
+  });
+  await prueba("el panel lo junta todo: visitas, de dónde, con qué, a qué hora, qué estudian y si vuelven", async () => {
+    const p = (await como(gab, "select public.panel_admin() as j")).rows[0].j;
+    esperar(p.visitas.hoy === 4 && p.visitas.mes === 4 && p.visitas.instaladas === 1, JSON.stringify(p.visitas));
+    esperar(p.visitas.origen[0].origen === "instagram" && p.visitas.origen[0].n === 2, JSON.stringify(p.visitas.origen));
+    esperar(p.visitas.hora.length === 24 && p.visitas.hora.reduce((a, b) => a + b, 0) === 4, JSON.stringify(p.visitas.hora));
+    esperar(p.visitas.dispositivo.some(d => d.dispositivo === "movil" && d.n === 2), JSON.stringify(p.visitas.dispositivo));
+    esperar(p.altasOrigen.length === 1 && p.altasOrigen[0].origen === "instagram", JSON.stringify(p.altasOrigen));
+    esperar(p.etapas.some(e => e.etapa === "ciclo-sup" && e.n === 1), JSON.stringify(p.etapas));
+    esperar(typeof p.ahora === "number" && p.retencion.base >= 2 && p.retencion.vuelven >= 1, JSON.stringify([p.ahora, p.retencion]));
+    esperar(p.usuarios.find(u => u.email === "ana@ejemplo.es").origen === "instagram", "no sale de dónde llegó Ana");
+    esperar(p.dias.some(d => d.visitas === 4), "las visitas no salen por día");
+    esperar(!JSON.stringify(p).includes("FOTOSECRETA"), "el panel enseña la foto");
+  });
+
   console.log("\nBorrar la cuenta");
   await prueba("Bea borra su cuenta y se va con todo lo suyo", async () => {
     await como(bea, `insert into public.documentos (clave, datos) values ('escritorio/agenda', '{}')`);

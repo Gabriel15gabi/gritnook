@@ -7,7 +7,7 @@ app, sus correos y cuánto la usan.
 
 - [supabase.sql](supabase.sql) — la base de datos entera: tablas, reglas de
   seguridad y las funciones del panel. Es lo único que se pega en Supabase.
-- [probar-sql.js](probar-sql.js) — lo prueba contra un Postgres de verdad (18
+- [probar-sql.js](probar-sql.js) — lo prueba contra un Postgres de verdad (22
   comprobaciones: que nadie ve lo de otro, que el panel solo es tuyo, que
   borrar la cuenta lo borra todo…).
 - [chatclase.sql](chatclase.sql) — **ChatClase**, para cuando se encienda (no hace
@@ -76,10 +76,22 @@ salvo que tenga una copia de Ajustes → Datos).
 
 ## Lo que ves en el Panel, y lo que no
 
-Ves: el correo, cuándo se apuntó, la última vez que entró, cuántos días entró
-en los últimos 7 y 30, qué estudia (ESO, grado superior, oposición…) y cuánto
-espacio ocupa. Y los totales: cuentas, activos hoy, esta semana, este mes, y
-una gráfica de los últimos 30 días. Se puede bajar para Excel.
+**Arriba:** quién está usando la app **ahora** (la última hora), las veces que
+se abre hoy, en 7 y en 30 días (con cuenta o sin ella) y las cuentas.
+**Debajo:** de visita a quedarse (aperturas → cuentas nuevas → activos), cuánta
+gente **vuelve** otro día y a la semana, la gráfica de cada día, **de dónde
+vienen** (Instagram, WhatsApp, TikTok, directo…), **con qué** entran (móvil u
+ordenador, y cuántos la tienen instalada), **qué estudian** y **a qué hora** la
+abren. Y la tabla de cuentas: correo, cuándo se apuntó, la última vez, días en 7 y
+30, qué estudia, **por dónde llegó** y cuánto ocupa. Se puede bajar para Excel.
+Mientras lo tienes abierto se pone al día solo cada minuto.
+
+**Tus enlaces.** Para saber de dónde viene cada uno, comparte el enlace con su
+etiqueta: en la bio de Instagram `…/gritnook/?ref=instagram`, por WhatsApp
+`?ref=whatsapp`, en TikTok `?ref=tiktok`. El panel te los da listos para copiar.
+
+Las aperturas son anónimas: contadores por día y hora, sin cuenta, sin IP y sin
+guardar nada en el móvil de nadie. Quien quiera, lo apaga en Ajustes → Datos.
 
 **No** ves sus apuntes, notas, horarios ni nada de lo que escriben. La función
 del panel no lo lee, y así lo dice la política de privacidad. Si algún día lo

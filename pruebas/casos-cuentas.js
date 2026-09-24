@@ -5,7 +5,7 @@
    contra Postgres, en backend/probar-sql.js. */
 
 function servidorFalso() {
-  const srv = { usuarios: [], docs: new Map(), actividad: [], admins: new Set(), sinRed: false,
+  const srv = { usuarios: [], docs: new Map(), actividad: [], admins: new Set(), sinRed: false, visitas: [], origenes: new Map(),
     tokens: new Map(), refrescos: new Map(), reloj: 0, llamadas: [] };
   const hora = () => new Date(Date.UTC(2026, 0, 1) + (++srv.reloj) * 1000).toISOString();
   const resp = (status, obj) => ({ ok: status >= 200 && status < 300, status, text: async () => obj === undefined ? "" : JSON.stringify(obj) });
@@ -52,6 +52,8 @@ function servidorFalso() {
       if (op.method === "PUT") srv.usuarios.find(x => x.id === uid).pass = cuerpo.password;
       return resp(200, publico(uid));
     }
+    /* contar una visita no pide cuenta */
+    if (ruta === "/rest/v1/rpc/contar_visita") { srv.visitas.push(Object.assign({ conCuenta: !!uid }, cuerpo)); return resp(204); }
     if (!uid) return resp(401, { code: "PGRST301", message: "JWT expired" });
     if (ruta === "/rest/v1/documentos") {
       const mios = misDocs(uid);
@@ -69,14 +71,23 @@ function servidorFalso() {
     }
     const email = publico(uid).email;
     if (ruta === "/rest/v1/rpc/latido") { srv.actividad.push({ uid, dia: hoyISO() }); return resp(204); }
+    if (ruta === "/rest/v1/rpc/apuntar_origen") { if (!srv.origenes.has(uid)) srv.origenes.set(uid, { origen: cuerpo.p_origen, dispositivo: cuerpo.p_dispositivo }); return resp(204); }
     if (ruta === "/rest/v1/rpc/es_admin") return resp(200, srv.admins.has(email));
     if (ruta === "/rest/v1/rpc/panel_admin") {
       if (!srv.admins.has(email)) return resp(403, { code: "42501", message: "Solo el creador puede ver el panel" });
       return resp(200, {
         hoy: hoyISO(),
-        totales: { usuarios: srv.usuarios.length, hoy: new Set(srv.actividad.map(a => a.uid)).size, semana: 1, mes: 1, altas7: srv.usuarios.length, ocupa: 2048 },
-        dias: [{ dia: sumaDias(hoyISO(), -1), altas: 0, activos: 0 }, { dia: hoyISO(), altas: srv.usuarios.length, activos: 1 }],
-        usuarios: srv.usuarios.map(x => ({ email: x.email, alta: x.alta, ultimo: hoyISO(), dias7: 1, dias30: 1, veces: 1, etapa: "ciclo-sup", ocupa: 1024 }))
+        ahora: 2,
+        totales: { usuarios: srv.usuarios.length, hoy: new Set(srv.actividad.map(a => a.uid)).size, semana: 1, mes: 1, altas7: srv.usuarios.length, altas30: srv.usuarios.length, ocupa: 2048 },
+        visitas: { hoy: 12, semana: 40, mes: 90, instaladas: 18,
+          origen: [{ origen: "instagram", n: 60 }, { origen: "whatsapp", n: 20 }, { origen: "directo", n: 10 }],
+          dispositivo: [{ dispositivo: "movil", n: 70 }, { dispositivo: "ordenador", n: 20 }],
+          hora: Array.from({ length: 24 }, (_, i) => i === 21 ? 15 : i >= 8 ? 3 : 0) },
+        altasOrigen: [{ origen: "instagram", n: 3 }],
+        etapas: [{ etapa: "ciclo-sup", n: 2 }, { etapa: "oposicion", n: 1 }],
+        retencion: { base: 4, vuelven: 3, base7: 2, semana2: 1 },
+        dias: [{ dia: sumaDias(hoyISO(), -1), altas: 0, activos: 0, visitas: 30 }, { dia: hoyISO(), altas: srv.usuarios.length, activos: 1, visitas: 12 }],
+        usuarios: srv.usuarios.map(x => ({ email: x.email, alta: x.alta, ultimo: hoyISO(), dias7: 1, dias30: 1, veces: 1, etapa: "ciclo-sup", origen: (srv.origenes.get(x.id) || {}).origen || null, ocupa: 1024 }))
       });
     }
     if (ruta === "/rest/v1/rpc/borrar_mi_cuenta") {
@@ -473,6 +484,105 @@ grupo("Cuentas: el panel del creador", () => {
       esperar(csv.charCodeAt(0)).igualA(0xFEFF);
       esperar(csv).contiene("'=HYPERLINK");
       esperar(csv).noContiene(";=HYPERLINK");
+    });
+  });
+});
+
+grupo("Cuentas: las estadísticas del fundador", () => {
+  prueba("de dónde llega la visita: el ?ref= del enlace manda, luego la app y luego la web de la que viene", () => {
+    const o = (url, ref = "", ua = "", instal = false) => origenVisita({ url, ref, ua, instal });
+    const aqui = location.origin + "/";
+    esperar(o(aqui + "?ref=instagram")).igualA("instagram");
+    esperar(o(aqui + "?ref=IG")).igualA("instagram");
+    esperar(o(aqui + "?utm_source=whatsapp")).igualA("whatsapp");
+    esperar(o(aqui + "?ref=<script>")).igualA("otro");
+    esperar(o(aqui, "", "Mozilla/5.0 Instagram 300.0")).igualA("instagram");
+    esperar(o(aqui, "https://l.instagram.com/?u=x")).igualA("instagram");
+    esperar(o(aqui, "https://t.co/abc")).igualA("x");
+    esperar(o(aqui, "https://www.google.es/")).igualA("google");
+    esperar(o(aqui, "https://wa.me/123")).igualA("whatsapp");
+    esperar(o(aqui, "https://blog.cualquiera.com/")).igualA("otro");
+    esperar(o(aqui, "")).igualA("directo");
+    esperar(o(aqui, "", "", true)).igualA("app");
+  });
+  prueba("con qué entra: móvil, tableta u ordenador", () => {
+    esperar(dispositivoVisita(390, true)).igualA("movil");
+    esperar(dispositivoVisita(1440, false)).igualA("ordenador");
+    esperar(["tablet", "movil"]).contiene(dispositivoVisita(820, true));
+  });
+  prueba("abrir la app suma 1, sin cuenta y sin nada que te identifique, y solo una vez", async () => {
+    await conNube(async srv => {
+      visitaContada = false;
+      contarVisita(); contarVisita();
+      await hasta(() => srv.visitas.length === 1);
+      await dormir(30);
+      esperar(srv.visitas.length).igualA(1);
+      esperar(Object.keys(srv.visitas[0]).sort()).igualA(["conCuenta", "p_dispositivo", "p_instalada", "p_origen"]);
+      esperar(srv.visitas[0].conCuenta).falso();
+    });
+  });
+  prueba("el ?ref= se apunta y se quita de la barra de direcciones", async () => {
+    const antes = location.pathname + location.search + location.hash;
+    await conNube(async srv => {
+      try {
+        history.replaceState(history.state, "", location.pathname + "?ref=tiktok&utm_medium=bio");
+        visitaContada = false; contarVisita();
+        await hasta(() => srv.visitas.length === 1);
+        esperar(srv.visitas[0].p_origen).igualA("tiktok");
+        esperar(location.search).igualA("");
+      } finally { history.replaceState(history.state, "", antes); }
+    });
+  });
+  prueba("quien lo apaga en Ajustes no cuenta", async () => {
+    await conNube(async srv => {
+      BV = null; $("#entrada").hidden = true;
+      seccion = "ajustes"; ajTab = "datos"; pinta();
+      const c = $("#acEstad");
+      esperar(c.checked).cierto();
+      c.checked = false; c.dispatchEvent(new Event("change", { bubbles: true }));
+      esperar(leeLS("sin-estadisticas")).cierto();
+      visitaContada = false; contarVisita(); await dormir(30);
+      esperar(srv.visitas.length).igualA(0);
+    });
+  });
+  prueba("al crear la cuenta se apunta de dónde llegó, una sola vez", async () => {
+    await conNube(async srv => {
+      visitaContada = false; ORIGEN_SESION = "";
+      history.replaceState(history.state, "", location.pathname + "?ref=whatsapp");
+      contarVisita();
+      abrirAcceso("crear");
+      await formulario({ correo: "nueva@ejemplo.es", clave: "una-clave-larga", legal: true });
+      await hasta(() => srv.origenes.size === 1);
+      esperar([...srv.origenes.values()][0]).igualA({ origen: "whatsapp", dispositivo: dispositivoVisita() });
+    });
+  });
+  prueba("el panel lo cuenta todo: ahora, visitas, de dónde, con qué, a qué hora, qué estudian y si vuelven", async () => {
+    await conNube(async srv => {
+      await entrarComo(srv, "gabriel_gabiz@hotmail.com", { admin: true });
+      seccion = "panel";
+      await cargarPanel();
+      const c = $("#contenido"), t = c.textContent;
+      ["Ahora", "en la última hora", "90", "De visita a quedarse", "Instagram", "WhatsApp", "Móvil", "Ordenador", "20 % con la app instalada",
+        "Más a las 21:00", "75 %", "50 %", etapaDe("ciclo-sup").nombre, etapaDe("oposicion").nombre, "Llegó por", "?ref=instagram", "Al día a las"]
+        .forEach(x => esperar(t).contiene(x));
+      esperar(c.querySelectorAll(".pa-hora").length).igualA(24);
+      esperar(c.querySelector(".pa-hora.pico").getAttribute("title")).contiene("21:00");
+      esperar(c.querySelectorAll(".pa-visita").length).igualA(2);
+    });
+  });
+  prueba("mientras está abierto se pone al día solo, sin parpadear", async () => {
+    await conNube(async srv => {
+      await entrarComo(srv, "gabriel_gabiz@hotmail.com", { admin: true });
+      seccion = "panel"; await cargarPanel();
+      const n = srv.llamadas.filter(l => l.includes("panel_admin")).length;
+      refrescoPanel();
+      esperar(srv.llamadas.filter(l => l.includes("panel_admin")).length).igualA(n);
+      PANEL.en = Date.now() - 60000;
+      refrescoPanel();
+      esperar(PANEL.cargando).cierto();
+      esperar($("#paActualizar").disabled).falso();
+      await hasta(() => !PANEL.cargando);
+      esperar(srv.llamadas.filter(l => l.includes("panel_admin")).length).igualA(n + 1);
     });
   });
 });

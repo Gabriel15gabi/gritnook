@@ -11,7 +11,8 @@ se añade algo que guarde información.
 
 GritNook guarda **lo que el alumno escribe**: su curso, sus asignaturas, sus
 notas, su agenda, sus apuntes y sus archivos, en **su cuenta** (correo y
-contraseña) y en su navegador. Del uso solo apunta **qué días entra**. **No pide
+contraseña) y en su navegador. Del uso apunta **qué días entra** y **de dónde llegó**
+al crear la cuenta, y cuenta **de forma anónima** cuántas veces se abre la app. **No pide
 teléfono ni dirección**, no tiene publicidad, no hay analítica de terceros y no
 hay cookies.
 
@@ -21,6 +22,8 @@ hay cookies.
 |---|---|---|
 | Cuenta | Correo electrónico, contraseña (cifrada con un resumen que no se puede deshacer: no la ve nadie) y fecha de alta. La guarda Supabase. Mientras dura la sesión, el navegador guarda un token para no pedir la contraseña cada vez | El alumno, al crear la cuenta |
 | Actividad | Los días que entra en la app y cuántas veces cada día (como mucho una cada media hora). Nada de lo que hace dentro | La app, al abrirla |
+| De dónde llegó | Al crear la cuenta, una vez: de dónde venía el enlace (Instagram, WhatsApp, TikTok, directo…) y si era móvil, tableta u ordenador. Tabla `origenes` | La app, al crear la cuenta |
+| Aperturas (anónimas) | Contadores por día y hora: de dónde llega el enlace, móvil, tableta u ordenador y si está instalada. **Sin cuenta, sin IP, sin identificador** y sin guardar nada en el dispositivo. Tabla `visitas`. No se cuenta si se apaga en Ajustes → Datos o si el navegador pide «no rastrear» | La app, al abrirse |
 | Perfil | Nombre o apodo, **foto de perfil** (opcional: se recorta en el navegador a 256 × 256 px y se guarda como imagen dentro del perfil; solo entra webp, jpeg o png), etapa (ESO, Bachillerato, FP, universidad, oposición, idiomas), curso, ciclo o grado, modalidad, centro (opcional), si trabaja, horas de estudio a la semana, nota a la que apunta, qué le cuesta más y para qué estudia | El alumno, en la bienvenida |
 | Asignaturas | Nombre, código, horas del curso, nota objetivo, meta semanal, color, apartados de evaluación con sus pesos y **sus notas**, y **faltas de asistencia** | El alumno |
 | Agenda | Entregas y exámenes (título, asignatura, fecha, hora, estado, pasos y notas) y el horario de clases | El alumno o el tutor, si se le autoriza |
@@ -44,7 +47,7 @@ ubicación ni ningún identificador publicitario.
 | Sitio | Qué hay | Quién puede verlo |
 |---|---|---|
 | La cuenta del alumno (Supabase, en Frankfurt, Alemania) | Todo lo de arriba, en la tabla `documentos`: una fila por trozo (`escritorio/agenda`, `apuntes/<id>`, `casillero/<id>`…), con su dueño. La actividad, en `actividad` | El alumno, desde cualquier dispositivo. Nadie más: lo impide la base de datos (Row Level Security). Supabase es el encargado de tratamiento |
-| El panel del creador | **Solo** el correo, la fecha de alta, la última vez que entró, los días que ha entrado en 7 y 30 días, qué estudia (etapa) y cuánto ocupa. **Nunca el contenido ni la foto** | El creador de la app (la tabla `administradores`, que nadie puede tocar desde la app) |
+| El panel del creador | **Solo** el correo, la fecha de alta, la última vez que entró, los días que ha entrado en 7 y 30 días, qué estudia (etapa), de dónde llegó y cuánto ocupa; y las cifras de conjunto de las aperturas, la vuelta de la gente (retención) y qué estudian. **Nunca el contenido ni la foto** | El creador de la app (la tabla `administradores`, que nadie puede tocar desde la app) |
 | El navegador del alumno | Todo, en el almacenamiento local (claves `desk-daw:*`), para que funcione sin conexión, y la lista de cambios por subir. La app le pide al navegador que no lo borre cuando ande justo de espacio. Al cerrar sesión se borra | Solo quien use ese dispositivo |
 | El almacén de Claude (solo si se abre desde ahí, en lugar de la cuenta) | Los mismos datos, para sincronizar entre dispositivos, y los archivos del casillero | La cuenta de Claude del alumno; el proveedor es Anthropic (Estados Unidos) |
 | GitHub Pages | **Nada.** Es una página estática: no hay servidor ni base de datos | Nadie |
@@ -54,6 +57,9 @@ ubicación ni ningún identificador publicitario.
 - **A su cuenta** (Supabase, Frankfurt) va todo lo que guarda, cifrado por el
   camino, y al abrir la app un «he entrado hoy», como mucho una vez cada media
   hora. Es lo que cuenta el panel del creador.
+- **Al abrir la app**, con cuenta o sin ella, un «+1» anónimo (día, hora, de dónde
+  llega el enlace, tipo de dispositivo e instalada o no) a Supabase. Si el enlace
+  lleva `?ref=`, se lee y se quita de la barra de direcciones.
 - **El profe con IA está apagado por ahora** (un interruptor en el código,
   `PROFE_ACTIVO`). Mientras lo esté, **no se envía nada a ninguna IA**, tampoco
   abriendo la app desde Claude, y no aparece en ninguna pantalla. Lo que sigue
