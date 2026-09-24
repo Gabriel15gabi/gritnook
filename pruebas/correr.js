@@ -55,7 +55,7 @@ servidor.listen(PUERTO, () => {
   const perfil = path.join(require("os").tmpdir(), "gritnook-pruebas");
   const hijo = spawn(navegador, [
     "--headless=new", "--disable-gpu", "--no-first-run", "--no-default-browser-check",
-    "--user-data-dir=" + perfil, "--virtual-time-budget=180000", "--dump-dom",
+    "--user-data-dir=" + perfil, "--virtual-time-budget=480000", "--dump-dom",
     "http://localhost:" + PUERTO + "/pruebas/pruebas.html"
   ], { windowsHide: true });
 

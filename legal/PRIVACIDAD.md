@@ -41,6 +41,12 @@ cuántas veces), cuándo te diste de alta y la última vez que entraste.
 Como cualquier servidor, el de las cuentas apunta durante un tiempo corto la
 dirección IP y el navegador de cada conexión, por seguridad.
 
+**Si quieres ver el tiempo en el Inicio**, eliges tu ciudad o dejas que el
+navegador diga dónde estás. Esa ubicación se redondea a unos 10 km y **se guarda
+solo en tu dispositivo**: ni en tu cuenta ni en ningún servidor de GritNook. Es
+opcional, y sin ella la app funciona igual. No hace falta saber dónde está nadie:
+por eso no se guarda.
+
 El detalle completo, campo por campo, está en el [inventario de datos](../DATOS.md), que se
 actualiza cada vez que la aplicación cambia.
 
@@ -62,6 +68,7 @@ apunte. Te recomendamos no escribirlos.
 | Mandarte los correos del servicio: cambiar la contraseña o avisarte de un cambio importante | Ejecutar el contrato (art. 6.1.b RGPD) |
 | Saber cuánta gente usa la app y cuánto (qué días entra cada cuenta), para mejorarla | Interés legítimo en conocer el uso de un servicio que está empezando (art. 6.1.f RGPD). Solo se apunta el día, nunca lo que haces. Puedes oponerte escribiendo al correo de contacto |
 | Sincronizar entre tus dispositivos, si abres la app desde Claude | Ejecutar el contrato (art. 6.1.b RGPD) |
+| Enseñarte el tiempo de tu zona en el Inicio, si lo pides | Tu consentimiento, que das al elegir tu ciudad o tu ubicación y retiras quitándola (art. 6.1.a RGPD) |
 | Recordar el tema claro u oscuro y tus preferencias de la libreta | Interés legítimo en que la app se vea como la dejaste (art. 6.1.f RGPD) |
 | Atender tus derechos y responder a lo que preguntes | Obligación legal (art. 6.1.c RGPD) |
 
@@ -97,6 +104,7 @@ ande justo de espacio.
 | Anthropic (proveedor del profe con IA) | **Ahora mismo, nada: el profe está apagado.** Cuando se encienda, solo lo que se le envíe en cada pregunta. El detalle exacto, campo por campo, está en cómo funciona el profe: en resumen, tu nombre o apodo, tu curso, tus asignaturas con sus notas, tus entregas y exámenes, tu horario, los títulos de tus apuntes, el contenido del que tengas abierto, los últimos mensajes y los archivos que adjuntes | Estados Unidos |
 | Anthropic (almacenamiento de Claude), solo si abres la app desde allí | Tus datos sincronizados y tus archivos del casillero | Estados Unidos |
 | Supabase, Inc. (el servidor de las cuentas), como encargado de tratamiento | Tu correo, tu contraseña cifrada, tus datos (también tu foto de perfil, si pones una), tus archivos y los días que entras, para guardarlos. No los usa para nada más | Unión Europea (Frankfurt, Alemania) |
+| Open-Meteo (Suiza), solo si pones tu ciudad para ver el tiempo | La zona aproximada (redondeada a unos 10 km) y, como cualquier web, tu dirección IP. **Nada más: ni tu nombre, ni tu cuenta, ni tus datos de estudio** | Suiza (con decisión de adecuación de la Comisión Europea) |
 | GitHub Pages (GitHub, Inc.) | Solo sirve los archivos de la app. Como cualquier servidor web, registra la dirección IP y el navegador de quien la abre, por seguridad. **No recibe ninguno de tus datos de estudio** | Estados Unidos |
 
 **Lo que ve el responsable de la app.** Tiene un panel con, de cada cuenta: el
@@ -114,6 +122,10 @@ técnicos —versión, navegador, tamaño de pantalla, idioma, cuántos apuntes 
 documentos tienes y los últimos fallos que la app haya apuntado—, pero **ni tu
 nombre, ni tus notas, ni tus apuntes**. Puedes leerlo entero antes de mandarlo,
 y no se envía nada si no le das tú a enviar.
+
+**TutorIA y ChatClase salen como «Próximamente»**: todavía no funcionan y no
+tratan ningún dato. Antes de encender cualquiera de los dos se actualizará esta
+política y se avisará dentro de la app.
 
 No hay nadie más. No se ceden datos a terceros, ni se venden, ni hay anunciantes.
 Solo se entregarían a jueces, fuerzas de seguridad o administraciones si una ley

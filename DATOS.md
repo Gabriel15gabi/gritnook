@@ -32,6 +32,7 @@ hay cookies.
 | Objetivos del día | Los objetivos y si están cumplidos | El alumno y la app |
 | Tutor | **La conversación entera** con el profe, los archivos y capturas que se le pasen, los temas trabajados y los repasos que pone | El alumno |
 | Ajustes | Tema claro u oscuro, preferencias de la libreta, minutos del cronómetro, cómo debe tratarle el tutor y, si lo has cambiado, cómo tienes colocado el Inicio (dónde va cada panel, su tamaño, cuáles se ven y en qué orden en el móvil) | El alumno |
+| El tiempo (opcional) | La ciudad que eliges o tu ubicación redondeada a un decimal (unos 10 km), y la última previsión, guardada media hora. **Solo en el navegador** (`desk-daw:tiempo`), nunca en la cuenta; se borra al cerrar sesión o con «Quitar mi ciudad» | El alumno |
 | De la propia app | La fecha de la última copia de seguridad, qué avisos ya se han visto y los últimos 20 fallos que haya dado la app (con su mensaje y dónde pasó) | La app |
 | Oposición (solo si opositas) | El temario (número, título y bloque de cada tema, sus vueltas con fecha, si está dominado, su dificultad, los minutos estudiados, tus notas y un enlace a la ley), las reglas del examen (fecha, preguntas, opciones, penalización, corte, minutos, preguntas de reserva y bolas si hay tema a desarrollar), el plan de vueltas, los simulacros (fecha, de qué, preguntas, aciertos, fallos, minutos y, si lo apuntas, de qué temas eran los fallos), el simulacro con reloj que esté en marcha (hora de inicio y de entrega) y la convocatoria (plazas, aspirantes, enlace a las bases, cortes de otros años, fin del plazo de solicitud y si ya la has presentado). Las tarjetas de repaso que crees desde un tema llevan apuntado de qué tema son | El opositor |
 
@@ -78,6 +79,13 @@ ubicación ni ningún identificador publicitario.
 - **Al pedirle a Claude** que resuma un apunte, saque tarjetas o prepare el plan
   de un examen se envía ese apunte o esos datos concretos.
 - **Al abrir un PDF del casillero** se descarga la librería PDF.js desde cdnjs.
+- **Si pones tu ciudad para ver el tiempo**, se le pide la previsión a Open-Meteo
+  (Suiza) con la zona redondeada a unos 10 km; al buscar la ciudad, se le manda
+  el nombre que escribes. Dentro de Claude no se pide nada: allí no hay tiempo.
+- **TutorIA y ChatClase** salen «Próximamente»: no envían ni guardan nada. El
+  chat está hecho por dentro (`backend/chatclase.sql`); el día que se encienda,
+  este inventario suma sus datos: apodo, mensajes, reacciones, archivos
+  adjuntos, tareas compartidas y reportes.
 - **Nada más.** Las letras y los iconos viajan dentro de la propia aplicación,
   así que usarla no envía la dirección IP a Google ni a nadie.
 

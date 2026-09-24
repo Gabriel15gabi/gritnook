@@ -8,12 +8,13 @@ Eso levanta un servidor, abre un navegador sin ventana y escribe el resultado en
 la consola. Devuelve 1 si algo falla, que es lo que mira un servidor de
 integración continua.
 
-**600 pruebas.** Sin ventana pasan 594 y 6 se quedan en pendiente: son las que
+**666 pruebas.** Sin ventana pasan 660 y 6 se quedan en pendiente: son las que
 dibujan un PDF, y sin tarjeta gráfica eso tarda demasiado. Abriendo
-`pruebas/pruebas.html` en un navegador normal pasan las 600.
+`pruebas/pruebas.html` en un navegador normal pasan las 666.
 
 Aparte, las reglas de seguridad de la base de datos se prueban contra un
-Postgres de verdad: `node backend/probar-sql.js` (18 comprobaciones).
+Postgres de verdad: `node backend/probar-sql.js` (18 comprobaciones), y las del chat con
+`node backend/probar-chat.js` (22).
 
 Para verlas con colores y poder pinchar en cada una, abre
 `pruebas/pruebas.html` con la app servida (`node servidor.js` y luego
@@ -89,6 +90,8 @@ repinte la pantalla.
 | `casos-sinprofe.js` | **El profe sale apagado**: recorre todas las secciones, las pestañas de Ajustes y la ficha de un tema buscando «profe» o «tutor» en lo que se ve y en lo que lee un lector de pantalla; que no se use la IA aunque esté disponible; y que al encender el interruptor vuelva todo. Las pruebas del propio profe lo encienden solo mientras duran, con `conProfe()` |
 | `casos-cuentas.js` | **Las cuentas**, contra un Supabase de mentira que se porta como el de verdad: crear cuenta y entrar (con sus errores en castellano), olvidar la contraseña, que lo tuyo suba y llegue a otro dispositivo, que lo pendiente no se pise, sin conexión y al volver, tokens que caducan, salir, cambiar de persona en el mismo navegador, borrar la cuenta, y el panel del creador: que solo lo vea él y que no enseñe el contenido de nadie |
 | `casos-yo.js` | **Tu foto y tu menú**: el círculo donde estaba el engranaje, el menú con el ratón y el teclado, colocar una foto de verdad (una imagen mitad roja y mitad azul, para comprobar qué parte queda dentro), arrastrar, la rueda, quitarla, lo que no es una imagen, y que no entre un SVG ni un enlace ni código disfrazado de foto, ni se le mande al profe ni al panel del creador |
+| `casos-chat.js` | **ChatClase**: que salga «Próximamente», aparte y en naranja, sin llamar a nada; y encendido, contra un servidor de mentira: apodo y normas, canales en el panel o en el cajón del móvil, enviar con Intro, el formato sin que se cuele código, menciones, emojis y reacciones, responder, editar, borrar, fotos y PDF, lo que no se puede adjuntar, pegar capturas, compartir tareas hechas o no, lo que llega de otros, sin leer, cargar lo anterior, reportar, bloquear, fijar, dejar sin chat, Anuncios, ir muy rápido, sin red y dejar de mirar al salir |
+| `casos-lanzamiento.js` | **El Inicio de «tu día»** (sin saludos; si trabajas, si no es día de estudio, lo que vence), **el tiempo** (sin ciudad no se pide nada; la ubicación redondeada y solo en el dispositivo; buscar ciudad; media hora guardado; fallos sin insistir; dentro de Claude, nada), **las libretas** (paleta, color propio, quitarlo, tapas claras, colores que no son colores) y **la pantalla de entrar** |
 | `casos-absurdos.js` | **Datos irreales**: notas de 900, faltas negativas, fechas del año 9999, emojis, árabe, textos de diez mil letras, estados de versiones que no existieron |
 
 ## Rellenar la app para verla funcionando
@@ -195,6 +198,10 @@ Doce fallos de verdad (el último, probando a mano lo que ninguna prueba miraba)
     camino que no fuera cerrarla, seguía escuchando para siempre y Escape dejaba
     de cerrar nada en toda la app. Lo destapó el menú de la foto. Ahora, si la
     capa ya no está, se da de baja sola.
+
+17. **Al repintar el chat, el cursor volvía al principio.** Escribías, abrías
+    los emojis y el emoji se metía delante de todo. Ahora el cursor vuelve a su
+    sitio aunque el foco esté en otra parte.
 
 Y en la página de datos de prueba: si le dabas a rellenar dos veces, la segunda
 copia de seguridad guardaba los datos falsos encima de los tuyos y «Devolver» te

@@ -1,5 +1,7 @@
 # Probar GritNook
 
+**El estudio que se adapta a tu vida**: a tu tiempo libre, a tu trabajo y a todo lo demás.
+
 Gracias por echarle un rato. Esto es lo que necesito saber y lo que te pido.
 
 ## Qué es
@@ -48,7 +50,13 @@ cuando quieras en **Ajustes → Datos**.
    entran las fechas en el calendario del móvil.
 6. **Entra desde otro sitio.** Si lo has apuntado en el móvil, entra con tu
    cuenta en el ordenador (o al revés). ¿Está todo?
-7. **Déjala y vuelve mañana.** ¿Sigue todo ahí?
+7. **El Inicio.** ¿Lo que dice arriba («Hoy te tocan…») cuadra con tu día? Pon tu
+   ciudad y mira si el tiempo es el de verdad.
+8. **Tus libretas.** En el Casillero, cámbiale el color a alguna con la paleta.
+9. **Déjala y vuelve mañana.** ¿Sigue todo ahí?
+
+TutorIA y ChatClase salen como «Próximamente»: están en camino. Si tienes ideas
+para ellos, cuéntamelas.
 
 ## Si algo se rompe
 

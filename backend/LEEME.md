@@ -10,6 +10,9 @@ app, sus correos y cuánto la usan.
 - [probar-sql.js](probar-sql.js) — lo prueba contra un Postgres de verdad (18
   comprobaciones: que nadie ve lo de otro, que el panel solo es tuyo, que
   borrar la cuenta lo borra todo…).
+- [chatclase.sql](chatclase.sql) — **ChatClase**, para cuando se encienda (no hace
+  falta para lanzar). Se pasa después de `supabase.sql`. Probado contra Postgres
+  con [probar-chat.js](probar-chat.js) (22 comprobaciones).
 - [borrador/](borrador/) — un diseño antiguo con una tabla por cosa. **No lo
   ejecutes**: choca con `supabase.sql`.
 - Proveedor: **Supabase**, plan gratis. PostgreSQL de verdad.

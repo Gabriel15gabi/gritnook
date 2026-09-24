@@ -1,10 +1,12 @@
 <h1><picture><source media="(prefers-color-scheme: dark)" srcset="marca/gritnook-oscuro.svg"><img src="marca/gritnook-claro.svg" alt="GritNook" height="56"></picture></h1>
 
+**El estudio que se adapta a tu vida.** GritNook encaja lo que tienes que estudiar en el tiempo que de verdad tienes libre: alrededor de tus clases, de tu trabajo y de todo lo demás.
+
 App de estudio que se acomoda a lo que estudies: le dices si vas a la ESO, a Bachillerato, a un ciclo de FP, a la universidad, a una oposición o a un idioma, y monta tus asignaturas, tus horas y un tutor que sabe de lo tuyo. Con apuntes en libreta de cuadrícula donde se escribe **y se dibuja**, notas de cada asignatura con lo que falta para aprobar, control de horas, entregas, documentos e inglés.
 
 **[Probarla en vivo →](https://gabriel15gabi.github.io/gritnook/)**
 
-La versión pública funciona entera y no pide registrarse: todo se guarda en tu propio navegador y no sale de él. **El profe con inteligencia artificial está hecho y probado, pero sale apagado** hasta tener los papeles del proveedor de IA: un solo interruptor en el código (`PROFE_ACTIVO`) lo esconde de todas las pantallas y corta cualquier envío a la IA. Cómo encenderlo, en [CUENTAS.md](CUENTAS.md#encender-el-profe). Tampoco hay sincronización entre dispositivos: de momento, cada uno guarda lo suyo en su navegador.
+Con cuenta (correo y contraseña), lo tuyo te sigue del móvil al ordenador; los datos viven en Europa. **TutorIA** (el profe con inteligencia artificial) y **ChatClase** (el chat de la comunidad) salen como *Próximamente*: los dos están hechos y probados por dentro, y un interruptor en el código (`PROFE_ACTIVO`, `CHAT_ACTIVO`) los enciende cuando estén los papeles. Cómo, en [CUENTAS.md](CUENTAS.md).
 
 ![GritNook](capturas/escritorio.png)
 
@@ -28,6 +30,8 @@ Quien ya tenía datos no pasa por ahí: el perfil se rellena con lo que había y
 
 ## Qué hace
 
+**Tu día.** El Inicio empieza por lo que importa hoy, no por un saludo: cuánto te toca estudiar según tu tiempo libre y si trabajas, por dónde empezar y qué vence en dos días, con un botón para arrancar el cronómetro. Al lado, **el tiempo de tu zona** con un consejo para estudiar («Llueve: perfecto para un par de bloques»), si quieres: la ciudad se guarda solo en tu dispositivo.
+
 **Asignaturas y notas.** Un resumen del curso —tu media, cuántas van bien y las horas de la semana— y una **ficha por asignatura**: un anillo con la nota que llevas y la marca de tu objetivo, una frase que dice qué te toca («Toca apretar: necesitas un 7,25 de media en el 40 % que queda»), las notas de cada apartado con lo que aporta cada uno, las faltas contra el máximo permitido y el estudio de la semana. Calcula la media ponderada y, sobre todo, **qué nota necesitas en lo que queda**. Todo se guarda mientras escribes. Cada asignatura tiene su color.
 
 **Apuntes en libreta de verdad.** Papel de cuadrícula, rayas, puntos o liso, con su margen rojo. Al escribir: negrita, cursiva, subrayado, tachado, títulos, listas con viñetas o numeradas, subrayado del texto en doce tonos pastel y color de letra. Al dibujar: bolígrafo, rotulador, subrayador (doce pastel), diez tintas y un color libre, formas (línea, flecha, rectángulo, círculo) con imán a la cuadrícula y rayas rectas con Mayús. Letra normal o escrita a mano (cuatro manuscritas) que se queda para todos tus apuntes. Modo concentración para quedarte solo con la hoja. La goma **corta el trazo por donde pasa** en vez de borrarlo entero, como una goma de verdad. Deshacer y rehacer sin límite.
@@ -40,7 +44,7 @@ Quien ya tenía datos no pasa por ahí: el perfil se rellena con lo que había y
 
 **Agenda.** Entregas y exámenes en una sola base de datos que se ve como **calendario**, **tablero** (pendiente, en curso, hecho) o **lista**. Se añade escribiendo normal —«Examen de BD el jueves a las 10»— y la app entiende el tipo, la asignatura, el día y la hora; se mueve arrastrando; y cada cosa se abre en un panel lateral para editarla sin botón de guardar, con sus pasos y sus notas. Los exámenes llevan cuenta atrás y un plan de estudio hacia atrás, automático o hecho por el tutor. Más tu horario de clases y el **plan de la semana**, que sale solo de tus horas, tus días libres, tus exámenes y lo que peor llevas, y se va tachando al estudiar con el cronómetro. GritNook te dice cada día qué te toca.
 
-**Casillero.** Una estantería con una libreta en 3D por asignatura, con su color y su símbolo; los folios asoman cuando tiene hojas. Al abrirla salen sus hojas con vista previa —la primera página de cada PDF, las primeras líneas de cada texto o código, la foto o la web del enlace— para verlas (los PDF, dentro de la app), descargar o **pasárselas al profe** y preguntarle. Se sueltan archivos encima de una libreta y se guardan en ella. Buscador en todas las libretas, filtro por tipo y las libretas de lo que tienes esta semana. Dentro de Claude los archivos van a su almacén (hasta 20 MB cada uno, las fotos grandes se reducen solas); fuera, se guardan en la app hasta 180 KB.
+**Casillero.** Una estantería con una libreta en 3D por asignatura, con las anillas del logo en el lomo, su etiqueta de papel, su goma y su símbolo, y **del color que tú elijas** para cada una; al abrirla, la tapa gira y las hojas se abren en abanico; los folios asoman cuando tiene hojas. Al abrirla salen sus hojas con vista previa —la primera página de cada PDF, las primeras líneas de cada texto o código, la foto o la web del enlace— para verlas (los PDF, dentro de la app), descargar o **pasárselas al profe** y preguntarle. Se sueltan archivos encima de una libreta y se guardan en ella. Buscador en todas las libretas, filtro por tipo y las libretas de lo que tienes esta semana. Dentro de Claude los archivos van a su almacén (hasta 20 MB cada uno, las fotos grandes se reducen solas); fuera, se guardan en la app hasta 180 KB.
 
 **Inglés.** Traductor a mano, vocabulario propio y repaso espaciado de las palabras que te tocan.
 
@@ -56,6 +60,8 @@ Quien ya tenía datos no pasa por ahí: el perfil se rellena con lo que había y
 
 ![El profe](capturas/profe.png)
 
+**TutorIA y ChatClase, próximamente.** Abajo del menú, aparte, con «Próximamente» en naranja y un avance de lo que harán. ChatClase está entero por dentro —canales por tema, emojis y reacciones, responder, editar, adjuntar apuntes y fotos, compartir tus tareas hechas o pendientes, fijar, reportar, bloquear y moderar—, para ordenador y móvil, con su base de datos y sus pruebas. Pensado para que haya menores: sin mensajes privados, solo un apodo y con normas que se aceptan al entrar.
+
 **Menú.** En el ordenador, un riel con cada sección y su nombre, siempre en el mismo sitio, y al lado un panel con lo que hay dentro de la sección en la que estás: tus apuntes con buscador, lo pendiente de la agenda agrupado por fechas, tus asignaturas con su estado… En el móvil, una barra de pestañas abajo y un «Más» con el resto de secciones y su dato al día. Las confirmaciones (borrar algo, cargar una copia) son ventanas de la propia app, nunca las del navegador.
 
 **Un Inicio a tu manera.** Con *Editar Inicio*, cada panel se arrastra por su nombre a cualquier sitio y se estira por la esquina, como los widgets del móvil; los que no uses se ocultan. Por debajo es una rejilla de 12 columnas, así que nunca queda un panel encima de otro y el mismo Inicio vale en un portátil y en un monitor grande. En el móvil los paneles van uno debajo de otro, con su propio orden. También con el teclado: flechas para mover y Mayúsculas con flechas para el tamaño. Mientras no toques nada, el Inicio es el de siempre.
@@ -64,7 +70,7 @@ Quien ya tenía datos no pasa por ahí: el perfil se rellena con lo que había y
 
 ## Cómo está hecho
 
-Un solo archivo HTML. **Sin frameworks, sin dependencias, sin proceso de compilación**: HTML, CSS y JavaScript a pelo. Lo único que se descarga de fuera es la tipografía.
+Un solo archivo HTML. **Sin frameworks, sin dependencias, sin proceso de compilación**: HTML, CSS y JavaScript a pelo. Las letras van dentro; de fuera solo se pide PDF.js al abrir un PDF, el tiempo a Open-Meteo si pones tu ciudad y tu cuenta a Supabase.
 
 - **Dibujo vectorial sobre canvas.** Los trazos se guardan como puntos, no como imagen: se redibujan nítidos a cualquier escala y ocupan poco. Suavizado con curvas cuadráticas, simplificación Ramer–Douglas–Peucker al soltar el trazo, dos capas de canvas con `mix-blend-mode: multiply` para que los rotuladores se superpongan como la tinta, y eventos de puntero con `getCoalescedEvents` para no perder resolución al dibujar rápido.
 - **La goma que corta.** Cada trazo se remuestrea, se quitan los puntos que caen bajo la goma y cada tramo que sobrevive pasa a ser un trazo nuevo, conservando sus vértices originales. Las formas se convierten a su contorno para poder cortarlas igual.
@@ -116,7 +122,7 @@ La versión pública es para verla y probarla. La de Claude usa sus capacidades 
 node pruebas/correr.js
 ```
 
-600 pruebas que corren **dentro de la app de verdad**, cargada en un iframe, sin
+666 pruebas que corren **dentro de la app de verdad**, cargada en un iframe, sin
 instalar nada. Cubren las cuentas de las notas, entender las fechas escritas a
 mano, el sanitizador, el estado, la libreta, el repaso espaciado, la pantalla de
 bienvenida entera, el modo opositor, las cuentas contra un servidor de mentira y una tanda de datos absurdos a propósito. Las reglas de la base de datos, aparte, contra un Postgres de verdad. El cómo y lo que han encontrado, en [pruebas/](pruebas/LEEME.md).

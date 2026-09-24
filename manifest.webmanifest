@@ -1,7 +1,7 @@
 {
   "name": "GritNook",
   "short_name": "GritNook",
-  "description": "Tu curso en una pantalla: asignaturas, notas, horas, exámenes, apuntes y un tutor.",
+  "description": "El estudio que se adapta a tu vida: tu tiempo libre, tu trabajo, tus asignaturas, notas, exámenes y apuntes.",
   "lang": "es",
   "start_url": "./",
   "scope": "./",

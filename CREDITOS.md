@@ -1,6 +1,6 @@
 # Créditos
 
-GritNook es código propio con licencia MIT (ver [LICENSE](LICENSE)). Usa estas piezas de terceros, todas con licencias libres que permiten el uso comercial:
+GritNook es código propio, con todos los derechos reservados (ver [LICENSE](LICENSE)). Usa estas piezas de terceros, todas con licencias libres que permiten el uso comercial:
 
 | Qué | Dónde se usa | Licencia |
 |---|---|---|
@@ -8,6 +8,7 @@ GritNook es código propio con licencia MIT (ver [LICENSE](LICENSE)). Usa estas 
 | [Inter](https://rsms.me/inter/), de Rasmus Andersson | Tipografía de toda la app y trazos del logotipo. El archivo va dentro de la app, en `fuentes/`. | SIL Open Font License 1.1 |
 | Caveat, Kalam, Patrick Hand y Shadows Into Light | Letras manuscritas de la hoja de apuntes. Van dentro de la app, en `fuentes/`, y el navegador solo descarga la que elijas. | SIL Open Font License 1.1 |
 | [PDF.js](https://mozilla.github.io/pdf.js/), de Mozilla, 3.11 | Miniaturas y visor de los PDF del casillero. Se carga de cdnjs solo al ver un PDF. | Apache 2.0 |
+| [Open-Meteo](https://open-meteo.com) | El tiempo del Inicio, si pones tu ciudad. Los dibujos del tiempo son propios. La app enlaza a Open-Meteo en la propia tarjeta, como pide su licencia. Gratis mientras la app no sea de pago (ver [CUENTAS.md](CUENTAS.md)). | Datos: CC BY 4.0 |
 | [opentype.js](https://opentype.js.org) | Solo para regenerar el logotipo (`marca/generar.js`). No va dentro de la app. | MIT |
 
 El logotipo de GritNook (las anillas y el marcapáginas) es un diseño propio: no sale de ninguna librería de iconos.
