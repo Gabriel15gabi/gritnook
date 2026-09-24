@@ -2175,17 +2175,17 @@ dialog[open]::backdrop{backdrop-filter:blur(6px); animation:fondoEntra .24s ease
 .lb-hueco:hover .lb-pintar, .lb-hueco:focus-within .lb-pintar, .lb-pintar[aria-expanded="true"]{opacity:1; transform:none}
 .lb-pintar:hover{color:var(--acento-txt); border-color:var(--acento-borde)}
 @media (hover:none){ .lb-pintar{opacity:1; transform:none} }
-.lb-paleta{position:absolute; z-index:6; top:44px; left:50%; width:224px; padding:12px; border-radius:16px; background:var(--surface); border:1px solid var(--line-2);
+.tapa-paleta{position:absolute; z-index:6; top:44px; left:50%; width:224px; padding:12px; border-radius:16px; background:var(--surface); border:1px solid var(--line-2);
   box-shadow:var(--sombra-modal); transform:translateX(-50%); animation:emerge .2s var(--ease-salto)}
 @keyframes emerge{from{opacity:0; transform:translateX(-50%) translateY(6px) scale(.96)}}
-.lb-paleta-rej{display:grid; grid-template-columns:repeat(4,1fr); gap:8px}
-.lb-color{width:100%; aspect-ratio:1; border-radius:50%; border:0; background:var(--c); cursor:pointer; box-shadow:inset 0 0 0 1px rgba(0,0,0,.15), inset 0 -3px 6px rgba(0,0,0,.2);
+.tapa-rej{display:grid; grid-template-columns:repeat(4,1fr); gap:8px}
+.tapa-color{width:100%; aspect-ratio:1; border-radius:50%; border:0; background:var(--c); cursor:pointer; box-shadow:inset 0 0 0 1px rgba(0,0,0,.15), inset 0 -3px 6px rgba(0,0,0,.2);
   transition:transform .16s var(--ease-salto)}
-.lb-color:hover, .lb-color:focus-visible{transform:scale(1.12)}
-.lb-color.sel{box-shadow:0 0 0 2px var(--surface), 0 0 0 4px var(--acento-txt)}
-.lb-paleta-pie{display:flex; align-items:center; justify-content:space-between; gap:8px; margin-top:12px; padding-top:10px; border-top:1px solid var(--line)}
-.lb-propio{display:flex; align-items:center; gap:8px; font:500 12.5px/1 var(--sans); color:var(--ink-2); cursor:pointer}
-.lb-propio input{width:28px; height:28px; padding:0; border:0; border-radius:50%; background:none; cursor:pointer}
+.tapa-color:hover, .tapa-color:focus-visible{transform:scale(1.12)}
+.tapa-color.sel{box-shadow:0 0 0 2px var(--surface), 0 0 0 4px var(--acento-txt)}
+.tapa-pie{display:flex; align-items:center; justify-content:space-between; gap:8px; margin-top:12px; padding-top:10px; border-top:1px solid var(--line)}
+.tapa-propio{display:flex; align-items:center; gap:8px; font:500 12.5px/1 var(--sans); color:var(--ink-2); cursor:pointer}
+.tapa-propio input{width:28px; height:28px; padding:0; border:0; border-radius:50%; background:none; cursor:pointer}
 .lb-hueco.con-paleta{z-index:5}
 @media (max-width:640px){
   .lb-hueco{--w:130px; --h:180px; --d:24px}
@@ -9515,11 +9515,11 @@ function libroHTML(id, m, n, i = 0) {
 }
 function paletaTapaHTML(id) {
   const actual = tapaDe(id);
-  return `<div class="lb-paleta" id="lbPaleta" role="dialog" aria-label="Color de la libreta">
-    <div class="lb-paleta-rej">${TAPAS.map(([c, n]) => `<button type="button" class="lb-color${actual === c.toLowerCase() ? " sel" : ""}" style="--c:${c}" data-lb-color="${c}" aria-label="${n}" title="${n}" aria-pressed="${actual === c.toLowerCase()}"></button>`).join("")}</div>
-    <div class="lb-paleta-pie">
-      <label class="lb-propio" title="Elegir cualquier color"><input type="color" id="lbPropio" value="${actual || "#6d28d9"}"><span>Otro color</span></label>
-      ${actual ? `<button type="button" class="btn mini fantasma" data-lb-color="">Quitar color</button>` : ""}
+  return `<div class="tapa-paleta" id="tapaPaleta" role="dialog" aria-label="Color de la libreta">
+    <div class="tapa-rej">${TAPAS.map(([c, n]) => `<button type="button" class="tapa-color${actual === c.toLowerCase() ? " sel" : ""}" style="--c:${c}" data-tapa-color="${c}" aria-label="${n}" title="${n}" aria-pressed="${actual === c.toLowerCase()}"></button>`).join("")}</div>
+    <div class="tapa-pie">
+      <label class="tapa-propio" title="Elegir cualquier color"><input type="color" id="tapaPropio" value="${actual || "#6d28d9"}"><span>Otro color</span></label>
+      ${actual ? `<button type="button" class="btn mini fantasma" data-tapa-color="">Quitar color</button>` : ""}
     </div>
   </div>`;
 }
@@ -9532,17 +9532,17 @@ function pintarLibreta(id, color) {
 alEvento("click", e => {
   const t = e.target;
   const p = t.closest("[data-lb-pintar]");
-  if (p) { LBP = LBP === p.dataset.lbPintar ? null : p.dataset.lbPintar; pinta(); const x = document.querySelector("#lbPaleta .lb-color.sel, #lbPaleta .lb-color"); if (x && LBP) x.focus({ preventScroll: true }); return; }
-  const c = t.closest("[data-lb-color]");
-  if (c && LBP) { pintarLibreta(LBP, c.dataset.lbColor); return; }
-  if (LBP && !t.closest("#lbPaleta")) { LBP = null; pinta(); }
+  if (p) { LBP = LBP === p.dataset.lbPintar ? null : p.dataset.lbPintar; pinta(); const x = document.querySelector("#tapaPaleta .tapa-color.sel, #tapaPaleta .tapa-color"); if (x && LBP) x.focus({ preventScroll: true }); return; }
+  const c = t.closest("[data-tapa-color]");
+  if (c && LBP) { pintarLibreta(LBP, c.dataset.tapaColor); return; }
+  if (LBP && !t.closest("#tapaPaleta")) { LBP = null; pinta(); }
 });
-alEvento("change", e => { if (e.target.id === "lbPropio" && LBP) pintarLibreta(LBP, e.target.value); });
+alEvento("change", e => { if (e.target.id === "tapaPropio" && LBP) pintarLibreta(LBP, e.target.value); });
 alEvento("keydown", e => {
   if (!LBP) return;
   if (e.key === "Escape") { const id = LBP; LBP = null; pinta(); e.preventDefault(); const b = document.querySelector(`[data-lb-pintar="${CSS.escape(id)}"]`); if (b) b.focus(); return; }
   /* las flechas recorren los colores */
-  const cols = [...document.querySelectorAll("#lbPaleta .lb-color")], i = cols.indexOf(document.activeElement);
+  const cols = [...document.querySelectorAll("#tapaPaleta .tapa-color")], i = cols.indexOf(document.activeElement);
   const mov = { ArrowRight: 1, ArrowLeft: -1, ArrowDown: 4, ArrowUp: -4 }[e.key];
   if (i >= 0 && mov) { e.preventDefault(); cols[(i + mov + cols.length) % cols.length].focus(); }
 });

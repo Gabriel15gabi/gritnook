@@ -190,11 +190,11 @@ grupo("Casillero: libretas nuevas y de tu color", () => {
   }));
   prueba("elegir un color de la paleta lo pone en la tapa y se guarda con tus ajustes", () => conCasillero(() => {
     document.querySelector('[data-lb-pintar="bd"]').click();
-    esperar(!!$("#lbPaleta")).cierto();
-    esperar(document.querySelectorAll("#lbPaleta .lb-color").length).igualA(16);
-    document.querySelector('#lbPaleta [data-lb-color="#0F766E"]').click();
+    esperar(!!$("#tapaPaleta")).cierto();
+    esperar(document.querySelectorAll("#tapaPaleta .tapa-color").length).igualA(16);
+    document.querySelector('#tapaPaleta [data-tapa-color="#0F766E"]').click();
     esperar(modPorId("bd").tapa).igualA("#0f766e");
-    esperar($("#lbPaleta")).nulo();
+    esperar($("#tapaPaleta")).nulo();
     esperar(document.querySelector('[data-libro="bd"]').getAttribute("style")).contiene("#0f766e");
     esperar(JSON.stringify(empaqueta("ajustes"))).contiene("#0f766e");
     /* la asignatura conserva su color en el resto de la app */
@@ -207,10 +207,10 @@ grupo("Casillero: libretas nuevas y de tu color", () => {
   }));
   prueba("cualquier color, con el selector; y «Quitar color» vuelve al de siempre", () => conCasillero(() => {
     document.querySelector('[data-lb-pintar="pro"]').click();
-    const i = $("#lbPropio"); i.value = "#123456"; i.dispatchEvent(new Event("change", { bubbles: true }));
+    const i = $("#tapaPropio"); i.value = "#123456"; i.dispatchEvent(new Event("change", { bubbles: true }));
     esperar(modPorId("pro").tapa).igualA("#123456");
     document.querySelector('[data-lb-pintar="pro"]').click();
-    document.querySelector('#lbPaleta [data-lb-color=""]').click();
+    document.querySelector('#tapaPaleta [data-tapa-color=""]').click();
     esperar(modPorId("pro").tapa).igualA(undefined);
   }));
   prueba("una tapa clara lleva la letra oscura", () => conCasillero(() => {
@@ -228,10 +228,24 @@ grupo("Casillero: libretas nuevas y de tu color", () => {
   prueba("Escape cierra la paleta; un clic fuera, también", () => conCasillero(() => {
     document.querySelector('[data-lb-pintar="bd"]').click();
     document.dispatchEvent(new KeyboardEvent("keydown", { key: "Escape", bubbles: true }));
-    esperar($("#lbPaleta")).nulo();
+    esperar($("#tapaPaleta")).nulo();
     document.querySelector('[data-lb-pintar="bd"]').click();
     $(".cab").click();
-    esperar($("#lbPaleta")).nulo();
+    esperar($("#tapaPaleta")).nulo();
+  }));
+  /* la paleta de las libretas se llamaba igual que la barra de tintas de los
+     apuntes (lb-paleta, lb-color) y la convertía en una ventanita que no se
+     cerraba nunca. Lo encontró Gabriel dibujando */
+  prueba("la paleta de las libretas no toca la barra de tintas de los apuntes", () => enLaHoja(async () => {
+    const antes = LB.modo;
+    try {
+      LB.modo = "dibujar"; lbPintarBarra();
+      const p = $("#lbBarra .lb-paleta"), b = $("#lbBarra");
+      esperar(getComputedStyle(p).position).distintoDe("absolute");
+      const rp = p.getBoundingClientRect(), rb = b.getBoundingClientRect();
+      esperar(rp.top >= rb.top - 1 && rp.bottom <= rb.bottom + 1).cierto();
+      esperar(!!document.querySelector(".tapa-paleta")).falso();
+    } finally { LB.modo = antes; }
   }));
   prueba("la libreta de sueltos también se pinta, y se guarda en los ajustes", () => conCasillero(() => {
     ponerTapa(SUELTOS, "#4338ca");

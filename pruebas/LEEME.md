@@ -8,9 +8,9 @@ Eso levanta un servidor, abre un navegador sin ventana y escribe el resultado en
 la consola. Devuelve 1 si algo falla, que es lo que mira un servidor de
 integración continua.
 
-**666 pruebas.** Sin ventana pasan 660 y 6 se quedan en pendiente: son las que
+**667 pruebas.** Sin ventana pasan 661 y 6 se quedan en pendiente: son las que
 dibujan un PDF, y sin tarjeta gráfica eso tarda demasiado. Abriendo
-`pruebas/pruebas.html` en un navegador normal pasan las 666.
+`pruebas/pruebas.html` en un navegador normal pasan las 667.
 
 Aparte, las reglas de seguridad de la base de datos se prueban contra un
 Postgres de verdad: `node backend/probar-sql.js` (18 comprobaciones), y las del chat con
@@ -202,6 +202,12 @@ Doce fallos de verdad (el último, probando a mano lo que ninguna prueba miraba)
 17. **Al repintar el chat, el cursor volvía al principio.** Escribías, abrías
     los emojis y el emoji se metía delante de todo. Ahora el cursor vuelve a su
     sitio aunque el foco esté en otra parte.
+
+18. **Los colores de tinta de los apuntes se quedaban flotando.** La paleta
+    nueva de las libretas del casillero se llamaba igual (`lb-paleta`,
+    `lb-color`) que la barra de tintas, y la convertía en una ventanita que no
+    se cerraba nunca. Lo encontró Gabriel dibujando. Ahora la del casillero se
+    llama `tapa-…` y una prueba vigila que la barra siga en su sitio.
 
 Y en la página de datos de prueba: si le dabas a rellenar dos veces, la segunda
 copia de seguridad guardaba los datos falsos encima de los tuyos y «Devolver» te
