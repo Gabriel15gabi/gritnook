@@ -1995,6 +1995,13 @@ input:focus,select:focus,textarea:focus{border-color:var(--acento); box-shadow:0
 .riel-pronto{display:flex; flex-direction:column; align-items:center; gap:2px; width:100%; margin-top:6px; padding-top:10px; border-top:1px solid var(--line)}
 .riel-item.es-pronto .rt{color:var(--ink-2)}
 .riel-item.es-pronto svg.ri, .riel-item.es-pronto svg.i{color:var(--ink-3)}
+/* al pasar por encima, el menú se tiñe del morado de la marca (icono, nombre y un fondo suave) */
+@media (min-width:881px) and (hover:hover){
+  .riel-item:hover, .riel-item.es-pronto:hover{color:var(--acento-txt); background:color-mix(in srgb, var(--acento) 16%, transparent)}
+  .riel-item:hover svg.i, .riel-item:hover svg.ri, .riel-item.es-pronto:hover .rt,
+  .riel-item.es-pronto:hover svg.i, .riel-item.es-pronto:hover svg.ri{color:var(--acento-txt)}
+  .riel-item[aria-current="page"]:hover{background:color-mix(in srgb, var(--acento) 24%, transparent)}
+}
 .riel-pronto-tag{display:block; max-width:100%; margin-top:-1px; font:600 9px/1 var(--sans); letter-spacing:.01em; color:var(--pronto); white-space:nowrap}
 .pronto{display:inline-flex; align-items:center; gap:6px; padding:3px 9px; border-radius:99px; font:600 11px/1.2 var(--sans); color:var(--pronto);
   background:var(--pronto-suave); box-shadow:inset 0 0 0 1px var(--pronto-borde); white-space:nowrap}
