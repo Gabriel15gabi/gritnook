@@ -2452,7 +2452,11 @@ body.en-chat .contenedor{max-width:1120px}
 .acc-luz{position:absolute; left:30%; top:30%; width:520px; height:520px; border-radius:50%; background:radial-gradient(closest-side, color-mix(in srgb, var(--acento) 20%, transparent), transparent);
   animation:luzDeriva 16s ease-in-out infinite alternate}
 @keyframes luzDeriva{from{transform:translate(-40px,-30px)} to{transform:translate(40px,30px)}}
-.acc-logo .marca-palabra{height:44px}
+/* el nombre, grande y con presencia: un brillo del color de la marca y una entrada suave */
+.acc-logo{align-self:flex-start; animation:accLogoEntra .7s cubic-bezier(.2,.7,.2,1) both}
+.acc-logo .marca-palabra{display:block; height:clamp(72px, 7.4vw, 128px); width:auto;
+  filter:drop-shadow(0 10px 34px color-mix(in srgb, var(--acento) 42%, transparent)) drop-shadow(0 2px 6px rgba(0,0,0,.25))}
+@keyframes accLogoEntra{from{opacity:0; transform:translateY(14px) scale(.97)}}
 .acc-mensaje{max-width:540px; margin-top:auto}
 .acc-lema{margin:0 0 16px; font:600 clamp(30px, 3.4vw, 46px)/1.08 var(--sans); letter-spacing:-.04em; text-wrap:balance}
 .acc-lema em, .acc-lema-movil em{font-style:normal; background:linear-gradient(92deg, var(--acento-txt), color-mix(in srgb, var(--acento-txt) 45%, var(--pronto))); -webkit-background-clip:text; background-clip:text; color:transparent}
@@ -2512,14 +2516,14 @@ body.en-chat .contenedor{max-width:1120px}
   .acc-lado{align-items:flex-start; padding:28px 20px 40px;
     background:radial-gradient(640px 360px at 50% -10%, color-mix(in srgb, var(--acento) 18%, transparent), transparent 70%)}
   .acc-logo-movil{display:block; margin:6px 0 24px}
-  .acc-logo-movil .marca-palabra{height:40px}
+  .acc-logo-movil .marca-palabra{display:block; height:clamp(52px, 15vw, 68px); width:auto; filter:drop-shadow(0 8px 26px color-mix(in srgb, var(--acento) 40%, transparent))}
   .acc-lema-movil{margin:14px 0 0; font:600 22px/1.2 var(--sans); letter-spacing:-.03em}
 }
 
 /* ══ sin movimiento, si se pide ══ */
 @media (prefers-reduced-motion: reduce){
   #contenido.entrando *, .hd::after, .t-rayos, .t-nube, .t-gotas path, .t-copos circle, .t-rayo, .t-niebla path, .pronto::before,
-  .pr-halo, .pr-orbita, .pr-chispa, .pr-rayo, .pr-burbuja, .pr-punto, .pr-corazon path, .acc-aro, .acc-luz, .acc-ficha,
+  .pr-halo, .pr-orbita, .pr-chispa, .pr-rayo, .pr-burbuja, .pr-punto, .pr-corazon path, .acc-aro, .acc-luz, .acc-ficha, .acc-logo,
   .lb-hueco.pintada *, .cc-msg.destaca, .hdt-hueco, .cc-img-carga{animation:none !important}
   .lb-brillo, .lb-cuerpo, .lb-tapa, .acc-tab-ind, .btn, .cc-reac{transition:none !important}
 }
