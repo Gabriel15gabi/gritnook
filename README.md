@@ -4,7 +4,7 @@
 
 App de estudio que se acomoda a lo que estudies: le dices si vas a la ESO, a Bachillerato, a un ciclo de FP, a la universidad, a una oposición o a un idioma, y monta tus asignaturas, tus horas y un tutor que sabe de lo tuyo. Con apuntes en libreta de cuadrícula donde se escribe **y se dibuja**, notas de cada asignatura con lo que falta para aprobar, control de horas, entregas, documentos e inglés.
 
-**[Probarla en vivo →](https://gabriel15gabi.github.io/gritnook/)**
+**[Probarla en vivo →](https://gritnook.com/)**
 
 Con cuenta (correo y contraseña), lo tuyo te sigue del móvil al ordenador; los datos viven en Europa. **TutorIA** (el profe con inteligencia artificial) y **ChatClase** (el chat de la comunidad) salen como *Próximamente*: los dos están hechos y probados por dentro, y un interruptor en el código (`PROFE_ACTIVO`, `CHAT_ACTIVO`) los enciende cuando estén los papeles. Cómo, en [CUENTAS.md](CUENTAS.md).
 

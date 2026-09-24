@@ -39,8 +39,8 @@ Va a tu nombre, así que estos pasos no los puede dar nadie por ti.
    correos por hora, y si cada alta tuviera que confirmar, a la tercera
    persona ya no le llegaría.
 7. **Authentication → URL Configuration**:
-   - **Site URL**: `https://gabriel15gabi.github.io/gritnook/`
-   - **Redirect URLs**: añade esa misma y `http://localhost:4174/`
+   - **Site URL**: `https://gritnook.com/`
+   - **Redirect URLs**: añade esa misma, `https://www.gritnook.com/` y `http://localhost:4174/`
    Es adonde vuelve quien pide cambiar la contraseña.
 8. **Project Settings → API**: pásame estas dos cosas:
    - **Project URL** (algo como `https://xxxxx.supabase.co`)

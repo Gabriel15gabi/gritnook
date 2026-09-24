@@ -178,7 +178,8 @@ habría que añadir el proveedor de IA y el cobro.
 
 - [x] Capturas nuevas para el README.
 - [x] `gh auth login` y subir el repositorio como `gritnook` (24 de septiembre de 2026).
-- [x] GitHub Pages activado: rama `main`, carpeta raíz → https://gabriel15gabi.github.io/gritnook/
+- [x] GitHub Pages activado: rama `main`, carpeta raíz, con su dominio → https://gritnook.com/ (la dirección de GitHub lleva sola a esta)
+- [x] Dominio `gritnook.com` comprado en Cloudflare (24 de septiembre de 2026, un año).
 - [x] Poner la dirección publicada en `legal/AVISO-LEGAL.md`, donde pone
       «dirección web», y volver a pasar `legal/generar.js`.
 - [ ] Crear el proyecto de Supabase en Frankfurt, pegar `backend/supabase.sql` y
