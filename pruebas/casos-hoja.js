@@ -13,20 +13,21 @@ const dedo = (tipo, id, x, y, clase = "touch") => new PointerEvent(tipo, { bubbl
   clientX: x, clientY: y, button: 0, buttons: tipo === "pointerup" ? 0 : 1 });
 const marcarLineas = (a, b) => { const r = document.createRange(), ls = LB.ta.children; r.setStart(ls[a], 0); r.setEnd(ls[b], ls[b].childNodes.length); getSelection().removeAllRanges(); getSelection().addRange(r); };
 const esperaHoja = ms => new Promise(r => setTimeout(r, ms));
+const $$ = s => [...document.querySelectorAll(s)];
 
 /* abre un apunte con ese HTML, con el cursor en la hoja, y lo deja todo como estaba */
 async function conHoja(html, fn) {
-  const antes = JSON.parse(JSON.stringify(S)), antesAp = apunteActivo, antesSec = seccion, antesModo = LB.modo, antesZoom = LB.zoom;
+  const antes = JSON.parse(JSON.stringify(S)), antesAp = apunteActivo, antesSec = seccion, antesModo = LB.modo, antesZoom = LB.zoom, antesFolio = LB.folio, antesCat = LB.cat;
   const id = uid();
   try {
     S.apuntes[id] = { id, titulo: "Para mover", modId: "", html, cuerpo: htmlATexto(limpiarHtml(html)), papel: "cuadricula", letra: "normal", creado: hoyISO(), editado: new Date().toISOString() };
-    apunteActivo = id; seccion = "apuntes"; LB.modo = "escribir"; LB.pop = null; pinta();
+    apunteActivo = id; seccion = "apuntes"; LB.modo = "escribir"; LB.pop = null; LB.folio = false; LB.cat = null; pinta();
     await esperaHoja(150);
     if (!LB.ta || !LB.ta.isConnected) throw new Error("la hoja no se ha montado");
     LB.ta.focus();
     return await fn(id);
   } finally {
-    lbMenuBloque(false); LB.pop = null; LB.lapiz = false; LB.mano = false; LB.zoom = antesZoom;
+    lbMenuBloque(false); LB.pop = null; LB.lapiz = false; LB.mano = false; LB.zoom = antesZoom; LB.folio = antesFolio; LB.cat = antesCat;
     LB.modo = antesModo; apunteActivo = antesAp; seccion = antesSec;
     S = JSON.parse(JSON.stringify(antes)); pinta();
   }
@@ -308,7 +309,8 @@ grupo("Hoja en el móvil", () => {
     esperar(b.classList.contains("lx-dock")).cierto();
     esperar(getComputedStyle(b).position).igualA("fixed");
     esperar(Math.abs(b.getBoundingClientRect().bottom - innerHeight) < 2).cierto();
-    esperar(b.querySelector("[data-lb-cmd]").getBoundingClientRect().width >= 40).cierto();
+    esperar(b.querySelector("[data-lx-cat]").getBoundingClientRect().width >= 44).cierto();
+    esperar(b.querySelector("[data-lx-modo]").getBoundingClientRect().height >= 36).cierto();
   })));
 
   prueba("con un apunte abierto no se ven la lista ni la cabecera, y la flecha vuelve", () => enElMovil(() => conHoja("<div>uno</div>", async () => {
@@ -408,5 +410,138 @@ grupo("Hoja en el móvil", () => {
     window.dispatchEvent(new Event("resize"));
     esperar($("#lbBarra").classList.contains("lx-dock")).falso();
     esperar($("#libreta").classList.contains("fluida")).falso();
+  }));
+});
+
+grupo("Hoja: los folios A4", () => {
+  prueba("la hoja mide un A4 y crece por folios enteros, con su número", () => conHoja("<div>uno</div>", async () => {
+    esperar(LB_PAGINA / LB_ANCHO > 1.4 && LB_PAGINA / LB_ANCHO < 1.42).cierto();
+    esperar(LB.H).igualA(LB_PAGINA);
+    esperar($("#lbPaginas").textContent).igualA("");
+    LB.ta.innerHTML = "<div>línea</div>".repeat(60);
+    LB.ta.dispatchEvent(new InputEvent("input", { bubbles: true }));
+    esperar(LB.H % LB_PAGINA).igualA(0);
+    esperar(LB.H / LB_PAGINA >= 2).cierto();
+    esperar($("#lbPaginas").textContent).contiene("1 / ");
+    esperar($$("#lbPaginas .lx-corte").length).igualA(LB.H / LB_PAGINA - 1);
+  }));
+});
+
+grupo("Hoja en el móvil: el folio", () => {
+  const toques = () => {
+    const m = LB.marco, tq = (id, x, y) => new Touch({ identifier: id, target: m, clientX: x, clientY: y });
+    const ev = (tipo, ts, cambiados) => m.dispatchEvent(new TouchEvent(tipo, { bubbles: true, cancelable: true, touches: ts, targetTouches: ts, changedTouches: cambiados || ts }));
+    return { tq, ev, toque: (x, y) => { ev("touchstart", [tq(5, x, y)]); ev("touchend", [], [tq(5, x, y)]); } };
+  };
+  const enFolio = fn => enElMovil(() => conHoja('<div data-b="t1">Tema 1</div><div>La célula es la unidad básica.</div><div><br></div><div>Otra línea</div>', async id => {
+    lbMovilModo("folio"); await esperaHoja(30);
+    if (typeof Touch !== "function") saltar("este navegador no crea toques");
+    document.querySelectorAll(".toast").forEach(t => t.remove());
+    return fn(id);
+  }));
+
+  prueba("al abrir un apunte con algo escrito, se ve el folio A4 entero y no se escribe encima", () => enElMovil(() => conHoja("<div>uno</div>", async id => {
+    LB.folio = false; seccion = "apuntes"; apunteActivo = null; pinta(); await esperaHoja(50);
+    document.querySelector('[data-apunte="' + id + '"]').click(); await esperaHoja(150);
+    esperar(lbFolioActivo()).cierto();
+    esperar($("#libreta").classList.contains("folio")).cierto();
+    esperar($("#libreta").classList.contains("fluida")).falso();
+    esperar(LB.ta.getAttribute("contenteditable")).igualA("false");
+    esperar(Math.abs(parseFloat($("#lbEscala").style.width) - (LB.marco.clientWidth - 4)) < 2).cierto();
+    esperar($('[data-lx-modo="folio"]').getAttribute("aria-pressed")).igualA("true");
+  })));
+
+  prueba("un apunte nuevo, vacío, se abre para escribir", () => enElMovil(() => conHoja("<div><br></div>", async () => {
+    $("#apVolver").click(); await esperaHoja(50);
+    $("#btnNuevoApunte").click(); await esperaHoja(150);
+    esperar(lbFolioActivo()).falso();
+    esperar($("#libreta").classList.contains("fluida")).cierto();
+  })));
+
+  prueba("con dos dedos se acerca el folio, y «Hoja entera» lo deja como estaba", () => enFolio(async () => {
+    const { tq, ev } = toques(), k0 = LB.k;
+    ev("touchstart", [tq(1, 150, 300), tq(2, 210, 300)]);
+    for (let i = 1; i <= 5; i++) ev("touchmove", [tq(1, 150 - i * 10, 300), tq(2, 210 + i * 10, 300)]);
+    ev("touchend", [], [tq(1, 100, 300), tq(2, 260, 300)]);
+    esperar(LB.zoom > 1.5).cierto();
+    esperar(LB.k > k0).cierto();
+    esperar(lbFolioActivo()).cierto();
+    $('[data-lx-zoom="ajustar"]').click();
+    esperar(LB.zoom).igualA(1);
+  }));
+
+  prueba("el doble toque en blanco acerca, y otro doble toque vuelve a la hoja entera", () => enFolio(async () => {
+    const { toque } = toques(), r = LB.papel.getBoundingClientRect(), x = r.right - 20, y = r.top + 150;
+    toque(x, y); toque(x, y);
+    esperar(LB.zoom > 2).cierto();
+    await esperaHoja(400);
+    toque(200, 300); toque(200, 300);
+    esperar(LB.zoom).igualA(1);
+    esperar(lbFolioActivo()).cierto();
+  }));
+
+  prueba("tocar las letras de una línea lleva a escribir justo en ella", () => enFolio(async () => {
+    const { toque } = toques(), l = LB.ta.children[1], rg = document.createRange(); rg.selectNodeContents(l);
+    const c = rg.getClientRects()[0];
+    toque(c.left + c.width / 2, c.top + c.height / 2);
+    esperar(lbFolioActivo()).falso();
+    esperar($("#libreta").classList.contains("fluida")).cierto();
+    esperar(LB.ta.getAttribute("contenteditable")).igualA("true");
+    esperar(document.activeElement === LB.ta).cierto();
+    esperar(LB.ta.children[1].contains(getSelection().anchorNode)).cierto();
+  }));
+
+  prueba("tocar el blanco de al lado de una línea no te pone a escribir", () => enFolio(async () => {
+    const { toque } = toques(), l = LB.ta.children[1], r = l.getBoundingClientRect(), p = LB.papel.getBoundingClientRect();
+    toque(p.right - 15, r.top + r.height / 2);
+    esperar(lbFolioActivo()).cierto();
+  }));
+
+  prueba("los modos van abajo: Folio, Escribir y Dibujar", () => enFolio(async () => {
+    esperar($$("#lbBarra [data-lx-modo]").map(b => b.textContent.trim())).igualA(["Folio", "Escribir", "Dibujar"]);
+    $('[data-lx-modo="escribir"]').click(); await esperaHoja(30);
+    esperar(lbFolioActivo()).falso(); esperar(LB.modo).igualA("escribir");
+    $('[data-lx-modo="dibujar"]').click(); await esperaHoja(30);
+    esperar(LB.modo).igualA("dibujar");
+    $('[data-lx-modo="folio"]').click(); await esperaHoja(30);
+    esperar(LB.modo).igualA("escribir"); esperar(lbFolioActivo()).cierto();
+  }));
+});
+
+grupo("Hoja en el móvil: lo mismo que en el ordenador", () => {
+  prueba("al escribir, las categorías abren sus botones: formato, párrafo y colocar (las flechas)", () => enElMovil(() => conHoja("<div>uno</div>", async () => {
+    const fila = () => $$("#lbBarra .lx-fila-cat button").map(b => b.dataset.lbCmd || b.dataset.lbBloque || b.dataset.lbTexto || b.dataset.lbPop);
+    esperar(!!$("#lbBarra .lx-fila-cat")).falso();
+    $('[data-lx-cat="colocar"]').click();
+    esperar(fila()).igualA(["menos", "mas", "subir", "bajar", "alinear", "duplicar"]);
+    $('[data-lx-cat="formato"]').click();
+    esperar(fila()).igualA(["bold", "italic", "underline", "strikeThrough", "color", "letra", "papel"]);
+    $('[data-lx-cat="parrafo"]').click();
+    esperar(fila()).igualA(["t1", "t2", "ul", "ol"]);
+    $('[data-lx-cat="parrafo"]').click();
+    esperar(!!$("#lbBarra .lx-fila-cat")).falso();
+  })));
+
+  prueba("las flechas del móvil mueven la línea como en el ordenador", () => enElMovil(() => conHoja("<div>uno</div><div>dos</div>", async () => {
+    lbCursorEn(LB.ta.children[0], 1);
+    $('[data-lx-cat="colocar"]').click();
+    $('#lbBarra [data-lb-texto="bajar"]').click();
+    esperar(lineasHoja()).igualA(["dos", "uno"]);
+    $('#lbBarra [data-lb-texto="mas"]').click();
+    esperar(lineasHoja()).igualA(["dos", "[1]uno"]);
+  })));
+
+  prueba("todo cabe sin deslizar, también en un móvil de 360 px", () => enElMovil(async () => {
+    window.frameElement.style.width = "360px"; await esperaHoja(150);
+    await conHoja("<div>uno</div>", async () => {
+      const cabe = s => { const f = $(s); return !f || f.scrollWidth <= f.clientWidth + 1; };
+      $('[data-lx-cat="formato"]').click();
+      esperar(cabe("#lbBarra .lx-fila-dock")).cierto(); esperar(cabe("#lbBarra .lx-fila-cat")).cierto();
+      $('[data-lx-modo="dibujar"]').click(); await esperaHoja(30);
+      esperar(cabe("#lbBarra .lx-fila-dock")).cierto();
+      $('[data-lx-modo="folio"]').click(); await esperaHoja(30);
+      esperar(cabe("#lbBarra .lx-fila-dock")).cierto();
+      document.querySelectorAll(".toast").forEach(t => t.remove());
+    });
   }));
 });

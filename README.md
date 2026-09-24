@@ -38,7 +38,13 @@ Quien ya tenía datos no pasa por ahí: el perfil se rellena con lo que había y
 
 **El texto se coloca donde quieras.** Sangría cuadro a cuadro con Tab (y columnas con Tab en mitad de la línea), subir y bajar líneas con Alt+↑↓, duplicarlas con Alt+Mayús+↓ y alinearlas al centro o a la derecha. Junto a la línea del cursor sale un **asa en el margen**: se arrastra arriba, abajo o a los lados para mover las líneas (y por debajo del texto deja huecos en blanco), y al tocarla sale un menú para copiar, cortar, duplicar o borrar. **Tocando en blanco se escribe justo ahí**, en el cuadro que tocas. Lo que copias de la hoja se pega con sus subrayados y colores; lo de otras webs, Docs o Word entra con su forma (títulos, listas, negrita, sangrías) pero sin sus colores; y el texto con guiones, números o # se convierte en listas y títulos. Ctrl+Mayús+V pega el texto sin más.
 
-**En el móvil, pensada para el dedo.** Al escribir, la hoja se pone al ancho de la pantalla con letra de 16 px, sin ir de lado, y la barra baja a una tira con botones grandes que va siempre encima del teclado. Al dibujar se ve la hoja entera: con un dedo se dibuja y con dos se acerca (hasta el 400 %) y se mueve; con lápiz, el dedo solo mueve la hoja y la mano apoyada no pinta. Con un apunte abierto no estorban ni la lista ni el menú, y una flecha te devuelve a tus apuntes.
+**La hoja es un folio A4** (800 × 1128) y crece por folios enteros, con la raya
+entre uno y otro y su número. **En el móvil, pensada para el dedo**, con tres modos
+abajo: **Folio** para moverte por la hoja A4 como por una foto (un dedo mueve, dos
+acercan, doble toque en blanco acerca o vuelve a la hoja entera, y tocando una línea
+escribes en ella), **Escribir** y **Dibujar**. Las herramientas del ordenador están
+todas, por categorías y sin deslizar: Formato, Párrafo, Colocar (las flechas) y
+Subrayar. Al escribir, la hoja se pone al ancho de la pantalla con letra de 16 px, sin ir de lado, y la barra baja a una tira con botones grandes que va siempre encima del teclado. Al dibujar se ve la hoja entera: con un dedo se dibuja y con dos se acerca (hasta el 400 %) y se mueve; con lápiz, el dedo solo mueve la hoja y la mano apoyada no pinta. Con un apunte abierto no estorban ni la lista ni el menú, y una flecha te devuelve a tus apuntes.
 
 ![Módulos](capturas/modulos.png)
 
@@ -126,7 +132,7 @@ La versión pública es para verla y probarla. La de Claude usa sus capacidades 
 node pruebas/correr.js
 ```
 
-726 pruebas que corren **dentro de la app de verdad**, cargada en un iframe, sin
+737 pruebas que corren **dentro de la app de verdad**, cargada en un iframe, sin
 instalar nada. Cubren las cuentas de las notas, entender las fechas escritas a
 mano, el sanitizador, el estado, la libreta, el repaso espaciado, la pantalla de
 bienvenida entera, el modo opositor, las cuentas contra un servidor de mentira y una tanda de datos absurdos a propósito. Las reglas de la base de datos, aparte, contra un Postgres de verdad. El cómo y lo que han encontrado, en [pruebas/](pruebas/LEEME.md).

@@ -2611,6 +2611,15 @@ body:has(.pa-dos) #contenido > section.panel, #contenido .pa-enlaces{margin-bott
 .hoja-texto > div.lx-cogida{background:color-mix(in srgb, var(--acento) 13%, transparent); border-radius:5px; transition:transform .08s}
 body.lx-arrastrando, body.lx-arrastrando *{-webkit-user-select:none; user-select:none; cursor:grabbing}
 
+/* la hoja por folios A4: la raya entre uno y otro y su número */
+.lx-paginas{position:absolute; inset:0; z-index:0; pointer-events:none}
+.lx-corte{position:absolute; left:0; right:0; height:0; border-top:2px dashed rgba(60,72,96,.30)}
+.lx-pag{position:absolute; right:16px; transform:translateY(-100%); padding-bottom:8px; font:600 12px/1 var(--sans); letter-spacing:.05em; color:rgba(60,72,96,.55)}
+.libreta.fluida .lx-paginas{display:none}
+/* el folio del móvil: un dedo mueve y dos acercan (lo hace la app); tocar el texto lleva a escribir */
+.libreta.folio .libreta-marco{touch-action:pan-x pan-y}
+.libreta.folio .hoja-texto{cursor:default; caret-color:transparent}
+
 /* el menú de las líneas marcadas */
 .lx-menu{position:fixed; z-index:80; display:flex; align-items:stretch; gap:2px; padding:4px; border-radius:12px;
   background:var(--ink); color:var(--on-ink); box-shadow:0 12px 32px -12px rgba(0,0,0,.5); animation:lxAparece .14s ease-out}
@@ -2660,9 +2669,9 @@ body.lx-arrastrando, body.lx-arrastrando *{-webkit-user-select:none; user-select
 
 @media (max-width:640px){
   body.lx-apunte .barra-movil{display:none}
-  body.lx-apunte .principal{padding:10px 8px calc(84px + env(safe-area-inset-bottom))}
+  body.lx-apunte .principal{padding:10px 8px calc(136px + env(safe-area-inset-bottom))}
   body.lx-apunte .editor{padding:10px 8px 12px}
-  body.lx-apunte #avisos{left:12px; right:12px; bottom:calc(76px + var(--teclado, 0px) + env(safe-area-inset-bottom)); max-width:none}
+  body.lx-apunte #avisos{left:12px; right:12px; bottom:calc(130px + var(--teclado, 0px) + env(safe-area-inset-bottom)); max-width:none}
   .editor-cab{gap:8px}
   .editor-cab .editor-titulo{font-size:21px !important}
   .editor-cab .btn-rojo{flex:0 0 auto; width:38px; height:38px; padding:0; justify-content:center}
@@ -2693,6 +2702,35 @@ body.lx-arrastrando, body.lx-arrastrando *{-webkit-user-select:none; user-select
   .lx-fila-dock.hay-antes{-webkit-mask-image:linear-gradient(90deg, transparent, #000 44px); mask-image:linear-gradient(90deg, transparent, #000 44px)}
   .lx-fila-dock.hay-antes.hay-mas{-webkit-mask-image:linear-gradient(90deg, transparent, #000 44px, #000 calc(100% - 44px), transparent); mask-image:linear-gradient(90deg, transparent, #000 44px, #000 calc(100% - 44px), transparent)}
   .lx-trazo i{display:block; width:var(--d); height:var(--d); border-radius:50%; background:var(--c); box-shadow:0 0 0 2px var(--surface), 0 0 0 3.5px var(--line-2)}
+  /* abajo, los modos: Folio, Escribir y Dibujar (con el teclado abierto se esconden) */
+  .lx-modos{display:grid; grid-template-columns:repeat(3, minmax(0,1fr)); gap:4px; margin-top:6px; padding:3px; border-radius:13px; background:var(--surface-2)}
+  .lx-modo{display:flex; align-items:center; justify-content:center; gap:7px; height:38px; border:0; border-radius:10px; background:none; color:var(--ink-2);
+    font:600 13px/1 var(--sans); cursor:pointer; transition:background .15s, color .15s}
+  .lx-modo svg.i{width:17px; height:17px}
+  .lx-modo[aria-pressed="true"]{background:var(--surface); color:var(--acento-txt); box-shadow:0 1px 4px rgba(0,0,0,.22), inset 0 0 0 1px var(--acento-borde)}
+  body.lx-teclado .lx-modos{display:none}
+  /* al escribir, las categorías (como la barra del ordenador) y la fila de la que esté abierta */
+  .lx-cat{flex:1 1 0; min-width:50px; height:48px; display:flex; flex-direction:column; align-items:center; justify-content:center; gap:4px; padding:0 2px;
+    border:0; border-radius:11px; background:none; color:var(--ink-2); font:500 10.5px/1 var(--sans); cursor:pointer}
+  .lx-cat svg.i{width:18px; height:18px}
+  /* que la fila de escribir quepa también en los móviles de 360 px */
+  .lx-m-escribir .lx-fila-dock .lb-btn{width:38px}
+  .lx-m-escribir .lx-fila-dock .lx-sep{margin:9px 2px}
+  .lx-m-escribir .lx-cat{min-width:48px}
+  .lx-cat[aria-pressed="true"], .lx-cat[aria-expanded="true"]{background:var(--acento-suave); color:var(--acento-txt); box-shadow:inset 0 0 0 1px var(--acento-borde)}
+  .lx-fila-cat{display:flex; align-items:center; justify-content:space-around; gap:2px; margin:0 0 6px; padding:0 0 6px; border-bottom:1px solid var(--line);
+    overflow-x:auto; scrollbar-width:none; animation:lxAparece .14s ease-out}
+  .lx-fila-cat::-webkit-scrollbar{display:none}
+  .lx-fila-cat .lb-btn{flex:0 0 auto; width:42px; height:42px; border-radius:11px}
+  .lx-fila-cat .lb-btn svg.i{width:19px; height:19px}
+  .lx-fila-cat .lb-btn[aria-pressed="true"]{background:var(--acento-suave); color:var(--acento-txt); box-shadow:inset 0 0 0 1px var(--acento-borde)}
+  /* en el folio: alejar, la hoja entera y acercar */
+  .lx-m-folio .lx-fila-dock{justify-content:center; gap:6px}
+  .lx-ancho{flex:0 0 auto; display:inline-flex; align-items:center; gap:7px; height:40px; padding:0 14px; border:0; border-radius:11px;
+    background:var(--surface-2); color:var(--ink); font:600 13px/1 var(--sans); cursor:pointer}
+  .lx-ancho svg.i{width:16px; height:16px}
+  .lx-ancho:disabled{opacity:.45; cursor:default}
+
   /* dibujando, todo cabe en una fila: sin separadores y repartido */
   .lx-dibujo .lx-fila-dock{justify-content:space-between}
   .lx-dibujo .lx-sep{display:none}
@@ -3509,7 +3547,8 @@ function dlgObjetivos() {
    guarda como trazos (no como imagen): pesa poco, se ve nítido a cualquier
    tamaño y se deshace trazo a trazo. La hoja mide siempre 800 unidades de
    ancho y se escala entera, así el texto y el dibujo nunca se desalinean. */
-const LB_ANCHO = 800, LB_CUADRO = 24, LB_MIN_ALTO = 1056;
+/* 800 × 1128: la proporción de un folio A4 (y 1128 son 47 cuadros justos) */
+const LB_ANCHO = 800, LB_CUADRO = 24, LB_MIN_ALTO = 1128, LB_PAGINA = 1128;
 const LB_TINTAS = [["#1C1C1E", "Negro"], ["#6B7280", "Gris"], ["#1D4ED8", "Azul"], ["#0284C7", "Celeste"], ["#15803D", "Verde"],
   ["#DC2626", "Rojo"], ["#DB2777", "Rosa"], ["#EA580C", "Naranja"], ["#7C3AED", "Morado"], ["#92400E", "Marrón"]];
 /* los subrayadores: doce tonos pastel, los mismos para dibujar y para subrayar el texto escrito */
@@ -3703,7 +3742,8 @@ function lbAjustar(forzar) {
   const alto = ta.scrollHeight;
   let maxY = 0;
   for (const tr of LB.trazos) for (let i = 1; i < tr.p.length; i += 2) if (tr.p[i] > maxY) maxY = tr.p[i];
-  const H = Math.max(LB_MIN_ALTO, Math.ceil((alto + 48) / LB_CUADRO) * LB_CUADRO, Math.ceil((maxY + 240) / LB_CUADRO) * LB_CUADRO);
+  /* la hoja crece por folios A4 enteros, como un taco de hojas */
+  const H = Math.ceil(Math.max(LB_MIN_ALTO, alto + 48, maxY + 240) / LB_PAGINA) * LB_PAGINA;
   ta.style.height = H + "px";
   if (H !== LB.H || forzar) {
     LB.H = H;
@@ -4976,6 +5016,7 @@ function vistaApuntes() {
               <canvas class="capa viva" id="lbVivo" role="img" aria-label="Dibujo de la hoja"></canvas>
               <button type="button" class="lx-asa" id="lbAsa" tabindex="-1" aria-hidden="true" title="Arrastra para mover las líneas; tócala para copiar, duplicar o borrar" hidden>${lbIcono("asa")}</button>
               <div class="lx-destino" id="lbDestino" hidden></div>
+              <div class="lx-paginas" id="lbPaginas" aria-hidden="true"></div>
             </div>
           </div>
         </div>
@@ -9987,10 +10028,13 @@ const LB_SANGRIA_MAX = 20, LB_ZOOM_MAX = 4;
 let lbMovil = () => !!(window.matchMedia && matchMedia("(max-width: 640px)").matches);
 /* al escribir, la hoja va a lo ancho en el móvil y donde la hoja entera se vería con letra de menos de 11 px */
 const lbEstrecha = () => !!(LB.marco && LB.marco.isConnected && LB.marco.clientWidth - 4 < 600);
-const lbFluida = () => LB.modo === "escribir" && (lbMovil() || lbEstrecha());
+/* en el móvil, «Folio»: la hoja A4 entera, como en el ordenador, para moverse por ella; tocar el texto lleva a escribir */
+const lbFolioActivo = () => LB.modo === "escribir" && !!LB.folio && lbMovil();
+const lbFluida = () => LB.modo === "escribir" && !lbFolioActivo() && (lbMovil() || lbEstrecha());
 const lbFluidaActiva = () => { const l = $("#libreta"); return !!l && l.classList.contains("fluida"); };
 Object.assign(LB, { zoom: 1, zoomNota: null, dedos: new Map(), gesto: null, lapiz: false, mano: false, punteroTrazo: null,
-  tx: {}, ultSel: null, provis: null, arr: null, detalles: false, clip: null, pegarPlano: false, pedidoSel: false });
+  tx: {}, ultSel: null, provis: null, arr: null, detalles: false, clip: null, pegarPlano: false, pedidoSel: false,
+  folio: true, cat: null, toqueF: null, pinzaF: null, ultimoToqueF: null });
 Object.assign(LB_ICON, {
   sangria: '<path d="M2.5 3.5h11M7.5 6.5h6M7.5 9.5h6M2.5 12.5h11"/><path d="M2.5 5.8L5 8l-2.5 2.2"/>',
   desangria: '<path d="M2.5 3.5h11M7.5 6.5h6M7.5 9.5h6M2.5 12.5h11"/><path d="M5 5.8L2.5 8 5 10.2"/>',
@@ -10008,7 +10052,11 @@ Object.assign(LB_ICON, {
   mas: '<circle cx="3.5" cy="8" r="1.2" fill="currentColor" stroke="none"/><circle cx="8" cy="8" r="1.2" fill="currentColor" stroke="none"/><circle cx="12.5" cy="8" r="1.2" fill="currentColor" stroke="none"/>',
   volver: '<path d="M10 3L5 8l5 5"/>',
   asa: '<circle cx="6" cy="3.5" r="1.15" fill="currentColor" stroke="none"/><circle cx="10" cy="3.5" r="1.15" fill="currentColor" stroke="none"/><circle cx="6" cy="8" r="1.15" fill="currentColor" stroke="none"/><circle cx="10" cy="8" r="1.15" fill="currentColor" stroke="none"/><circle cx="6" cy="12.5" r="1.15" fill="currentColor" stroke="none"/><circle cx="10" cy="12.5" r="1.15" fill="currentColor" stroke="none"/>',
-  detalles: '<path d="M2.5 4.5h6.8M12.3 4.5h1.2M2.5 11.5h1.2M6.7 11.5h6.8"/><circle cx="10.8" cy="4.5" r="1.5"/><circle cx="5.2" cy="11.5" r="1.5"/>'
+  detalles: '<path d="M2.5 4.5h6.8M12.3 4.5h1.2M2.5 11.5h1.2M6.7 11.5h6.8"/><circle cx="10.8" cy="4.5" r="1.5"/><circle cx="5.2" cy="11.5" r="1.5"/>',
+  folio: '<path d="M3.8 1.8h5.8l2.9 2.9v9.5H3.8z"/><path d="M9.4 1.8v3.1h3.1M6 8h4.4M6 10.6h4.4"/>',
+  colocar: '<path d="M8 2v12M2 8h12"/><path d="M6.2 3.8L8 2l1.8 1.8M6.2 12.2L8 14l1.8-1.8M3.8 6.2L2 8l1.8 1.8M12.2 6.2L14 8l-1.8 1.8"/>',
+  zoomMas: '<circle cx="7" cy="7" r="4.6"/><path d="M10.4 10.4l3.4 3.4M7 4.9v4.2M4.9 7h4.2"/>',
+  zoomMenos: '<circle cx="7" cy="7" r="4.6"/><path d="M10.4 10.4l3.4 3.4M4.9 7h4.2"/>'
 });
 
 /* ── las líneas de la hoja ──
@@ -10311,7 +10359,7 @@ function lbGrupoColocar() {
    el cuadro que has tocado. Si te vas sin escribir, esas líneas se quitan. */
 function lbTocarHoja(e) {
   const ed = LB.ta;
-  if (!ed || LB.modo !== "escribir" || e.detail > 1 || LB.arr) return;
+  if (!ed || LB.modo !== "escribir" || e.detail > 1 || LB.arr || lbFolioActivo()) return;
   const s = getSelection(); if (!s.rangeCount || !s.isCollapsed) return;
   const pr = LB.papel.getBoundingClientRect(), k = pr.width / (LB.papel.offsetWidth || pr.width || 1) || 1;
   const x = (e.clientX - pr.left) / k, y = (e.clientY - pr.top) / k;
@@ -10663,7 +10711,6 @@ function lbPopDock(id) {
     const trazos = LB.nota === apunteActivo ? LB.trazos : ((n.dibujo || {}).trazos || []);
     return `<div class="lx-fila" role="group" aria-label="Formas">${["linea", "flecha", "rect", "elipse"].map(h => `<button type="button" class="lb-btn" data-lb-herr="${h}" aria-pressed="${LB.herr === h}" title="${LB_HERR[h].nombre}" aria-label="${LB_HERR[h].nombre}">${lbIcono(h)}</button>`).join("")}
       <button type="button" class="lb-btn" id="lbIman" aria-pressed="${LB.iman}" title="Ajustar las formas a la cuadrícula" aria-label="Ajustar las formas a la cuadrícula">${lbIcono("iman")}</button></div>
-      <button type="button" class="lx-op" id="lxMano" aria-pressed="${LB.mano}">${lbIcono("mano")}<span>Mover la hoja con un dedo</span></button>
       <button type="button" class="lx-op" id="lbRehacer"${lbPuedeDeshacer()[1] ? "" : " disabled"}>${lbIcono("rehacer")}<span>Rehacer</span></button>
       <button type="button" class="lx-op" id="lxAjustar"${LB.zoom === 1 ? " disabled" : ""}>${lbIcono("ajustar")}<span>Ver la hoja entera</span></button>
       <div class="lx-pop-tit">Papel</div>${lbOpcionesPapel(n)}
@@ -10671,39 +10718,149 @@ function lbPopDock(id) {
   }
   return "";
 }
-/* La barra del móvil: una sola fila que se desliza de lado, con botones de 42 px.
-   Escribiendo va pegada encima del teclado; dibujando, abajo del todo. */
+/* La barra del móvil, en tres pisos que caben sin deslizar:
+   · abajo, los modos: Folio (la hoja A4 para moverse), Escribir y Dibujar;
+   · encima, las herramientas del modo; al escribir, por categorías: Formato,
+     Párrafo, Colocar (las flechas) y Subrayar, como en la barra del ordenador;
+   · y, si tocas una categoría, su fila de botones.
+   Con el teclado abierto, los modos se esconden para dejar sitio. */
+const LX_CATS = { formato: "Formato", parrafo: "Párrafo", colocar: "Colocar" };
 function lbDockHTML() {
-  const escribir = LB.modo === "escribir", [pa, pb] = lbPuedeDeshacer();
+  const [pa, pb] = lbPuedeDeshacer(), folio = lbFolioActivo(), dibujo = LB.modo === "dibujar";
+  const modo = dibujo ? "dibujar" : folio ? "folio" : "escribir";
   const b = (attrs, ic, txt, extra) => `<button type="button" class="lb-btn${extra || ""}" ${attrs} title="${txt}" aria-label="${txt}">${lbIcono(ic)}</button>`;
   const pop = (id, ic, txt) => b(`data-lb-pop="${id}" aria-expanded="${LB.pop === id}"`, ic, txt);
+  const cat = (id, ic, txt, attrs) => `<button type="button" class="lx-cat" ${attrs || `data-lx-cat="${id}" aria-pressed="${LB.cat === id}"`}>${lbIcono(ic)}<span>${txt}</span></button>`;
   const sep = '<i class="lx-sep" aria-hidden="true"></i>';
   const deshacer = b(`id="lbDeshacer"${pa ? "" : " disabled"}`, "deshacer", "Deshacer") + b(`id="lbRehacer"${pb ? "" : " disabled"}`, "rehacer", "Rehacer");
-  let fila;
-  if (escribir) {
-    fila = `<button type="button" class="lx-cambio" data-lb-modo="dibujar">${lbIcono("boli")}<span>Dibujar</span></button>${sep}
-      ${deshacer}${sep}
-      ${b('id="lbNegrita" data-lb-cmd="bold" aria-pressed="false"', "negrita", "Negrita", " lb-negrita")}${b('data-lb-cmd="italic" aria-pressed="false"', "cursiva", "Cursiva")}
-      ${b('data-lb-cmd="underline" aria-pressed="false"', "subrayado", "Subrayado")}${b('data-lb-cmd="strikeThrough" aria-pressed="false"', "tachado", "Tachado")}${sep}
-      ${pop("marca", "fluor", "Subrayar")}${pop("color", "letra", "Color de letra")}${sep}
-      ${b('data-lb-texto="menos"', "desangria", "Quitar sangría")}${b('data-lb-texto="mas"', "sangria", "Sangría: un cuadro a la derecha")}
-      ${b('data-lb-texto="subir"', "subir", "Subir la línea")}${b('data-lb-texto="bajar"', "bajar", "Bajar la línea")}${b('data-lb-texto="alinear"', "izquierda", "Alinear")}${sep}
-      ${b('data-lb-bloque="t1" aria-pressed="false"', "titulo", "Título")}${b('data-lb-bloque="t2" aria-pressed="false"', "subtitulo", "Subtítulo")}
-      ${b('data-lb-bloque="ul" aria-pressed="false"', "lista", "Lista con viñetas")}${b('data-lb-bloque="ol" aria-pressed="false"', "numerada", "Lista numerada")}${sep}
-      ${pop("letra", "manuscrita", "Tipo de letra")}${pop("papel", "papel", "Papel")}${sep}
+  let fila, filaCat = "";
+  if (folio) {
+    fila = `${b('data-lx-zoom="menos"', "zoomMenos", "Alejar")}
+      <button type="button" class="lx-ancho" data-lx-zoom="ajustar"${(LB.zoom || 1) === 1 ? " disabled" : ""}>${lbIcono("ajustar")}<span>Hoja entera</span></button>
+      ${b('data-lx-zoom="mas"', "zoomMas", "Acercar")}${sep}${pop("papel", "papel", "Papel")}${pop("letra", "manuscrita", "Tipo de letra")}`;
+  } else if (!dibujo) {
+    fila = `${deshacer}${sep}
+      ${cat("formato", "negrita", "Formato")}${cat("parrafo", "lista", "Párrafo")}${cat("colocar", "colocar", "Colocar")}
+      ${cat("", "fluor", "Subrayar", `data-lb-pop="marca" aria-expanded="${LB.pop === "marca"}"`)}${sep}
       ${b('id="lbTeclado"', "teclado", "Esconder el teclado")}`;
+    if (LB.cat === "formato") filaCat = `${b('id="lbNegrita" data-lb-cmd="bold" aria-pressed="false"', "negrita", "Negrita", " lb-negrita")}${b('data-lb-cmd="italic" aria-pressed="false"', "cursiva", "Cursiva")}
+      ${b('data-lb-cmd="underline" aria-pressed="false"', "subrayado", "Subrayado")}${b('data-lb-cmd="strikeThrough" aria-pressed="false"', "tachado", "Tachado")}${sep}
+      ${pop("color", "letra", "Color de letra")}${pop("letra", "manuscrita", "Tipo de letra")}${pop("papel", "papel", "Papel")}`;
+    else if (LB.cat === "parrafo") filaCat = `${b('data-lb-bloque="t1" aria-pressed="false"', "titulo", "Título")}${b('data-lb-bloque="t2" aria-pressed="false"', "subtitulo", "Subtítulo")}
+      ${b('data-lb-bloque="ul" aria-pressed="false"', "lista", "Lista con viñetas")}${b('data-lb-bloque="ol" aria-pressed="false"', "numerada", "Lista numerada")}`;
+    else if (LB.cat === "colocar") filaCat = `${b('data-lb-texto="menos"', "desangria", "Quitar sangría")}${b('data-lb-texto="mas"', "sangria", "Sangría: un cuadro a la derecha")}
+      ${b('data-lb-texto="subir"', "subir", "Subir la línea")}${b('data-lb-texto="bajar"', "bajar", "Bajar la línea")}
+      ${b('data-lb-texto="alinear"', "izquierda", "Alinear")}${b('data-lb-texto="duplicar"', "duplicar", "Duplicar la línea")}`;
   } else {
     const actual = LB.herr === "fluor" ? LB.fluor : LB.tinta;
-    fila = `<button type="button" class="lx-cambio" data-lb-modo="escribir">${lbIcono("escribir")}<span>Escribir</span></button>${sep}
-      ${["boli", "rotu", "fluor", "goma"].map(h => b(`data-lb-herr="${h}" aria-pressed="${LB.herr === h}"`, h, LB_HERR[h].nombre)).join("")}
-      <button type="button" class="lb-btn lx-trazo" data-lb-pop="trazo" aria-expanded="${LB.pop === "trazo"}" title="Color y grosor" aria-label="Color y grosor"><i style="--c:${esc(actual)}; --d:${7 + LB.grosor * 4}px"></i></button>${sep}
-      ${b(`id="lbDeshacer"${pa ? "" : " disabled"}`, "deshacer", "Deshacer")}${pop("mas", "mas", "Más: formas, rehacer, mover, papel")}`;
+    fila = `${["boli", "rotu", "fluor", "goma"].map(h => b(`data-lb-herr="${h}" aria-pressed="${LB.herr === h}"`, h, LB_HERR[h].nombre)).join("")}
+      <button type="button" class="lb-btn lx-trazo" data-lb-pop="trazo" aria-expanded="${LB.pop === "trazo"}" title="Color y grosor" aria-label="Color y grosor"><i style="--c:${esc(actual)}; --d:${7 + LB.grosor * 4}px"></i></button>
+      ${b(`id="lxMano" aria-pressed="${LB.mano}"`, "mano", "Mover la hoja con un dedo")}
+      ${b(`id="lbDeshacer"${pa ? "" : " disabled"}`, "deshacer", "Deshacer")}${pop("mas", "mas", "Más: formas, rehacer, papel")}`;
   }
+  const modos = [["folio", "folio", "Folio"], ["escribir", "escribir", "Escribir"], ["dibujar", "boli", "Dibujar"]]
+    .map(([id, ic, txt]) => `<button type="button" class="lx-modo" data-lx-modo="${id}" aria-pressed="${modo === id}">${lbIcono(ic)}<span>${txt}</span></button>`).join("");
   return `
-      <div class="lb-barra lx-dock${escribir ? "" : " lx-dibujo"}" id="lbBarra" role="toolbar" aria-label="Herramientas de la libreta">
+      <div class="lb-barra lx-dock lx-m-${modo}${dibujo ? " lx-dibujo" : ""}" id="lbBarra" role="toolbar" aria-label="Herramientas de la libreta">
+        ${filaCat ? `<div class="lx-fila-cat" role="group" aria-label="${LX_CATS[LB.cat]}">${filaCat}</div>` : ""}
         <div class="lx-fila-dock">${fila}</div>
+        <div class="lx-modos" role="group" aria-label="Modo de la hoja">${modos}</div>
         ${LB.pop && LX_POP[LB.pop] ? `<div class="lb-pop lx-pop" role="dialog" aria-label="${LX_POP[LB.pop]}"><div class="lx-pop-tit">${LX_POP[LB.pop]}</div>${lbPopDock(LB.pop)}</div>` : ""}
       </div>`;
+}
+/* cambiar de modo desde la barra del móvil */
+function lbMovilModo(m) {
+  lbMenuBloque(false); LB.pop = null;
+  if (m === "dibujar") { lbModo("dibujar"); return; }
+  const eraDibujo = LB.modo === "dibujar", ed = LB.ta;
+  LB.folio = m === "folio";
+  if (eraDibujo) lbModo("escribir");
+  else { lbPintarBarra(); lbAjustar(true); }
+  if (LB.folio) {
+    if (ed) ed.blur();
+    /* la línea en la que estabas, a la vista en el folio */
+    const i = LB.ultSel ? LB.ultSel[0][0] : -1, l = ed && ed.children[i];
+    if (l) setTimeout(() => l.scrollIntoView({ block: "center" }), 0);
+    lbPistaFolio();
+  } else { lbEditorListo(); setTimeout(lbVerCursor, 0); }
+}
+function lbPistaFolio() {
+  const v = leeLS("pista-folio") || 0;
+  if (v < 2) { guardaLS("pista-folio", v + 1); aviso("Así se ve tu hoja A4. Con un dedo te mueves, con dos acercas, y tocando una línea escribes en ella."); }
+}
+
+/* ── «Folio»: moverse por la hoja A4 como por una foto ──
+   Un dedo mueve (el desplazamiento de siempre, con su inercia), dos acercan,
+   el doble toque en blanco acerca o vuelve a la hoja entera, y tocar una
+   línea de texto lleva a escribir justo en ella. */
+function lbFolioInicio(e) {
+  if (!lbFolioActivo()) return;
+  if (e.touches.length >= 2) {
+    const [a, b] = e.touches;
+    LB.pinzaF = { d0: Math.hypot(a.clientX - b.clientX, a.clientY - b.clientY), zoom0: LB.zoom || 1, c: [(a.clientX + b.clientX) / 2, (a.clientY + b.clientY) / 2] };
+    LB.toqueF = null; return;
+  }
+  const t = e.touches[0];
+  if (t) LB.toqueF = { x: t.clientX, y: t.clientY, t: Date.now(), movido: false };
+}
+function lbFolioMueve(e) {
+  if (!lbFolioActivo()) return;
+  if (LB.pinzaF && e.touches.length >= 2) {
+    if (e.cancelable) e.preventDefault();
+    const [a, b] = e.touches, P = LB.pinzaF, c = [(a.clientX + b.clientX) / 2, (a.clientY + b.clientY) / 2];
+    const d = Math.hypot(a.clientX - b.clientX, a.clientY - b.clientY);
+    if (P.d0 > 10) lbZoomEn(P.zoom0 * d / P.d0, c);
+    if (LB.marco) LB.marco.scrollLeft -= c[0] - P.c[0];
+    window.scrollBy(0, -(c[1] - P.c[1]));
+    P.c = c; return;
+  }
+  const T = LB.toqueF, t = e.touches[0];
+  if (T && t && Math.hypot(t.clientX - T.x, t.clientY - T.y) > 10) T.movido = true;
+}
+function lbFolioFin(e) {
+  if (!lbFolioActivo()) { LB.toqueF = LB.pinzaF = null; return; }
+  if (LB.pinzaF) { if (e.touches.length < 2) { LB.pinzaF = null; lbPintarBarra(); } LB.toqueF = null; return; }
+  const T = LB.toqueF; LB.toqueF = null;
+  if (!T || T.movido || Date.now() - T.t > 400) return;
+  const linea = lbLineaEn(T.x, T.y);
+  if (linea) { if (e.cancelable) e.preventDefault(); lbEscribirEn(linea); return; }
+  /* doble toque en blanco: acercar ahí, o volver a la hoja entera */
+  const U = LB.ultimoToqueF, ahora = Date.now();
+  if (U && ahora - U.t < 350 && Math.hypot(U.x - T.x, U.y - T.y) < 40) {
+    if (e.cancelable) e.preventDefault();
+    LB.ultimoToqueF = null;
+    lbZoomEn((LB.zoom || 1) > 1.4 ? 1 : 2.4, [T.x, T.y]); lbPintarBarra(); return;
+  }
+  LB.ultimoToqueF = { x: T.x, y: T.y, t: ahora };
+}
+/* la línea de texto que hay bajo el dedo (las vacías no cuentan: ahí se acerca) */
+function lbLineaEn(x, y) {
+  const ed = LB.ta; if (!ed) return null;
+  let el = document.elementFromPoint(x, y);
+  if (!el || el === ed || !ed.contains(el)) return null;
+  while (el && el.parentNode !== ed) el = el.parentNode;
+  if (!el || el.nodeType !== 1 || !el.textContent.trim()) return null;
+  /* solo si el dedo cae sobre las letras, no en el blanco que queda a su derecha */
+  const r = document.createRange(); r.selectNodeContents(el);
+  return [...r.getClientRects()].some(c => x >= c.left - 10 && x <= c.right + 10 && y >= c.top - 8 && y <= c.bottom + 8) ? el : null;
+}
+/* del folio a escribir, con el cursor al final de esa línea (el teclado sale porque va dentro del toque) */
+function lbEscribirEn(linea) {
+  LB.folio = false; LB.pop = null;
+  lbPintarBarra(); lbAjustar(true);
+  const ed = LB.ta; if (!ed || !linea.isConnected) return;
+  ed.focus({ preventScroll: true });
+  lbCursorEn(linea, 1e9);
+  linea.scrollIntoView({ block: "center" });
+}
+/* la hoja va por folios A4: una raya entre uno y otro, y el número de cada uno */
+function lbPintarPaginas() {
+  const p = $("#lbPaginas"); if (!p) return;
+  const n = Math.max(1, Math.round((LB.H || LB_PAGINA) / LB_PAGINA));
+  if (p.dataset.n === String(n)) return;
+  p.dataset.n = String(n);
+  p.innerHTML = n < 2 ? "" : Array.from({ length: n }, (_, i) => (i ? `<i class="lx-corte" style="top:${i * LB_PAGINA}px"></i>` : "")
+    + `<span class="lx-pag" style="top:${(i + 1) * LB_PAGINA}px">${i + 1} / ${n}</span>`).join("");
 }
 
 /* ── la hoja: a lo ancho para escribir en el móvil, entera (y con zoom) para dibujar ── */
@@ -10716,6 +10873,7 @@ function lbEscalarHoja() {
   LB.papel.style.transform = LB.k === 1 ? "" : "scale(" + LB.k + ")";
   LB.escala.style.width = LB_ANCHO * LB.k + "px";
   LB.escala.style.height = LB.H * LB.k + "px";
+  lbPintarPaginas();
 }
 function lbSoltarHoja() {
   LB.k = 1; LB.H = 0;
@@ -10733,8 +10891,13 @@ document.addEventListener("scroll", e => { if (e.target && e.target.classList &&
 function lbClasesHoja() {
   lbDockBordes();
   const lib = $("#libreta"); if (!lib) return false;
-  const antes = lib.classList.contains("fluida"), flu = lbFluida();
+  const antes = lib.classList.contains("fluida"), flu = lbFluida(), folio = lbFolioActivo();
   lib.classList.toggle("fluida", flu);
+  lib.classList.toggle("folio", folio);
+  if (LB.ta && LB.ta.isConnected) {
+    const puede = folio ? "false" : "true";
+    if (LB.ta.getAttribute("contenteditable") !== puede) LB.ta.setAttribute("contenteditable", puede);
+  }
   lib.classList.toggle("con-dibujo", LB.nota === apunteActivo && LB.trazos.length > 0);
   return antes !== flu;
 }
@@ -10751,13 +10914,20 @@ function lbTrasModo(m) {
   }
 }
 function lbMontarExtra() {
-  if (LB.zoomNota !== LB.nota) { LB.zoomNota = LB.nota; if (LB.zoom !== 1) { LB.zoom = 1; lbEscalar(); } }
+  if (LB.zoomNota !== LB.nota) { LB.zoomNota = LB.nota; if (LB.zoom !== 1) { LB.zoom = 1; lbEscalar(); } if (lbFolioActivo()) lbPistaFolio(); }
   LB.dedos.clear(); LB.gesto = null; LB.punteroTrazo = null; LB.provis = null; LB.arr = null; LB.eraMovil = lbMovil();
   const asa = $("#lbAsa");
   if (asa) {
     asa.addEventListener("pointerdown", lbAsaAbajo); asa.addEventListener("pointermove", lbAsaMover);
     asa.addEventListener("pointerup", lbAsaArriba); asa.addEventListener("pointercancel", lbAsaSoltar);
     asa.addEventListener("mousedown", e => e.preventDefault());
+  }
+  if (LB.marco) {
+    LB.marco.addEventListener("touchstart", lbFolioInicio, { passive: true });
+    LB.marco.addEventListener("touchmove", lbFolioMueve, { passive: false });
+    LB.marco.addEventListener("touchend", lbFolioFin, { passive: false });
+    LB.marco.addEventListener("touchcancel", () => { LB.toqueF = LB.pinzaF = null; });
+    LB.marco.addEventListener("gesturestart", e => { if (lbFolioActivo()) e.preventDefault(); });
   }
   const ed = LB.ta;
   if (ed) {
@@ -10866,6 +11036,13 @@ function lbZoomAviso() {
 alEvento("click", e => {
   const t = e.target; if (!t || !t.closest) return;
   const tx = t.closest("[data-lb-texto]"); if (tx) { lbTexto(tx.dataset.lbTexto); return; }
+  const mo = t.closest("[data-lx-modo]"); if (mo) { lbMovilModo(mo.dataset.lxModo); return; }
+  const ca = t.closest("[data-lx-cat]"); if (ca) { LB.cat = LB.cat === ca.dataset.lxCat ? null : ca.dataset.lxCat; LB.pop = null; lbPintarBarra(); return; }
+  const zo = t.closest("[data-lx-zoom]");
+  if (zo) {
+    const z = zo.dataset.lxZoom, c = [innerWidth / 2, innerHeight / 2];
+    lbZoomEn(z === "ajustar" ? 1 : (LB.zoom || 1) * (z === "mas" ? 1.5 : 1 / 1.5), c); lbPintarBarra(); return;
+  }
   if (t.closest("#lbTeclado")) { lbMenuBloque(false); if (LB.ta) LB.ta.blur(); return; }
   if (t.closest("#lxMano")) { LB.mano = !LB.mano; lbPintarBarra(); return; }
   if (t.closest("#lxAjustar")) { lbZoomEn(1, null); LB.pop = null; lbPintarBarra(); return; }
@@ -10876,7 +11053,15 @@ alEvento("click", e => {
     t.closest("#apDetalles").setAttribute("aria-expanded", String(LB.detalles)); return;
   }
   /* en el móvil, al abrir un apunte se empieza por arriba */
-  if (t.closest("[data-apunte], #btnNuevoApunte") && matchMedia("(max-width: 880px)").matches) { setTimeout(() => window.scrollTo({ top: 0 }), 0); return; }
+  const abre = t.closest("[data-apunte], #btnNuevoApunte");
+  if (abre) {
+    const n = abre.dataset.apunte ? S.apuntes[abre.dataset.apunte] : null;
+    LB.folio = !!(n && ((n.cuerpo || "").trim() || (n.dibujo && n.dibujo.trazos && n.dibujo.trazos.length)));
+    LB.cat = null;
+    if (lbMovil() && LB.modo === "dibujar") LB.modo = "escribir";
+    if (matchMedia("(max-width: 880px)").matches) setTimeout(() => window.scrollTo({ top: 0 }), 0);
+    return;
+  }
   /* en la barra del móvil, elegir color o forma ya es querer usarlo: el desplegable se cierra */
   if (lbMovil() && LB.pop && t.closest(".lx-pop") && t.closest("[data-lb-color], [data-lb-herr], [data-lb-marca], [data-lb-tcolor]")) { LB.pop = null; lbPintarBarra(); }
 });
