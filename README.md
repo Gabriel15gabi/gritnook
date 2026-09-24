@@ -126,14 +126,14 @@ La versión pública es para verla y probarla. La de Claude usa sus capacidades 
 node pruebas/correr.js
 ```
 
-723 pruebas que corren **dentro de la app de verdad**, cargada en un iframe, sin
+726 pruebas que corren **dentro de la app de verdad**, cargada en un iframe, sin
 instalar nada. Cubren las cuentas de las notas, entender las fechas escritas a
 mano, el sanitizador, el estado, la libreta, el repaso espaciado, la pantalla de
 bienvenida entera, el modo opositor, las cuentas contra un servidor de mentira y una tanda de datos absurdos a propósito. Las reglas de la base de datos, aparte, contra un Postgres de verdad. El cómo y lo que han encontrado, en [pruebas/](pruebas/LEEME.md).
 
 ## Base de datos
 
-Cuentas de usuario con **Supabase** (PostgreSQL, en Frankfurt): cada uno entra con
+Cuentas de usuario con **Supabase** (PostgreSQL, en Irlanda, en la UE): cada uno entra con
 su correo y su contraseña, y la base de datos solo le deja leer y escribir lo
 suyo (Row Level Security). El creador tiene un panel con cuántos la usan y cuánto,
 sin ver el contenido de nadie. Todo en [backend/](backend/LEEME.md): el SQL, sus

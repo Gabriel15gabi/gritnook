@@ -7,7 +7,7 @@ En vigor desde el 24 de septiembre de 2026.
 Para usar GritNook te haces una **cuenta con tu correo y una contraseña**. No se
 pide teléfono, ni dirección, ni datos de pago. Lo que escribes —tus asignaturas,
 tus notas, tus apuntes y tus archivos— se guarda **en tu cuenta, en un servidor
-de la Unión Europea (Frankfurt, Alemania)**, y en tu navegador, para que funcione
+de la Unión Europea (Irlanda)**, y en tu navegador, para que funcione
 también sin conexión. Si abres la app desde Claude, se guarda en tu cuenta de
 Claude en su lugar.
 
@@ -117,7 +117,7 @@ ande justo de espacio.
 |---|---|---|
 | Anthropic (proveedor del profe con IA) | **Ahora mismo, nada: el profe está apagado.** Cuando se encienda, solo lo que se le envíe en cada pregunta. El detalle exacto, campo por campo, está en cómo funciona el profe: en resumen, tu nombre o apodo, tu curso, tus asignaturas con sus notas, tus entregas y exámenes, tu horario, los títulos de tus apuntes, el contenido del que tengas abierto, los últimos mensajes y los archivos que adjuntes | Estados Unidos |
 | Anthropic (almacenamiento de Claude), solo si abres la app desde allí | Tus datos sincronizados y tus archivos del casillero | Estados Unidos |
-| Supabase, Inc. (el servidor de las cuentas), como encargado de tratamiento | Tu correo, tu contraseña cifrada, tus datos (también tu foto de perfil, si pones una), tus archivos y los días que entras, para guardarlos. No los usa para nada más | Unión Europea (Frankfurt, Alemania) |
+| Supabase, Inc. (el servidor de las cuentas), como encargado de tratamiento | Tu correo, tu contraseña cifrada, tus datos (también tu foto de perfil, si pones una), tus archivos y los días que entras, para guardarlos. No los usa para nada más | Unión Europea (Irlanda) |
 | Open-Meteo (Suiza), solo si pones tu ciudad para ver el tiempo | La zona aproximada (redondeada a unos 10 km) y, como cualquier web, tu dirección IP. **Nada más: ni tu nombre, ni tu cuenta, ni tus datos de estudio** | Suiza (con decisión de adecuación de la Comisión Europea) |
 | GitHub Pages (GitHub, Inc.) | Solo sirve los archivos de la app. Como cualquier servidor web, registra la dirección IP y el navegador de quien la abre, por seguridad. **No recibe ninguno de tus datos de estudio** | Estados Unidos |
 
@@ -149,7 +149,7 @@ lo obligara.
 
 ## 6. Datos que salen de la Unión Europea
 
-**Tu cuenta** se guarda en Frankfurt (Alemania). Supabase es una empresa de
+**Tu cuenta** se guarda en Irlanda (Unión Europea). Supabase es una empresa de
 Estados Unidos: si su personal tuviera que entrar desde fuera de Europa para dar
 soporte o mantenimiento, lo cubre su contrato de encargado de tratamiento, con las
 **cláusulas contractuales tipo** de la Comisión Europea.

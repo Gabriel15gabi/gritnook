@@ -182,10 +182,12 @@ habría que añadir el proveedor de IA y el cobro.
 - [x] Dominio `gritnook.com` comprado en Cloudflare (24 de septiembre de 2026, un año).
 - [x] Poner la dirección publicada en `legal/AVISO-LEGAL.md`, donde pone
       «dirección web», y volver a pasar `legal/generar.js`.
-- [ ] Crear el proyecto de Supabase en Frankfurt, pegar `backend/supabase.sql` y
-      pasar la URL y la clave `anon` (nunca la `service_role`): los pasos están
+- [x] Crear el proyecto de Supabase (West EU, Irlanda), pegar `backend/supabase.sql` y
+      pasar la URL y la clave pública (nunca la secreta): los pasos están
       en [backend/LEEME.md](backend/LEEME.md).
-- [ ] Crear tu cuenta en la app con el correo de administrador y mirar el Panel.
+- [ ] Crear tu cuenta en la app con el correo de administrador (gabriel_gabiz@hotmail.com) y mirar el Panel.
+- [ ] Desactivar las claves antiguas en Supabase (API Keys → Legacy API Keys → Disable JWT-based API keys).
+- [ ] Firmar el DPA de Supabase (Organization Settings → Legal Documents).
 - [ ] Firmar el DPA de Supabase.
 - [ ] Recomendado: correo propio (Resend o Brevo) para que llegue el de «he
       olvidado la contraseña».

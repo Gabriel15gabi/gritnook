@@ -27,8 +27,9 @@ Va a tu nombre, así que estos pasos no los puede dar nadie por ti.
 
 1. Entra en **supabase.com** y crea una cuenta.
 2. **New project**. Nombre: `gritnook`.
-3. **Región: Central EU (Frankfurt)**. No es un detalle: fuera de Europa hay
-   que rehacer la política de privacidad. **Luego no se puede cambiar.**
+3. **Región: una de la Unión Europea** (el de GritNook está en West EU, Irlanda).
+   No es un detalle: fuera de Europa hay que rehacer la política de privacidad.
+   **Luego no se puede cambiar.**
 4. Guarda la contraseña de la base de datos que te pide. La app no la usa.
 5. **SQL Editor → New query**: pega entero [supabase.sql](supabase.sql) y pulsa
    **Run**. Tiene que decir *Success*.
@@ -42,21 +43,30 @@ Va a tu nombre, así que estos pasos no los puede dar nadie por ti.
    - **Site URL**: `https://gritnook.com/`
    - **Redirect URLs**: añade esa misma, `https://www.gritnook.com/` y `http://localhost:4174/`
    Es adonde vuelve quien pide cambiar la contraseña.
-8. **Project Settings → API**: pásame estas dos cosas:
+8. **Project Settings → API Keys**: pásame estas dos cosas:
    - **Project URL** (algo como `https://xxxxx.supabase.co`)
-   - **anon public** key
+   - la **Publishable key** (`sb_publishable_…`). En **Legacy API Keys**,
+     **Disable JWT-based API keys**: así las claves antiguas (anon y
+     service_role) dejan de servir y no hay ninguna secreta de más por ahí.
 9. Cuando esté puesto, **crea tu cuenta en la app con el correo del paso 5**.
    En el menú te aparece **Panel**. A los demás no.
 10. **Organization Settings → Legal Documents**: firma el acuerdo de
     tratamiento de datos (DPA) de Supabase. La política de privacidad lo da
     por hecho.
 
-La clave `anon` es **pública por diseño**: va dentro de la app y cualquiera
+La clave **publishable** es **pública por diseño**: va dentro de la app y cualquiera
 puede verla. Sola no abre nada: la base de datos solo le devuelve a cada uno
 sus propias filas, y el panel solo al correo que está en `administradores`.
 
-La otra, la **`service_role`**, sí es secreta: se salta todas las reglas.
-**No me la mandes y no la pongas nunca en la app.**
+La otra, la **secreta** (`sb_secret_…`, o la antigua `service_role`), se salta
+todas las reglas. **No se manda a nadie ni se pone nunca en la app.** Si alguna
+vez se escapa, en **API Keys** se borra y se crea otra.
+
+**Estado (24 de septiembre de 2026):** proyecto creado en West EU (Irlanda), SQL
+pasado, sin confirmar el correo, dirección puesta y la app conectada con la clave
+publishable. Probado de verdad con una cuenta de usar y tirar: alta, guardar,
+leer, que sin cuenta no se ve nada, el panel cerrado a los demás y borrar la
+cuenta.
 
 ## Recomendado antes de compartirla con mucha gente: tu propio correo
 

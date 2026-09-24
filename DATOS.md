@@ -46,7 +46,7 @@ ubicación ni ningún identificador publicitario.
 
 | Sitio | Qué hay | Quién puede verlo |
 |---|---|---|
-| La cuenta del alumno (Supabase, en Frankfurt, Alemania) | Todo lo de arriba, en la tabla `documentos`: una fila por trozo (`escritorio/agenda`, `apuntes/<id>`, `casillero/<id>`…), con su dueño. La actividad, en `actividad` | El alumno, desde cualquier dispositivo. Nadie más: lo impide la base de datos (Row Level Security). Supabase es el encargado de tratamiento |
+| La cuenta del alumno (Supabase, en Irlanda, UE) | Todo lo de arriba, en la tabla `documentos`: una fila por trozo (`escritorio/agenda`, `apuntes/<id>`, `casillero/<id>`…), con su dueño. La actividad, en `actividad` | El alumno, desde cualquier dispositivo. Nadie más: lo impide la base de datos (Row Level Security). Supabase es el encargado de tratamiento |
 | El panel del creador | **Solo** el correo, la fecha de alta, la última vez que entró, los días que ha entrado en 7 y 30 días, qué estudia (etapa), de dónde llegó y cuánto ocupa; y las cifras de conjunto de las aperturas, la vuelta de la gente (retención) y qué estudian. **Nunca el contenido ni la foto** | El creador de la app (la tabla `administradores`, que nadie puede tocar desde la app) |
 | El navegador del alumno | Todo, en el almacenamiento local (claves `desk-daw:*`), para que funcione sin conexión, y la lista de cambios por subir. La app le pide al navegador que no lo borre cuando ande justo de espacio. Al cerrar sesión se borra | Solo quien use ese dispositivo |
 | El almacén de Claude (solo si se abre desde ahí, en lugar de la cuenta) | Los mismos datos, para sincronizar entre dispositivos, y los archivos del casillero | La cuenta de Claude del alumno; el proveedor es Anthropic (Estados Unidos) |
@@ -54,7 +54,7 @@ ubicación ni ningún identificador publicitario.
 
 ## 3. Qué sale de la aplicación
 
-- **A su cuenta** (Supabase, Frankfurt) va todo lo que guarda, cifrado por el
+- **A su cuenta** (Supabase, Irlanda) va todo lo que guarda, cifrado por el
   camino, y al abrir la app un «he entrado hoy», como mucho una vez cada media
   hora. Es lo que cuenta el panel del creador.
 - **Al abrir la app**, con cuenta o sin ella, un «+1» anónimo (día, hora, de dónde
@@ -115,7 +115,7 @@ ubicación ni ningún identificador publicitario.
 
 - [x] Edad mínima de 14 años y aviso a menores de 18, al entrar.
 - [x] Interruptor para apagar el tutor (no enviar nada a la IA), en Ajustes → El profe.
-- [x] Cuentas propias (Supabase, Frankfurt), con borrado de la cuenta de verdad.
+- [x] Cuentas propias (Supabase, Irlanda), con borrado de la cuenta de verdad.
 - [ ] Contrato de encargado de tratamiento con el proveedor de IA y con Supabase (su DPA).
 - [ ] Registro de actividades de tratamiento y evaluación de impacto (hay datos de menores).
 - [x] Canal para ejercer derechos: casi todos desde la app (descargar copia,

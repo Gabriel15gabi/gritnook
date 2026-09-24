@@ -500,6 +500,35 @@ grupo("Cuentas: salir, cambiar de persona y borrar la cuenta", () => {
   });
 });
 
+grupo("Cuentas: la clave pública, antigua o nueva", () => {
+  /* la nueva «publishable» (sb_publishable_…) no es un token: va en apikey y nunca en Authorization */
+  const cabeceras = async (clave, conSesionActiva) => {
+    const antes = { url: NUBE.url, clave: NUBE.clave, fetch: nubeFetch, SESION };
+    let vistas = null;
+    try {
+      NUBE.url = "https://falso.supabase.co"; NUBE.clave = clave;
+      SESION = conSesionActiva ? { access_token: "eyJ.token.sesion", refresh_token: "r", expira: Date.now() + 3600000, usuario: { id: "u1", email: "a@b.es" } } : null;
+      nubeFetch = async (url, op) => { vistas = op.headers; return { ok: true, status: 200, text: async () => "[]" }; };
+      await nubePedir("/rest/v1/algo", { conSesion: conSesionActiva });
+    } finally { NUBE.url = antes.url; NUBE.clave = antes.clave; nubeFetch = antes.fetch; SESION = antes.SESION; }
+    return vistas;
+  };
+  prueba("con la clave nueva y sin sesión, no se manda Authorization", async () => {
+    const c = await cabeceras("sb_publishable_abc123", false);
+    esperar(c.apikey).igualA("sb_publishable_abc123");
+    esperar(c.Authorization).igualA(undefined);
+  });
+  prueba("con la clave antigua (un token) y sin sesión, va también en Authorization", async () => {
+    const c = await cabeceras("eyJclave.antigua.anon", false);
+    esperar(c.Authorization).igualA("Bearer eyJclave.antigua.anon");
+  });
+  prueba("con sesión, Authorization lleva siempre el token de la sesión", async () => {
+    const c = await cabeceras("sb_publishable_abc123", true);
+    esperar(c.apikey).igualA("sb_publishable_abc123");
+    esperar(c.Authorization).igualA("Bearer eyJ.token.sesion");
+  });
+});
+
 grupo("Cuentas: lo que se arregló por el camino", () => {
   prueba("«Borrar todo» pone a cero en la cuenta también el horario, las tarjetas, el progreso, la oposición y el Inicio", async () => {
     await conNube(async srv => {

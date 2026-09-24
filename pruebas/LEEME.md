@@ -8,9 +8,9 @@ Eso levanta un servidor, abre un navegador sin ventana y escribe el resultado en
 la consola. Devuelve 1 si algo falla, que es lo que mira un servidor de
 integración continua.
 
-**723 pruebas.** Sin ventana pasan 717 y 6 se quedan en pendiente: son las que
+**726 pruebas.** Sin ventana pasan 720 y 6 se quedan en pendiente: son las que
 dibujan un PDF, y sin tarjeta gráfica eso tarda demasiado. Abriendo
-`pruebas/pruebas.html` en un navegador normal pasan las 723.
+`pruebas/pruebas.html` en un navegador normal pasan las 726.
 
 Aparte, las reglas de seguridad de la base de datos se prueban contra un
 Postgres de verdad: `node backend/probar-sql.js` (22 comprobaciones), y las del chat con

@@ -72,7 +72,7 @@
     <div id="dicho"></div>
   </div>
 
-  <iframe id="marco" src="../index.html" title="GritNook"></iframe>
+  <iframe id="marco" src="../index.html?pruebas" title="GritNook"></iframe>
 </main>
 
 <script>
@@ -509,7 +509,7 @@ $("#devolver").onclick = () => {
   Object.keys(localStorage).filter(k => k.startsWith("desk-daw:")).forEach(k => localStorage.removeItem(k));
   Object.entries(guardada).forEach(([k, v]) => localStorage.setItem(k, v));
   localStorage.removeItem("gritnook-copia"); copia = null;
-  $("#marco").src = "../index.html?vuelta=" + Date.now();
+  $("#marco").src = "../index.html?pruebas&vuelta=" + Date.now();
   decir("Devuelto lo que tenías.", true);
   $("#devolver").disabled = true;
   $("#rellenar").disabled = false;
