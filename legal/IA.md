@@ -1,6 +1,6 @@
 # Cómo funciona el profe
 
-En vigor desde el 20 de septiembre de 2026.
+En vigor desde el 24 de septiembre de 2026.
 
 ## Estás hablando con una máquina
 
@@ -42,7 +42,7 @@ Para poder responderte con sentido, se le envía:
   plazo de la solicitud, hasta cuándo es y si ya la has presentado.
 
 **No se le manda** nada que no esté en esa lista. En concreto, **no** se le
-envían los archivos de tu casillero, ni tu vocabulario de inglés, ni lo que hay
+envían tu foto de perfil, ni los archivos de tu casillero, ni tu vocabulario de inglés, ni lo que hay
 escrito en tus tarjetas de repaso, ni el nombre de tu centro, ni el de tu aula,
 ni el texto de los apuntes que no tengas abiertos, ni las notas que escribas en
 cada tema de la oposición, ni los enlaces que guardes a leyes o a las bases, ni

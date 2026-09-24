@@ -8,9 +8,9 @@ Eso levanta un servidor, abre un navegador sin ventana y escribe el resultado en
 la consola. Devuelve 1 si algo falla, que es lo que mira un servidor de
 integración continua.
 
-**573 pruebas.** Sin ventana pasan 567 y 6 se quedan en pendiente: son las que
+**600 pruebas.** Sin ventana pasan 594 y 6 se quedan en pendiente: son las que
 dibujan un PDF, y sin tarjeta gráfica eso tarda demasiado. Abriendo
-`pruebas/pruebas.html` en un navegador normal pasan las 573.
+`pruebas/pruebas.html` en un navegador normal pasan las 600.
 
 Aparte, las reglas de seguridad de la base de datos se prueban contra un
 Postgres de verdad: `node backend/probar-sql.js` (18 comprobaciones).
@@ -88,6 +88,7 @@ repinte la pantalla.
 | `casos-inicio.js` | El Inicio en piezas: mil disposiciones al azar sin que nada quede encima de nada, arrastrar y estirar con eventos de puntero de verdad, el teclado, ocultar y volver a mostrar, el orden propio del móvil, medir el Inicio la primera vez y volver al original |
 | `casos-sinprofe.js` | **El profe sale apagado**: recorre todas las secciones, las pestañas de Ajustes y la ficha de un tema buscando «profe» o «tutor» en lo que se ve y en lo que lee un lector de pantalla; que no se use la IA aunque esté disponible; y que al encender el interruptor vuelva todo. Las pruebas del propio profe lo encienden solo mientras duran, con `conProfe()` |
 | `casos-cuentas.js` | **Las cuentas**, contra un Supabase de mentira que se porta como el de verdad: crear cuenta y entrar (con sus errores en castellano), olvidar la contraseña, que lo tuyo suba y llegue a otro dispositivo, que lo pendiente no se pise, sin conexión y al volver, tokens que caducan, salir, cambiar de persona en el mismo navegador, borrar la cuenta, y el panel del creador: que solo lo vea él y que no enseñe el contenido de nadie |
+| `casos-yo.js` | **Tu foto y tu menú**: el círculo donde estaba el engranaje, el menú con el ratón y el teclado, colocar una foto de verdad (una imagen mitad roja y mitad azul, para comprobar qué parte queda dentro), arrastrar, la rueda, quitarla, lo que no es una imagen, y que no entre un SVG ni un enlace ni código disfrazado de foto, ni se le mande al profe ni al panel del creador |
 | `casos-absurdos.js` | **Datos irreales**: notas de 900, faltas negativas, fechas del año 9999, emojis, árabe, textos de diez mil letras, estados de versiones que no existieron |
 
 ## Rellenar la app para verla funcionando
@@ -188,6 +189,12 @@ Doce fallos de verdad (el último, probando a mano lo que ninguna prueba miraba)
     fuera es cosa de la nube de Claude; con la cuenta no hace falta, y se quitó.
     Y la barra de arriba decía «En tu cuenta» con cambios aún por subir: ahora
     dice «Guardando…» hasta que suben.
+
+16. **La bola de papel se quedaba con la tecla Escape.** Mientras está en
+    pantalla escucha Escape por encima de todo; si su capa desaparecía por otro
+    camino que no fuera cerrarla, seguía escuchando para siempre y Escape dejaba
+    de cerrar nada en toda la app. Lo destapó el menú de la foto. Ahora, si la
+    capa ya no está, se da de baja sola.
 
 Y en la página de datos de prueba: si le dabas a rellenar dos veces, la segunda
 copia de seguridad guardaba los datos falsos encima de los tuyos y «Devolver» te

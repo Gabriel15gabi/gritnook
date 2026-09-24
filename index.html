@@ -1872,6 +1872,54 @@ body.il-activo{user-select:none; cursor:grabbing}
 .pa-tr span{overflow:hidden; text-overflow:ellipsis; white-space:nowrap; font-variant-numeric:tabular-nums}
 .pa-th{border-top:0; font:500 12px/1 var(--sans); color:var(--ink-3)}
 .pa-correo{color:var(--ink); font-weight:500}
+/* ── tú: tu foto dentro del aro morado de la «o» del logo ── */
+.yo-av{--lado:32px; width:var(--lado); height:var(--lado); flex:0 0 var(--lado); box-sizing:border-box; border-radius:50%;
+  border:calc(var(--lado) * .085) solid var(--acento-txt); background:var(--acento-suave); color:var(--acento-txt);
+  display:grid; place-items:center; overflow:hidden; font:600 calc(var(--lado) * .4)/1 var(--sans); user-select:none}
+.yo-av img{width:100%; height:100%; object-fit:cover; display:block}
+.yo-av svg{width:58%; height:58%; fill:none; stroke:currentColor; stroke-width:1.4; stroke-linecap:round; stroke-linejoin:round}
+.yo-av.peq{--lado:30px}
+.yo-av.med{--lado:42px}
+.yo-av.grande{--lado:116px}
+.riel-yo{margin-top:4px}
+.riel-yo[aria-expanded="true"]{color:var(--ink); background:var(--surface)}
+.cab-yo{display:none}
+@media (max-width:880px){
+  .cab-yo{display:grid; place-items:center; width:40px; height:40px; padding:0; border:0; border-radius:50%; background:none; cursor:pointer}
+  .cab-yo:focus-visible{outline:2px solid var(--acento); outline-offset:1px}
+}
+.yo-menu{position:fixed; z-index:75; width:264px; max-width:calc(100vw - 16px); box-sizing:border-box; padding:6px; border-radius:14px;
+  background:var(--surface); border:1px solid var(--line-2); box-shadow:var(--sombra-modal); animation:ymEntra .14s ease-out}
+.yo-menu[hidden]{display:none}
+@keyframes ymEntra{from{opacity:0; transform:translateY(4px)}}
+.ym-cab{display:flex; align-items:center; gap:11px; padding:10px 10px 12px; margin-bottom:4px; border-bottom:1px solid var(--line)}
+.ym-quien{min-width:0; display:flex; flex-direction:column; gap:4px}
+.ym-quien b{font:600 14px/1.2 var(--sans); color:var(--ink); overflow:hidden; text-overflow:ellipsis; white-space:nowrap}
+.ym-quien span{font:400 12.5px/1.2 var(--sans); color:var(--ink-3); overflow:hidden; text-overflow:ellipsis; white-space:nowrap}
+.ym-item{display:flex; align-items:center; gap:10px; width:100%; height:38px; padding:0 10px; border:0; border-radius:9px; background:none;
+  color:var(--ink-2); font:500 13.5px/1 var(--sans); text-align:left; cursor:pointer}
+.ym-item svg{width:16px; height:16px; flex:0 0 16px}
+.ym-item:hover, .ym-item:focus-visible{background:var(--surface-2); color:var(--ink); outline:none}
+.ym-item:focus-visible{box-shadow:inset 0 0 0 2px var(--acento)}
+.ym-sep{height:1px; background:var(--line); margin:4px 6px}
+.pf{display:grid; justify-items:center; gap:14px; text-align:center; padding:4px 0 2px}
+.pf-foto{position:relative}
+.pf-cam{position:absolute; right:0; bottom:2px; width:36px; height:36px; display:grid; place-items:center; padding:0; border-radius:50%;
+  border:3px solid var(--surface); background:var(--acento); color:#FFFFFF; cursor:pointer}
+.pf-cam svg{width:17px; height:17px}
+.pf-cam:focus-visible{outline:2px solid var(--acento-txt); outline-offset:2px}
+.pf-recorte{width:240px; height:240px; border-radius:50%; overflow:hidden; background:var(--surface-2);
+  box-shadow:0 0 0 7px var(--acento-txt); margin:8px 0 4px}
+.pf-recorte canvas{display:block; width:240px; height:240px; cursor:grab; touch-action:none}
+.pf-recorte canvas:active{cursor:grabbing}
+.pf-recorte canvas:focus-visible{outline:3px solid var(--acento); outline-offset:-3px; border-radius:50%}
+.pf-zoom{width:min(260px,100%); text-align:left}
+.pf-nombre{width:min(320px,100%); text-align:left}
+.pf-btns{display:flex; gap:8px; flex-wrap:wrap; justify-content:center}
+.pf-nota{margin:0; max-width:38ch}
+.aj-yo{display:flex; align-items:center; gap:14px; margin:0 0 18px; padding-bottom:18px; border-bottom:1px solid var(--line)}
+.aj-yo > div{flex:1; min-width:0}
+.aj-yo .meta{margin:4px 0 0}
 .cf-info{margin:0; padding:12px 14px; border-radius:var(--r-m); background:var(--surface-2); color:var(--ink-2);
   font:400 12px/1.55 var(--mono, ui-monospace, monospace); white-space:pre-wrap; word-break:break-word; max-height:180px; overflow:auto}
 .sel-tema{margin-top:8px}
@@ -1912,11 +1960,13 @@ body.il-activo{user-select:none; cursor:grabbing}
       <div class="pie-fila">
         <div class="sync" id="sync" title="Dónde se guardan tus datos"><span class="punto"></span><span id="txtSync">Este dispositivo</span></div>
         <button class="icono-btn" id="btnTema" type="button"></button>
+        <button class="cab-yo" id="cabYo" type="button" aria-haspopup="menu" aria-controls="yoMenu" aria-expanded="false" aria-label="Tu perfil y los ajustes" title="Tu perfil y ajustes"></button>
       </div>
     </div>
   </aside>
   <nav class="barra-movil" id="barraMovil" aria-label="Secciones"></nav>
   <div class="hoja-mas" id="hojaMas" hidden></div>
+  <div class="yo-menu" id="yoMenu" role="menu" aria-label="Tu perfil" hidden></div>
   <main class="principal" id="principal" role="tabpanel" tabindex="-1">
     <div class="contenedor" id="contenido"></div>
   </main>
@@ -3584,7 +3634,8 @@ function bolaDePapel(rect, clon) {
     setTimeout(() => capa.remove(), 400);
     document.removeEventListener("keydown", tecla, true);
   }
-  const tecla = e => { if (e.key === "Escape") { e.preventDefault(); e.stopPropagation(); cerrar(); } else if ((e.key === "Enter" || e.key === " ") && document.activeElement === bola) { e.preventDefault(); capa.querySelector("#bpAuto").click(); } };
+  const tecla = e => { if (!capa.isConnected) { document.removeEventListener("keydown", tecla, true); return; }
+    if (e.key === "Escape") { e.preventDefault(); e.stopPropagation(); cerrar(); } else if ((e.key === "Enter" || e.key === " ") && document.activeElement === bola) { e.preventDefault(); capa.querySelector("#bpAuto").click(); } };
   document.addEventListener("keydown", tecla, true);
   capa.querySelector("#bpSaltar").onclick = cerrar;
 }
@@ -3676,6 +3727,7 @@ function pintaNav() {
   if (cu) { cu.textContent = etiquetaCorta(); cu.title = S.config.curso + " · curso " + cursoAcademico(); }
   pintaBarraMovil();
   pintaMini();
+  pintaCabYo();
 }
 function pintaBarraMovil() {
   const b = $("#barraMovil"), h = $("#hojaMas"); if (!b) return;
@@ -7266,6 +7318,289 @@ function panelLateralAdmin() {
 }
 
 
+/* ══════════════════ tú: tu foto y tu menú ══════════════════
+   Abajo del riel, donde estaba el engranaje, va tu foto dentro del aro morado
+   de la «o» del logo; sin foto, tu inicial. Al pulsarla se abre un menú corto:
+   tu perfil y tu foto, Ajustes y, si tienes cuenta, cerrar sesión. En el
+   móvil la foto va arriba a la derecha y abre el mismo menú.
+
+   La foto se recorta redonda en el navegador, se reduce a 256 px y se guarda
+   con tu perfil: la ves igual en todos tus dispositivos. No la ve nadie más:
+   ni el panel del creador ni el profe. */
+
+Object.assign(ICON, {
+  yo: '<circle cx="8" cy="5.6" r="2.6"/><path d="M3 13.5c.5-2.8 2.6-4.3 5-4.3s4.5 1.5 5 4.3"/>',
+  salir: '<path d="M9.5 2.8H3.8v10.4h5.7"/><path d="M7.2 8h6.3M11.3 5.7 13.6 8l-2.3 2.3"/>',
+  camara: '<path d="M2.4 5.3h2.3l1.2-1.8h4.2l1.2 1.8h2.3v7.2H2.4z"/><circle cx="8" cy="8.8" r="2.2"/>'
+});
+
+/* Solo entra una imagen de las nuestras: webp, jpeg o png en base64 y de un
+   tamaño razonable. Una foto que llegue de una copia tocada a mano o de la
+   nube con otra cosa (un SVG con código, un enlace de fuera) se descarta.
+   Se acuerda de la última buena para no repasar 40 KB en cada pintado. */
+function fotoValida(f) {
+  if (typeof f !== "string" || !f) return false;
+  if (f === fotoValida.ok) return true;
+  if (f.length > 150000 || !/^data:image\/(?:webp|jpeg|png);base64,[A-Za-z0-9+/]+={0,2}$/.test(f)) return false;
+  fotoValida.ok = f;
+  return true;
+}
+const miFoto = () => { const f = normalizarPerfil().foto; return fotoValida(f) ? f : ""; };
+const miNombre = () => String(normalizarPerfil().nombre || "").trim();
+const miCorreo = () => (SESION && SESION.usuario && SESION.usuario.email) || "";
+/* la primera letra de tu nombre (o de tu correo), aunque sea una tilde o un emoji */
+function miInicial() {
+  const c = Array.from(miNombre() || miCorreo())[0] || "";
+  return c.toLocaleUpperCase("es");
+}
+const miNombreCorto = () => Array.from(miNombre().split(/\s+/)[0] || "Tú").slice(0, 14).join("");
+
+/* el círculo: tu foto o tu inicial dentro del aro morado */
+function avatarYo(tam = "") {
+  const f = miFoto(), i = miInicial();
+  const dentro = f ? `<img src="${esc(f)}" alt="" draggable="false">` : i ? esc(i) : `<svg viewBox="0 0 16 16" aria-hidden="true">${ICON.yo}</svg>`;
+  return `<span class="yo-av${tam ? " " + tam : ""}" aria-hidden="true">${dentro}</span>`;
+}
+
+/* ── el botón: abajo del riel en el ordenador, arriba a la derecha en el móvil ── */
+const YO = { abierto: false, desde: "" };
+function botonYo() {
+  return `<button type="button" class="riel-item riel-yo" id="rielYo" aria-haspopup="menu" aria-controls="yoMenu"
+    aria-expanded="${YO.abierto && YO.desde === "rielYo"}" aria-current="${seccion === "ajustes" ? "page" : "false"}"
+    tabindex="${seccion === "ajustes" ? 0 : -1}" aria-label="Tu perfil y los ajustes" title="Tu perfil y ajustes">${avatarYo()}<span class="rt" aria-hidden="true">${esc(miNombreCorto())}</span></button>`;
+}
+function pintaCabYo() {
+  const b = $("#cabYo"); if (!b) return;
+  b.innerHTML = avatarYo("peq");
+  b.setAttribute("aria-expanded", String(YO.abierto && YO.desde === "cabYo"));
+}
+
+/* ── el menú ── */
+function abrirYo(boton) {
+  const m = $("#yoMenu"); if (!m || !boton) return;
+  cerrarHojaMas();
+  const conCuenta = !!(SESION && db && db.nube);
+  const donde = miCorreo() || (db ? "Con tu cuenta de Claude" : "En este dispositivo");
+  m.innerHTML = `
+    <div class="ym-cab">${avatarYo("med")}<div class="ym-quien"><b>${esc(miNombre() || "Tú")}</b><span>${esc(donde)}</span></div></div>
+    <button type="button" role="menuitem" class="ym-item" data-yo="perfil">${icono("yo")}Tu perfil y tu foto</button>
+    <button type="button" role="menuitem" class="ym-item" data-yo="ajustes">${icono("ajustes")}Ajustes</button>
+    ${conCuenta ? `<div class="ym-sep" role="separator"></div>
+    <button type="button" role="menuitem" class="ym-item" data-yo="salir">${icono("salir")}Cerrar sesión</button>` : ""}`;
+  m.hidden = false; YO.abierto = true; YO.desde = boton.id;
+  /* pegado a su botón: a la derecha del riel, o debajo de la cabecera en el móvil */
+  const r = boton.getBoundingClientRect();
+  if (matchMedia("(max-width:880px)").matches) {
+    m.style.cssText = `top:${Math.round(r.bottom + 6)}px; right:${Math.max(8, Math.round(innerWidth - r.right))}px; left:auto; bottom:auto`;
+  } else {
+    m.style.cssText = `left:${Math.round(r.right + 10)}px; bottom:${Math.max(8, Math.round(innerHeight - r.bottom))}px; top:auto; right:auto`;
+  }
+  boton.setAttribute("aria-expanded", "true");
+  m.querySelector(".ym-item").focus({ preventScroll: true });
+}
+function cerrarYo(devolverFoco) {
+  const m = $("#yoMenu"); if (!m || m.hidden) return;
+  const desde = YO.desde;
+  m.hidden = true; m.innerHTML = ""; YO.abierto = false; YO.desde = "";
+  document.querySelectorAll("#rielYo, #cabYo").forEach(b => b.setAttribute("aria-expanded", "false"));
+  /* el riel se vuelve a pintar a menudo: se busca el botón por su nombre, no el de antes */
+  if (devolverFoco && desde && $("#" + desde)) $("#" + desde).focus({ preventScroll: true });
+}
+alEvento("click", e => {
+  const t = e.target;
+  const b = t.closest("#rielYo, #cabYo");
+  if (b) { if (YO.abierto && YO.desde === b.id) cerrarYo(); else { cerrarYo(); abrirYo(b); } return; }
+  const it = t.closest("#yoMenu [data-yo]");
+  if (it) {
+    const q = it.dataset.yo; cerrarYo();
+    if (q === "perfil") dlgPerfil();
+    else if (q === "ajustes") irASeccion("ajustes");
+    else if (q === "salir") salirCuenta();
+    return;
+  }
+  if (YO.abierto && !t.closest("#yoMenu")) cerrarYo();
+  if (t.closest("#apFoto")) dlgPerfil();
+});
+alEvento("keydown", e => {
+  if (!YO.abierto) return;
+  if (e.key === "Escape") { e.preventDefault(); cerrarYo(true); return; }
+  if (e.key === "Tab") { cerrarYo(); return; }
+  const items = [...document.querySelectorAll("#yoMenu .ym-item")];
+  const mov = { ArrowDown: 1, ArrowUp: -1, Home: "inicio", End: "fin" }[e.key];
+  if (mov === undefined || !items.length) return;
+  e.preventDefault();
+  const i = items.indexOf(document.activeElement);
+  const d = mov === "inicio" ? 0 : mov === "fin" ? items.length - 1 : (i + mov + items.length) % items.length;
+  items[d].focus();
+});
+alEvento("resize", () => cerrarYo(), window);
+
+/* ── tu perfil: la foto, colocarla y tu nombre ── */
+const PF_LADO = 240;           /* lo que mide el círculo donde la colocas */
+const FOTO_LADO = 256;         /* lo que mide la foto que se guarda */
+let PF = null;                 /* lo que estás cambiando y aún no has guardado */
+function dlgPerfil() {
+  soltarFoto();
+  PF = { nombre: miNombre(), img: null, zoom: 1, dx: 0, dy: 0, quitar: false };
+  abrirDlg("Tu perfil", "", [
+    { txt: "Cancelar", clase: "btn fantasma", accion: () => { soltarFoto(); } },
+    { txt: "Guardar", clase: "btn primario", accion: () => guardarPerfilDlg() }
+  ]);
+  pintaPerfilDlg();
+  const cu = $("#dlgCuerpo");
+  cu.onclick = e => {
+    const t = e.target;
+    if (t.closest("#pfElegir, #pfCam")) { $("#pfArchivo").click(); return; }
+    if (t.closest("#pfQuitar")) { PF.img = null; PF.quitar = true; pintaPerfilDlg(); return; }
+    if (t.closest("#pfDeshacer")) { PF.img = null; PF.quitar = false; pintaPerfilDlg(); return; }
+  };
+  cu.onchange = e => {
+    if (e.target.id === "pfArchivo") { const f = e.target.files && e.target.files[0]; e.target.value = ""; cargarFoto(f); }
+  };
+  cu.oninput = e => {
+    if (e.target.id === "pfNombre") PF.nombre = e.target.value;
+    if (e.target.id === "pfZoom") zoomFoto(+e.target.value);
+  };
+}
+function pintaPerfilDlg() {
+  const cu = $("#dlgCuerpo"); if (!cu || !PF) return;
+  const tiene = !!miFoto() && !PF.quitar;
+  const arriba = PF.img ? `
+    <div class="pf-recorte"><canvas id="pfLienzo" width="${PF_LADO * 2}" height="${PF_LADO * 2}" tabindex="0"
+      aria-label="Tu foto. Muévela arrastrando o con las flechas; más grande o más pequeña con + y −."></canvas></div>
+    <label class="campo pf-zoom">Tamaño<input type="range" id="pfZoom" min="1" max="4" step="0.01" value="${PF.zoom}"></label>
+    <p class="meta pf-nota">Arrástrala para centrarla. Se guarda cuando le das a Guardar.</p>
+    <div class="pf-btns"><button type="button" class="btn" id="pfElegir">Elegir otra</button>
+      <button type="button" class="btn fantasma" id="pfDeshacer">No cambiarla</button></div>`
+  : `
+    <div class="pf-foto">${PF.quitar ? avatarSinFoto() : avatarYo("grande")}
+      <button type="button" class="pf-cam" id="pfCam" aria-label="${tiene ? "Cambiar la foto" : "Poner una foto"}">${icono("camara")}</button></div>
+    <div class="pf-btns"><button type="button" class="btn" id="pfElegir">${tiene ? "Cambiar foto" : "Poner una foto"}</button>
+      ${tiene ? `<button type="button" class="btn fantasma" id="pfQuitar">Quitar foto</button>` : ""}
+      ${PF.quitar ? `<button type="button" class="btn fantasma" id="pfDeshacer">Dejarla como estaba</button>` : ""}</div>
+    ${PF.quitar ? `<p class="meta pf-nota">Se quita cuando le das a Guardar.</p>` : ""}`;
+  cu.innerHTML = `<div class="pf">${arriba}
+    <label class="campo pf-nombre">Cómo te llamas<input type="text" id="pfNombre" maxlength="40" autocomplete="given-name" value="${esc(PF.nombre)}"></label>
+    <p class="meta pf-nota">${miCorreo() ? "Entras con " + esc(miCorreo()) + ". " : ""}Tu foto solo la ves tú. No hace falta que sea tu cara.</p>
+    <input type="file" id="pfArchivo" accept="image/*" hidden></div>`;
+  if (PF.img) { engancharLienzo(); pintaLienzo(); }
+}
+/* el círculo con tu inicial, para enseñar cómo queda al quitar la foto */
+function avatarSinFoto() {
+  const i = miInicial();
+  return `<span class="yo-av grande" aria-hidden="true">${i ? esc(i) : `<svg viewBox="0 0 16 16" aria-hidden="true">${ICON.yo}</svg>`}</span>`;
+}
+function soltarFoto() { PF = null; }
+
+/* abrir la imagen que eliges; si es enorme, se reduce ya a 1024 px por lado,
+   en pasos de la mitad para que no quede pixelada */
+async function cargarFoto(archivo) {
+  if (!archivo || !PF) return;
+  if (!/^image\//.test(archivo.type || "") && !/\.(jpe?g|png|webp|gif|avif|bmp|heic|heif)$/i.test(archivo.name || "")) {
+    aviso("Eso no es una imagen. Elige una foto.", "mal"); return;
+  }
+  if (archivo.size > 30 * 1024 * 1024) { aviso("Esa imagen pesa más de 30 MB. Elige otra más ligera.", "mal"); return; }
+  let img;
+  try { img = await abrirImagen(archivo); }
+  catch (e) { aviso("No se ha podido abrir esa imagen. Prueba con una JPG o PNG.", "mal"); return; }
+  if (!PF) return;                                  /* se cerró la ventana mientras */
+  PF.img = reducirImagen(img, 1024); PF.zoom = 1; PF.dx = 0; PF.dy = 0; PF.quitar = false;
+  pintaPerfilDlg();
+  const c = $("#pfLienzo"); if (c) c.focus({ preventScroll: true });
+}
+function abrirImagen(archivo) {
+  return new Promise((ok, mal) => {
+    const url = URL.createObjectURL(archivo), im = new Image();
+    im.onload = () => { if (im.naturalWidth && im.naturalHeight) ok(im); else mal(new Error("imagen vacía")); URL.revokeObjectURL(url); };
+    im.onerror = () => { URL.revokeObjectURL(url); mal(new Error("no se abre")); };
+    im.src = url;
+  });
+}
+function reducirImagen(img, max) {
+  let w = img.naturalWidth || img.width, h = img.naturalHeight || img.height, fuente = img;
+  do {
+    const k = Math.max(0.5, Math.min(1, max / Math.max(w, h)));
+    const c = document.createElement("canvas");
+    c.width = Math.max(1, Math.round(w * k)); c.height = Math.max(1, Math.round(h * k));
+    const x = c.getContext("2d"); x.imageSmoothingQuality = "high";
+    x.drawImage(fuente, 0, 0, c.width, c.height);
+    fuente = c; w = c.width; h = c.height;
+  } while (Math.max(w, h) > max);
+  return fuente;
+}
+/* dónde cae la imagen dentro del círculo: siempre lo cubre entero */
+function medidasFoto() {
+  const w = PF.img.width, h = PF.img.height;
+  const s = Math.max(PF_LADO / w, PF_LADO / h) * PF.zoom;
+  const sw = w * s, sh = h * s, mx = (sw - PF_LADO) / 2, my = (sh - PF_LADO) / 2;
+  PF.dx = clamp(PF.dx, -mx, mx); PF.dy = clamp(PF.dy, -my, my);
+  return { x: -mx + PF.dx, y: -my + PF.dy, sw, sh };
+}
+function dibujaFoto(ctx, lado) {
+  const m = medidasFoto(), k = lado / PF_LADO;
+  ctx.imageSmoothingQuality = "high";
+  ctx.drawImage(PF.img, m.x * k, m.y * k, m.sw * k, m.sh * k);
+}
+function pintaLienzo() {
+  const c = $("#pfLienzo"); if (!c || !PF || !PF.img) return;
+  const x = c.getContext("2d"); x.clearRect(0, 0, c.width, c.height);
+  dibujaFoto(x, c.width);
+}
+function zoomFoto(z) {
+  if (!PF || !PF.img) return;
+  const antes = PF.zoom; PF.zoom = clamp(num(z, 1), 1, 4);
+  PF.dx *= PF.zoom / antes; PF.dy *= PF.zoom / antes;      /* se agranda desde el centro */
+  const r = $("#pfZoom"); if (r && +r.value !== PF.zoom) r.value = PF.zoom;
+  pintaLienzo();
+}
+function engancharLienzo() {
+  const c = $("#pfLienzo"); if (!c) return;
+  let ult = null;
+  c.onpointerdown = e => { ult = { x: e.clientX, y: e.clientY }; try { c.setPointerCapture(e.pointerId); } catch (_) {} e.preventDefault(); };
+  c.onpointermove = e => {
+    if (!ult || !PF) return;
+    PF.dx += e.clientX - ult.x; PF.dy += e.clientY - ult.y; ult = { x: e.clientX, y: e.clientY };
+    pintaLienzo();
+  };
+  c.onpointerup = c.onpointercancel = () => { ult = null; };
+  c.onwheel = e => { e.preventDefault(); zoomFoto(PF.zoom * Math.exp(-e.deltaY * 0.0015)); };
+  c.onkeydown = e => {
+    const d = e.shiftKey ? 24 : 8;
+    const m = { ArrowLeft: [-d, 0], ArrowRight: [d, 0], ArrowUp: [0, -d], ArrowDown: [0, d] }[e.key];
+    if (m) { e.preventDefault(); PF.dx += m[0]; PF.dy += m[1]; pintaLienzo(); return; }
+    if (e.key === "+" || e.key === "=") { e.preventDefault(); zoomFoto(PF.zoom + 0.1); }
+    if (e.key === "-" || e.key === "−") { e.preventDefault(); zoomFoto(PF.zoom - 0.1); }
+  };
+}
+/* la foto que se guarda: 256 px, en webp si el navegador sabe y si no en jpeg,
+   bajando la calidad si hiciera falta hasta que quepa de sobra */
+function fotoRecortada() {
+  const c = document.createElement("canvas"); c.width = c.height = FOTO_LADO;
+  const x = c.getContext("2d");
+  x.fillStyle = "#ffffff"; x.fillRect(0, 0, FOTO_LADO, FOTO_LADO);      /* una PNG transparente no sale negra */
+  dibujaFoto(x, FOTO_LADO);
+  let calidad = 0.86, url = c.toDataURL("image/webp", calidad);
+  const tipo = url.startsWith("data:image/webp") ? "image/webp" : "image/jpeg";
+  if (tipo !== "image/webp") url = c.toDataURL(tipo, calidad);
+  while (url.length > 90000 && calidad > 0.4) { calidad -= 0.15; url = c.toDataURL(tipo, calidad); }
+  return url;
+}
+function guardarPerfilDlg() {
+  if (!PF) return;
+  const p = normalizarPerfil(), nombre = String(PF.nombre || "").trim().slice(0, 40);
+  let foto = null;
+  if (PF.img) {
+    try { foto = fotoRecortada(); } catch (e) { apuntarError(e, "foto de perfil"); foto = ""; }
+    if (!fotoValida(foto)) { aviso("No se ha podido guardar la foto. Prueba con otra.", "mal"); return true; }
+  } else if (PF.quitar) foto = "";
+  if (nombre) p.nombre = nombre;
+  if (foto !== null) p.foto = foto;
+  soltarFoto();
+  guardar("perfil"); pinta();
+  aviso(foto === null ? "Perfil guardado." : foto ? "Foto puesta." : "Foto quitada.");
+}
+
+
 /* ══════════════════ pintado ══════════════════ */
 function pinta() {
   if (BV) { pintaEntrada(); return; }
@@ -7297,7 +7632,7 @@ function irASeccion(id, foco) {
   modAbierto = null; libroAbierto = null; casEnlace = false; casTipo = null;
   seccion = id; pinta();
   window.scrollTo({ top: 0 });
-  if (foco === "nav") { const b = $('.riel-item[data-sec="' + id + '"]') || $('.nav-item[data-sec="' + id + '"]'); if (b) b.focus(); }
+  if (foco === "nav") { const b = $('.riel-item[data-sec="' + id + '"]') || (id === "ajustes" && $("#rielYo")) || $('.nav-item[data-sec="' + id + '"]'); if (b) b.focus(); }
   else $("#principal").focus({ preventScroll: true });
 }
 
@@ -8400,6 +8735,7 @@ function normalizarPerfil() {
   if (!p.profe || typeof p.profe !== "object") p.profe = d.profe;
   for (const k in d.profe) if (typeof p.profe[k] === "undefined") p.profe[k] = d.profe[k];
   if (!Array.isArray(p.diasFuertes)) p.diasFuertes = [];
+  if (p.foto && !fotoValida(p.foto)) p.foto = "";
   return p;
 }
 /* quien ya estaba usando la app no pasa por la pantalla de entrada: se le
@@ -8858,6 +9194,9 @@ function ajPerfil(p) {
   const e = etapaDe(p.etapa);
   return `
   <section class="panel">
+    <div class="aj-yo">${avatarYo("med")}<div><div class="etq">Tu foto</div>
+      <p class="meta">La que sale en el menú. Solo la ves tú.</p></div>
+      <button type="button" class="btn mini" id="apFoto">${miFoto() ? "Cambiar" : "Poner una foto"}</button></div>
     <div class="rejilla-campos">
       <label class="campo">Tu nombre<input type="text" id="apNombre" value="${esc(p.nombre)}" placeholder="${siProfe("Como quieras que te llame el profe", "Como quieras que te llame la app")}"></label>
       <label class="campo">Qué estudias
@@ -9021,8 +9360,8 @@ function ajAspecto() {
 }
 
 /* los papeles salen de legal/*.md del repositorio: se generan con aplicar-legal.js */
-const LEGAL = [{"id":"privacidad","nombre":"Privacidad","resumen":"Qué datos se guardan, dónde viven y cómo borrarlos","titulo":"Política de privacidad","html":"<p>En vigor desde el 23 de septiembre de 2026.</p><h3>Lo importante, en pocas líneas</h3><p>Para usar GritNook te haces una <strong>cuenta con tu correo y una contraseña</strong>. No se pide teléfono, ni dirección, ni datos de pago. Lo que escribes —tus asignaturas, tus notas, tus apuntes y tus archivos— se guarda <strong>en tu cuenta, en un servidor de la Unión Europea (Frankfurt, Alemania)</strong>, y en tu navegador, para que funcione también sin conexión. Si abres la app desde Claude, se guarda en tu cuenta de Claude en su lugar.</p><p>El responsable de la app ve <strong>tu correo y cuánto la usas, nunca lo que escribes</strong>. <strong>No hay publicidad, ni analítica de terceros, y no se vende nada a nadie.</strong> El profe con inteligencia artificial está <strong>apagado por ahora</strong>, así que la app no envía nada a ninguna IA. Puedes descargarte todo o borrar tu cuenta entera cuando quieras, desde Ajustes → Datos.</p><h3>1. Quién responde de tus datos</h3><ul><li><strong>Responsable:</strong> Gabriel Rodríguez Blanco</li><li><strong>NIF:</strong> 09215128V</li><li><strong>Correo para todo lo relacionado con tus datos:</strong> gabriel_gabiz@hotmail.com</li></ul><p>No hace falta delegado de protección de datos. El correo es el canal oficial: por ahí se atienden todas las peticiones, y se responden en un mes como máximo.</p><h3>2. Qué datos se tratan</h3><p>Los que tú escribes en la aplicación: tu nombre o apodo, qué estudias, tus asignaturas con sus notas y sus faltas, tu agenda, tus apuntes y dibujos, los archivos que subes al casillero, tus tarjetas de repaso, tu vocabulario de inglés, tus minutos de estudio y tus conversaciones con el profe.</p><p>Para tu cuenta: tu <strong>correo electrónico</strong> y tu <strong>contraseña</strong>, que no se guarda tal cual sino cifrada de forma que no se puede leer (nadie puede verla, tampoco el responsable). Y, para saber cuánto se usa la app, <strong>qué días entras</strong> (el día y cuántas veces), cuándo te diste de alta y la última vez que entraste.</p><p>Como cualquier servidor, el de las cuentas apunta durante un tiempo corto la dirección IP y el navegador de cada conexión, por seguridad.</p><p>El detalle completo, campo por campo, está en el <span class=\"lg-ref\">inventario de datos</span>, que se actualiza cada vez que la aplicación cambia.</p><p><strong>No se tratan</strong> ni datos de pago, ni ubicación, ni identificadores publicitarios, ni nada que tú no escribas.</p><p>Ten en cuenta que entre tus datos puede haber <strong>datos de salud</strong> si tú los escribes (por ejemplo, un apunte que diga por qué faltaste a clase). La app no te los pide y no los necesita; si los escribes, quedan guardados como cualquier otro apunte. Te recomendamos no escribirlos.</p><h3>3. Para qué se usan y con qué base legal</h3><div class=\"lg-tabla\"><table><thead><tr><th>Para qué</th><th>Base legal</th></tr></thead><tbody><tr><td>Que la app funcione: guardar tu perfil, tus notas, tu agenda y tus apuntes, y calcular lo que te falta para aprobar</td><td>Ejecutar el contrato que aceptas al usarla (art. 6.1.b RGPD)</td></tr><tr><td>Que el profe pueda responderte, explicarte y preguntarte</td><td>Ejecutar el contrato (art. 6.1.b RGPD)</td></tr><tr><td>Crear y mantener tu cuenta, y guardar ahí tus datos para que los veas desde cualquier dispositivo</td><td>Ejecutar el contrato (art. 6.1.b RGPD)</td></tr><tr><td>Mandarte los correos del servicio: cambiar la contraseña o avisarte de un cambio importante</td><td>Ejecutar el contrato (art. 6.1.b RGPD)</td></tr><tr><td>Saber cuánta gente usa la app y cuánto (qué días entra cada cuenta), para mejorarla</td><td>Interés legítimo en conocer el uso de un servicio que está empezando (art. 6.1.f RGPD). Solo se apunta el día, nunca lo que haces. Puedes oponerte escribiendo al correo de contacto</td></tr><tr><td>Sincronizar entre tus dispositivos, si abres la app desde Claude</td><td>Ejecutar el contrato (art. 6.1.b RGPD)</td></tr><tr><td>Recordar el tema claro u oscuro y tus preferencias de la libreta</td><td>Interés legítimo en que la app se vea como la dejaste (art. 6.1.f RGPD)</td></tr><tr><td>Atender tus derechos y responder a lo que preguntes</td><td>Obligación legal (art. 6.1.c RGPD)</td></tr></tbody></table></div><p><strong>No se usan</strong> para publicidad, ni para perfilarte, ni para entrenar modelos de inteligencia artificial.</p><p><strong>No hay decisiones automatizadas</strong> con efectos jurídicos sobre ti. Cuando la app dice que una asignatura está «en riesgo» o que un examen es urgente, es una cuenta hecha con los datos que tú has metido, para ayudarte a decidir: no decide nada por ti y no la ve nadie más.</p><h3>4. Cookies y almacenamiento en tu dispositivo</h3><p><strong>No se usan cookies.</strong> La app guarda sus datos en el almacenamiento local del navegador porque es lo que la hace funcionar sin conexión. Si tienes cuenta, ahí se guarda también la sesión (lo que te mantiene dentro sin volver a poner la contraseña) y la lista de cambios que faltan por subir. Es almacenamiento técnico imprescindible para prestar el servicio que pides, así que está exento de pedir consentimiento (art. 22.2 LSSI). No se usa para seguirte ni para medir nada, y se borra entero desde Ajustes → Datos o borrando los datos del sitio en tu navegador.</p><p>Ahí se guardan también tres cosas pequeñas de la propia app: la fecha de tu última copia de seguridad (para recordártela), qué avisos ya has visto (para no repetirlos) y los últimos fallos que haya dado, que no salen de tu dispositivo. Si tu navegador lo permite, la app le pide que <strong>no borre estos datos</strong> cuando ande justo de espacio.</p><h3>5. Quién más ve tus datos</h3><div class=\"lg-tabla\"><table><thead><tr><th>Quién</th><th>Qué ve</th><th>Dónde está</th></tr></thead><tbody><tr><td>Anthropic (proveedor del profe con IA)</td><td><strong>Ahora mismo, nada: el profe está apagado.</strong> Cuando se encienda, solo lo que se le envíe en cada pregunta. El detalle exacto, campo por campo, está en cómo funciona el profe: en resumen, tu nombre o apodo, tu curso, tus asignaturas con sus notas, tus entregas y exámenes, tu horario, los títulos de tus apuntes, el contenido del que tengas abierto, los últimos mensajes y los archivos que adjuntes</td><td>Estados Unidos</td></tr><tr><td>Anthropic (almacenamiento de Claude), solo si abres la app desde allí</td><td>Tus datos sincronizados y tus archivos del casillero</td><td>Estados Unidos</td></tr><tr><td>Supabase, Inc. (el servidor de las cuentas), como encargado de tratamiento</td><td>Tu correo, tu contraseña cifrada, tus datos, tus archivos y los días que entras, para guardarlos. No los usa para nada más</td><td>Unión Europea (Frankfurt, Alemania)</td></tr><tr><td>GitHub Pages (GitHub, Inc.)</td><td>Solo sirve los archivos de la app. Como cualquier servidor web, registra la dirección IP y el navegador de quien la abre, por seguridad. <strong>No recibe ninguno de tus datos de estudio</strong></td><td>Estados Unidos</td></tr></tbody></table></div><p><strong>Lo que ve el responsable de la app.</strong> Tiene un panel con, de cada cuenta: el correo, cuándo se dio de alta, la última vez que entró, cuántos días ha entrado en la última semana y en el último mes, qué estudia (ESO, Bachillerato, FP, universidad, oposición…) y cuánto espacio ocupa. <strong>No ve tus apuntes, tus notas, tus archivos ni nada de lo que escribes</strong>: el panel no los lee. Si algún día hiciera falta mirar algo tuyo para arreglar un fallo, se te pedirá que mandes tú una copia.</p><p>A eso se suma una cosa que decides tú: si usas <strong>Ajustes → Datos → Contar un fallo</strong> y le das a enviar, se abre tu programa de correo con un mensaje ya escrito para el responsable de la app. Lleva lo que tú cuentes y unos datos técnicos —versión, navegador, tamaño de pantalla, idioma, cuántos apuntes y documentos tienes y los últimos fallos que la app haya apuntado—, pero <strong>ni tu nombre, ni tus notas, ni tus apuntes</strong>. Puedes leerlo entero antes de mandarlo, y no se envía nada si no le das tú a enviar.</p><p>No hay nadie más. No se ceden datos a terceros, ni se venden, ni hay anunciantes. Solo se entregarían a jueces, fuerzas de seguridad o administraciones si una ley lo obligara.</p><h3>6. Datos que salen de la Unión Europea</h3><p><strong>Tu cuenta</strong> se guarda en Frankfurt (Alemania). Supabase es una empresa de Estados Unidos: si su personal tuviera que entrar desde fuera de Europa para dar soporte o mantenimiento, lo cubre su contrato de encargado de tratamiento, con las <strong>cláusulas contractuales tipo</strong> de la Comisión Europea.</p><p><strong>Mientras el profe esté apagado, no sale ningún dato tuyo hacia ninguna IA.</strong> Lo que sigue es lo que pasará cuando se encienda.</p><p>El profe con IA se procesa en Estados Unidos. Esa transferencia está amparada en las <strong>cláusulas contractuales tipo</strong> aprobadas por la Comisión Europea y, en su caso, en el <strong>marco de privacidad UE-EE. UU.</strong> al que esté adherido el proveedor. Puedes pedirnos copia de las garantías escribiendo al correo de contacto.</p><p><mark class=\"lg-falta\">RELLENAR: confirmar el mecanismo exacto al firmar el contrato de encargado de tratamiento con el proveedor, y actualizar este párrafo.</mark></p><p>Si no quieres que nada salga de Europa, no uses el profe: el resto de la aplicación funciona sin él.</p><h3>7. Cuánto tiempo se guardan</h3><p>Mientras tú quieras. No hay borrado automático ni caducidad.</p><ul><li>Si borras un apunte o un documento, se borra en ese momento, también de tu cuenta.</li><li>Si pulsas «Borrar todo», se borran tus datos: lo de este dispositivo, lo de tu cuenta y los archivos que hayas subido. La cuenta sigue, vacía.</li><li>Si pulsas <strong>«Borrar mi cuenta»</strong>, se borra al momento del servidor: tu correo, tu contraseña, todos tus datos, tus archivos y los días que entraste. No se puede deshacer.</li><li>Si cierras sesión, se borra lo de ese navegador; lo tuyo sigue en tu cuenta.</li><li>Si la app cierra algún día, se avisará con tiempo para que te descargues lo tuyo, y después se borrarán todas las cuentas.</li></ul><p>El correo que nos escribas para ejercer tus derechos se guarda mientras haga falta para atenderlo y, después, el tiempo que obliguen las leyes de prescripción.</p><h3>8. Tus derechos</h3><p>Puedes pedir, gratis y en cualquier momento:</p><ul><li><strong>Acceso</strong>: saber qué datos hay sobre ti. De hecho, los tienes tú: están en tu cuenta y te los puedes descargar en un clic.</li><li><strong>Rectificación</strong>: corregir lo que esté mal. Se edita directamente en la app.</li><li><strong>Supresión</strong>: que se borre todo. Ajustes → Datos → Borrar mi cuenta.</li><li><strong>Portabilidad</strong>: llevarte tus datos. Ajustes → Datos → Descargar copia, que te da un archivo JSON con absolutamente todo.</li><li><strong>Limitación y oposición</strong> al tratamiento, también a que se cuenten los días que entras.</li></ul><p>Casi todos los puedes ejercer tú solo desde la app, sin pedir permiso a nadie. Si prefieres escribir, el correo es gabriel_gabiz@hotmail.com. Se responde en un mes como máximo.</p><p>Si crees que no se han respetado tus derechos, puedes reclamar ante la <strong>Agencia Española de Protección de Datos</strong> (www.aepd.es, C/ Jorge Juan 6, 28001 Madrid).</p><h3>9. Menores de edad</h3><p>Para usar GritNook hay que tener <strong>14 años cumplidos</strong>. Es la edad que fija la ley española (art. 7 de la Ley Orgánica 3/2018) para que alguien pueda decidir por sí mismo sobre sus datos en un servicio como este.</p><p>Si tienes menos de 14 años, necesitas que tu padre, tu madre o tu tutor lo autoricen y usen la app contigo.</p><p>Si tienes entre 14 y 18, puedes usarla tú solo, pero es buena idea contárselo en casa, sobre todo porque el profe funciona con inteligencia artificial.</p><p>Padres y tutores: podéis escribir al correo de contacto para preguntar qué datos hay, corregirlos o pedir que se borren.</p><h3>10. Seguridad</h3><p>La app se sirve siempre por conexión cifrada (HTTPS), y todo lo que va y viene de tu cuenta viaja cifrado también. En el servidor, <strong>cada cuenta solo puede leer y escribir lo suyo</strong>: no lo decide la app, que es código que cualquiera puede tocar, sino la propia base de datos. Las contraseñas se guardan cifradas de forma que no se pueden leer.</p><p>Aun así, <strong>quien tenga acceso a tu dispositivo desbloqueado puede ver tus apuntes</strong>, igual que puede ver tus fotos. Si compartes ordenador, <strong>cierra sesión</strong> al terminar (Ajustes → Datos → Cerrar sesión): se borra lo de ese navegador y lo tuyo sigue en tu cuenta.</p><p>Si un día hubiera un problema de seguridad que afectara a tus datos, se avisará a la Agencia Española de Protección de Datos en 72 horas y, si te afecta, también a ti.</p><h3>11. Cambios en esta política</h3><p>Si cambia algo —que se añada una función que guarde datos nuevos, o que cambie el proveedor de IA o el del servidor— se actualiza este texto, se cambia la fecha de arriba y se avisa dentro de la aplicación.</p>"},{"id":"ia","nombre":"Cómo funciona el profe","resumen":"Que es una máquina, qué se le manda y en qué se equivoca","titulo":"Cómo funciona el profe","html":"<p>En vigor desde el 20 de septiembre de 2026.</p><h3>Estás hablando con una máquina</h3><p>El profe de GritNook es un programa de inteligencia artificial. <strong>No es una persona</strong>, aunque escriba como si lo fuera, te anime o se acuerde de lo que hablasteis. Te lo decimos claramente porque lo exige el artículo 50 del Reglamento (UE) 2024/1689 de inteligencia artificial, y porque es de justicia saberlo.</p><p>El modelo lo pone <strong>Anthropic</strong>, y las respuestas se generan en servidores de <strong>Estados Unidos</strong>.</p><h3>Qué se le manda cuando le preguntas</h3><p>Para poder responderte con sentido, se le envía:</p><ul><li>tu nombre o apodo, qué estudias y en qué curso;</li><li>si trabajas, cuántas horas de estudio te has propuesto a la semana, qué días dices que puedes ponerte, qué nota buscas, <strong>qué te cuesta más y para qué estudias</strong> (esas dos las escribes tú y son opcionales: si las dejas en blanco, no hay nada que mandar);</li><li>tus asignaturas con sus notas, lo que te falta para aprobar y, cuando las faltas ya aprietan, cuántas llevas;</li><li>las entregas y exámenes que tengas cerca, con sus fechas y su plan;</li><li>tu horario de clases de hoy y de mañana, solo las horas y la asignatura;</li><li><strong>los títulos</strong> de tus apuntes, para que sepa qué has visto ya;</li><li><strong>el contenido del apunte que tengas abierto en ese momento</strong>, hasta unas 1.200 letras, para que pueda hablar de lo que estás mirando. Si no tienes ninguno abierto, no se manda ningún apunte;</li><li>cuántas tarjetas de repaso te tocan hoy y tus objetivos del día;</li><li>los últimos mensajes de vuestra conversación;</li><li>los archivos o capturas que tú le adjuntes;</li><li><strong>si opositas</strong>: el nombre de tu oposición, la fecha y las reglas del examen (preguntas, opciones, lo que resta cada fallo y la nota de corte), cuántos temas tiene tu temario y por qué vuelta vas, el número y el título de los temas que te tocan hoy, de los que se te enfrían y de los que llevas flojos, y los resultados de tus simulacros. Si hay tema a desarrollar, cuántas bolas se sacan y la probabilidad de que te salga uno que llevas. Y si has puesto el plazo de la solicitud, hasta cuándo es y si ya la has presentado.</li></ul><p><strong>No se le manda</strong> nada que no esté en esa lista. En concreto, <strong>no</strong> se le envían los archivos de tu casillero, ni tu vocabulario de inglés, ni lo que hay escrito en tus tarjetas de repaso, ni el nombre de tu centro, ni el de tu aula, ni el texto de los apuntes que no tengas abiertos, ni las notas que escribas en cada tema de la oposición, ni los enlaces que guardes a leyes o a las bases, ni las horas que llevas en cada tema, ni de qué temas eran tus fallos.</p><p>Cuando pulsas «Que el profe me pregunte este tema», la app te deja escrita la petición con el número y el título del tema, pero <strong>no la envía</strong>: la mandas tú.</p><h3>En qué se equivoca</h3><p>Se equivoca. No de vez en cuando: forma parte de cómo funcionan estas máquinas.</p><ul><li>Puede <strong>inventarse</strong> datos, fechas, artículos de ley o funciones de un lenguaje de programación, y contártelo con total seguridad.</li><li>Puede estar <strong>desactualizado</strong> sobre el temario, la convocatoria o la normativa de tu ciclo.</li><li>No conoce las normas de tu centro. <strong>Quien decide cómo te evalúan y cuántas faltas te dejan es tu centro, no la app.</strong></li></ul><p>Regla sencilla: si te lo juegas —una fecha de entrega, una fórmula de un examen, un trámite— <strong>compruébalo en la fuente oficial</strong>.</p><h3>Para qué no sirve</h3><ul><li><strong>No es un médico ni un psicólogo.</strong> Si lo estás pasando mal, habla con alguien de verdad. Teléfono de atención a la conducta suicida: <strong>024</strong>. Emergencias: <strong>112</strong>.</li><li><strong>No es un abogado ni un asesor financiero.</strong></li><li><strong>No atiende emergencias</strong> de ningún tipo.</li><li><strong>No es para copiar.</strong> Está para que entiendas y apruebes. Entregar como tuyo lo que te ha escrito una máquina puede ser una falta académica en tu centro, y el responsable de lo que entregues eres tú.</li></ul><h3>De qué no habla</h3><p>El profe está programado para hablar <strong>solo de tus estudios</strong>: tu ciclo, tus asignaturas y tus dudas profesionales. Si le preguntas por su vida, por la tuya o por cualquier otra cosa, te lo dirá y volverá al tema. No es antipatía: es que un profe de verdad tampoco entra ahí.</p><h3>Qué pasa con lo que le cuentas</h3><ul><li>La conversación se guarda <strong>contigo</strong>, igual que tus apuntes, y se borra con ellos desde Ajustes → Datos.</li><li><strong>No se usa para entrenar modelos.</strong></li><li>El proveedor la procesa para generarte una respuesta y la conserva el tiempo que diga su propia política, en los términos del contrato firmado con él.</li></ul><p><mark class=\"lg-falta\">RELLENAR: confirmar el plazo y las condiciones exactas al firmar el contrato de encargado de tratamiento con el proveedor.</mark></p><h3>Si no lo quieres usar</h3><p>El resto de GritNook —notas, faltas, agenda, apuntes, casillero, repaso— funciona sin el profe.</p><p>Puedes apagarlo del todo en <strong>Ajustes → El profe</strong>, quitando la marca de «Usar el profe con inteligencia artificial». Mientras esté apagado <strong>no sale nada</strong> de la aplicación hacia ninguna IA: ni tu nombre, ni tus notas, ni tus apuntes. Lo que le escribas se guarda en tu dispositivo, pero no se envía a nadie. Se vuelve a encender en el mismo sitio.</p>"},{"id":"terminos","nombre":"Términos de uso","resumen":"Las reglas entre tú y GritNook","titulo":"Términos de uso","html":"<p>En vigor desde el 23 de septiembre de 2026.</p><h3>1. Qué es esto</h3><p>Estas son las reglas entre <strong>Gabriel Rodríguez Blanco</strong>, NIF 09215128V («el titular»), y tú, que usas GritNook. Al usar la aplicación las aceptas. Si no estás de acuerdo con alguna, no la uses.</p><p>Van con ellas la <button type=\"button\" class=\"lg-enlace\" data-lg=\"privacidad\">política de privacidad</button>, el <button type=\"button\" class=\"lg-enlace\" data-lg=\"aviso-legal\">aviso legal</button> y el <button type=\"button\" class=\"lg-enlace\" data-lg=\"ia\">aviso sobre la IA</button>.</p><h3>2. Qué hace la aplicación</h3><p>GritNook te ayuda a organizar los estudios: apuntar asignaturas, notas y faltas, ver qué te falta para aprobar, llevar la agenda de entregas y exámenes, tomar apuntes, guardar documentos y estudiar con un profe que funciona con inteligencia artificial.</p><p>Es una herramienta de apoyo. <strong>No sustituye a tu centro, a tu profesorado ni a las normas de tu ciclo.</strong></p><h3>3. Quién puede usarla</h3><p>Hay que tener <strong>14 años cumplidos</strong>. Con menos, hace falta que tu padre, tu madre o tu tutor lo autoricen y la usen contigo.</p><p>Si tienes entre 14 y 18 años puedes usarla, pero al aceptar estos términos estás diciendo que en casa lo saben.</p><h3>4. Tu cuenta</h3><ul><li>Una cuenta es de <strong>una sola persona</strong>. Usa un correo tuyo y una contraseña que no uses en otro sitio, y no se la dejes a nadie.</li><li>Tú respondes de lo que se haga con tu cuenta. Si crees que alguien ha entrado en ella, cambia la contraseña y escribe al correo de contacto.</li><li>Puedes borrarla cuando quieras desde Ajustes → Datos → Borrar mi cuenta.</li><li>El titular puede suspender o borrar una cuenta que se use para romper estos términos (por ejemplo, para subir contenido ilegal o para atacar la aplicación), avisándote antes salvo que haya un motivo grave.</li></ul><h3>5. Cuánto cuesta</h3><p>Hoy la aplicación es <strong>gratuita</strong>. Si en el futuro hay una versión de pago, se avisará con antelación dentro de la app, y lo que ya tengas guardado seguirá siendo tuyo y descargable en cualquier caso.</p><p><mark class=\"lg-falta\">RELLENAR cuando haya cobro: precio, forma de pago, duración, renovación, cancelación y derecho de desistimiento de 14 días.</mark></p><h3>6. Lo que te damos</h3><p>Un permiso personal para usar la aplicación: no exclusivo, no transferible, revocable y solo para estudiar tú. No incluye poder:</p><ul><li>copiar, distribuir o vender el código, ni entero ni a trozos;</li><li>quitar el nombre, el logotipo o los avisos de autoría;</li><li>usarla para montar un servicio parecido;</li><li>entrar por donde no toca, saltarte límites o hacerle ingeniería inversa más allá de lo que la ley permita.</li></ul><p>Las condiciones completas del código están en el <span class=\"lg-ref\">archivo de licencia</span>.</p><h3>7. Lo que escribes es tuyo</h3><p>Tus apuntes, tus notas, tus archivos y tus conversaciones <strong>son tuyos</strong>. El titular no adquiere ningún derecho sobre ellos: solo los guarda donde tú decides y los envía al proveedor de IA cuando le preguntas, porque si no, no podría responderte.</p><p>No se usan para entrenar modelos, ni para publicidad, ni se enseñan a nadie.</p><h3>8. Lo que no puedes subir</h3><p>Ni contenido ilegal, ni material protegido de otros sin permiso, ni datos personales de terceros (fotos de compañeros, exámenes con nombres, informes médicos de nadie), ni nada que pueda dañar la aplicación o a quien la use.</p><p>Tú respondes de lo que subes.</p><h3>9. El profe con inteligencia artificial</h3><p>Léete el <button type=\"button\" class=\"lg-enlace\" data-lg=\"ia\">aviso sobre la IA</button>. En resumen:</p><ul><li>Es una máquina, no una persona.</li><li><strong>Puede equivocarse.</strong> Comprueba siempre las fechas, las fórmulas y cualquier cosa que te juegues.</li><li>No es asesoramiento médico, legal ni financiero, y no atiende emergencias.</li><li>Está para que aprendas y apruebes, no para hacerte los trabajos. Copiar lo que te dé y entregarlo como tuyo puede ser una falta académica en tu centro: eso es cosa tuya y de las normas de tu escuela.</li></ul><h3>10. Que funcione</h3><p>Se hace lo posible para que la aplicación esté disponible y no falle, pero no se promete que esté siempre ni que no tenga errores. Puede haber cortes por mantenimiento, por cambios o porque falle un proveedor.</p><p><strong>Haz copias.</strong> Ajustes → Datos → Descargar copia. Si borras los datos del navegador, cambias de dispositivo o se estropea, sin copia no hay vuelta atrás.</p><h3>11. Hasta cuándo</h3><p>Puedes dejar de usarla cuando quieras: borrando tu cuenta desde Ajustes → Datos o simplemente dejando de entrar. El titular puede retirar la aplicación o dejar de prestar el servicio avisando con antelación razonable dentro de la app, para que te dé tiempo a descargarte tus cosas.</p><h3>12. Responsabilidad</h3><p>El titular responde de los daños que cause por dolo o por negligencia grave, y de todo lo que la ley no permita excluir. Fuera de eso, y en la medida en que la ley lo permita, no responde de:</p><ul><li>la pérdida de datos por borrar el navegador, perder el dispositivo o no hacer copias;</li><li>las consecuencias de fiarse de un cálculo o de una respuesta del profe sin comprobarla;</li><li>los fallos de servicios de terceros de los que depende la aplicación.</li></ul><p><strong>Si eres consumidor, nada de esto te quita los derechos que te da la ley.</strong></p><h3>13. Cambios</h3><p>Estos términos se pueden cambiar. Los cambios importantes se avisan dentro de la aplicación antes de que entren en vigor. Seguir usándola después es aceptarlos.</p><h3>14. Ley y conflictos</h3><p>Se aplica la ley española. Si algo se tuerce, escribe primero al correo de contacto: casi todo se arregla así. Si no, los tribunales competentes serán los que diga la ley y, si eres consumidor, los de tu domicilio. También puedes acudir a las juntas arbitrales de consumo.</p>"},{"id":"aviso-legal","nombre":"Aviso legal","resumen":"Quién está detrás de la aplicación","titulo":"Aviso legal","html":"<p>En vigor desde el 20 de septiembre de 2026.</p><h3>Quién está detrás de GritNook</h3><ul><li><strong>Titular:</strong> Gabriel Rodríguez Blanco</li><li><strong>NIF:</strong> 09215128V</li><li><strong>Correo de contacto:</strong> gabriel_gabiz@hotmail.com</li><li><strong>Dirección de la aplicación:</strong> https://gabriel15gabi.github.io/gritnook/</li></ul><p>Esta información se publica para cumplir el artículo 10 de la Ley 34/2002, de servicios de la sociedad de la información y de comercio electrónico.</p><p>GritNook se ofrece <strong>gratis y sin actividad comercial</strong>: no se cobra por ella, no hay publicidad y no se vende nada. Por eso aquí no figura una dirección postal. El día que la aplicación pase a ser de pago se publicará también el domicilio del titular, que es lo que exige ese artículo 10 cuando hay actividad económica. Mientras tanto, para cualquier notificación sirve el correo de contacto, que se lee y se responde.</p><h3>Qué es GritNook</h3><p>GritNook es una aplicación web para organizar los estudios: asignaturas, notas, faltas, entregas, apuntes, documentos y un profe con inteligencia artificial que explica y pregunta. Funciona dentro del navegador, sin instalar nada.</p><h3>Condiciones de uso</h3><p>El uso de la aplicación implica aceptar este aviso, los <button type=\"button\" class=\"lg-enlace\" data-lg=\"terminos\">términos de uso</button>, la <button type=\"button\" class=\"lg-enlace\" data-lg=\"privacidad\">política de privacidad</button> y el <button type=\"button\" class=\"lg-enlace\" data-lg=\"ia\">aviso sobre la inteligencia artificial</button>. Quien no esté de acuerdo, que no la use.</p><p>El titular puede cambiar, suspender o retirar la aplicación o cualquiera de sus partes, y modificar estos textos. Los cambios se publican en esta misma dirección con su fecha.</p><h3>De quién es lo que ves</h3><p>El código, el diseño, los textos, el nombre «GritNook» y su logotipo son del titular. Están publicados para poder leerlos y estudiarlos, no para copiarlos: las condiciones están en el <span class=\"lg-ref\">archivo de licencia</span> del repositorio.</p><p>La aplicación incluye piezas de otros autores —tipografías, iconos y la librería que abre los PDF— que mantienen sus propias licencias libres, detalladas en los <span class=\"lg-ref\">créditos</span>.</p><p><strong>Lo que escribe cada persona sigue siendo suyo.</strong> Los apuntes, las notas y los archivos que se suben pertenecen a quien los crea; el titular no se queda con ningún derecho sobre ellos.</p><h3>Responsabilidad</h3><p>El titular pone todo el cuidado razonable en que la aplicación funcione y en que los cálculos de notas y de faltas sean correctos, pero la aplicación se ofrece «tal cual». En concreto:</p><ul><li>Lo que calcula y lo que responde el profe es <strong>orientativo</strong>. Las normas de evaluación y de asistencia las pone cada centro, y son las que mandan.</li><li>No se garantiza que la aplicación esté disponible sin interrupciones ni que esté libre de errores.</li><li>Cada persona es responsable de guardar una copia de sus datos. La aplicación tiene un botón para descargarla en Ajustes → Datos.</li></ul><p>Nada de lo anterior limita los derechos que la ley reconoce a los consumidores.</p><h3>Enlaces a otros sitios</h3><p>Si la aplicación enlaza a páginas de terceros, el titular no responde de su contenido ni de lo que esas páginas hagan con los datos de quien las visite.</p><h3>Ley aplicable</h3><p>Se aplica la ley española. Para cualquier conflicto, las partes se someten a los juzgados que correspondan según la ley; cuando quien usa la aplicación es consumidor, los de su propio domicilio.</p><p>Quien sea consumidor y tenga una queja puede dirigirse antes al correo de contacto y, si no queda resuelta, a las juntas arbitrales de consumo.</p>"}];
-const LEGAL_V = "23 de septiembre de 2026";
+const LEGAL = [{"id":"privacidad","nombre":"Privacidad","resumen":"Qué datos se guardan, dónde viven y cómo borrarlos","titulo":"Política de privacidad","html":"<p>En vigor desde el 24 de septiembre de 2026.</p><h3>Lo importante, en pocas líneas</h3><p>Para usar GritNook te haces una <strong>cuenta con tu correo y una contraseña</strong>. No se pide teléfono, ni dirección, ni datos de pago. Lo que escribes —tus asignaturas, tus notas, tus apuntes y tus archivos— se guarda <strong>en tu cuenta, en un servidor de la Unión Europea (Frankfurt, Alemania)</strong>, y en tu navegador, para que funcione también sin conexión. Si abres la app desde Claude, se guarda en tu cuenta de Claude en su lugar.</p><p>El responsable de la app ve <strong>tu correo y cuánto la usas, nunca lo que escribes</strong>. <strong>No hay publicidad, ni analítica de terceros, y no se vende nada a nadie.</strong> El profe con inteligencia artificial está <strong>apagado por ahora</strong>, así que la app no envía nada a ninguna IA. Puedes descargarte todo o borrar tu cuenta entera cuando quieras, desde Ajustes → Datos.</p><h3>1. Quién responde de tus datos</h3><ul><li><strong>Responsable:</strong> Gabriel Rodríguez Blanco</li><li><strong>NIF:</strong> 09215128V</li><li><strong>Correo para todo lo relacionado con tus datos:</strong> gabriel_gabiz@hotmail.com</li></ul><p>No hace falta delegado de protección de datos. El correo es el canal oficial: por ahí se atienden todas las peticiones, y se responden en un mes como máximo.</p><h3>2. Qué datos se tratan</h3><p>Los que tú escribes o subes a la aplicación: tu nombre o apodo, tu foto de perfil si pones una (es opcional y no hace falta que sea tu cara), qué estudias, tus asignaturas con sus notas y sus faltas, tu agenda, tus apuntes y dibujos, los archivos que subes al casillero, tus tarjetas de repaso, tu vocabulario de inglés, tus minutos de estudio y tus conversaciones con el profe.</p><p>Para tu cuenta: tu <strong>correo electrónico</strong> y tu <strong>contraseña</strong>, que no se guarda tal cual sino cifrada de forma que no se puede leer (nadie puede verla, tampoco el responsable). Y, para saber cuánto se usa la app, <strong>qué días entras</strong> (el día y cuántas veces), cuándo te diste de alta y la última vez que entraste.</p><p>Como cualquier servidor, el de las cuentas apunta durante un tiempo corto la dirección IP y el navegador de cada conexión, por seguridad.</p><p>El detalle completo, campo por campo, está en el <span class=\"lg-ref\">inventario de datos</span>, que se actualiza cada vez que la aplicación cambia.</p><p><strong>No se tratan</strong> ni datos de pago, ni ubicación, ni identificadores publicitarios, ni nada que tú no escribas.</p><p>Ten en cuenta que entre tus datos puede haber <strong>datos de salud</strong> si tú los escribes (por ejemplo, un apunte que diga por qué faltaste a clase). La app no te los pide y no los necesita; si los escribes, quedan guardados como cualquier otro apunte. Te recomendamos no escribirlos.</p><h3>3. Para qué se usan y con qué base legal</h3><div class=\"lg-tabla\"><table><thead><tr><th>Para qué</th><th>Base legal</th></tr></thead><tbody><tr><td>Que la app funcione: guardar tu perfil, tus notas, tu agenda y tus apuntes, y calcular lo que te falta para aprobar</td><td>Ejecutar el contrato que aceptas al usarla (art. 6.1.b RGPD)</td></tr><tr><td>Que el profe pueda responderte, explicarte y preguntarte</td><td>Ejecutar el contrato (art. 6.1.b RGPD)</td></tr><tr><td>Crear y mantener tu cuenta, y guardar ahí tus datos para que los veas desde cualquier dispositivo</td><td>Ejecutar el contrato (art. 6.1.b RGPD)</td></tr><tr><td>Mandarte los correos del servicio: cambiar la contraseña o avisarte de un cambio importante</td><td>Ejecutar el contrato (art. 6.1.b RGPD)</td></tr><tr><td>Saber cuánta gente usa la app y cuánto (qué días entra cada cuenta), para mejorarla</td><td>Interés legítimo en conocer el uso de un servicio que está empezando (art. 6.1.f RGPD). Solo se apunta el día, nunca lo que haces. Puedes oponerte escribiendo al correo de contacto</td></tr><tr><td>Sincronizar entre tus dispositivos, si abres la app desde Claude</td><td>Ejecutar el contrato (art. 6.1.b RGPD)</td></tr><tr><td>Recordar el tema claro u oscuro y tus preferencias de la libreta</td><td>Interés legítimo en que la app se vea como la dejaste (art. 6.1.f RGPD)</td></tr><tr><td>Atender tus derechos y responder a lo que preguntes</td><td>Obligación legal (art. 6.1.c RGPD)</td></tr></tbody></table></div><p><strong>No se usan</strong> para publicidad, ni para perfilarte, ni para entrenar modelos de inteligencia artificial.</p><p><strong>No hay decisiones automatizadas</strong> con efectos jurídicos sobre ti. Cuando la app dice que una asignatura está «en riesgo» o que un examen es urgente, es una cuenta hecha con los datos que tú has metido, para ayudarte a decidir: no decide nada por ti y no la ve nadie más.</p><h3>4. Cookies y almacenamiento en tu dispositivo</h3><p><strong>No se usan cookies.</strong> La app guarda sus datos en el almacenamiento local del navegador porque es lo que la hace funcionar sin conexión. Si tienes cuenta, ahí se guarda también la sesión (lo que te mantiene dentro sin volver a poner la contraseña) y la lista de cambios que faltan por subir. Es almacenamiento técnico imprescindible para prestar el servicio que pides, así que está exento de pedir consentimiento (art. 22.2 LSSI). No se usa para seguirte ni para medir nada, y se borra entero desde Ajustes → Datos o borrando los datos del sitio en tu navegador.</p><p>Ahí se guardan también tres cosas pequeñas de la propia app: la fecha de tu última copia de seguridad (para recordártela), qué avisos ya has visto (para no repetirlos) y los últimos fallos que haya dado, que no salen de tu dispositivo. Si tu navegador lo permite, la app le pide que <strong>no borre estos datos</strong> cuando ande justo de espacio.</p><h3>5. Quién más ve tus datos</h3><div class=\"lg-tabla\"><table><thead><tr><th>Quién</th><th>Qué ve</th><th>Dónde está</th></tr></thead><tbody><tr><td>Anthropic (proveedor del profe con IA)</td><td><strong>Ahora mismo, nada: el profe está apagado.</strong> Cuando se encienda, solo lo que se le envíe en cada pregunta. El detalle exacto, campo por campo, está en cómo funciona el profe: en resumen, tu nombre o apodo, tu curso, tus asignaturas con sus notas, tus entregas y exámenes, tu horario, los títulos de tus apuntes, el contenido del que tengas abierto, los últimos mensajes y los archivos que adjuntes</td><td>Estados Unidos</td></tr><tr><td>Anthropic (almacenamiento de Claude), solo si abres la app desde allí</td><td>Tus datos sincronizados y tus archivos del casillero</td><td>Estados Unidos</td></tr><tr><td>Supabase, Inc. (el servidor de las cuentas), como encargado de tratamiento</td><td>Tu correo, tu contraseña cifrada, tus datos (también tu foto de perfil, si pones una), tus archivos y los días que entras, para guardarlos. No los usa para nada más</td><td>Unión Europea (Frankfurt, Alemania)</td></tr><tr><td>GitHub Pages (GitHub, Inc.)</td><td>Solo sirve los archivos de la app. Como cualquier servidor web, registra la dirección IP y el navegador de quien la abre, por seguridad. <strong>No recibe ninguno de tus datos de estudio</strong></td><td>Estados Unidos</td></tr></tbody></table></div><p><strong>Lo que ve el responsable de la app.</strong> Tiene un panel con, de cada cuenta: el correo, cuándo se dio de alta, la última vez que entró, cuántos días ha entrado en la última semana y en el último mes, qué estudia (ESO, Bachillerato, FP, universidad, oposición…) y cuánto espacio ocupa. <strong>No ve tu foto, ni tus apuntes, ni tus notas, ni tus archivos, ni nada de lo que escribes</strong>: el panel no los lee. Si algún día hiciera falta mirar algo tuyo para arreglar un fallo, se te pedirá que mandes tú una copia.</p><p>A eso se suma una cosa que decides tú: si usas <strong>Ajustes → Datos → Contar un fallo</strong> y le das a enviar, se abre tu programa de correo con un mensaje ya escrito para el responsable de la app. Lleva lo que tú cuentes y unos datos técnicos —versión, navegador, tamaño de pantalla, idioma, cuántos apuntes y documentos tienes y los últimos fallos que la app haya apuntado—, pero <strong>ni tu nombre, ni tus notas, ni tus apuntes</strong>. Puedes leerlo entero antes de mandarlo, y no se envía nada si no le das tú a enviar.</p><p>No hay nadie más. No se ceden datos a terceros, ni se venden, ni hay anunciantes. Solo se entregarían a jueces, fuerzas de seguridad o administraciones si una ley lo obligara.</p><h3>6. Datos que salen de la Unión Europea</h3><p><strong>Tu cuenta</strong> se guarda en Frankfurt (Alemania). Supabase es una empresa de Estados Unidos: si su personal tuviera que entrar desde fuera de Europa para dar soporte o mantenimiento, lo cubre su contrato de encargado de tratamiento, con las <strong>cláusulas contractuales tipo</strong> de la Comisión Europea.</p><p><strong>Mientras el profe esté apagado, no sale ningún dato tuyo hacia ninguna IA.</strong> Lo que sigue es lo que pasará cuando se encienda.</p><p>El profe con IA se procesa en Estados Unidos. Esa transferencia está amparada en las <strong>cláusulas contractuales tipo</strong> aprobadas por la Comisión Europea y, en su caso, en el <strong>marco de privacidad UE-EE. UU.</strong> al que esté adherido el proveedor. Puedes pedirnos copia de las garantías escribiendo al correo de contacto.</p><p><mark class=\"lg-falta\">RELLENAR: confirmar el mecanismo exacto al firmar el contrato de encargado de tratamiento con el proveedor, y actualizar este párrafo.</mark></p><p>Si no quieres que nada salga de Europa, no uses el profe: el resto de la aplicación funciona sin él.</p><h3>7. Cuánto tiempo se guardan</h3><p>Mientras tú quieras. No hay borrado automático ni caducidad.</p><ul><li>Si borras un apunte o un documento, se borra en ese momento, también de tu cuenta.</li><li>Si pulsas «Borrar todo», se borran tus datos: lo de este dispositivo, lo de tu cuenta y los archivos que hayas subido. La cuenta sigue, vacía.</li><li>Si pulsas <strong>«Borrar mi cuenta»</strong>, se borra al momento del servidor: tu correo, tu contraseña, todos tus datos, tus archivos y los días que entraste. No se puede deshacer.</li><li>Si cierras sesión, se borra lo de ese navegador; lo tuyo sigue en tu cuenta.</li><li>Si la app cierra algún día, se avisará con tiempo para que te descargues lo tuyo, y después se borrarán todas las cuentas.</li></ul><p>El correo que nos escribas para ejercer tus derechos se guarda mientras haga falta para atenderlo y, después, el tiempo que obliguen las leyes de prescripción.</p><h3>8. Tus derechos</h3><p>Puedes pedir, gratis y en cualquier momento:</p><ul><li><strong>Acceso</strong>: saber qué datos hay sobre ti. De hecho, los tienes tú: están en tu cuenta y te los puedes descargar en un clic.</li><li><strong>Rectificación</strong>: corregir lo que esté mal. Se edita directamente en la app.</li><li><strong>Supresión</strong>: que se borre todo. Ajustes → Datos → Borrar mi cuenta.</li><li><strong>Portabilidad</strong>: llevarte tus datos. Ajustes → Datos → Descargar copia, que te da un archivo JSON con absolutamente todo.</li><li><strong>Limitación y oposición</strong> al tratamiento, también a que se cuenten los días que entras.</li></ul><p>Casi todos los puedes ejercer tú solo desde la app, sin pedir permiso a nadie. Si prefieres escribir, el correo es gabriel_gabiz@hotmail.com. Se responde en un mes como máximo.</p><p>Si crees que no se han respetado tus derechos, puedes reclamar ante la <strong>Agencia Española de Protección de Datos</strong> (www.aepd.es, C/ Jorge Juan 6, 28001 Madrid).</p><h3>9. Menores de edad</h3><p>Para usar GritNook hay que tener <strong>14 años cumplidos</strong>. Es la edad que fija la ley española (art. 7 de la Ley Orgánica 3/2018) para que alguien pueda decidir por sí mismo sobre sus datos en un servicio como este.</p><p>Si tienes menos de 14 años, necesitas que tu padre, tu madre o tu tutor lo autoricen y usen la app contigo.</p><p>Si tienes entre 14 y 18, puedes usarla tú solo, pero es buena idea contárselo en casa, sobre todo porque el profe funciona con inteligencia artificial.</p><p>Padres y tutores: podéis escribir al correo de contacto para preguntar qué datos hay, corregirlos o pedir que se borren.</p><h3>10. Seguridad</h3><p>La app se sirve siempre por conexión cifrada (HTTPS), y todo lo que va y viene de tu cuenta viaja cifrado también. En el servidor, <strong>cada cuenta solo puede leer y escribir lo suyo</strong>: no lo decide la app, que es código que cualquiera puede tocar, sino la propia base de datos. Las contraseñas se guardan cifradas de forma que no se pueden leer.</p><p>Aun así, <strong>quien tenga acceso a tu dispositivo desbloqueado puede ver tus apuntes</strong>, igual que puede ver tus fotos. Si compartes ordenador, <strong>cierra sesión</strong> al terminar (Ajustes → Datos → Cerrar sesión): se borra lo de ese navegador y lo tuyo sigue en tu cuenta.</p><p>Si un día hubiera un problema de seguridad que afectara a tus datos, se avisará a la Agencia Española de Protección de Datos en 72 horas y, si te afecta, también a ti.</p><h3>11. Cambios en esta política</h3><p>Si cambia algo —que se añada una función que guarde datos nuevos, o que cambie el proveedor de IA o el del servidor— se actualiza este texto, se cambia la fecha de arriba y se avisa dentro de la aplicación.</p>"},{"id":"ia","nombre":"Cómo funciona el profe","resumen":"Que es una máquina, qué se le manda y en qué se equivoca","titulo":"Cómo funciona el profe","html":"<p>En vigor desde el 24 de septiembre de 2026.</p><h3>Estás hablando con una máquina</h3><p>El profe de GritNook es un programa de inteligencia artificial. <strong>No es una persona</strong>, aunque escriba como si lo fuera, te anime o se acuerde de lo que hablasteis. Te lo decimos claramente porque lo exige el artículo 50 del Reglamento (UE) 2024/1689 de inteligencia artificial, y porque es de justicia saberlo.</p><p>El modelo lo pone <strong>Anthropic</strong>, y las respuestas se generan en servidores de <strong>Estados Unidos</strong>.</p><h3>Qué se le manda cuando le preguntas</h3><p>Para poder responderte con sentido, se le envía:</p><ul><li>tu nombre o apodo, qué estudias y en qué curso;</li><li>si trabajas, cuántas horas de estudio te has propuesto a la semana, qué días dices que puedes ponerte, qué nota buscas, <strong>qué te cuesta más y para qué estudias</strong> (esas dos las escribes tú y son opcionales: si las dejas en blanco, no hay nada que mandar);</li><li>tus asignaturas con sus notas, lo que te falta para aprobar y, cuando las faltas ya aprietan, cuántas llevas;</li><li>las entregas y exámenes que tengas cerca, con sus fechas y su plan;</li><li>tu horario de clases de hoy y de mañana, solo las horas y la asignatura;</li><li><strong>los títulos</strong> de tus apuntes, para que sepa qué has visto ya;</li><li><strong>el contenido del apunte que tengas abierto en ese momento</strong>, hasta unas 1.200 letras, para que pueda hablar de lo que estás mirando. Si no tienes ninguno abierto, no se manda ningún apunte;</li><li>cuántas tarjetas de repaso te tocan hoy y tus objetivos del día;</li><li>los últimos mensajes de vuestra conversación;</li><li>los archivos o capturas que tú le adjuntes;</li><li><strong>si opositas</strong>: el nombre de tu oposición, la fecha y las reglas del examen (preguntas, opciones, lo que resta cada fallo y la nota de corte), cuántos temas tiene tu temario y por qué vuelta vas, el número y el título de los temas que te tocan hoy, de los que se te enfrían y de los que llevas flojos, y los resultados de tus simulacros. Si hay tema a desarrollar, cuántas bolas se sacan y la probabilidad de que te salga uno que llevas. Y si has puesto el plazo de la solicitud, hasta cuándo es y si ya la has presentado.</li></ul><p><strong>No se le manda</strong> nada que no esté en esa lista. En concreto, <strong>no</strong> se le envían tu foto de perfil, ni los archivos de tu casillero, ni tu vocabulario de inglés, ni lo que hay escrito en tus tarjetas de repaso, ni el nombre de tu centro, ni el de tu aula, ni el texto de los apuntes que no tengas abiertos, ni las notas que escribas en cada tema de la oposición, ni los enlaces que guardes a leyes o a las bases, ni las horas que llevas en cada tema, ni de qué temas eran tus fallos.</p><p>Cuando pulsas «Que el profe me pregunte este tema», la app te deja escrita la petición con el número y el título del tema, pero <strong>no la envía</strong>: la mandas tú.</p><h3>En qué se equivoca</h3><p>Se equivoca. No de vez en cuando: forma parte de cómo funcionan estas máquinas.</p><ul><li>Puede <strong>inventarse</strong> datos, fechas, artículos de ley o funciones de un lenguaje de programación, y contártelo con total seguridad.</li><li>Puede estar <strong>desactualizado</strong> sobre el temario, la convocatoria o la normativa de tu ciclo.</li><li>No conoce las normas de tu centro. <strong>Quien decide cómo te evalúan y cuántas faltas te dejan es tu centro, no la app.</strong></li></ul><p>Regla sencilla: si te lo juegas —una fecha de entrega, una fórmula de un examen, un trámite— <strong>compruébalo en la fuente oficial</strong>.</p><h3>Para qué no sirve</h3><ul><li><strong>No es un médico ni un psicólogo.</strong> Si lo estás pasando mal, habla con alguien de verdad. Teléfono de atención a la conducta suicida: <strong>024</strong>. Emergencias: <strong>112</strong>.</li><li><strong>No es un abogado ni un asesor financiero.</strong></li><li><strong>No atiende emergencias</strong> de ningún tipo.</li><li><strong>No es para copiar.</strong> Está para que entiendas y apruebes. Entregar como tuyo lo que te ha escrito una máquina puede ser una falta académica en tu centro, y el responsable de lo que entregues eres tú.</li></ul><h3>De qué no habla</h3><p>El profe está programado para hablar <strong>solo de tus estudios</strong>: tu ciclo, tus asignaturas y tus dudas profesionales. Si le preguntas por su vida, por la tuya o por cualquier otra cosa, te lo dirá y volverá al tema. No es antipatía: es que un profe de verdad tampoco entra ahí.</p><h3>Qué pasa con lo que le cuentas</h3><ul><li>La conversación se guarda <strong>contigo</strong>, igual que tus apuntes, y se borra con ellos desde Ajustes → Datos.</li><li><strong>No se usa para entrenar modelos.</strong></li><li>El proveedor la procesa para generarte una respuesta y la conserva el tiempo que diga su propia política, en los términos del contrato firmado con él.</li></ul><p><mark class=\"lg-falta\">RELLENAR: confirmar el plazo y las condiciones exactas al firmar el contrato de encargado de tratamiento con el proveedor.</mark></p><h3>Si no lo quieres usar</h3><p>El resto de GritNook —notas, faltas, agenda, apuntes, casillero, repaso— funciona sin el profe.</p><p>Puedes apagarlo del todo en <strong>Ajustes → El profe</strong>, quitando la marca de «Usar el profe con inteligencia artificial». Mientras esté apagado <strong>no sale nada</strong> de la aplicación hacia ninguna IA: ni tu nombre, ni tus notas, ni tus apuntes. Lo que le escribas se guarda en tu dispositivo, pero no se envía a nadie. Se vuelve a encender en el mismo sitio.</p>"},{"id":"terminos","nombre":"Términos de uso","resumen":"Las reglas entre tú y GritNook","titulo":"Términos de uso","html":"<p>En vigor desde el 23 de septiembre de 2026.</p><h3>1. Qué es esto</h3><p>Estas son las reglas entre <strong>Gabriel Rodríguez Blanco</strong>, NIF 09215128V («el titular»), y tú, que usas GritNook. Al usar la aplicación las aceptas. Si no estás de acuerdo con alguna, no la uses.</p><p>Van con ellas la <button type=\"button\" class=\"lg-enlace\" data-lg=\"privacidad\">política de privacidad</button>, el <button type=\"button\" class=\"lg-enlace\" data-lg=\"aviso-legal\">aviso legal</button> y el <button type=\"button\" class=\"lg-enlace\" data-lg=\"ia\">aviso sobre la IA</button>.</p><h3>2. Qué hace la aplicación</h3><p>GritNook te ayuda a organizar los estudios: apuntar asignaturas, notas y faltas, ver qué te falta para aprobar, llevar la agenda de entregas y exámenes, tomar apuntes, guardar documentos y estudiar con un profe que funciona con inteligencia artificial.</p><p>Es una herramienta de apoyo. <strong>No sustituye a tu centro, a tu profesorado ni a las normas de tu ciclo.</strong></p><h3>3. Quién puede usarla</h3><p>Hay que tener <strong>14 años cumplidos</strong>. Con menos, hace falta que tu padre, tu madre o tu tutor lo autoricen y la usen contigo.</p><p>Si tienes entre 14 y 18 años puedes usarla, pero al aceptar estos términos estás diciendo que en casa lo saben.</p><h3>4. Tu cuenta</h3><ul><li>Una cuenta es de <strong>una sola persona</strong>. Usa un correo tuyo y una contraseña que no uses en otro sitio, y no se la dejes a nadie.</li><li>Tú respondes de lo que se haga con tu cuenta. Si crees que alguien ha entrado en ella, cambia la contraseña y escribe al correo de contacto.</li><li>Puedes borrarla cuando quieras desde Ajustes → Datos → Borrar mi cuenta.</li><li>El titular puede suspender o borrar una cuenta que se use para romper estos términos (por ejemplo, para subir contenido ilegal o para atacar la aplicación), avisándote antes salvo que haya un motivo grave.</li></ul><h3>5. Cuánto cuesta</h3><p>Hoy la aplicación es <strong>gratuita</strong>. Si en el futuro hay una versión de pago, se avisará con antelación dentro de la app, y lo que ya tengas guardado seguirá siendo tuyo y descargable en cualquier caso.</p><p><mark class=\"lg-falta\">RELLENAR cuando haya cobro: precio, forma de pago, duración, renovación, cancelación y derecho de desistimiento de 14 días.</mark></p><h3>6. Lo que te damos</h3><p>Un permiso personal para usar la aplicación: no exclusivo, no transferible, revocable y solo para estudiar tú. No incluye poder:</p><ul><li>copiar, distribuir o vender el código, ni entero ni a trozos;</li><li>quitar el nombre, el logotipo o los avisos de autoría;</li><li>usarla para montar un servicio parecido;</li><li>entrar por donde no toca, saltarte límites o hacerle ingeniería inversa más allá de lo que la ley permita.</li></ul><p>Las condiciones completas del código están en el <span class=\"lg-ref\">archivo de licencia</span>.</p><h3>7. Lo que escribes es tuyo</h3><p>Tus apuntes, tus notas, tus archivos y tus conversaciones <strong>son tuyos</strong>. El titular no adquiere ningún derecho sobre ellos: solo los guarda donde tú decides y los envía al proveedor de IA cuando le preguntas, porque si no, no podría responderte.</p><p>No se usan para entrenar modelos, ni para publicidad, ni se enseñan a nadie.</p><h3>8. Lo que no puedes subir</h3><p>Ni contenido ilegal, ni material protegido de otros sin permiso, ni datos personales de terceros (fotos de compañeros, exámenes con nombres, informes médicos de nadie), ni nada que pueda dañar la aplicación o a quien la use.</p><p>Tú respondes de lo que subes.</p><h3>9. El profe con inteligencia artificial</h3><p>Léete el <button type=\"button\" class=\"lg-enlace\" data-lg=\"ia\">aviso sobre la IA</button>. En resumen:</p><ul><li>Es una máquina, no una persona.</li><li><strong>Puede equivocarse.</strong> Comprueba siempre las fechas, las fórmulas y cualquier cosa que te juegues.</li><li>No es asesoramiento médico, legal ni financiero, y no atiende emergencias.</li><li>Está para que aprendas y apruebes, no para hacerte los trabajos. Copiar lo que te dé y entregarlo como tuyo puede ser una falta académica en tu centro: eso es cosa tuya y de las normas de tu escuela.</li></ul><h3>10. Que funcione</h3><p>Se hace lo posible para que la aplicación esté disponible y no falle, pero no se promete que esté siempre ni que no tenga errores. Puede haber cortes por mantenimiento, por cambios o porque falle un proveedor.</p><p><strong>Haz copias.</strong> Ajustes → Datos → Descargar copia. Si borras los datos del navegador, cambias de dispositivo o se estropea, sin copia no hay vuelta atrás.</p><h3>11. Hasta cuándo</h3><p>Puedes dejar de usarla cuando quieras: borrando tu cuenta desde Ajustes → Datos o simplemente dejando de entrar. El titular puede retirar la aplicación o dejar de prestar el servicio avisando con antelación razonable dentro de la app, para que te dé tiempo a descargarte tus cosas.</p><h3>12. Responsabilidad</h3><p>El titular responde de los daños que cause por dolo o por negligencia grave, y de todo lo que la ley no permita excluir. Fuera de eso, y en la medida en que la ley lo permita, no responde de:</p><ul><li>la pérdida de datos por borrar el navegador, perder el dispositivo o no hacer copias;</li><li>las consecuencias de fiarse de un cálculo o de una respuesta del profe sin comprobarla;</li><li>los fallos de servicios de terceros de los que depende la aplicación.</li></ul><p><strong>Si eres consumidor, nada de esto te quita los derechos que te da la ley.</strong></p><h3>13. Cambios</h3><p>Estos términos se pueden cambiar. Los cambios importantes se avisan dentro de la aplicación antes de que entren en vigor. Seguir usándola después es aceptarlos.</p><h3>14. Ley y conflictos</h3><p>Se aplica la ley española. Si algo se tuerce, escribe primero al correo de contacto: casi todo se arregla así. Si no, los tribunales competentes serán los que diga la ley y, si eres consumidor, los de tu domicilio. También puedes acudir a las juntas arbitrales de consumo.</p>"},{"id":"aviso-legal","nombre":"Aviso legal","resumen":"Quién está detrás de la aplicación","titulo":"Aviso legal","html":"<p>En vigor desde el 20 de septiembre de 2026.</p><h3>Quién está detrás de GritNook</h3><ul><li><strong>Titular:</strong> Gabriel Rodríguez Blanco</li><li><strong>NIF:</strong> 09215128V</li><li><strong>Correo de contacto:</strong> gabriel_gabiz@hotmail.com</li><li><strong>Dirección de la aplicación:</strong> https://gabriel15gabi.github.io/gritnook/</li></ul><p>Esta información se publica para cumplir el artículo 10 de la Ley 34/2002, de servicios de la sociedad de la información y de comercio electrónico.</p><p>GritNook se ofrece <strong>gratis y sin actividad comercial</strong>: no se cobra por ella, no hay publicidad y no se vende nada. Por eso aquí no figura una dirección postal. El día que la aplicación pase a ser de pago se publicará también el domicilio del titular, que es lo que exige ese artículo 10 cuando hay actividad económica. Mientras tanto, para cualquier notificación sirve el correo de contacto, que se lee y se responde.</p><h3>Qué es GritNook</h3><p>GritNook es una aplicación web para organizar los estudios: asignaturas, notas, faltas, entregas, apuntes, documentos y un profe con inteligencia artificial que explica y pregunta. Funciona dentro del navegador, sin instalar nada.</p><h3>Condiciones de uso</h3><p>El uso de la aplicación implica aceptar este aviso, los <button type=\"button\" class=\"lg-enlace\" data-lg=\"terminos\">términos de uso</button>, la <button type=\"button\" class=\"lg-enlace\" data-lg=\"privacidad\">política de privacidad</button> y el <button type=\"button\" class=\"lg-enlace\" data-lg=\"ia\">aviso sobre la inteligencia artificial</button>. Quien no esté de acuerdo, que no la use.</p><p>El titular puede cambiar, suspender o retirar la aplicación o cualquiera de sus partes, y modificar estos textos. Los cambios se publican en esta misma dirección con su fecha.</p><h3>De quién es lo que ves</h3><p>El código, el diseño, los textos, el nombre «GritNook» y su logotipo son del titular. Están publicados para poder leerlos y estudiarlos, no para copiarlos: las condiciones están en el <span class=\"lg-ref\">archivo de licencia</span> del repositorio.</p><p>La aplicación incluye piezas de otros autores —tipografías, iconos y la librería que abre los PDF— que mantienen sus propias licencias libres, detalladas en los <span class=\"lg-ref\">créditos</span>.</p><p><strong>Lo que escribe cada persona sigue siendo suyo.</strong> Los apuntes, las notas y los archivos que se suben pertenecen a quien los crea; el titular no se queda con ningún derecho sobre ellos.</p><h3>Responsabilidad</h3><p>El titular pone todo el cuidado razonable en que la aplicación funcione y en que los cálculos de notas y de faltas sean correctos, pero la aplicación se ofrece «tal cual». En concreto:</p><ul><li>Lo que calcula y lo que responde el profe es <strong>orientativo</strong>. Las normas de evaluación y de asistencia las pone cada centro, y son las que mandan.</li><li>No se garantiza que la aplicación esté disponible sin interrupciones ni que esté libre de errores.</li><li>Cada persona es responsable de guardar una copia de sus datos. La aplicación tiene un botón para descargarla en Ajustes → Datos.</li></ul><p>Nada de lo anterior limita los derechos que la ley reconoce a los consumidores.</p><h3>Enlaces a otros sitios</h3><p>Si la aplicación enlaza a páginas de terceros, el titular no responde de su contenido ni de lo que esas páginas hagan con los datos de quien las visite.</p><h3>Ley aplicable</h3><p>Se aplica la ley española. Para cualquier conflicto, las partes se someten a los juzgados que correspondan según la ley; cuando quien usa la aplicación es consumidor, los de su propio domicilio.</p><p>Quien sea consumidor y tenga una queja puede dirigirse antes al correo de contacto y, si no queda resuelta, a las juntas arbitrales de consumo.</p>"}];
+const LEGAL_V = "24 de septiembre de 2026";
 let lgAbierto = null;
 /* la fecha en la que se aceptaron los papeles, escrita en largo */
 const fechaLarga = iso => { const d = new Date(iso); return isNaN(d) ? "—" : d.toLocaleDateString("es-ES", { day: "numeric", month: "long", year: "numeric" }); };
@@ -10282,7 +10621,7 @@ function pintaRiel(c) {
   r.innerHTML = secVisibles().filter(s => !s.aparte && !s.pie).map(s => item(s.id, RIEL_TXT[s.id] || nombreSec(s.id), iconoRiel(s.id, seccion === s.id))).join("")
     + `<span class="riel-hueco"></span>`
     + (profeActivo() ? item("tutor", nombre, `<span class="riel-av" aria-hidden="true">${esc(nombre.charAt(0).toUpperCase())}</span>`, c.tutor ? " nuevo" : "") : "")
-    + item("ajustes", "Ajustes", iconoRiel("ajustes", seccion === "ajustes"));
+    + botonYo();
 }
 
 /* ── móvil: la hoja de «Más» en filas, con su dato al día como el panel ── */

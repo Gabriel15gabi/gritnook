@@ -5,7 +5,7 @@ de base para la política de privacidad y para el registro de tratamientos que
 exige el Reglamento General de Protección de Datos. Se actualiza cada vez que
 se añade algo que guarde información.
 
-Última revisión: 23 de septiembre de 2026.
+Última revisión: 24 de septiembre de 2026.
 
 ## En una frase
 
@@ -21,7 +21,7 @@ hay cookies.
 |---|---|---|
 | Cuenta | Correo electrónico, contraseña (cifrada con un resumen que no se puede deshacer: no la ve nadie) y fecha de alta. La guarda Supabase. Mientras dura la sesión, el navegador guarda un token para no pedir la contraseña cada vez | El alumno, al crear la cuenta |
 | Actividad | Los días que entra en la app y cuántas veces cada día (como mucho una cada media hora). Nada de lo que hace dentro | La app, al abrirla |
-| Perfil | Nombre o apodo, etapa (ESO, Bachillerato, FP, universidad, oposición, idiomas), curso, ciclo o grado, modalidad, centro (opcional), si trabaja, horas de estudio a la semana, nota a la que apunta, qué le cuesta más y para qué estudia | El alumno, en la bienvenida |
+| Perfil | Nombre o apodo, **foto de perfil** (opcional: se recorta en el navegador a 256 × 256 px y se guarda como imagen dentro del perfil; solo entra webp, jpeg o png), etapa (ESO, Bachillerato, FP, universidad, oposición, idiomas), curso, ciclo o grado, modalidad, centro (opcional), si trabaja, horas de estudio a la semana, nota a la que apunta, qué le cuesta más y para qué estudia | El alumno, en la bienvenida |
 | Asignaturas | Nombre, código, horas del curso, nota objetivo, meta semanal, color, apartados de evaluación con sus pesos y **sus notas**, y **faltas de asistencia** | El alumno |
 | Agenda | Entregas y exámenes (título, asignatura, fecha, hora, estado, pasos y notas) y el horario de clases | El alumno o el tutor, si se le autoriza |
 | Apuntes | Título, texto, formato, **dibujos**, etiquetas, asignatura, tipo de papel y de letra, fechas | El alumno |
@@ -43,7 +43,7 @@ ubicación ni ningún identificador publicitario.
 | Sitio | Qué hay | Quién puede verlo |
 |---|---|---|
 | La cuenta del alumno (Supabase, en Frankfurt, Alemania) | Todo lo de arriba, en la tabla `documentos`: una fila por trozo (`escritorio/agenda`, `apuntes/<id>`, `casillero/<id>`…), con su dueño. La actividad, en `actividad` | El alumno, desde cualquier dispositivo. Nadie más: lo impide la base de datos (Row Level Security). Supabase es el encargado de tratamiento |
-| El panel del creador | **Solo** el correo, la fecha de alta, la última vez que entró, los días que ha entrado en 7 y 30 días, qué estudia (etapa) y cuánto ocupa. **Nunca el contenido** | El creador de la app (la tabla `administradores`, que nadie puede tocar desde la app) |
+| El panel del creador | **Solo** el correo, la fecha de alta, la última vez que entró, los días que ha entrado en 7 y 30 días, qué estudia (etapa) y cuánto ocupa. **Nunca el contenido ni la foto** | El creador de la app (la tabla `administradores`, que nadie puede tocar desde la app) |
 | El navegador del alumno | Todo, en el almacenamiento local (claves `desk-daw:*`), para que funcione sin conexión, y la lista de cambios por subir. La app le pide al navegador que no lo borre cuando ande justo de espacio. Al cerrar sesión se borra | Solo quien use ese dispositivo |
 | El almacén de Claude (solo si se abre desde ahí, en lugar de la cuenta) | Los mismos datos, para sincronizar entre dispositivos, y los archivos del casillero | La cuenta de Claude del alumno; el proveedor es Anthropic (Estados Unidos) |
 | GitHub Pages | **Nada.** Es una página estática: no hay servidor ni base de datos | Nadie |
@@ -66,7 +66,8 @@ ubicación ni ningún identificador publicitario.
   vas con las vueltas, los títulos de los temas que tocan hoy, se enfrían o
   llevas flojos, los resultados de los simulacros y, si lo has puesto, el plazo
   de la solicitud y si está presentada. **Las notas de cada tema, los enlaces que
-  guardes, las horas por tema y de qué temas eran los fallos no se envían.**
+  guardes, las horas por tema, de qué temas eran los fallos y la foto de perfil
+  no se envían.**
 - **Al descargar el temario, una copia o tus fechas para el calendario** se
   genera un archivo en tu dispositivo. No sale a ningún servidor.
 - **Al contar un fallo** (Ajustes → Datos), si le das a enviar, se abre tu

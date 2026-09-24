@@ -53,7 +53,7 @@ const esperar = (v, msg) => { if (!v) throw new Error(msg || "no se cumple"); };
 
   console.log("\nCada uno lo suyo");
   await prueba("Ana guarda sus documentos sin decir de quién son", async () => {
-    await como(ana, `insert into public.documentos (clave, datos) values ('escritorio/perfil', '{"perfil":{"etapa":"ciclo-sup","nombre":"Ana"}}'), ('apuntes/a1', '{"titulo":"SQL"}')`);
+    await como(ana, `insert into public.documentos (clave, datos) values ('escritorio/perfil', '{"perfil":{"etapa":"ciclo-sup","nombre":"Ana","foto":"data:image/webp;base64,FOTOSECRETA"}}'), ('apuntes/a1', '{"titulo":"SQL"}')`);
     const r = await como(ana, "select clave from public.documentos order by clave");
     esperar(r.rows.length === 2, "tiene " + r.rows.length);
   });
@@ -138,6 +138,7 @@ const esperar = (v, msg) => { if (!v) throw new Error(msg || "no se cumple"); };
     esperar(a.etapa === "ciclo-sup", "Ana etapa " + a.etapa);
     esperar(a.ocupa > 0, "Ana no ocupa nada");
     esperar(!JSON.stringify(p).includes("SQL 2"), "el panel enseña contenido de los apuntes");
+    esperar(!JSON.stringify(p).includes("FOTOSECRETA") && !JSON.stringify(p).includes("Ana\""), "el panel enseña la foto o el nombre del perfil");
     esperar(p.usuarios[0].email !== "Gabriel_Gabiz@hotmail.com", "el que lleva más sin entrar sale primero");
   });
 

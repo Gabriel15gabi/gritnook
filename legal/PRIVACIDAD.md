@@ -1,6 +1,6 @@
 # Política de privacidad
 
-En vigor desde el 23 de septiembre de 2026.
+En vigor desde el 24 de septiembre de 2026.
 
 ## Lo importante, en pocas líneas
 
@@ -28,7 +28,7 @@ por ahí se atienden todas las peticiones, y se responden en un mes como máximo
 
 ## 2. Qué datos se tratan
 
-Los que tú escribes en la aplicación: tu nombre o apodo, qué estudias, tus
+Los que tú escribes o subes a la aplicación: tu nombre o apodo, tu foto de perfil si pones una (es opcional y no hace falta que sea tu cara), qué estudias, tus
 asignaturas con sus notas y sus faltas, tu agenda, tus apuntes y dibujos, los
 archivos que subes al casillero, tus tarjetas de repaso, tu vocabulario de inglés,
 tus minutos de estudio y tus conversaciones con el profe.
@@ -96,14 +96,14 @@ ande justo de espacio.
 |---|---|---|
 | Anthropic (proveedor del profe con IA) | **Ahora mismo, nada: el profe está apagado.** Cuando se encienda, solo lo que se le envíe en cada pregunta. El detalle exacto, campo por campo, está en cómo funciona el profe: en resumen, tu nombre o apodo, tu curso, tus asignaturas con sus notas, tus entregas y exámenes, tu horario, los títulos de tus apuntes, el contenido del que tengas abierto, los últimos mensajes y los archivos que adjuntes | Estados Unidos |
 | Anthropic (almacenamiento de Claude), solo si abres la app desde allí | Tus datos sincronizados y tus archivos del casillero | Estados Unidos |
-| Supabase, Inc. (el servidor de las cuentas), como encargado de tratamiento | Tu correo, tu contraseña cifrada, tus datos, tus archivos y los días que entras, para guardarlos. No los usa para nada más | Unión Europea (Frankfurt, Alemania) |
+| Supabase, Inc. (el servidor de las cuentas), como encargado de tratamiento | Tu correo, tu contraseña cifrada, tus datos (también tu foto de perfil, si pones una), tus archivos y los días que entras, para guardarlos. No los usa para nada más | Unión Europea (Frankfurt, Alemania) |
 | GitHub Pages (GitHub, Inc.) | Solo sirve los archivos de la app. Como cualquier servidor web, registra la dirección IP y el navegador de quien la abre, por seguridad. **No recibe ninguno de tus datos de estudio** | Estados Unidos |
 
 **Lo que ve el responsable de la app.** Tiene un panel con, de cada cuenta: el
 correo, cuándo se dio de alta, la última vez que entró, cuántos días ha entrado en
 la última semana y en el último mes, qué estudia (ESO, Bachillerato, FP,
-universidad, oposición…) y cuánto espacio ocupa. **No ve tus apuntes, tus notas,
-tus archivos ni nada de lo que escribes**: el panel no los lee. Si algún día
+universidad, oposición…) y cuánto espacio ocupa. **No ve tu foto, ni tus apuntes,
+ni tus notas, ni tus archivos, ni nada de lo que escribes**: el panel no los lee. Si algún día
 hiciera falta mirar algo tuyo para arreglar un fallo, se te pedirá que mandes tú
 una copia.
 
