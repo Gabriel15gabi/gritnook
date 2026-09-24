@@ -34,7 +34,11 @@ Quien ya tenía datos no pasa por ahí: el perfil se rellena con lo que había y
 
 **Asignaturas y notas.** Un resumen del curso —tu media, cuántas van bien y las horas de la semana— y una **ficha por asignatura**: un anillo con la nota que llevas y la marca de tu objetivo, una frase que dice qué te toca («Toca apretar: necesitas un 7,25 de media en el 40 % que queda»), las notas de cada apartado con lo que aporta cada uno, las faltas contra el máximo permitido y el estudio de la semana. Calcula la media ponderada y, sobre todo, **qué nota necesitas en lo que queda**. Todo se guarda mientras escribes. Cada asignatura tiene su color.
 
-**Apuntes en libreta de verdad.** Papel de cuadrícula, rayas, puntos o liso, con su margen rojo. Al escribir: negrita, cursiva, subrayado, tachado, títulos, listas con viñetas o numeradas, subrayado del texto en doce tonos pastel y color de letra. Al dibujar: bolígrafo, rotulador, subrayador (doce pastel), diez tintas y un color libre, formas (línea, flecha, rectángulo, círculo) con imán a la cuadrícula y rayas rectas con Mayús. Letra normal o escrita a mano (cuatro manuscritas) que se queda para todos tus apuntes. Modo concentración para quedarte solo con la hoja. La goma **corta el trazo por donde pasa** en vez de borrarlo entero, como una goma de verdad. Deshacer y rehacer sin límite.
+**Apuntes en libreta de verdad.** Papel de cuadrícula, rayas, puntos o liso, con su margen rojo. Al escribir: negrita, cursiva, subrayado, tachado, títulos, listas con viñetas o numeradas, subrayado del texto en doce tonos pastel y color de letra. Al dibujar: bolígrafo, rotulador, subrayador (doce pastel), diez tintas y un color libre, formas (línea, flecha, rectángulo, círculo) con imán a la cuadrícula y rayas rectas con Mayús. Letra normal o escrita a mano (cuatro manuscritas) que se queda para todos tus apuntes. Modo concentración para quedarte solo con la hoja. La goma **corta el trazo por donde pasa** en vez de borrarlo entero, como una goma de verdad. Deshacer y rehacer sin límite, también para el texto.
+
+**El texto se coloca donde quieras.** Sangría cuadro a cuadro con Tab (y columnas con Tab en mitad de la línea), subir y bajar líneas con Alt+↑↓, duplicarlas con Alt+Mayús+↓ y alinearlas al centro o a la derecha. Junto a la línea del cursor sale un **asa en el margen**: se arrastra arriba, abajo o a los lados para mover las líneas (y por debajo del texto deja huecos en blanco), y al tocarla sale un menú para copiar, cortar, duplicar o borrar. **Tocando en blanco se escribe justo ahí**, en el cuadro que tocas. Lo que copias de la hoja se pega con sus subrayados y colores; lo de otras webs, Docs o Word entra con su forma (títulos, listas, negrita, sangrías) pero sin sus colores; y el texto con guiones, números o # se convierte en listas y títulos. Ctrl+Mayús+V pega el texto sin más.
+
+**En el móvil, pensada para el dedo.** Al escribir, la hoja se pone al ancho de la pantalla con letra de 16 px, sin ir de lado, y la barra baja a una tira con botones grandes que va siempre encima del teclado. Al dibujar se ve la hoja entera: con un dedo se dibuja y con dos se acerca (hasta el 400 %) y se mueve; con lápiz, el dedo solo mueve la hoja y la mano apoyada no pinta. Con un apunte abierto no estorban ni la lista ni el menú, y una flecha te devuelve a tus apuntes.
 
 ![Módulos](capturas/modulos.png)
 
@@ -122,7 +126,7 @@ La versión pública es para verla y probarla. La de Claude usa sus capacidades 
 node pruebas/correr.js
 ```
 
-675 pruebas que corren **dentro de la app de verdad**, cargada en un iframe, sin
+716 pruebas que corren **dentro de la app de verdad**, cargada en un iframe, sin
 instalar nada. Cubren las cuentas de las notas, entender las fechas escritas a
 mano, el sanitizador, el estado, la libreta, el repaso espaciado, la pantalla de
 bienvenida entera, el modo opositor, las cuentas contra un servidor de mentira y una tanda de datos absurdos a propósito. Las reglas de la base de datos, aparte, contra un Postgres de verdad. El cómo y lo que han encontrado, en [pruebas/](pruebas/LEEME.md).

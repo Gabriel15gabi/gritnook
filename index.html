@@ -2572,6 +2572,145 @@ body:has(.pa-dos) #contenido > section.panel, #contenido .pa-enlaces{margin-bott
   .pa-link span{grid-column:1 / -1}
 }
 @media (prefers-reduced-motion: reduce){ .pa-ahora .rm-etq::before{animation:none} }
+/* ══════════════ La hoja de apuntes: el texto que se mueve, y el móvil ══════════════ */
+/* sangría por cuadros de la cuadrícula; los tabuladores hacen columnas cada dos cuadros */
+.hoja-texto{tab-size:48px; -moz-tab-size:48px}
+.hoja-texto div[data-s]{margin-left:min(calc(var(--s, 0) * 24px), 62%)}
+.hoja-texto div[data-s="1"]{--s:1} .hoja-texto div[data-s="2"]{--s:2} .hoja-texto div[data-s="3"]{--s:3} .hoja-texto div[data-s="4"]{--s:4}
+.hoja-texto div[data-s="5"]{--s:5} .hoja-texto div[data-s="6"]{--s:6} .hoja-texto div[data-s="7"]{--s:7} .hoja-texto div[data-s="8"]{--s:8}
+.hoja-texto div[data-s="9"]{--s:9} .hoja-texto div[data-s="10"]{--s:10} .hoja-texto div[data-s="11"]{--s:11} .hoja-texto div[data-s="12"]{--s:12}
+.hoja-texto div[data-s="13"]{--s:13} .hoja-texto div[data-s="14"]{--s:14} .hoja-texto div[data-s="15"]{--s:15} .hoja-texto div[data-s="16"]{--s:16}
+.hoja-texto div[data-s="17"]{--s:17} .hoja-texto div[data-s="18"]{--s:18} .hoja-texto div[data-s="19"]{--s:19} .hoja-texto div[data-s="20"]{--s:20}
+.hoja-texto div[data-a="c"]{text-align:center}
+.hoja-texto div[data-a="r"]{text-align:right}
+
+/* el asa del margen: se coge para mover las líneas, se toca para el menú */
+.lx-asa{position:absolute; z-index:4; left:42px; width:26px; min-height:24px; display:grid; place-items:center; padding:0; border:0; border-radius:7px;
+  background:transparent; color:#98A0AB; cursor:grab; touch-action:none; -webkit-user-select:none; user-select:none; opacity:.75;
+  transition:opacity .15s, background .12s, color .12s}
+.lx-asa[hidden], .libreta.dibujar .lx-asa{display:none}
+.lx-asa:hover, .lx-asa.cogida{opacity:1; background:rgba(29,33,38,.07); color:#1D2126}
+.lx-asa.cogida{cursor:grabbing}
+.lx-asa svg.i{width:14px; height:14px}
+.lx-destino{position:absolute; z-index:4; right:28px; height:0; border-top:2px solid var(--acento); pointer-events:none}
+.lx-destino::before{content:""; position:absolute; left:-5px; top:-6px; width:10px; height:10px; border-radius:50%; background:var(--acento)}
+.lx-destino[hidden]{display:none}
+.hoja-texto > div.lx-cogida{background:color-mix(in srgb, var(--acento) 13%, transparent); border-radius:5px; transition:transform .08s}
+body.lx-arrastrando, body.lx-arrastrando *{-webkit-user-select:none; user-select:none; cursor:grabbing}
+
+/* el menú de las líneas marcadas */
+.lx-menu{position:fixed; z-index:80; display:flex; align-items:stretch; gap:2px; padding:4px; border-radius:12px;
+  background:var(--ink); color:var(--on-ink); box-shadow:0 12px 32px -12px rgba(0,0,0,.5); animation:lxAparece .14s ease-out}
+.lx-menu button{display:flex; flex-direction:column; align-items:center; justify-content:center; gap:4px; min-width:50px; padding:7px 6px 6px; border:0; border-radius:8px;
+  background:none; color:inherit; font:500 11px/1 var(--sans); cursor:pointer}
+.lx-menu button:hover, .lx-menu button:focus-visible{background:rgba(255,255,255,.14)}
+.lx-menu svg.i{width:16px; height:16px}
+.lx-menu-sep{width:1px; margin:6px 2px; background:rgba(255,255,255,.2)}
+@keyframes lxAparece{from{opacity:0; transform:translateY(4px)}}
+
+/* el zoom mientras pellizcas */
+.lx-zoom{position:fixed; left:50%; top:calc(14px + env(safe-area-inset-top)); z-index:90; transform:translateX(-50%); padding:7px 13px; border-radius:99px;
+  background:var(--ink); color:var(--on-ink); font:600 12.5px/1 var(--sans); font-variant-numeric:tabular-nums; pointer-events:none; opacity:0; transition:opacity .2s}
+.lx-zoom.ver{opacity:.92}
+.libreta-marco{overscroll-behavior-x:contain}
+
+/* los botones que solo tienen sentido en el móvil */
+.lx-volver, .lx-detalles{display:none; flex:0 0 auto; width:38px; height:38px; place-items:center; padding:0; border:0; border-radius:11px;
+  background:var(--surface-2); color:var(--ink); cursor:pointer}
+.lx-volver svg.i, .lx-detalles svg.i{width:18px; height:18px}
+.lx-detalles[aria-expanded="true"]{background:var(--acento-suave); color:var(--acento-txt)}
+.lx-aviso-dibujo{display:none; align-items:center; gap:10px; margin:0 0 10px; padding:9px 10px 9px 13px; border-radius:12px;
+  background:var(--surface-2); color:var(--ink-2); font:400 13px/1.35 var(--sans)}
+.lx-aviso-dibujo span{flex:1}
+.libreta.fluida.con-dibujo .lx-aviso-dibujo{display:flex}
+
+/* escribir donde la hoja entera no cabe (el móvil, una ventana estrecha): la hoja a lo ancho, sin ir de lado, con letra de 16 px */
+.libreta.fluida .libreta-marco{overflow:visible; padding:0}
+.libreta.fluida .hoja-escala{width:auto !important; height:auto !important}
+.libreta.fluida .hoja-papel{position:relative; width:auto; height:auto !important; transform:none !important; border-radius:10px}
+.libreta.fluida .hoja-papel::before{left:30px}
+.libreta.fluida .hoja-texto{position:relative; height:auto !important; min-height:calc(100dvh - 230px); padding:24px 14px 96px 42px}
+.libreta.fluida .hoja-texto.letra-normal{--tam:16px}
+.libreta.fluida .hoja-texto.sin-texto::before{left:42px}
+.libreta.fluida .capa{display:none}
+.libreta.fluida .lx-asa{left:2px}
+.libreta.fluida .lx-destino{right:12px}
+
+/* con un apunte abierto en el móvil o la tableta, la hoja manda: sin lista ni cabecera, y una flecha para volver */
+@media (max-width:880px){
+  /* con poco contenido, el hueco que sobra iba encima de la página: ahora se queda abajo */
+  .app{align-content:start}
+  body.lx-apunte #contenido > .cab, body.lx-apunte .notas > div:first-child{display:none}
+  .lx-volver{display:grid}
+  body.lx-apunte.lx-teclado .lateral{position:static}
+}
+
+@media (max-width:640px){
+  body.lx-apunte .barra-movil{display:none}
+  body.lx-apunte .principal{padding:10px 8px calc(84px + env(safe-area-inset-bottom))}
+  body.lx-apunte .editor{padding:10px 8px 12px}
+  body.lx-apunte #avisos{left:12px; right:12px; bottom:calc(76px + var(--teclado, 0px) + env(safe-area-inset-bottom)); max-width:none}
+  .editor-cab{gap:8px}
+  .editor-cab .editor-titulo{font-size:21px !important}
+  .editor-cab .btn-rojo{flex:0 0 auto; width:38px; height:38px; padding:0; justify-content:center}
+  .editor-cab .btn-rojo span{display:none}
+  .lx-detalles{display:grid}
+  .editor-meta{display:none; margin:12px 0 4px}
+  .editor-meta.abierta{display:grid}
+  #libreta{margin-top:12px}
+  .editor-pie{margin-top:10px; padding-top:10px}
+
+
+  /* la barra: una tira abajo que sube con el teclado */
+  .lb-barra.lx-dock{position:fixed; left:0; right:0; bottom:0; top:auto; z-index:46; display:block; margin:0; padding:6px 6px calc(6px + env(safe-area-inset-bottom));
+    border:0; border-top:1px solid var(--line-2); border-radius:0; background:var(--surface); box-shadow:0 -10px 26px -20px rgba(0,0,0,.45);
+    transform:translateY(calc(-1 * var(--teclado, 0px))); transition:transform .12s ease-out}
+  body.lx-teclado .lb-barra.lx-dock{padding-bottom:6px}
+  .lx-fila-dock{display:flex; align-items:center; gap:2px; overflow-x:auto; overscroll-behavior-x:contain; scrollbar-width:none; -webkit-overflow-scrolling:touch}
+  .lx-fila-dock::-webkit-scrollbar{display:none}
+  .lx-dock .lb-btn{flex:0 0 auto; width:42px; height:42px; border-radius:11px}
+  .lx-dock .lb-btn svg.i{width:19px; height:19px}
+  .lx-dock .lb-btn:hover{background:none}
+  .lx-dock .lb-btn[aria-pressed="true"]{background:var(--acento-suave); color:var(--acento-txt); box-shadow:inset 0 0 0 1px var(--acento-borde)}
+  .lx-sep{flex:0 0 1px; align-self:stretch; margin:9px 4px; background:var(--line)}
+  .lx-cambio{flex:0 0 auto; display:inline-flex; flex-direction:column; align-items:center; justify-content:center; gap:3px; width:58px; height:44px; padding:0; border:0; border-radius:11px;
+    background:var(--acento-suave); color:var(--acento-txt); box-shadow:inset 0 0 0 1px var(--acento-borde); font:600 10.5px/1 var(--sans); cursor:pointer}
+  .lx-cambio svg.i{width:17px; height:17px}
+  .lx-fila-dock.hay-mas{-webkit-mask-image:linear-gradient(90deg, #000 calc(100% - 44px), transparent); mask-image:linear-gradient(90deg, #000 calc(100% - 44px), transparent)}
+  .lx-fila-dock.hay-antes{-webkit-mask-image:linear-gradient(90deg, transparent, #000 44px); mask-image:linear-gradient(90deg, transparent, #000 44px)}
+  .lx-fila-dock.hay-antes.hay-mas{-webkit-mask-image:linear-gradient(90deg, transparent, #000 44px, #000 calc(100% - 44px), transparent); mask-image:linear-gradient(90deg, transparent, #000 44px, #000 calc(100% - 44px), transparent)}
+  .lx-trazo i{display:block; width:var(--d); height:var(--d); border-radius:50%; background:var(--c); box-shadow:0 0 0 2px var(--surface), 0 0 0 3.5px var(--line-2)}
+  /* dibujando, todo cabe en una fila: sin separadores y repartido */
+  .lx-dibujo .lx-fila-dock{justify-content:space-between}
+  .lx-dibujo .lx-sep{display:none}
+  .lx-dibujo .lb-btn{width:40px}
+
+  /* los desplegables de la barra, como una hoja que sale de abajo */
+  .lx-dock .lb-pop{position:absolute; left:8px; right:8px; top:auto; bottom:calc(100% + 8px); min-width:0; max-height:min(58vh, 440px); overflow:auto;
+    padding:12px 14px 14px; border-radius:18px; animation:lxAparece .16s ease-out}
+  .lx-pop-tit{margin:2px 0 12px; font:600 11.5px/1 var(--sans); letter-spacing:.06em; text-transform:uppercase; color:var(--ink-3)}
+  .lx-pop .lx-pop-tit:not(:first-child){margin-top:16px}
+  .lx-rejilla{display:grid; grid-template-columns:repeat(auto-fill, minmax(36px, 1fr)); gap:12px 8px; justify-items:center}
+  .lx-rejilla .lb-color{width:32px; height:32px; margin:0}
+  .lx-grosores{display:grid; grid-template-columns:repeat(3, minmax(0,1fr)); gap:8px; margin-top:16px}
+  .lx-grosor{display:flex; flex-direction:column; align-items:center; justify-content:center; gap:9px; min-height:62px; padding:10px 6px; border:0; border-radius:12px;
+    background:var(--surface-2); color:var(--ink-2); font:500 12px/1 var(--sans); cursor:pointer}
+  .lx-grosor i{display:block; width:64%; border-radius:99px}
+  .lx-grosor[aria-pressed="true"]{background:var(--acento-suave); color:var(--acento-txt); box-shadow:inset 0 0 0 1px var(--acento-borde)}
+  .lx-fila{display:flex; flex-wrap:wrap; gap:4px; margin-bottom:8px}
+  .lx-fila .lb-btn{width:44px; height:44px}
+  .lx-op{display:flex; align-items:center; gap:12px; width:100%; padding:12px 8px; border:0; border-radius:11px; background:none; color:var(--ink);
+    font:500 14.5px/1.2 var(--sans); text-align:left; cursor:pointer}
+  .lx-op svg.i{width:18px; height:18px; flex:0 0 18px}
+  .lx-op[aria-pressed="true"]{background:var(--acento-suave); color:var(--acento-txt)}
+  .lx-op:disabled{opacity:.4; cursor:default}
+  .lx-rojo{color:var(--riesgo)}
+  .lx-pop .lb-papel-op{padding:10px 8px; font-size:14.5px}
+
+  /* el menú de las líneas, con los botones un poco más estrechos */
+  .lx-menu button{min-width:44px; padding:7px 4px 6px; font-size:10.5px}
+}
+@media (prefers-reduced-motion: reduce){ .lb-barra.lx-dock, .lx-menu, .lx-dock .lb-pop{transition:none; animation:none} }
 </style>
 </head>
 <body>
@@ -3440,6 +3579,7 @@ const lbVivaActiva = () => !!(LB.papel && LB.papel.isConnected);
    títulos, listas, subrayar y color de letra); al dibujar, útiles, formas,
    colores y grosor. A la derecha, siempre, el papel y el modo concentración. */
 function lbBarraHTML() {
+  if (lbMovil()) return lbDockHTML();
   const h = LB.hist[apunteActivo] || { deshacer: [], rehacer: [] }, n = S.apuntes[apunteActivo] || {};
   const trazosHoja = LB.nota === apunteActivo ? LB.trazos : ((n.dibujo || {}).trazos || []);
   const escribir = LB.modo === "escribir", fluor = LB.herr === "fluor";
@@ -3463,6 +3603,7 @@ function lbBarraHTML() {
       ${btn('data-lb-bloque="ul" aria-pressed="false"', "lista", "Lista con viñetas")}
       ${btn('data-lb-bloque="ol" aria-pressed="false"', "numerada", "Lista numerada")}
     </div>
+    ${lbGrupoColocar()}
     <div class="lb-grupo lb-marcas" role="group" aria-label="Subrayar el texto">
       <span class="lb-etq" aria-hidden="true">${lbIcono("fluor")}</span>
       ${LB_MARCAS.map(([k, c, nom]) => `<button type="button" class="lb-color" data-lb-marca="${k}" style="--c:${c}" title="Subrayar en ${nom.toLowerCase()}" aria-label="Subrayar en ${nom.toLowerCase()}"></button>`).join("")}
@@ -3498,7 +3639,7 @@ function lbBarraHTML() {
       <div class="lb-barra" id="lbBarra" role="toolbar" aria-label="Herramientas de la libreta">
         ${modos}${escribir ? texto : dibujo}
         <div class="lb-grupo lb-derecha lb-rel">
-          ${escribir ? "" : `${btn(`id="lbDeshacer"${h.deshacer.length ? "" : " disabled"}`, "deshacer", "Deshacer el dibujo (Ctrl+Z)")}
+          ${escribir ? lbDeshacerTextoHTML(btn) : `${btn(`id="lbDeshacer"${h.deshacer.length ? "" : " disabled"}`, "deshacer", "Deshacer el dibujo (Ctrl+Z)")}
           ${btn(`id="lbRehacer"${h.rehacer.length ? "" : " disabled"}`, "rehacer", "Rehacer (Ctrl+Y)")}
           ${btn(`id="lbLimpiar"${trazosHoja.length ? "" : " disabled"}`, "papelera", "Borrar todo el dibujo (el texto no se toca)")}`}
           ${btn(`data-lb-pop="papel" aria-expanded="${LB.pop === "papel"}"`, "papel", "Tipo de papel")}
@@ -3509,9 +3650,11 @@ function lbBarraHTML() {
       </div>`;
 }
 function lbPintarBarra() {
-  const b = $("#lbBarra"); if (b) b.outerHTML = lbBarraHTML();
+  const b = $("#lbBarra"), f = b && b.querySelector(".lx-fila-dock"), sx = f ? f.scrollLeft : 0;
+  if (b) b.outerHTML = lbBarraHTML();
+  const f2 = $("#lbBarra .lx-fila-dock"); if (f2 && sx) f2.scrollLeft = sx;   /* la tira del móvil no vuelve al principio al tocar un botón */
   const lib = $("#libreta"); if (lib) lib.classList.toggle("dibujar", LB.modo === "dibujar");
-  lbEstadoNegrita();
+  lbClasesHoja(); lbEstadoNegrita(); lbEstadoColocar();
 }
 
 /* ── montaje: se llama tras cada repintado de Apuntes ── */
@@ -3534,12 +3677,14 @@ function montarLibreta() {
   if (window.ResizeObserver) { LB.ro = new ResizeObserver(() => lbEscalar()); LB.ro.observe(LB.marco); }
   lbAjustar(true);
   lbPintarBarra();
+  lbMontarExtra();
 }
 
 /* La hoja crece con el texto y con el dibujo; los lienzos solo se redimensionan
    (y por tanto se repintan) cuando cambia la altura. */
 function lbAjustar(forzar) {
   if (!lbVivaActiva()) return;
+  if (lbFluidaActiva()) { lbSoltarHoja(); return; }
   const ta = LB.ta;
   ta.style.height = "auto";
   const alto = ta.scrollHeight;
@@ -3560,15 +3705,8 @@ function lbAjustar(forzar) {
   }
   lbEscalar();
 }
-/* entre 600 y 800 px de hueco la hoja se reduce entera; por debajo, se desliza de lado */
-function lbEscalar() {
-  if (!lbVivaActiva()) return;
-  const disp = LB.marco.clientWidth - 4;
-  LB.k = disp >= LB_ANCHO ? 1 : disp >= 600 ? disp / LB_ANCHO : 1;
-  LB.papel.style.transform = LB.k === 1 ? "" : "scale(" + LB.k + ")";
-  LB.escala.style.width = LB_ANCHO * LB.k + "px";
-  LB.escala.style.height = LB.H * LB.k + "px";
-}
+/* la hoja cabe siempre a lo ancho, con el zoom de los dedos encima; en el móvil, al escribir, se suelta (lbEscalarHoja) */
+function lbEscalar() { lbEscalarHoja(); }
 function lbPunto(e) {
   const r = LB.viva.getBoundingClientRect();
   return [(e.clientX - r.left) * LB_ANCHO / r.width, (e.clientY - r.top) * LB.H / r.height];
@@ -3672,6 +3810,7 @@ function lbSimplificar(p, tol) {
 /* ── puntero: ratón, dedo o lápiz ── */
 function lbAbajo(e) {
   if (LB.modo !== "dibujar" || (e.pointerType === "mouse" && e.button !== 0)) return;
+  if (lbGestoAbajo(e)) return;
   e.preventDefault();
   try { LB.viva.setPointerCapture(e.pointerId); } catch (err) {}
   const [x, y] = lbPunto(e);
@@ -3684,6 +3823,7 @@ function lbAbajo(e) {
 }
 function lbMover(e) {
   if (LB.modo !== "dibujar") return;
+  if (lbGestoMover(e)) return;
   const [x, y] = lbPunto(e);
   if (!LB.dibujando) { if (LB.herr === "goma") { LB.cursor = [x, y]; lbPedirVivo(); } return; }
   const tr = LB.vivo;
@@ -3707,7 +3847,8 @@ function lbMover(e) {
   }
   lbPedirVivo();
 }
-function lbArriba() {
+function lbArriba(e) {
+  if (lbGestoArriba(e)) return;
   if (!LB.dibujando) return;
   LB.dibujando = false;
   const v = LB.vivo; LB.vivo = null;
@@ -3796,6 +3937,7 @@ function limpiarHtml(html) {
         else if (/^(DIV|P|LI|H[1-6]|BLOCKQUOTE|PRE)$/.test(tag)) {
           const d = document.createElement("div"), tb = tipoBloque(nodo);
           if (tb) d.setAttribute("data-b", tb);
+          lbAtribBloque(nodo, d);
           volcar(nodo, d, formato(nodo, f));
           if (!d.childNodes.length) d.appendChild(document.createElement("br"));
           destino.appendChild(d); ultimo.delete(destino);
@@ -3806,8 +3948,8 @@ function limpiarHtml(html) {
   volcar(t.content, raiz, {});
   return raiz.innerHTML;
 }
-/* los apuntes de antes solo tenían texto: cada línea pasa a ser un bloque */
-const textoAHtml = txt => (txt || "").split("\n").map(l => "<div>" + (l ? esc(l) : "<br>") + "</div>").join("");
+/* los apuntes de antes solo tenían texto: cada línea pasa a ser un bloque (y los tabuladores del principio, sangría) */
+const textoAHtml = txt => lbTextoAHtml(txt);
 /* texto plano del HTML limpio, línea a línea como se ve en la hoja; con marcas, la negrita sale como **negrita** (para descargar) */
 function htmlATexto(html, marcas) {
   const t = document.createElement("template"); t.innerHTML = html || "";
@@ -3829,7 +3971,7 @@ function htmlATexto(html, marcas) {
     for (const c of nodo.childNodes) {
       if (c.nodeType === 3) out += c.nodeValue;
       else if (c.nodeName === "BR") out += "\n";
-      else if (c.nodeName === "DIV") { bloque(); out += prefijo(c); recorrer(c); bloque(); }
+      else if (c.nodeName === "DIV") { bloque(); out += lbTabs(c) + prefijo(c); recorrer(c); bloque(); }
       else if (marcas && MARCAS[c.nodeName]) out += marcar(c.textContent, MARCAS[c.nodeName]);
       else recorrer(c);
     }
@@ -3971,14 +4113,16 @@ function lbModo(m) {
   if (m === "escribir" && LB.ta && LB.ta.isConnected) LB.ta.focus({ preventScroll: true });
   else if (document.activeElement === LB.ta) LB.ta.blur();
   LB.cursor = null; lbPintarBarra(); lbPintarVivo();
+  lbTrasModo(m);
 }
 
 alEvento("click", e => {
   const t = e.target;
   /* un clic fuera cierra el desplegable del papel o del color */
+  const popAntes = LB.pop;
   if (LB.pop && !t.closest(".lb-pop, [data-lb-pop]")) { LB.pop = null; lbPintarBarra(); }
   const cmd = t.closest("[data-lb-cmd]");
-  if (cmd) { if (lbEditorListo()) { document.execCommand(cmd.dataset.lbCmd); lbEstadoNegrita(); } return; }
+  if (cmd) { if (lbEditorListo()) { lbAntesDeCambiar(); document.execCommand(cmd.dataset.lbCmd); lbEstadoNegrita(); } return; }
   const bl = t.closest("[data-lb-bloque]"); if (bl) { lbBloque(bl.dataset.lbBloque); return; }
   const mc = t.closest("[data-lb-marca]");
   if (mc) { const m = LB_MARCAS.find(x => x[0] === mc.dataset.lbMarca); lbAplicarColor("hiliteColor", m ? rgbaMarca(m[1]) : "transparent"); return; }
@@ -4002,7 +4146,14 @@ alEvento("click", e => {
   }
   if (t.closest("#lbFoco")) { lbFoco(); return; }
   const md = t.closest("[data-lb-modo]"); if (md) { lbModo(md.dataset.lbModo === "dibujar" ? "dibujar" : "escribir"); return; }
-  const he = t.closest("[data-lb-herr]"); if (he) { LB.herr = he.dataset.lbHerr; lbModo("dibujar"); return; }
+  const he = t.closest("[data-lb-herr]");
+  if (he) {
+    /* en el móvil, tocar otra vez el útil que ya tienes abre su color y su grosor */
+    const ya = LB.modo === "dibujar" && LB.herr === he.dataset.lbHerr && !he.closest(".lb-pop");
+    LB.herr = he.dataset.lbHerr;
+    if (ya && lbMovil()) LB.pop = popAntes === "trazo" ? null : "trazo";
+    lbModo("dibujar"); return;
+  }
   const co = t.closest("[data-lb-color]");
   if (co) {
     if (LB.herr === "fluor") LB.fluor = co.dataset.lbColor; else LB.tinta = co.dataset.lbColor;
@@ -4011,8 +4162,9 @@ alEvento("click", e => {
   }
   const gr = t.closest("[data-lb-grosor]"); if (gr) { LB.grosor = +gr.dataset.lbGrosor; lbPrefs(); lbPintarBarra(); lbPintarVivo(); return; }
   if (t.closest("#lbIman")) { LB.iman = !LB.iman; lbPrefs(); lbPintarBarra(); return; }
-  if (t.closest("#lbDeshacer")) { lbDeshacer(); return; }
-  if (t.closest("#lbRehacer")) { lbRehacer(); return; }
+  /* deshacer lo del modo en el que estás: el texto o el dibujo */
+  if (t.closest("#lbDeshacer")) { if (LB.modo === "escribir") lbTextoDeshacer(); else lbDeshacer(); return; }
+  if (t.closest("#lbRehacer")) { if (LB.modo === "escribir") lbTextoRehacer(); else lbRehacer(); return; }
   if (t.closest("#lbLimpiar")) { lbLimpiar(); return; }
 });
 /* Ctrl+Z / Ctrl+Y para el dibujo; mientras escribes, el texto usa su propio deshacer */
@@ -4031,6 +4183,9 @@ function lbEditorListo() {
   const ed = LB.ta; if (!ed || !ed.isConnected) return false;
   if (LB.modo !== "escribir") lbModo("escribir");
   else if (document.activeElement !== ed) ed.focus({ preventScroll: true });
+  /* si el cursor se había ido de la hoja, vuelve a donde estaba (o al final) */
+  const s = getSelection();
+  if (!s.rangeCount || !ed.contains(s.anchorNode)) lbPonerPosTexto(ed, LB.ultSel || [[1e9, 1e9], [1e9, 1e9]]);
   return true;
 }
 /* la selección como posiciones en el texto, para recolocarla tras limpiar el HTML */
@@ -4054,6 +4209,7 @@ function lbPonerSel(ed, pos) {
 /* subrayar o dar color: el navegador lo pone con estilos y aquí se deja limpio al momento */
 function lbAplicarColor(cmd, valor) {
   if (!lbEditorListo()) return;
+  lbAntesDeCambiar();
   const ed = LB.ta;
   document.execCommand("styleWithCSS", false, true);
   document.execCommand(cmd, false, valor);
@@ -4066,6 +4222,7 @@ function lbAplicarColor(cmd, valor) {
 /* títulos y listas: cada línea es un bloque y se marca entera */
 function lbBloque(tipo) {
   if (!lbEditorListo()) return;
+  lbAntesDeCambiar();
   const ed = LB.ta, sel = getSelection(); if (!sel.rangeCount) return;
   document.execCommand("formatBlock", false, "div");
   const r = sel.getRangeAt(0);
@@ -4124,17 +4281,11 @@ alEvento("input", e => {
 });
 alEvento("change", e => { if (e.target.id === "lbColorLibre") lbPintarBarra(); });
 /* el botón B no puede quitarle el foco al texto: se perdería la selección */
-alEvento("mousedown", e => { if (e.target.closest && e.target.closest("#lbBarra button") && LB.modo === "escribir") e.preventDefault(); });
+alEvento("mousedown", e => { if (e.target.closest && (e.target.closest("#lxMenu") || (e.target.closest("#lbBarra button") && LB.modo === "escribir"))) e.preventDefault(); });
 /* el botón B se enciende cuando el cursor está sobre texto en negrita (también tras Ctrl+B) */
 alEvento("selectionchange", lbEstadoNegrita);
 alEvento("keyup", e => { if (e.target.id === "apCuerpo") lbEstadoNegrita(); });
-/* lo que se pega entra como texto limpio: ni colores ni tipografías de la web de origen */
-alEvento("paste", e => {
-  if (!(e.target.closest && e.target.closest("#apCuerpo"))) return;
-  e.preventDefault();
-  const txt = (e.clipboardData || window.clipboardData).getData("text/plain");
-  if (txt) document.execCommand("insertText", false, txt);
-});
+/* lo que se pega: lbPegar(), con la forma pero sin los colores ni las tipografías de la web de origen */
 /* cada Intro crea un bloque <div> y la negrita se escribe como <b>, no como estilos */
 try { document.execCommand("defaultParagraphSeparator", false, "div"); document.execCommand("styleWithCSS", false, false); } catch (err) {}
 
@@ -4789,10 +4940,12 @@ function vistaApuntes() {
     ${n ? `
     <section class="panel editor">
       <div class="editor-cab">
+        <button type="button" class="lx-volver" id="apVolver" title="Volver a tus apuntes" aria-label="Volver a tus apuntes">${lbIcono("volver")}</button>
         <input type="text" class="editor-titulo" id="apTitulo" value="${esc(n.titulo)}" placeholder="Título del apunte" aria-label="Título">
+        <button type="button" class="lx-detalles" id="apDetalles" aria-expanded="${LB.detalles}" aria-controls="apMeta" title="Módulo y etiquetas" aria-label="Módulo y etiquetas">${lbIcono("detalles")}</button>
         <button type="button" class="btn mini btn-rojo" data-borrar-apunte="${n.id}" title="Borrar este apunte"><svg class="i" viewBox="0 0 16 16" aria-hidden="true"><path d="M3 4.5h10M6.5 4.5V3h3v1.5M4.6 4.5l.7 8.3a1 1 0 0 0 1 .9h3.4a1 1 0 0 0 1-.9l.7-8.3"/></svg><span>Borrar apunte</span></button>
       </div>
-      <div class="editor-meta">
+      <div class="editor-meta${LB.detalles ? " abierta" : ""}" id="apMeta">
         <select id="apModulo" aria-label="Módulo">
           <option value="">Sin módulo</option>
           ${S.modulos.map(m => `<option value="${m.id}"${m.id === n.modId ? " selected" : ""}>${esc(m.cod)} · ${esc(m.nombre)}</option>`).join("")}
@@ -4800,13 +4953,16 @@ function vistaApuntes() {
         <input type="text" id="apTags" value="${esc((n.tags || []).join(", "))}" placeholder="Etiquetas separadas por comas" aria-label="Etiquetas">
       </div>
       ${lbBarraHTML()}
-      <div class="libreta${LB.modo === "dibujar" ? " dibujar" : ""}" id="libreta">
+      <div class="libreta${LB.modo === "dibujar" ? " dibujar" : ""}${lbFluida() ? " fluida" : ""}${n.dibujo && n.dibujo.trazos && n.dibujo.trazos.length ? " con-dibujo" : ""}" id="libreta">
+        <div class="lx-aviso-dibujo"><span>Esta hoja tiene dibujos: se ven al dibujar y en el ordenador.</span><button type="button" class="btn mini" data-lb-modo="dibujar">Verlos</button></div>
         <div class="libreta-marco" id="lbMarco">
           <div class="hoja-escala" id="lbEscala">
             <div class="hoja-papel${n.papel && n.papel !== "cuadricula" ? " papel-" + n.papel : ""}" id="lbPapel">
               <div class="hoja-texto letra-${letraDe(n)}${n.cuerpo && n.cuerpo.trim() ? "" : " sin-texto"}" id="apCuerpo" contenteditable="true" role="textbox" aria-multiline="true" aria-label="Contenido del apunte" aria-placeholder="Escribe aquí…" data-placeholder="Escribe aquí… o elige un rotulador y dibuja encima" spellcheck="true">${apunteHtml(n)}</div>
               <canvas class="capa" id="lbBase" aria-hidden="true"></canvas>
               <canvas class="capa viva" id="lbVivo" role="img" aria-label="Dibujo de la hoja"></canvas>
+              <button type="button" class="lx-asa" id="lbAsa" tabindex="-1" aria-hidden="true" title="Arrastra para mover las líneas; tócala para copiar, duplicar o borrar" hidden>${lbIcono("asa")}</button>
+              <div class="lx-destino" id="lbDestino" hidden></div>
             </div>
           </div>
         </div>
@@ -9764,6 +9920,936 @@ alEvento("pointerdown", e => {
 });
 
 
+/* ══════════════ La hoja de apuntes: cómoda en el móvil, y un texto que se deja mover ══════════════
+   En el móvil la hoja de 800 px no cabía: para leer lo que escribías había que
+   ir de lado, la barra ocupaba media pantalla con el teclado abierto y, al
+   dibujar, el dedo ya no movía la página. Ahora:
+   · Escribir (móvil): la hoja se hace del ancho de la pantalla, con letra de
+     16 px, y la barra baja a una tira que va siempre encima del teclado.
+   · Dibujar (móvil): se ve la hoja entera, tal cual sale en el ordenador. Con
+     un dedo se dibuja; con dos se acerca y se mueve. Con lápiz, el dedo mueve.
+   · El texto, en todas partes: sangría por cuadros (Tab), columnas con Tab en
+     mitad de la línea, subir y bajar líneas (Alt+↑↓), alinear, el asa del
+     margen para arrastrar líneas arriba, abajo y a los lados, tocar en blanco
+     para escribir justo ahí, copiar y pegar sin perder el formato y un
+     deshacer que también deshace todo eso. */
+const LB_SANGRIA_MAX = 20, LB_ZOOM_MAX = 4;
+/* el móvil se decide por el ancho: un teléfono tumbado ya tiene sitio para la hoja */
+let lbMovil = () => !!(window.matchMedia && matchMedia("(max-width: 640px)").matches);
+/* al escribir, la hoja va a lo ancho en el móvil y donde la hoja entera se vería con letra de menos de 11 px */
+const lbEstrecha = () => !!(LB.marco && LB.marco.isConnected && LB.marco.clientWidth - 4 < 600);
+const lbFluida = () => LB.modo === "escribir" && (lbMovil() || lbEstrecha());
+const lbFluidaActiva = () => { const l = $("#libreta"); return !!l && l.classList.contains("fluida"); };
+Object.assign(LB, { zoom: 1, zoomNota: null, dedos: new Map(), gesto: null, lapiz: false, mano: false, punteroTrazo: null,
+  tx: {}, ultSel: null, provis: null, arr: null, detalles: false, clip: null, pegarPlano: false, pedidoSel: false });
+Object.assign(LB_ICON, {
+  sangria: '<path d="M2.5 3.5h11M7.5 6.5h6M7.5 9.5h6M2.5 12.5h11"/><path d="M2.5 5.8L5 8l-2.5 2.2"/>',
+  desangria: '<path d="M2.5 3.5h11M7.5 6.5h6M7.5 9.5h6M2.5 12.5h11"/><path d="M5 5.8L2.5 8 5 10.2"/>',
+  subir: '<path d="M8 13.2V3.2M4.3 6.8L8 3.2l3.7 3.6"/>',
+  bajar: '<path d="M8 2.8v10M4.3 9.2L8 12.8l3.7-3.6"/>',
+  izquierda: '<path d="M2.5 3.5h11M2.5 6.5h7M2.5 9.5h11M2.5 12.5h7"/>',
+  centro: '<path d="M2.5 3.5h11M4.5 6.5h7M2.5 9.5h11M4.5 12.5h7"/>',
+  derecha: '<path d="M2.5 3.5h11M6.5 6.5h7M2.5 9.5h11M6.5 12.5h7"/>',
+  duplicar: '<path d="M2.5 3.5h11M2.5 7h11M2.5 10.5h5.5M11.5 9v5M9 11.5h5"/>',
+  copiar: '<rect x="5.5" y="5.5" width="8" height="8" rx="1.5"/><path d="M10.5 5.5V3.5a1 1 0 0 0-1-1h-6a1 1 0 0 0-1 1v6a1 1 0 0 0 1 1h2"/>',
+  cortar: '<circle cx="4.5" cy="11.5" r="2"/><circle cx="11.5" cy="11.5" r="2"/><path d="M5.9 10.1L12.5 2.5M10.1 10.1L3.5 2.5"/>',
+  teclado: '<rect x="1.5" y="2.5" width="13" height="8" rx="1.5"/><path d="M4 5.2h.4M6.3 5.2h.4M8.6 5.2h.4M10.9 5.2h.4M5 8h6"/><path d="M6.3 12.4L8 14l1.7-1.6"/>',
+  mano: '<path d="M5.5 8V3.8a1 1 0 0 1 2 0V7.5M7.5 7V2.8a1 1 0 0 1 2 0V7.5M9.5 7.5V3.8a1 1 0 0 1 2 0V9c0 2.8-1.8 4.8-4.3 4.8-1.6 0-2.6-.8-3.5-2.1L2.3 9.4a1 1 0 0 1 1.6-1.2l1.6 1.8"/>',
+  ajustar: '<path d="M2.5 6V3.5a1 1 0 0 1 1-1H6M10 2.5h2.5a1 1 0 0 1 1 1V6M13.5 10v2.5a1 1 0 0 1-1 1H10M6 13.5H3.5a1 1 0 0 1-1-1V10"/>',
+  mas: '<circle cx="3.5" cy="8" r="1.2" fill="currentColor" stroke="none"/><circle cx="8" cy="8" r="1.2" fill="currentColor" stroke="none"/><circle cx="12.5" cy="8" r="1.2" fill="currentColor" stroke="none"/>',
+  volver: '<path d="M10 3L5 8l5 5"/>',
+  asa: '<circle cx="6" cy="3.5" r="1.15" fill="currentColor" stroke="none"/><circle cx="10" cy="3.5" r="1.15" fill="currentColor" stroke="none"/><circle cx="6" cy="8" r="1.15" fill="currentColor" stroke="none"/><circle cx="10" cy="8" r="1.15" fill="currentColor" stroke="none"/><circle cx="6" cy="12.5" r="1.15" fill="currentColor" stroke="none"/><circle cx="10" cy="12.5" r="1.15" fill="currentColor" stroke="none"/>',
+  detalles: '<path d="M2.5 4.5h6.8M12.3 4.5h1.2M2.5 11.5h1.2M6.7 11.5h6.8"/><circle cx="10.8" cy="4.5" r="1.5"/><circle cx="5.2" cy="11.5" r="1.5"/>'
+});
+
+/* ── las líneas de la hoja ──
+   Cada línea es un <div> hijo directo del texto, con su sangría (data-s, en
+   cuadros de 24 px) y su alineación (data-a: c o r). */
+const lbSangria = l => (l && l.getAttribute ? clamp(parseInt(l.getAttribute("data-s"), 10) || 0, 0, LB_SANGRIA_MAX) : 0);
+const lbPonerSangria = (l, s) => { s = clamp(s | 0, 0, LB_SANGRIA_MAX); if (s > 0) l.setAttribute("data-s", String(s)); else l.removeAttribute("data-s"); };
+const lbTabs = c => "\t".repeat(lbSangria(c));
+const lbLineaVacia = () => { const d = document.createElement("div"); d.appendChild(document.createElement("br")); return d; };
+/* limpiarHtml() la llama con cada bloque: la sangría y la alineación sobreviven,
+   y también las de lo que se pega de Docs o de Word (margin-left, text-align) */
+function lbAtribBloque(origen, d) {
+  let s = parseInt(origen.getAttribute("data-s"), 10);
+  if (!(s > 0)) {
+    const st = origen.style || {}, m = String(st.marginLeft || st.paddingLeft || "").match(/^([\d.]+)(px|pt|em|rem)$/);
+    s = m ? Math.round(+m[1] * ({ px: 1, pt: 4 / 3, em: 16, rem: 16 })[m[2]] / 24) : 0;
+  }
+  if (s > 0) d.setAttribute("data-s", String(Math.min(s, LB_SANGRIA_MAX)));
+  let a = origen.getAttribute("data-a");
+  if (a !== "c" && a !== "r") {
+    const ta = String((origen.style && origen.style.textAlign) || origen.getAttribute("align") || "");
+    a = /center/i.test(ta) ? "c" : /right|end/i.test(ta) ? "r" : "";
+  }
+  if (a) d.setAttribute("data-a", a);
+}
+/* el texto plano de siempre, con las sangrías como tabuladores al principio de la línea */
+function lbTextoAHtml(txt) {
+  return (txt || "").split("\n").map(l => {
+    const m = l.match(/^\t+/), n = m ? m[0].length : 0, s = Math.min(n, LB_SANGRIA_MAX), r = l.slice(n);
+    return "<div" + (s ? ' data-s="' + s + '"' : "") + ">" + (r ? esc(r) : "<br>") + "</div>";
+  }).join("");
+}
+
+/* un punto de la selección que sobrevive a mover nodos de sitio */
+function lbAncla(c, o) {
+  if (c.nodeType === 3) return { n: c, o };
+  const hijo = c.childNodes[o];
+  return hijo ? { antes: hijo } : { dentro: c };
+}
+function lbPonerAncla(r, a, fin) {
+  if (a.n) r[fin ? "setEnd" : "setStart"](a.n, Math.min(a.o, a.n.length));
+  else if (a.antes) r[fin ? "setEndBefore" : "setStartBefore"](a.antes);
+  else r[fin ? "setEnd" : "setStart"](a.dentro, a.dentro.childNodes.length);
+}
+function lbGuardarSel(ed) {
+  const s = getSelection(); if (!s.rangeCount) return null;
+  const r = s.getRangeAt(0); if (!ed.contains(r.startContainer)) return null;
+  return { a: lbAncla(r.startContainer, r.startOffset), b: lbAncla(r.endContainer, r.endOffset) };
+}
+function lbVolverSel(g) {
+  if (!g) return;
+  try { const r = document.createRange(); lbPonerAncla(r, g.a, false); lbPonerAncla(r, g.b, true); const s = getSelection(); s.removeAllRanges(); s.addRange(r); } catch (e) {}
+}
+/* cuántas letras hay en la línea antes de un punto, y el punto de la letra n */
+function lbLetrasHasta(linea, c, o) {
+  const r = document.createRange();
+  try { r.setStart(linea, 0); r.setEnd(c, o); } catch (e) { return 0; }
+  return r.toString().length;
+}
+function lbPuntoEn(linea, n) {
+  if (linea.nodeType === 3) return [linea, Math.min(n, linea.length)];
+  const w = document.createTreeWalker(linea, NodeFilter.SHOW_TEXT);
+  let t, cuenta = 0, ultimo = null;
+  while ((t = w.nextNode())) { if (n <= cuenta + t.length) return [t, n - cuenta]; cuenta += t.length; ultimo = t; }
+  return ultimo ? [ultimo, ultimo.length] : [linea, 0];
+}
+function lbCursorEn(linea, n) {
+  const [c, o] = lbPuntoEn(linea, n), r = document.createRange();
+  r.setStart(c, o); r.collapse(true);
+  const s = getSelection(); s.removeAllRanges(); s.addRange(r);
+}
+/* la selección como [línea, letra] de principio y fin: sirve aunque se cambie todo el HTML */
+function lbPosTexto(ed) {
+  const s = getSelection(); if (!s.rangeCount || !ed.contains(s.anchorNode)) return null;
+  const r = s.getRangeAt(0), hijos = [...ed.childNodes];
+  const punto = (c, o) => {
+    if (c === ed) return [Math.min(o, Math.max(0, hijos.length - 1)), o >= hijos.length ? 1e9 : 0];
+    let l = c; while (l && l.parentNode !== ed) l = l.parentNode;
+    return [Math.max(0, hijos.indexOf(l)), lbLetrasHasta(l, c, o)];
+  };
+  return [punto(r.startContainer, r.startOffset), punto(r.endContainer, r.endOffset)];
+}
+function lbPonerPosTexto(ed, p) {
+  if (!p) return;
+  const hijos = ed.childNodes, pto = ([i, n]) => { const l = hijos[Math.min(i, hijos.length - 1)]; return l ? lbPuntoEn(l, n) : [ed, 0]; };
+  const a = pto(p[0]), b = pto(p[1]);
+  try { const r = document.createRange(); r.setStart(a[0], a[1]); r.setEnd(b[0], b[1]); const s = getSelection(); s.removeAllRanges(); s.addRange(r); } catch (e) {}
+}
+
+/* Al escribir en una hoja vacía el navegador deja texto suelto, sin línea:
+   aquí se mete cada trozo en la suya (los <br> sueltos separan líneas) sin
+   mover el cursor. Devuelve las líneas. */
+function lbLineas(ed) {
+  if ([...ed.childNodes].some(n => !(n.nodeType === 1 && n.tagName === "DIV"))) {
+    const g = lbGuardarSel(ed);
+    let linea = null;
+    for (const n of [...ed.childNodes]) {
+      if (n.nodeType === 1 && n.tagName === "DIV") { linea = null; continue; }
+      if (n.nodeType === 1 && n.tagName === "BR") {
+        if (linea) { linea = null; n.remove(); }
+        else { const d = document.createElement("div"); ed.insertBefore(d, n); d.appendChild(n); }
+        continue;
+      }
+      if (!linea) { linea = document.createElement("div"); ed.insertBefore(linea, n); }
+      linea.appendChild(n);
+    }
+    lbVolverSel(g);
+  }
+  if (!ed.firstChild) ed.appendChild(lbLineaVacia());
+  return [...ed.children];
+}
+/* las líneas que toca la selección, o la del cursor; sinTocar no arregla nada
+   (se usa mientras escribes, que tocar el HTML a medias rompe los teclados que predicen) */
+function lbLineasSel(ed, sinTocar) {
+  if (!ed) return [];
+  if (!sinTocar) lbLineas(ed);
+  const s = getSelection(); if (!s.rangeCount) return [];
+  const r = s.getRangeAt(0); if (!ed.contains(r.startContainer)) return [];
+  const arriba = n => { while (n && n.parentNode !== ed) n = n.parentNode; return n; };
+  const a = r.startContainer === ed ? (ed.childNodes[r.startOffset] || ed.lastChild) : arriba(r.startContainer);
+  let b = r.endContainer === ed ? (ed.childNodes[Math.max(0, r.endOffset - 1)] || ed.lastChild) : arriba(r.endContainer);
+  if (!a || !b) return [];
+  /* un triple clic acaba justo al principio de la línea siguiente: esa no cuenta */
+  if (!r.collapsed && a !== b && b.textContent && lbLetrasHasta(b, r.endContainer, r.endOffset) === 0) b = b.previousSibling;
+  const out = [];
+  for (let n = a; n; n = n.nextSibling) { out.push(n); if (n === b) break; }
+  return out.filter(n => n.nodeType === 1 && n.tagName === "DIV");
+}
+
+/* ── deshacer propio para el texto ──
+   El deshacer del navegador no sabe nada de lo que la app hace a mano (mover
+   líneas, sangrías, colores, pegar) y se lía. Aquí se guarda una foto de la
+   hoja antes de cada cambio; lo que escribes seguido va en una sola foto. */
+const lbTx = () => LB.tx[LB.nota] || (LB.tx[LB.nota] = { atras: [], adelante: [], abierto: false, tipo: "", t: null });
+const lbFotoTexto = () => ({ h: LB.ta.innerHTML, p: lbPosTexto(LB.ta) });
+function lbGuardarFoto(f) {
+  const h = lbTx(); h.atras.push(f); if (h.atras.length > 150) h.atras.shift();
+  h.adelante = []; h.abierto = false; lbEstadoDeshacer();
+}
+function lbAntesDeCambiar() { if (LB.ta && LB.ta.isConnected) lbGuardarFoto(lbFotoTexto()); }
+function lbAplicarFoto(f) {
+  const ed = LB.ta; ed.innerHTML = f.h;
+  if (document.activeElement !== ed) ed.focus({ preventScroll: true });
+  lbPonerPosTexto(ed, f.p);
+  LB.provis = null;
+  ed.dispatchEvent(new InputEvent("input", { bubbles: true }));
+  lbEstadoNegrita(); lbAsaSitio();
+}
+function lbTextoDeshacer() {
+  if (!LB.ta || !LB.ta.isConnected) return;
+  const h = lbTx(); if (!h.atras.length) return;
+  h.adelante.push(lbFotoTexto()); lbAplicarFoto(h.atras.pop()); h.abierto = false; lbEstadoDeshacer();
+}
+function lbTextoRehacer() {
+  if (!LB.ta || !LB.ta.isConnected) return;
+  const h = lbTx(); if (!h.adelante.length) return;
+  h.atras.push(lbFotoTexto()); lbAplicarFoto(h.adelante.pop()); h.abierto = false; lbEstadoDeshacer();
+}
+function lbPuedeDeshacer() {
+  if (LB.modo === "escribir") { const h = LB.tx[apunteActivo]; return [!!(h && h.atras.length), !!(h && h.adelante.length)]; }
+  const h = LB.hist[apunteActivo] || { deshacer: [], rehacer: [] };
+  return [h.deshacer.length > 0, h.rehacer.length > 0];
+}
+function lbEstadoDeshacer() {
+  const [a, b] = lbPuedeDeshacer(), d = $("#lbDeshacer"), r = $("#lbRehacer");
+  if (d) d.disabled = !a; if (r) r.disabled = !b;
+}
+function lbDeshacerTextoHTML(btn) {
+  const [a, b] = lbPuedeDeshacer();
+  return btn(`id="lbDeshacer"${a ? "" : " disabled"}`, "deshacer", "Deshacer (Ctrl+Z)") + btn(`id="lbRehacer"${b ? "" : " disabled"}`, "rehacer", "Rehacer (Ctrl+Y)");
+}
+alEvento("beforeinput", e => {
+  if (!e.target || e.target.id !== "apCuerpo" || !LB.ta) return;
+  if (e.inputType === "historyUndo" || e.inputType === "historyRedo") {
+    e.preventDefault(); if (e.inputType === "historyUndo") lbTextoDeshacer(); else lbTextoRehacer(); return;
+  }
+  const h = lbTx(), tipo = /^delete/.test(e.inputType) ? "borrar" : /^insert(Text|CompositionText|ReplacementText)$/.test(e.inputType) ? "escribir" : e.inputType;
+  if (!h.abierto || h.tipo !== tipo || (tipo !== "escribir" && tipo !== "borrar")) { lbAntesDeCambiar(); h.abierto = true; h.tipo = tipo; }
+  clearTimeout(h.t); h.t = setTimeout(() => { h.abierto = false; }, 1200);
+});
+
+/* ── colocar el texto: sangría, subir, bajar, alinear, duplicar, borrar ── */
+function lbTrasCambio() {
+  const ed = LB.ta; if (!ed) return;
+  ed.dispatchEvent(new InputEvent("input", { bubbles: true }));
+  lbEstadoNegrita(); lbEstadoColocar(); lbEstadoDeshacer(); lbAsaSitio(); lbVerCursor();
+}
+function lbTexto(op) {
+  if (!lbEditorListo()) return false;
+  const ed = LB.ta, lineas = lbLineasSel(ed); if (!lineas.length) return false;
+  const foto = lbFotoTexto(), g = lbGuardarSel(ed);
+  const hecho = lbOperarLineas(op, lineas, ed);
+  if (!hecho) return false;
+  lbGuardarFoto(foto);
+  if (hecho !== "sel") lbVolverSel(g);
+  lbTrasCambio();
+  return true;
+}
+function lbOperarLineas(op, lineas, ed) {
+  const primera = lineas[0], ultima = lineas[lineas.length - 1];
+  if (op === "mas" || op === "menos") {
+    let cambio = false;
+    for (const l of lineas) { const a = lbSangria(l), b = clamp(a + (op === "mas" ? 1 : -1), 0, LB_SANGRIA_MAX); if (a !== b) { lbPonerSangria(l, b); cambio = true; } }
+    return cambio;
+  }
+  if (op === "subir") { const p = primera.previousElementSibling; if (!p) return false; ed.insertBefore(p, ultima.nextSibling); return true; }
+  if (op === "bajar") {
+    /* al final de la hoja, bajar es dejar una línea en blanco encima */
+    const s = ultima.nextElementSibling;
+    ed.insertBefore(s || lbLineaVacia(), primera); return true;
+  }
+  if (op === "alinear") {
+    const orden = ["", "c", "r"], sig = orden[(orden.indexOf(primera.getAttribute("data-a") || "") + 1) % 3];
+    lineas.forEach(l => { if (sig) l.setAttribute("data-a", sig); else l.removeAttribute("data-a"); });
+    return true;
+  }
+  if (op === "duplicar" || op === "duplicarArriba") {
+    const copias = lineas.map(l => l.cloneNode(true)), ref = ultima.nextSibling;
+    copias.forEach(c => ed.insertBefore(c, ref));
+    if (op === "duplicarArriba") return true;          /* el cursor se queda en las de arriba */
+    lbSelEnCopias(lineas, copias); return "sel";      /* y con Alt+Mayús+↓, en la copia de abajo */
+  }
+  if (op === "borrar") {
+    const sig = ultima.nextElementSibling || primera.previousElementSibling;
+    lineas.forEach(l => l.remove());
+    if (!ed.firstChild) ed.appendChild(lbLineaVacia());
+    lbCursorEn(sig && sig.isConnected ? sig : ed.firstChild, 0);
+    return "sel";
+  }
+  return false;
+}
+function lbSelEnCopias(orig, copias) {
+  const s = getSelection(); if (!s.rangeCount) return;
+  const r = s.getRangeAt(0);
+  const donde = (c, o) => { let i = orig.findIndex(l => l === c || l.contains(c)); if (i < 0) i = c === LB.ta && o > 0 ? orig.length - 1 : 0; return [i, orig[i].contains(c) ? lbLetrasHasta(orig[i], c, o) : 1e9]; };
+  const [ai, an] = donde(r.startContainer, r.startOffset), [bi, bn] = donde(r.endContainer, r.endOffset);
+  const a = lbPuntoEn(copias[ai], an), b = lbPuntoEn(copias[bi], bn);
+  try { const nr = document.createRange(); nr.setStart(a[0], a[1]); nr.setEnd(b[0], b[1]); s.removeAllRanges(); s.addRange(nr); } catch (e) {}
+}
+/* Tab: al principio de la línea (o con varias marcadas), sangría de un cuadro;
+   en mitad de una línea normal, un tabulador para hacer columnas */
+function lbTab(atras) {
+  const ed = LB.ta; if (!ed) return;
+  if (!atras) {
+    const lineas = lbLineasSel(ed), s = getSelection();
+    if (lineas.length === 1 && s.rangeCount && s.isCollapsed && !lineas[0].getAttribute("data-b")) {
+      const r = s.getRangeAt(0);
+      if (lbLetrasHasta(lineas[0], r.startContainer, r.startOffset) > 0) { lbAntesDeCambiar(); document.execCommand("insertText", false, "\t"); return; }
+    }
+  }
+  lbTexto(atras ? "menos" : "mas");
+}
+/* borrar al principio de una línea con sangría la saca un cuadro; en una lista, quita la viñeta */
+function lbRetrocesoInicio() {
+  const ed = LB.ta, s = getSelection(); if (!ed || !s.rangeCount || !s.isCollapsed) return false;
+  const lineas = lbLineasSel(ed, true), l = lineas[0];
+  if (!l || lineas.length !== 1) return false;
+  const r = s.getRangeAt(0); if (lbLetrasHasta(l, r.startContainer, r.startOffset) > 0) return false;
+  const sang = lbSangria(l), tipo = l.getAttribute("data-b");
+  if (!sang && tipo !== "ul" && tipo !== "ol") return false;
+  lbAntesDeCambiar();
+  if (sang) lbPonerSangria(l, sang - 1); else l.removeAttribute("data-b");
+  lbTrasCambio();
+  return true;
+}
+alEvento("keydown", e => {
+  if (!e.target || e.target.id !== "apCuerpo" || e.isComposing) return;
+  const mod = e.ctrlKey || e.metaKey, k = e.key;
+  lbMenuBloque(false);
+  if (mod && !e.altKey && (k === "z" || k === "Z")) { e.preventDefault(); if (e.shiftKey) lbTextoRehacer(); else lbTextoDeshacer(); return; }
+  if (mod && !e.altKey && (k === "y" || k === "Y")) { e.preventDefault(); lbTextoRehacer(); return; }
+  if (mod && e.shiftKey && (k === "v" || k === "V")) { LB.pegarPlano = true; setTimeout(() => { LB.pegarPlano = false; }, 500); return; }
+  if (k === "Tab" && !mod && !e.altKey) { e.preventDefault(); lbTab(e.shiftKey); return; }
+  if (mod && (k === "]" || k === "[")) { e.preventDefault(); lbTexto(k === "]" ? "mas" : "menos"); return; }
+  if (e.altKey && !mod && (k === "ArrowUp" || k === "ArrowDown")) {
+    e.preventDefault();
+    lbTexto(e.shiftKey ? (k === "ArrowUp" ? "duplicarArriba" : "duplicar") : (k === "ArrowUp" ? "subir" : "bajar"));
+    return;
+  }
+  if (k === "Backspace" && !mod && !e.altKey && !e.shiftKey && lbRetrocesoInicio()) e.preventDefault();
+});
+/* el botón de alinear enseña cómo está la línea del cursor */
+function lbEstadoColocar() {
+  const b = $('#lbBarra [data-lb-texto="alinear"]'); if (!b) return;
+  const ed = LB.ta, l = ed && document.activeElement === ed ? lbLineasSel(ed, true)[0] : null;
+  const a = (l && l.getAttribute("data-a")) || "", ic = a === "c" ? "centro" : a === "r" ? "derecha" : "izquierda";
+  if (b.dataset.actual !== ic) { b.dataset.actual = ic; b.innerHTML = lbIcono(ic); }
+}
+function lbGrupoColocar() {
+  const b = (op, icono, txt) => `<button type="button" class="lb-btn" data-lb-texto="${op}" title="${txt}" aria-label="${txt}">${lbIcono(icono)}</button>`;
+  return `<div class="lb-grupo" role="group" aria-label="Colocar el texto">
+      ${b("menos", "desangria", "Quitar sangría (Mayús+Tab)")}${b("mas", "sangria", "Sangría: un cuadro a la derecha (Tab)")}
+      ${b("subir", "subir", "Subir la línea (Alt+↑)")}${b("bajar", "bajar", "Bajar la línea (Alt+↓)")}
+      ${b("alinear", "izquierda", "Alinear: izquierda, centro o derecha")}
+    </div>`;
+}
+
+/* ── tocar en blanco para escribir ahí ──
+   Debajo del texto se crean las líneas que hagan falta y el cursor empieza en
+   el cuadro que has tocado. Si te vas sin escribir, esas líneas se quitan. */
+function lbTocarHoja(e) {
+  const ed = LB.ta;
+  if (!ed || LB.modo !== "escribir" || e.detail > 1 || LB.arr) return;
+  const s = getSelection(); if (!s.rangeCount || !s.isCollapsed) return;
+  const pr = LB.papel.getBoundingClientRect(), k = pr.width / (LB.papel.offsetWidth || pr.width || 1) || 1;
+  const x = (e.clientX - pr.left) / k, y = (e.clientY - pr.top) / k;
+  const cs = getComputedStyle(ed), izq = parseFloat(cs.paddingLeft) || 0;
+  const col = clamp(Math.floor((x - izq) / LB_CUADRO + .35), 0, LB_SANGRIA_MAX);
+  const ult = ed.lastElementChild, fin = ult ? ult.offsetTop + ult.offsetHeight : parseFloat(cs.paddingTop) || 0;
+  if (e.target === ed && y > fin + 4) {
+    lbAntesDeCambiar(); lbLineas(ed);
+    const n = Math.min(60, Math.floor((y - fin) / LB_CUADRO) + 1), nuevas = [];
+    for (let i = 0; i < n; i++) { const l = lbLineaVacia(); ed.appendChild(l); nuevas.push(l); }
+    const dest = nuevas[nuevas.length - 1]; lbPonerSangria(dest, col);
+    lbQuitarProvisionales(); LB.provis = nuevas;
+    lbCursorEn(dest, 0); lbTrasCambio();
+  } else if (e.target !== ed && e.target.parentNode === ed && e.target.tagName === "DIV" && !e.target.textContent && !e.target.getAttribute("data-b") && col !== lbSangria(e.target)) {
+    lbAntesDeCambiar(); lbPonerSangria(e.target, col); lbCursorEn(e.target, 0); lbTrasCambio();
+  }
+}
+function lbQuitarProvisionales() {
+  const p = LB.provis; LB.provis = null;
+  const ed = LB.ta; if (!p || !ed || !ed.isConnected) return;
+  if (!p.every(l => l.isConnected && !l.textContent) || p[p.length - 1] !== ed.lastElementChild) return;
+  p.forEach(l => l.remove());
+  if (!ed.firstChild) ed.appendChild(lbLineaVacia());
+  ed.dispatchEvent(new InputEvent("input", { bubbles: true }));
+  lbAsaSitio();
+}
+function lbProvisionalesMirar() {
+  const p = LB.provis, ed = LB.ta; if (!p || !ed) return;
+  const u = p[p.length - 1], s = getSelection();
+  if (u.textContent) { LB.provis = null; return; }
+  if (document.activeElement === ed && s.rangeCount && u.isConnected && u.contains(s.anchorNode)) return;
+  lbQuitarProvisionales();
+}
+
+/* ── pegar y copiar ──
+   Lo copiado de la propia hoja vuelve igual (subrayados y colores incluidos).
+   De fuera entra la forma (títulos, listas, negrita, sangrías) pero no los
+   colores ni las tipografías de la web. Ctrl+Mayús+V pega texto sin más. Y el
+   texto plano con guiones, números o # se convierte en listas y títulos. */
+const lbMarcaHtml = h => '<meta name="gritnook" content="1"><span data-gritnook="1"></span>' + h;
+function lbSelHtml() {
+  const s = getSelection(), ed = LB.ta;
+  if (!ed || !s.rangeCount || s.isCollapsed) return null;
+  const r = s.getRangeAt(0); if (!ed.contains(r.commonAncestorContainer)) return null;
+  const c = document.createElement("div"); c.appendChild(r.cloneContents());
+  return limpiarHtml(c.innerHTML);
+}
+function lbAlPortapapeles(e, cortar) {
+  if (!e.target || !e.target.closest || !e.target.closest("#apCuerpo") || !e.clipboardData) return;
+  const html = lbSelHtml(); if (!html) return;
+  e.preventDefault();
+  const txt = htmlATexto(html);
+  e.clipboardData.setData("text/html", lbMarcaHtml(html)); e.clipboardData.setData("text/plain", txt);
+  LB.clip = { html, txt };
+  if (cortar) { lbAntesDeCambiar(); document.execCommand("delete"); lbTrasCambio(); }
+}
+alEvento("copy", e => lbAlPortapapeles(e, false));
+alEvento("cut", e => lbAlPortapapeles(e, true));
+/* en el HTML de fuera, los saltos y sangrías del código no son texto */
+function lbEspacios(html) {
+  const t = document.createElement("template"); t.innerHTML = html;
+  const bloque = x => !!x && x.nodeType === 1 && /^(DIV|P|LI|UL|OL|H[1-6]|BLOCKQUOTE|PRE|TABLE|THEAD|TBODY|TR|TD|TH|BR|SECTION|ARTICLE|HEADER|FOOTER|NAV|ASIDE|FIGURE|HR|DL|DT|DD|META|STYLE)$/.test(x.tagName);
+  const w = document.createTreeWalker(t.content, NodeFilter.SHOW_TEXT), textos = [];
+  let n; while ((n = w.nextNode())) textos.push(n);
+  for (const x of textos) {
+    if (x.parentElement && x.parentElement.closest("pre")) continue;
+    if (/^[\t\n\r ]*$/.test(x.nodeValue) && /[\n\r]/.test(x.nodeValue)) {
+      if (!x.previousSibling || !x.nextSibling || bloque(x.previousSibling) || bloque(x.nextSibling)) { x.remove(); continue; }
+    }
+    x.nodeValue = x.nodeValue.replace(/[\t\n\r ]+/g, " ");
+  }
+  return t.innerHTML;
+}
+const lbSinColor = html => { const t = document.createElement("template"); t.innerHTML = html; t.content.querySelectorAll("mark, span[data-t]").forEach(x => x.replaceWith(...x.childNodes)); return limpiarHtml(t.innerHTML); };
+/* las listas de dentro de otras (Docs, Word, webs) pasan a ser líneas con más sangría */
+function lbAplanar(html) {
+  const t = document.createElement("template"); t.innerHTML = html;
+  const out = document.createElement("div"), lista = b => b === "ul" || b === "ol";
+  const volcar = (padre, nivel, at) => {
+    let linea = null;
+    for (const n of [...padre.childNodes]) {
+      if (n.nodeType === 1 && n.tagName === "DIV") {
+        linea = null;
+        const b = n.getAttribute("data-b");
+        volcar(n, nivel + lbSangria(n) + (lista(b) && lista(at.b) ? 1 : 0), { b: b || at.b, a: n.getAttribute("data-a") || at.a });
+        continue;
+      }
+      if (!linea) {
+        if (n.nodeType === 3 && !n.nodeValue.trim()) continue;
+        linea = document.createElement("div");
+        if (at.b) linea.setAttribute("data-b", at.b);
+        if (at.a) linea.setAttribute("data-a", at.a);
+        lbPonerSangria(linea, nivel); out.appendChild(linea);
+      }
+      linea.appendChild(n);
+    }
+  };
+  volcar(t.content, 0, { b: "", a: "" });
+  return out.innerHTML;
+}
+function lbTextoConForma(txt) {
+  return txt.replace(/\n+$/, "").split("\n").map(l => {
+    const m = l.match(/^([\t ]*)(.*)$/), tabs = (m[1].match(/\t/g) || []).length, esp = m[1].replace(/\t/g, "").length;
+    let tipo = "", resto = m[2], x;
+    if ((x = resto.match(/^[-*•·◦▪‣–]\s+(.*)$/))) { tipo = "ul"; resto = x[1]; }
+    else if ((x = resto.match(/^\d{1,3}[.)]\s+(.*)$/))) { tipo = "ol"; resto = x[1]; }
+    else if ((x = resto.match(/^#\s+(.*)$/))) { tipo = "t1"; resto = x[1]; }
+    else if ((x = resto.match(/^#{2,6}\s+(.*)$/))) { tipo = "t2"; resto = x[1]; }
+    const s = Math.min(LB_SANGRIA_MAX, tabs + Math.floor(esp / (tipo === "ul" || tipo === "ol" ? 2 : 4)));
+    const cuerpo = esc(resto).replace(/\*\*([^*\n]+?)\*\*/g, "<b>$1</b>");
+    return "<div" + (tipo ? ' data-b="' + tipo + '"' : "") + (s ? ' data-s="' + s + '"' : "") + ">" + (cuerpo || "<br>") + "</div>";
+  }).join("");
+}
+function lbPegar(e) {
+  if (!(e.target && e.target.closest && e.target.closest("#apCuerpo"))) return;
+  const cd = e.clipboardData || window.clipboardData; if (!cd) return;
+  e.preventDefault();
+  const html = cd.getData("text/html") || "", txt = (cd.getData("text/plain") || "").replace(/\r\n?/g, "\n");
+  const plano = LB.pegarPlano; LB.pegarPlano = false;
+  let limpio;
+  if (plano) limpio = lbTextoAHtml(txt);
+  else if (html && /data-gritnook|name="gritnook"/.test(html)) limpio = limpiarHtml(html);
+  else if (html && !/<(table|pre)\b/i.test(html)) limpio = lbSinColor(limpiarHtml(lbEspacios(html)));
+  else limpio = lbTextoConForma(txt);
+  if (!htmlATexto(limpio).trim() && txt.trim()) limpio = plano ? lbTextoAHtml(txt) : lbTextoConForma(txt);
+  if (!htmlATexto(limpio) && !/<br>/.test(limpio)) return;
+  lbInsertarHtml(limpio);
+}
+/* mete líneas en el cursor: la primera se une a lo que hay delante, las demás
+   van detrás con la sangría de la línea donde pegas, y lo que había detrás del
+   cursor acaba al final de lo pegado */
+function lbInsertarHtml(html) {
+  const ed = LB.ta; if (!ed) return;
+  const s = getSelection(); if (!s.rangeCount || !ed.contains(s.anchorNode)) lbEditorListo();
+  lbAntesDeCambiar();
+  if (!s.isCollapsed) document.execCommand("delete");
+  lbLineas(ed);
+  const caja = document.createElement("div"); caja.innerHTML = lbAplanar(limpiarHtml(html));
+  const nuevas = lbLineas(caja);
+  const r = s.getRangeAt(0);
+  let linea = r.startContainer; while (linea && linea.parentNode !== ed) linea = linea.parentNode;
+  if (!linea) { linea = ed.childNodes[r.startOffset] || ed.lastChild; lbCursorEn(linea, 0); }
+  const cola = document.createRange(); cola.setStart(s.getRangeAt(0).startContainer, s.getRangeAt(0).startOffset); cola.setEnd(linea, linea.childNodes.length);
+  const detras = cola.extractContents();
+  const vacia = l => !l.textContent;
+  const traer = (de, a) => { for (const n of [...de.childNodes]) if (n.nodeName !== "BR") a.appendChild(n); };
+  const base = lbSangria(linea);
+  if (vacia(linea)) {
+    linea.textContent = "";
+    for (const at of ["data-b", "data-a"]) { const v = nuevas[0].getAttribute(at); if (v) linea.setAttribute(at, v); else linea.removeAttribute(at); }
+    lbPonerSangria(linea, base + lbSangria(nuevas[0]));
+  }
+  traer(nuevas[0], linea);
+  let ultima = linea, ref = linea.nextSibling;
+  for (const nl of nuevas.slice(1)) { lbPonerSangria(nl, base + lbSangria(nl)); ed.insertBefore(nl, ref); ultima = nl; }
+  const letras = ultima.textContent.length;
+  if (detras.textContent) { if (vacia(ultima)) ultima.textContent = ""; ultima.appendChild(detras); }
+  for (const l of [linea, ultima]) if (!l.firstChild) l.appendChild(document.createElement("br"));
+  lbCursorEn(ultima, letras);
+  lbTrasCambio();
+}
+
+/* ── copiar, cortar, duplicar y borrar líneas enteras: el menú del asa ── */
+async function lbCopiarSel() {
+  const html = lbSelHtml(); if (!html) return false;
+  LB.clip = { html, txt: htmlATexto(html) };
+  let ok = false;
+  try { ok = document.execCommand("copy"); } catch (e) {}
+  if (!ok && navigator.clipboard && navigator.clipboard.writeText) { try { await navigator.clipboard.writeText(LB.clip.txt); ok = true; } catch (e) {} }
+  aviso(ok ? "Copiado. Pégalo donde quieras." : "No se ha podido copiar: mantén pulsado el texto y elige «Copiar».", ok ? "" : "mal");
+  return ok;
+}
+function lbSeleccionarLineas(lineas) {
+  if (!lineas.length) return;
+  const r = document.createRange(), u = lineas[lineas.length - 1];
+  r.setStart(lineas[0], 0); r.setEnd(u, u.childNodes.length);
+  const s = getSelection(); s.removeAllRanges(); s.addRange(r);
+}
+function lbMenuBloque(abrir) {
+  let m = document.getElementById("lxMenu");
+  if (!abrir) { if (m) m.remove(); return; }
+  if (!m) { m = document.createElement("div"); m.id = "lxMenu"; m.className = "lx-menu"; m.setAttribute("role", "menu"); m.setAttribute("aria-label", "Las líneas marcadas"); document.body.appendChild(m); }
+  const op = (id, ic, txt) => `<button type="button" role="menuitem" data-lx-menu="${id}" title="${txt}">${lbIcono(ic)}<span>${txt}</span></button>`;
+  m.innerHTML = op("copiar", "copiar", "Copiar") + op("cortar", "cortar", "Cortar") + op("duplicar", "duplicar", "Duplicar")
+    + '<i class="lx-menu-sep" aria-hidden="true"></i>' + op("subir", "subir", "Subir") + op("bajar", "bajar", "Bajar")
+    + '<i class="lx-menu-sep" aria-hidden="true"></i>' + op("borrar", "papelera", "Borrar");
+  lbMenuSitio();
+}
+function lbMenuSitio() {
+  const m = document.getElementById("lxMenu"), asa = $("#lbAsa"); if (!m) return;
+  if (!asa || asa.hidden) { m.remove(); return; }
+  const r = asa.getBoundingClientRect(), vw = document.documentElement.clientWidth;
+  let top = r.top - m.offsetHeight - 8; if (top < 8) top = r.bottom + 8;
+  m.style.top = Math.round(top) + "px"; m.style.left = Math.round(clamp(r.left, 8, Math.max(8, vw - m.offsetWidth - 8))) + "px";
+}
+alEvento("click", async e => {
+  const t = e.target; if (!t || !t.closest) return;
+  const b = t.closest("[data-lx-menu]");
+  if (!b) { if (document.getElementById("lxMenu") && !t.closest("#lxMenu, #lbAsa")) lbMenuBloque(false); return; }
+  const op = b.dataset.lxMenu;
+  if (op === "copiar" || op === "cortar") { await lbCopiarSel(); if (op === "cortar") lbTexto("borrar"); lbMenuBloque(false); return; }
+  if (op === "borrar") { lbTexto("borrar"); lbMenuBloque(false); return; }
+  lbTexto(op); lbMenuSitio();                 /* subir, bajar, duplicar: el menú sigue, con las líneas marcadas */
+});
+window.addEventListener("scroll", () => lbMenuSitio(), { passive: true });
+
+/* ── el asa del margen: arrastra las líneas a cualquier sitio ──
+   Arriba y abajo cambia su sitio (y por debajo del texto deja huecos en
+   blanco); a los lados, la sangría, cuadro a cuadro. Tocarla marca las
+   líneas y abre el menú. */
+function lbAsaSitio() {
+  const asa = $("#lbAsa"); if (!asa) return;
+  const ed = LB.ta, dest = $("#lbDestino");
+  let lineas = [];
+  if (ed && ed.isConnected && LB.modo === "escribir" && (document.activeElement === ed || LB.arr)) lineas = LB.arr ? LB.arr.lineas : lbLineasSel(ed, true);
+  if (!lineas.length) { asa.hidden = true; if (dest) dest.hidden = true; lbMenuSitio(); return; }
+  const a = lineas[0], b = lineas[lineas.length - 1];
+  asa.style.top = a.offsetTop + "px";
+  asa.style.height = Math.max(LB_CUADRO, b.offsetTop + b.offsetHeight - a.offsetTop) + "px";
+  asa.hidden = false;
+  lbMenuSitio();
+}
+function lbAsaAbajo(e) {
+  if (e.pointerType === "mouse" && e.button !== 0) return;
+  e.preventDefault();
+  const ed = LB.ta; if (!ed) return;
+  const lineas = lbLineasSel(ed); if (!lineas.length) return;
+  const pr = LB.papel.getBoundingClientRect(), k = pr.width / (LB.papel.offsetWidth || pr.width || 1) || 1;
+  LB.arr = { id: e.pointerId, x0: e.clientX, y0: e.clientY, x: e.clientX, y: e.clientY, lineas, s0: lineas.map(lbSangria),
+    agarre: (e.clientY - pr.top) / k - lineas[0].offsetTop, movido: false, antes: undefined, extra: 0, dS: 0, raf: 0 };
+  try { e.currentTarget.setPointerCapture(e.pointerId); } catch (err) {}
+}
+function lbAsaMover(e) {
+  const A = LB.arr; if (!A || e.pointerId !== A.id) return;
+  A.x = e.clientX; A.y = e.clientY;
+  if (!A.movido) {
+    if (Math.hypot(A.x - A.x0, A.y - A.y0) < 6) return;
+    A.movido = true; lbMenuBloque(false);
+    A.lineas.forEach(l => l.classList.add("lx-cogida"));
+    document.body.classList.add("lx-arrastrando"); $("#lbAsa").classList.add("cogida");
+    if (window.requestAnimationFrame) A.raf = requestAnimationFrame(lbAutoScroll);
+  }
+  lbArrastreCalcula();
+}
+function lbArrastreCalcula() {
+  const A = LB.arr, ed = LB.ta; if (!A || !ed) return;
+  const pr = LB.papel.getBoundingClientRect(), k = pr.width / (LB.papel.offsetWidth || pr.width || 1) || 1;
+  const arriba = (A.y - pr.top) / k - A.agarre, ref = arriba + LB_CUADRO / 2;
+  const resto = [...ed.children].filter(l => !A.lineas.includes(l));
+  let antes = null;
+  for (const l of resto) if (ref < l.offsetTop + l.offsetHeight / 2) { antes = l; break; }
+  const u = resto[resto.length - 1], finResto = u ? u.offsetTop + u.offsetHeight : parseFloat(getComputedStyle(ed).paddingTop) || 0;
+  A.antes = antes;
+  A.extra = antes ? 0 : clamp(Math.round((arriba - finResto) / LB_CUADRO), 0, 60);
+  A.dS = Math.round((A.x - A.x0) / (LB_CUADRO * k));
+  const y = antes ? antes.offsetTop : finResto + A.extra * LB_CUADRO;
+  const dest = $("#lbDestino"), izq = parseFloat(getComputedStyle(ed).paddingLeft) || 0;
+  if (dest) { dest.hidden = false; dest.style.top = y + "px"; dest.style.left = (izq + clamp(A.s0[0] + A.dS, 0, LB_SANGRIA_MAX) * LB_CUADRO) + "px"; }
+  A.lineas.forEach((l, i) => { l.style.transform = "translateX(" + ((clamp(A.s0[i] + A.dS, 0, LB_SANGRIA_MAX) - A.s0[i]) * LB_CUADRO) + "px)"; });
+}
+function lbAutoScroll() {
+  const A = LB.arr; if (!A || !A.movido) return;
+  const vv = window.visualViewport, top = vv ? vv.offsetTop : 0, alto = vv ? vv.height : innerHeight, bajo = top + alto - lbAltoDock();
+  let v = 0;
+  if (A.y < top + 70) v = -Math.min(16, (top + 70 - A.y) / 3);
+  else if (A.y > bajo - 70) v = Math.min(16, (A.y - (bajo - 70)) / 3);
+  if (v) { window.scrollBy(0, v); lbArrastreCalcula(); }
+  A.raf = requestAnimationFrame(lbAutoScroll);
+}
+function lbArrastreFin() {
+  const A = LB.arr; LB.arr = null; if (!A) return null;
+  if (A.raf && window.cancelAnimationFrame) cancelAnimationFrame(A.raf);
+  A.lineas.forEach(l => { l.classList.remove("lx-cogida"); l.style.transform = ""; if (!l.getAttribute("class")) l.removeAttribute("class"); if (!l.getAttribute("style")) l.removeAttribute("style"); });
+  document.body.classList.remove("lx-arrastrando");
+  const asa = $("#lbAsa"); if (asa) asa.classList.remove("cogida");
+  const dest = $("#lbDestino"); if (dest) dest.hidden = true;
+  return A;
+}
+function lbAsaArriba(e) {
+  const A0 = LB.arr; if (!A0 || e.pointerId !== A0.id) return;
+  const A = lbArrastreFin(), ed = LB.ta;
+  if (!A.movido) { lbSeleccionarLineas(A.lineas); lbAsaSitio(); lbMenuBloque(true); return; }
+  const foto = lbFotoTexto(), g = lbGuardarSel(ed);
+  let cambio = false;
+  if (A.antes) {
+    if (A.antes !== A.lineas[A.lineas.length - 1].nextElementSibling) { A.lineas.forEach(l => ed.insertBefore(l, A.antes)); cambio = true; }
+  } else {
+    const alFinal = !A.lineas[A.lineas.length - 1].nextElementSibling;
+    /* por debajo del texto: las líneas en blanco que hagan falta y, detrás, lo que arrastras */
+    if (!alFinal || A.extra) {
+      for (let i = 0; i < A.extra; i++) ed.appendChild(lbLineaVacia());
+      A.lineas.forEach(l => ed.appendChild(l));
+      cambio = true;
+    }
+  }
+  A.lineas.forEach((l, i) => { const s = clamp(A.s0[i] + A.dS, 0, LB_SANGRIA_MAX); if (s !== A.s0[i]) { lbPonerSangria(l, s); cambio = true; } });
+  if (!cambio) { lbAsaSitio(); return; }
+  lbGuardarFoto(foto); lbVolverSel(g); lbTrasCambio();
+}
+function lbAsaSoltar() { lbArrastreFin(); lbAsaSitio(); }
+
+/* ── el móvil: la barra encima del teclado ── */
+const lbAltoDock = () => { const d = $("#lbBarra.lx-dock"); return d ? d.offsetHeight : 0; };
+/* que el cursor no se esconda detrás del teclado ni de la barra */
+function lbVerCursor() {
+  const ed = LB.ta;
+  if (!lbMovil() || !ed || document.activeElement !== ed) return;
+  const s = getSelection(); if (!s.rangeCount) return;
+  const r = s.getRangeAt(0).cloneRange(); r.collapse(false);
+  let caja = r.getClientRects()[0];
+  if (!caja) { const c = r.endContainer, el = c.nodeType === 1 ? c : c.parentElement; if (!el || el === ed) return; caja = el.getBoundingClientRect(); }
+  if (!caja || (!caja.height && !caja.top)) return;
+  const vv = window.visualViewport, arriba = vv ? vv.offsetTop : 0, abajo = arriba + (vv ? vv.height : innerHeight) - lbAltoDock() - 12;
+  if (caja.bottom > abajo) window.scrollBy(0, caja.bottom - abajo);
+  else if (caja.top < arriba + 8) window.scrollBy(0, caja.top - arriba - 8);
+}
+(function () {
+  const vv = window.visualViewport; if (!vv) return;
+  let pedido = false;
+  const medir = () => {
+    pedido = false;
+    const abajo = vv.scale > 1.01 ? 0 : Math.max(0, Math.round(window.innerHeight - vv.height - vv.offsetTop));
+    document.documentElement.style.setProperty("--teclado", abajo + "px");
+    document.body.classList.toggle("lx-teclado", abajo > 100);
+    if (abajo > 100) lbVerCursor();
+  };
+  const pedir = () => { if (!pedido) { pedido = true; setTimeout(medir, 0); } };
+  vv.addEventListener("resize", pedir); vv.addEventListener("scroll", pedir);
+})();
+
+const LX_POP = { marca: "Subrayar", color: "Color de letra", letra: "Letra", papel: "Papel", trazo: "Color y grosor", mas: "Más" };
+const lbOpcionesPapel = n => LB_PAPELES.map(([k, nom]) => `<button type="button" class="lb-papel-op" data-lb-papel="${k}" aria-pressed="${(n.papel || "cuadricula") === k}"><i class="lb-muestra papel-${k}"></i>${nom}</button>`).join("");
+function lbPopDock(id) {
+  const n = S.apuntes[apunteActivo] || {};
+  if (id === "marca") return `<div class="lx-rejilla">${LB_MARCAS.map(([k, c, nom]) => `<button type="button" class="lb-color" data-lb-marca="${k}" style="--c:${c}" aria-label="Subrayar en ${nom.toLowerCase()}"></button>`).join("")}
+    <button type="button" class="lb-color lb-sin" data-lb-marca="" aria-label="Quitar el subrayado"></button></div>`;
+  if (id === "color") return `<div class="lx-rejilla"><button type="button" class="lb-color" data-lb-tcolor="" style="--c:#1D2126" aria-label="Automático"></button>
+    ${LB_TXT.map(([, c, nom]) => `<button type="button" class="lb-color" data-lb-tcolor="${c}" style="--c:${c}" aria-label="${nom}"></button>`).join("")}</div>`;
+  if (id === "letra") return LB_LETRAS.map(([k, nom]) => `<button type="button" class="lb-papel-op lb-letra-op letra-${k}" data-lb-letra="${k}" aria-pressed="${letraDe(n) === k}"><span class="lb-letra-muestra">Apuntes</span><span class="lb-letra-nombre">${nom}</span></button>`).join("");
+  if (id === "papel") return lbOpcionesPapel(n);
+  if (id === "trazo") {
+    const fluor = LB.herr === "fluor", paleta = fluor ? LB_FLUOR : LB_TINTAS, actual = String(fluor ? LB.fluor : LB.tinta);
+    const esta = c => c.toLowerCase() === actual.toLowerCase(), gros = (LB_HERR[LB.herr] || LB_HERR.rotu).grosores;
+    return `<div class="lx-rejilla">${paleta.map(([c, nom]) => `<button type="button" class="lb-color" data-lb-color="${c}" style="--c:${c}" aria-pressed="${esta(c)}" aria-label="${nom}"></button>`).join("")}
+      <label class="lb-color lb-libre${paleta.some(([c]) => esta(c)) ? "" : " activo"}" style="--c:${esc(actual)}" title="Otro color"><input type="color" id="lbColorLibre" value="${esc(actual)}" aria-label="Otro color"></label></div>
+      <div class="lx-grosores" role="group" aria-label="Grosor">${[0, 1, 2].map(i => `<button type="button" class="lx-grosor" data-lb-grosor="${i}" aria-pressed="${LB.grosor === i}" aria-label="Grosor ${["fino", "medio", "grueso"][i]}"><i style="height:${Math.round(clamp(gros[i], 2, 18))}px; background:${LB.herr === "goma" ? "var(--ink-3)" : esc(actual)}"></i><span>${["Fino", "Medio", "Grueso"][i]}</span></button>`).join("")}</div>`;
+  }
+  if (id === "mas") {
+    const trazos = LB.nota === apunteActivo ? LB.trazos : ((n.dibujo || {}).trazos || []);
+    return `<div class="lx-fila" role="group" aria-label="Formas">${["linea", "flecha", "rect", "elipse"].map(h => `<button type="button" class="lb-btn" data-lb-herr="${h}" aria-pressed="${LB.herr === h}" title="${LB_HERR[h].nombre}" aria-label="${LB_HERR[h].nombre}">${lbIcono(h)}</button>`).join("")}
+      <button type="button" class="lb-btn" id="lbIman" aria-pressed="${LB.iman}" title="Ajustar las formas a la cuadrícula" aria-label="Ajustar las formas a la cuadrícula">${lbIcono("iman")}</button></div>
+      <button type="button" class="lx-op" id="lxMano" aria-pressed="${LB.mano}">${lbIcono("mano")}<span>Mover la hoja con un dedo</span></button>
+      <button type="button" class="lx-op" id="lbRehacer"${lbPuedeDeshacer()[1] ? "" : " disabled"}>${lbIcono("rehacer")}<span>Rehacer</span></button>
+      <button type="button" class="lx-op" id="lxAjustar"${LB.zoom === 1 ? " disabled" : ""}>${lbIcono("ajustar")}<span>Ver la hoja entera</span></button>
+      <div class="lx-pop-tit">Papel</div>${lbOpcionesPapel(n)}
+      <button type="button" class="lx-op lx-rojo" id="lbLimpiar"${trazos.length ? "" : " disabled"}>${lbIcono("papelera")}<span>Borrar todo el dibujo</span></button>`;
+  }
+  return "";
+}
+/* La barra del móvil: una sola fila que se desliza de lado, con botones de 42 px.
+   Escribiendo va pegada encima del teclado; dibujando, abajo del todo. */
+function lbDockHTML() {
+  const escribir = LB.modo === "escribir", [pa, pb] = lbPuedeDeshacer();
+  const b = (attrs, ic, txt, extra) => `<button type="button" class="lb-btn${extra || ""}" ${attrs} title="${txt}" aria-label="${txt}">${lbIcono(ic)}</button>`;
+  const pop = (id, ic, txt) => b(`data-lb-pop="${id}" aria-expanded="${LB.pop === id}"`, ic, txt);
+  const sep = '<i class="lx-sep" aria-hidden="true"></i>';
+  const deshacer = b(`id="lbDeshacer"${pa ? "" : " disabled"}`, "deshacer", "Deshacer") + b(`id="lbRehacer"${pb ? "" : " disabled"}`, "rehacer", "Rehacer");
+  let fila;
+  if (escribir) {
+    fila = `<button type="button" class="lx-cambio" data-lb-modo="dibujar">${lbIcono("boli")}<span>Dibujar</span></button>${sep}
+      ${deshacer}${sep}
+      ${b('id="lbNegrita" data-lb-cmd="bold" aria-pressed="false"', "negrita", "Negrita", " lb-negrita")}${b('data-lb-cmd="italic" aria-pressed="false"', "cursiva", "Cursiva")}
+      ${b('data-lb-cmd="underline" aria-pressed="false"', "subrayado", "Subrayado")}${b('data-lb-cmd="strikeThrough" aria-pressed="false"', "tachado", "Tachado")}${sep}
+      ${pop("marca", "fluor", "Subrayar")}${pop("color", "letra", "Color de letra")}${sep}
+      ${b('data-lb-texto="menos"', "desangria", "Quitar sangría")}${b('data-lb-texto="mas"', "sangria", "Sangría: un cuadro a la derecha")}
+      ${b('data-lb-texto="subir"', "subir", "Subir la línea")}${b('data-lb-texto="bajar"', "bajar", "Bajar la línea")}${b('data-lb-texto="alinear"', "izquierda", "Alinear")}${sep}
+      ${b('data-lb-bloque="t1" aria-pressed="false"', "titulo", "Título")}${b('data-lb-bloque="t2" aria-pressed="false"', "subtitulo", "Subtítulo")}
+      ${b('data-lb-bloque="ul" aria-pressed="false"', "lista", "Lista con viñetas")}${b('data-lb-bloque="ol" aria-pressed="false"', "numerada", "Lista numerada")}${sep}
+      ${pop("letra", "manuscrita", "Tipo de letra")}${pop("papel", "papel", "Papel")}${sep}
+      ${b('id="lbTeclado"', "teclado", "Esconder el teclado")}`;
+  } else {
+    const actual = LB.herr === "fluor" ? LB.fluor : LB.tinta;
+    fila = `<button type="button" class="lx-cambio" data-lb-modo="escribir">${lbIcono("escribir")}<span>Escribir</span></button>${sep}
+      ${["boli", "rotu", "fluor", "goma"].map(h => b(`data-lb-herr="${h}" aria-pressed="${LB.herr === h}"`, h, LB_HERR[h].nombre)).join("")}
+      <button type="button" class="lb-btn lx-trazo" data-lb-pop="trazo" aria-expanded="${LB.pop === "trazo"}" title="Color y grosor" aria-label="Color y grosor"><i style="--c:${esc(actual)}; --d:${7 + LB.grosor * 4}px"></i></button>${sep}
+      ${b(`id="lbDeshacer"${pa ? "" : " disabled"}`, "deshacer", "Deshacer")}${pop("mas", "mas", "Más: formas, rehacer, mover, papel")}`;
+  }
+  return `
+      <div class="lb-barra lx-dock${escribir ? "" : " lx-dibujo"}" id="lbBarra" role="toolbar" aria-label="Herramientas de la libreta">
+        <div class="lx-fila-dock">${fila}</div>
+        ${LB.pop && LX_POP[LB.pop] ? `<div class="lb-pop lx-pop" role="dialog" aria-label="${LX_POP[LB.pop]}"><div class="lx-pop-tit">${LX_POP[LB.pop]}</div>${lbPopDock(LB.pop)}</div>` : ""}
+      </div>`;
+}
+
+/* ── la hoja: a lo ancho para escribir en el móvil, entera (y con zoom) para dibujar ── */
+function lbEscalarHoja() {
+  if (!lbVivaActiva()) return;
+  if (lbClasesHoja()) { lbAjustar(true); return; }      /* la ventana ha cruzado el ancho de la hoja */
+  if (lbFluidaActiva()) { lbSoltarHoja(); return; }
+  const disp = LB.marco.clientWidth - 4, ajuste = disp > 0 ? Math.min(1, disp / LB_ANCHO) : 1;
+  LB.k = ajuste * (LB.zoom || 1);
+  LB.papel.style.transform = LB.k === 1 ? "" : "scale(" + LB.k + ")";
+  LB.escala.style.width = LB_ANCHO * LB.k + "px";
+  LB.escala.style.height = LB.H * LB.k + "px";
+}
+function lbSoltarHoja() {
+  LB.k = 1; LB.H = 0;
+  LB.papel.style.transform = ""; LB.papel.style.height = "";
+  LB.escala.style.width = ""; LB.escala.style.height = "";
+  if (LB.ta) LB.ta.style.height = "";
+}
+/* la tira del móvil se difumina por el lado donde quedan botones */
+function lbDockBordes(f) {
+  f = f || $("#lbBarra .lx-fila-dock"); if (!f) return;
+  f.classList.toggle("hay-mas", f.scrollLeft + f.clientWidth < f.scrollWidth - 4);
+  f.classList.toggle("hay-antes", f.scrollLeft > 4);
+}
+document.addEventListener("scroll", e => { if (e.target && e.target.classList && e.target.classList.contains("lx-fila-dock")) lbDockBordes(e.target); }, true);
+function lbClasesHoja() {
+  lbDockBordes();
+  const lib = $("#libreta"); if (!lib) return false;
+  const antes = lib.classList.contains("fluida"), flu = lbFluida();
+  lib.classList.toggle("fluida", flu);
+  lib.classList.toggle("con-dibujo", LB.nota === apunteActivo && LB.trazos.length > 0);
+  return antes !== flu;
+}
+function lbClaseCuerpo() {
+  document.body.classList.toggle("lx-apunte", seccion === "apuntes" && !!apunteActivo && !!S.apuntes[apunteActivo]);
+}
+function lbTrasModo(m) {
+  lbMenuBloque(false); lbAsaSitio();
+  if (!lbVivaActiva()) return;
+  lbAjustar(true);
+  if (m === "dibujar" && lbMovil()) {
+    const v = leeLS("pista-dibujo-movil") || 0;
+    if (v < 2) { guardaLS("pista-dibujo-movil", v + 1); aviso("Dibuja con un dedo. Con dos dedos acercas la hoja y te mueves por ella."); }
+  }
+}
+function lbMontarExtra() {
+  if (LB.zoomNota !== LB.nota) { LB.zoomNota = LB.nota; if (LB.zoom !== 1) { LB.zoom = 1; lbEscalar(); } }
+  LB.dedos.clear(); LB.gesto = null; LB.punteroTrazo = null; LB.provis = null; LB.arr = null; LB.eraMovil = lbMovil();
+  const asa = $("#lbAsa");
+  if (asa) {
+    asa.addEventListener("pointerdown", lbAsaAbajo); asa.addEventListener("pointermove", lbAsaMover);
+    asa.addEventListener("pointerup", lbAsaArriba); asa.addEventListener("pointercancel", lbAsaSoltar);
+    asa.addEventListener("mousedown", e => e.preventDefault());
+  }
+  const ed = LB.ta;
+  if (ed) {
+    /* Esc suelta el texto (y así Tab vuelve a moverse por la página); en modo concentración, lo cierra antes */
+    ed.addEventListener("keydown", e => { if (e.key === "Escape" && !e.isComposing && !document.body.classList.contains("foco") && !document.querySelector("dialog[open]")) { lbMenuBloque(false); ed.blur(); } });
+    ed.addEventListener("click", lbTocarHoja);
+    ed.addEventListener("blur", () => setTimeout(() => { if (document.activeElement !== LB.ta) { lbQuitarProvisionales(); lbAsaSitio(); if (!LB.arr) lbMenuBloque(false); } }, 0));
+  }
+  lbClasesHoja(); lbEstadoDeshacer(); lbAsaSitio();
+}
+/* girar el móvil o estrechar la ventana cambia de barra sin perder lo escrito */
+function lbCambioDeAncho() {
+  const ahora = lbMovil(); if (ahora === LB.eraMovil) return;
+  LB.eraMovil = ahora;
+  if (seccion !== "apuntes" || !lbVivaActiva()) return;
+  LB.pop = null; lbMenuBloque(false); lbPintarBarra(); lbAjustar(true); lbAsaSitio();
+}
+if (window.matchMedia) {
+  LB.mq = matchMedia("(max-width: 640px)");
+  if (LB.mq.addEventListener) LB.mq.addEventListener("change", lbCambioDeAncho); else if (LB.mq.addListener) LB.mq.addListener(lbCambioDeAncho);
+}
+window.addEventListener("resize", lbCambioDeAncho);
+
+/* ── dibujar con los dedos ──
+   Un dedo dibuja; al llegar el segundo, lo que empezaba el primero se anula y
+   los dos acercan (pellizco) y mueven la hoja. Con lápiz, el dedo solo mueve
+   y la mano apoyada no pinta. «Mover la hoja con un dedo» hace lo mismo sin lápiz. */
+function lbCancelarTrazo() {
+  const v = LB.vivo;
+  LB.dibujando = false; LB.vivo = null; LB.punteroTrazo = null;
+  if (v && v.goma && v.antes) { LB.trazos = v.antes; lbRedibujar(); }
+  lbPintarVivo();
+}
+function lbGestoAbajo(e) {
+  if (LB.pop) { LB.pop = null; lbPintarBarra(); }
+  if (e.pointerType === "pen") {
+    if (!LB.lapiz) { LB.lapiz = true; if (lbMovil() || matchMedia("(pointer: coarse)").matches) aviso("Lápiz listo: con él dibujas y con el dedo te mueves por la hoja."); }
+    LB.punteroTrazo = e.pointerId; LB.tipoTrazo = "pen"; return false;
+  }
+  if (e.pointerType !== "touch") { LB.punteroTrazo = e.pointerId; LB.tipoTrazo = e.pointerType; return false; }
+  if (LB.dibujando && LB.tipoTrazo !== "touch") return true;   /* la palma, mientras dibuja el lápiz */
+  LB.dedos.set(e.pointerId, [e.clientX, e.clientY]);
+  try { LB.viva.setPointerCapture(e.pointerId); } catch (err) {}
+  if (LB.dedos.size >= 2) { if (LB.dibujando) lbCancelarTrazo(); lbEmpezarGesto(); e.preventDefault(); return true; }
+  if (LB.mano || LB.lapiz) { lbEmpezarGesto(); e.preventDefault(); return true; }
+  LB.punteroTrazo = e.pointerId; LB.tipoTrazo = "touch";
+  return false;
+}
+function lbEmpezarGesto() {
+  const ps = [...LB.dedos.values()]; if (!ps.length) { LB.gesto = null; return; }
+  const c = [ps.reduce((s, p) => s + p[0], 0) / ps.length, ps.reduce((s, p) => s + p[1], 0) / ps.length];
+  LB.gesto = { ultimo: c, d0: ps.length > 1 ? Math.hypot(ps[0][0] - ps[1][0], ps[0][1] - ps[1][1]) : 0, zoom0: LB.zoom || 1 };
+}
+function lbGestoMover(e) {
+  if (e.pointerType === "touch" && LB.dedos.has(e.pointerId)) LB.dedos.set(e.pointerId, [e.clientX, e.clientY]);
+  if (LB.gesto) { if (e.pointerType === "touch") lbGestoPaso(); return true; }
+  if (LB.dibujando && LB.punteroTrazo !== null && e.pointerId !== LB.punteroTrazo) return true;
+  return false;
+}
+function lbGestoPaso() {
+  const g = LB.gesto, ps = [...LB.dedos.values()]; if (!g || !ps.length) return;
+  const c = [ps.reduce((s, p) => s + p[0], 0) / ps.length, ps.reduce((s, p) => s + p[1], 0) / ps.length];
+  if (ps.length >= 2 && g.d0 > 10) {
+    const d = Math.hypot(ps[0][0] - ps[1][0], ps[0][1] - ps[1][1]);
+    lbZoomEn(g.zoom0 * d / g.d0, c);
+  }
+  const dx = c[0] - g.ultimo[0], dy = c[1] - g.ultimo[1];
+  if (dx && LB.marco) LB.marco.scrollLeft -= dx;
+  if (dy) window.scrollBy(0, -dy);
+  g.ultimo = c;
+}
+function lbGestoArriba(e) {
+  if (!e) return false;
+  if (e.pointerType === "touch" && LB.dedos.has(e.pointerId)) {
+    LB.dedos.delete(e.pointerId);
+    if (LB.gesto) { if (LB.dedos.size) lbEmpezarGesto(); else LB.gesto = null; return true; }
+  }
+  if (LB.gesto) return true;
+  if (LB.dibujando && LB.punteroTrazo !== null && e.pointerId !== LB.punteroTrazo) return true;
+  LB.punteroTrazo = null;
+  return false;
+}
+/* acercar sin que se escape lo que tienes entre los dedos */
+function lbZoomEn(z, c) {
+  if (!lbVivaActiva() || lbFluidaActiva()) return;
+  z = clamp(z, 1, LB_ZOOM_MAX); if (z < 1.06) z = 1;
+  if (Math.abs(z - (LB.zoom || 1)) < .001) return;
+  const r = LB.escala.getBoundingClientRect(), k0 = LB.k || 1;
+  const px = c ? (c[0] - r.left) / k0 : LB_ANCHO / 2, py = c ? (c[1] - r.top) / k0 : 0;
+  LB.zoom = z; lbEscalar();
+  if (c) {
+    const r2 = LB.escala.getBoundingClientRect();
+    LB.marco.scrollLeft += r2.left + px * LB.k - c[0];
+    window.scrollBy(0, r2.top + py * LB.k - c[1]);
+  }
+  lbZoomAviso();
+}
+function lbZoomAviso() {
+  let p = document.getElementById("lxZoom");
+  if (!p) { p = document.createElement("div"); p.id = "lxZoom"; p.className = "lx-zoom"; p.setAttribute("aria-live", "polite"); document.body.appendChild(p); }
+  p.textContent = Math.round((LB.zoom || 1) * 100) + " %";
+  p.classList.add("ver"); clearTimeout(p._t); p._t = setTimeout(() => p.classList.remove("ver"), 900);
+}
+
+/* ── lo que se toca ── */
+alEvento("click", e => {
+  const t = e.target; if (!t || !t.closest) return;
+  const tx = t.closest("[data-lb-texto]"); if (tx) { lbTexto(tx.dataset.lbTexto); return; }
+  if (t.closest("#lbTeclado")) { lbMenuBloque(false); if (LB.ta) LB.ta.blur(); return; }
+  if (t.closest("#lxMano")) { LB.mano = !LB.mano; lbPintarBarra(); return; }
+  if (t.closest("#lxAjustar")) { lbZoomEn(1, null); LB.pop = null; lbPintarBarra(); return; }
+  if (t.closest("#apVolver")) { lbMenuBloque(false); apunteActivo = null; document.body.classList.remove("foco"); pinta(); window.scrollTo({ top: 0 }); return; }
+  if (t.closest("#apDetalles")) {
+    LB.detalles = !LB.detalles;
+    const m = $("#apMeta"); if (m) m.classList.toggle("abierta", LB.detalles);
+    t.closest("#apDetalles").setAttribute("aria-expanded", String(LB.detalles)); return;
+  }
+  /* en el móvil, al abrir un apunte se empieza por arriba */
+  if (t.closest("[data-apunte], #btnNuevoApunte") && matchMedia("(max-width: 880px)").matches) { setTimeout(() => window.scrollTo({ top: 0 }), 0); return; }
+  /* en la barra del móvil, elegir color o forma ya es querer usarlo: el desplegable se cierra */
+  if (lbMovil() && LB.pop && t.closest(".lx-pop") && t.closest("[data-lb-color], [data-lb-herr], [data-lb-marca], [data-lb-tcolor]")) { LB.pop = null; lbPintarBarra(); }
+});
+alEvento("paste", lbPegar);
+alEvento("input", e => {
+  if (!e.target || e.target.id !== "apCuerpo") return;
+  if (LB.provis) lbProvisionalesMirar();
+  if (e.isTrusted) { lbMenuBloque(false); setTimeout(() => { lbAsaSitio(); lbVerCursor(); }, 0); }
+});
+alEvento("selectionchange", () => {
+  if (seccion !== "apuntes" || !LB.ta || !LB.ta.isConnected || LB.pedidoSel) return;
+  LB.pedidoSel = true;
+  setTimeout(() => {
+    LB.pedidoSel = false;
+    const ed = LB.ta; if (!ed || !ed.isConnected) return;
+    const s = getSelection();
+    if (document.activeElement === ed && s.rangeCount && ed.contains(s.anchorNode)) LB.ultSel = lbPosTexto(ed);
+    lbProvisionalesMirar(); lbAsaSitio(); lbEstadoColocar();
+  }, 0);
+});
+
+
 /* ══════════════════ pintado ══════════════════ */
 function pinta() {
   if (BV) { pintaEntrada(); return; }
@@ -9783,6 +10869,7 @@ function pinta() {
   if (seccion === "escritorio") { pintaReloj(); tuDiaMontado(); }
   chatDespuesDePintar();
   if (seccion === "tutor") { tutorLeido(); chatAbajo(); }
+  lbClaseCuerpo();
   if (seccion === "apuntes" && apunteActivo && S.apuntes[apunteActivo]) { contarPalabras(); montarLibreta(); }
   if (seccion === "casillero") completarPrevias();
   if (seccion === "oposicion") { opoCalcularCorte(); opoCalcularSim(); opoCalcularFT(); opoCalcularBolas(); }
