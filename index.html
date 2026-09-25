@@ -7940,7 +7940,14 @@ async function nubeSalir() {
    Los botones solo salen para los proveedores encendidos en Supabase. */
 const PROVEEDORES = [["google", "Google"], ["github", "GitHub"]];
 let proveedoresNube = null, irA = url => location.assign(url);
+/* para ver los botones en tu ordenador antes de encenderlos en Supabase:
+   http://localhost:4174/?ver-proveedores (no cuenta como visita). En gritnook.com no hace nada */
+const verProveedores = () => /^(localhost|127\.0\.0\.1)$/.test(location.hostname) && /[?&]ver-proveedores(&|=|$)/.test(location.search);
 async function cargarProveedores() {
+  if (!proveedoresNube && verProveedores()) {
+    proveedoresNube = { google: true, github: true };
+    if (ACC && (ACC.modo === "entrar" || ACC.modo === "crear")) pintaAcceso();
+  }
   if (proveedoresNube || !nubeLista()) return proveedoresNube;
   try { const s = await nubePedir("/auth/v1/settings", { conSesion: false }); proveedoresNube = (s && s.external) || {}; }
   catch (e) { return null; }
@@ -8168,7 +8175,7 @@ function dispositivoVisita(ancho = innerWidth, grueso = matchMedia("(pointer: co
 const sinEstadisticas = () => leeLS("sin-estadisticas") === true || navigator.globalPrivacyControl === true || navigator.doNotTrack === "1";
 let visitaContada = false, ORIGEN_SESION = "";
 function contarVisita() {
-  if (visitaContada || !nubeLista() || sinEstadisticas()) return;
+  if (visitaContada || !nubeLista() || sinEstadisticas() || verProveedores()) return;
   visitaContada = true;
   ORIGEN_SESION = origenVisita();
   /* el ?ref= ya está leído: fuera de la barra de direcciones, para que no viaje si la compartes */
