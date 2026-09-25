@@ -37,11 +37,11 @@ function buscarNavegador() {
 const TIPOS = { ".html": "text/html; charset=utf-8", ".js": "text/javascript; charset=utf-8",
   ".css": "text/css; charset=utf-8", ".json": "application/json; charset=utf-8",
   ".webmanifest": "application/manifest+json; charset=utf-8", ".woff2": "font/woff2",
-  ".png": "image/png", ".jpg": "image/jpeg", ".svg": "image/svg+xml", ".ico": "image/x-icon" };
+  ".png": "image/png", ".jpg": "image/jpeg", ".svg": "image/svg+xml", ".ico": "image/x-icon", ".xml": "application/xml", ".txt": "text/plain; charset=utf-8" };
 
 const servidor = http.createServer((req, res) => {
   const url = decodeURIComponent((req.url || "/").split("?")[0]);
-  const archivo = path.join(RAIZ, url === "/" ? "index.html" : url.replace(/^\/+/, ""));
+  const archivo = path.join(RAIZ, (url.endsWith("/") ? url + "index.html" : url).replace(/^\/+/, ""));
   if (!archivo.startsWith(RAIZ)) { res.writeHead(403).end(); return; }
   fs.readFile(archivo, (err, datos) => {
     if (err) { res.writeHead(404).end("no está"); return; }

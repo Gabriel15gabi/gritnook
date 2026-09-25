@@ -1,11 +1,11 @@
 # Política de privacidad
 
-En vigor desde el 24 de septiembre de 2026.
+En vigor desde el 25 de septiembre de 2026.
 
 ## Lo importante, en pocas líneas
 
-Para usar GritNook te haces una **cuenta con tu correo y una contraseña**. No se
-pide teléfono, ni dirección, ni datos de pago. Lo que escribes —tus asignaturas,
+Para usar GritNook te haces una **cuenta con tu correo y una contraseña**, o
+entras con tu cuenta de **Google** o de **GitHub**. No se pide teléfono, ni dirección, ni datos de pago. Lo que escribes —tus asignaturas,
 tus notas, tus apuntes y tus archivos— se guarda **en tu cuenta, en un servidor
 de la Unión Europea (Irlanda)**, y en tu navegador, para que funcione
 también sin conexión. Si abres la app desde Claude, se guarda en tu cuenta de
@@ -39,6 +39,12 @@ responsable). Y, para saber cuánto se usa la app, **qué días entras** (el dí
 cuántas veces), cuándo te diste de alta, la última vez que entraste y **de dónde
 llegaste** al crear la cuenta (por ejemplo, desde Instagram o desde un enlace de
 WhatsApp).
+
+**Si entras con Google o con GitHub**, ese servicio le confirma a GritNook tu
+correo y, si los tiene, tu nombre y la dirección de tu foto de perfil de allí, que
+se guardan junto a tu cuenta. Así no hay contraseña de GritNook que guardar.
+GritNook **no recibe tu contraseña** de Google ni de GitHub y no puede ver nada más
+de esas cuentas: ni tus correos, ni tus contactos, ni tus archivos o repositorios.
 
 **Las aperturas, sin saber quién eres.** Cada vez que se abre la app se suma 1 a
 un contador: el día y la hora, de dónde llega el enlace, si es un móvil, una
@@ -119,6 +125,7 @@ ande justo de espacio.
 | Anthropic (almacenamiento de Claude), solo si abres la app desde allí | Tus datos sincronizados y tus archivos del casillero | Estados Unidos |
 | Supabase, Inc. (el servidor de las cuentas), como encargado de tratamiento | Tu correo, tu contraseña cifrada, tus datos (también tu foto de perfil, si pones una), tus archivos y los días que entras, para guardarlos. No los usa para nada más | Unión Europea (Irlanda) |
 | Open-Meteo (Suiza), solo si pones tu ciudad para ver el tiempo | La zona aproximada (redondeada a unos 10 km) y, como cualquier web, tu dirección IP. **Nada más: ni tu nombre, ni tu cuenta, ni tus datos de estudio** | Suiza (con decisión de adecuación de la Comisión Europea) |
+| Google o GitHub, solo si entras con ellos | Que entras en GritNook con tu cuenta de allí, como en cualquier «Continuar con Google». Ellos tratan ese inicio de sesión según su propia política de privacidad | Google: Unión Europea y Estados Unidos. GitHub: Estados Unidos |
 | GitHub Pages (GitHub, Inc.) | Solo sirve los archivos de la app. Como cualquier servidor web, registra la dirección IP y el navegador de quien la abre, por seguridad. **No recibe ninguno de tus datos de estudio** | Estados Unidos |
 
 **Lo que ve el responsable de la app.** Tiene un panel con, de cada cuenta: el
@@ -153,6 +160,10 @@ lo obligara.
 Estados Unidos: si su personal tuviera que entrar desde fuera de Europa para dar
 soporte o mantenimiento, lo cubre su contrato de encargado de tratamiento, con las
 **cláusulas contractuales tipo** de la Comisión Europea.
+
+**Si entras con Google o con GitHub**, el inicio de sesión pasa por esas empresas,
+que tienen servidores en Estados Unidos y lo tratan con sus propias garantías. Si
+prefieres que no intervengan, entra con tu correo y tu contraseña.
 
 **Mientras el profe esté apagado, no sale ningún dato tuyo hacia ninguna IA.** Lo
 que sigue es lo que pasará cuando se encienda.

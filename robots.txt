@@ -1,0 +1,7 @@
+# gritnook.com
+User-agent: *
+Allow: /
+Disallow: /pruebas/
+Disallow: /backend/
+
+Sitemap: https://gritnook.com/sitemap.xml

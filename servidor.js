@@ -20,12 +20,13 @@ const TIPOS = {
 
 http.createServer((req, res) => {
   const url = decodeURIComponent((req.url || "/").split("?")[0]);
-  const rel = url === "/" ? "index.html" : url.replace(/^\/+/, "");
+  /* como GitHub Pages: una carpeta sirve su index.html (las páginas públicas: /oposiciones/, /privacidad/…) */
+  const rel = (url.endsWith("/") ? url + "index.html" : url).replace(/^\/+/, "");
   const archivo = path.join(RAIZ, rel);
   /* que nadie se salga de la carpeta con ../ */
   if (!archivo.startsWith(RAIZ)) { res.writeHead(403).end("Prohibido"); return; }
   fs.readFile(archivo, (err, datos) => {
-    if (err) { res.writeHead(404, { "Content-Type": "text/plain; charset=utf-8" }).end("No encontrado"); return; }
+    if (err) { fs.readFile(path.join(RAIZ, "404.html"), (e2, d2) => res.writeHead(404, { "Content-Type": "text/html; charset=utf-8" }).end(d2 || "No encontrado")); return; }
     res.writeHead(200, { "Content-Type": TIPOS[path.extname(archivo).toLowerCase()] || "application/octet-stream", "Cache-Control": "no-cache" });
     res.end(datos);
   });

@@ -6,7 +6,7 @@ App de estudio que se acomoda a lo que estudies: le dices si vas a la ESO, a Bac
 
 **[Probarla en vivo →](https://gritnook.com/)**
 
-Con cuenta (correo y contraseña), lo tuyo te sigue del móvil al ordenador; los datos viven en Europa. **TutorIA** (el profe con inteligencia artificial) y **ChatClase** (el chat de la comunidad) salen como *Próximamente*: los dos están hechos y probados por dentro, y un interruptor en el código (`PROFE_ACTIVO`, `CHAT_ACTIVO`) los enciende cuando estén los papeles. Cómo, en [CUENTAS.md](CUENTAS.md).
+Con cuenta (correo y contraseña, o Google y GitHub en cuanto se enciendan en Supabase), lo tuyo te sigue del móvil al ordenador; los datos viven en Europa. **TutorIA** (el profe con inteligencia artificial) y **ChatClase** (el chat de la comunidad) salen como *Próximamente*: los dos están hechos y probados por dentro, y un interruptor en el código (`PROFE_ACTIVO`, `CHAT_ACTIVO`) los enciende cuando estén los papeles. Cómo, en [CUENTAS.md](CUENTAS.md).
 
 ![GritNook](capturas/escritorio.png)
 
@@ -132,10 +132,14 @@ La versión pública es para verla y probarla. La de Claude usa sus capacidades 
 node pruebas/correr.js
 ```
 
-775 pruebas que corren **dentro de la app de verdad**, cargada en un iframe, sin
+801 pruebas que corren **dentro de la app de verdad**, cargada en un iframe, sin
 instalar nada. Cubren las cuentas de las notas, entender las fechas escritas a
 mano, el sanitizador, el estado, la libreta, el repaso espaciado, la pantalla de
 bienvenida entera, el modo opositor, las cuentas contra un servidor de mentira y una tanda de datos absurdos a propósito. Las reglas de la base de datos, aparte, contra un Postgres de verdad. El cómo y lo que han encontrado, en [pruebas/](pruebas/LEEME.md).
+
+## La web pública
+
+Alrededor de la app hay unas páginas sueltas para Google y para quien llega de fuera: [para opositores](https://gritnook.com/oposiciones/), [estudiar y trabajar](https://gritnook.com/estudiar-y-trabajar/), una [calculadora de aciertos netos](https://gritnook.com/calculadora-aciertos-netos/) gratis y los papeles legales. Salen de [web/generar.js](web/generar.js); cómo darlas de alta en Google y cómo conseguir enlaces, en [WEB.md](WEB.md).
 
 ## Base de datos
 

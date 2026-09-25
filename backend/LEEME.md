@@ -84,6 +84,79 @@ Mientras no lo hagas, si alguien olvida la contraseña: en **Authentication →
 Users** puedes borrar su usuario y que se haga otra cuenta (perdería lo suyo,
 salvo que tenga una copia de Ajustes → Datos).
 
+## Entrar con Google y con GitHub (lo haces tú, 20 minutos)
+
+La app ya está preparada: pregunta a Supabase qué proveedores hay encendidos y
+**los botones salen solos** en la pantalla de entrar en cuanto enciendes uno.
+Entra con PKCE (el código que vuelve en la dirección no sirve sin un secreto
+que solo tiene el navegador que salió). Los secretos de Google y de GitHub se
+pegan **solo en Supabase**: no se mandan a nadie ni van en la app.
+
+En los dos casos, la dirección de vuelta es la de tu proyecto de Supabase:
+
+```
+https://rbdcjatjslbeljzlpkhv.supabase.co/auth/v1/callback
+```
+
+**Google** (console.cloud.google.com):
+
+1. Crea un proyecto: `GritNook`.
+2. **Google Auth Platform → Branding**: nombre `GritNook`, tu correo de
+   soporte, y en *Dominios de la app*: página principal `https://gritnook.com`,
+   privacidad `https://gritnook.com/privacidad/` y términos
+   `https://gritnook.com/terminos/`. En *Dominios autorizados*: `gritnook.com`
+   y `supabase.co`. Sin logo de momento (con logo, Google lo revisa antes).
+3. **Audience**: *Externo*, y luego **Publicar la app** (En producción). Solo
+   pide correo y perfil, así que no hace falta que Google la verifique.
+4. **Clients → Crear cliente → Aplicación web**. *Orígenes autorizados*:
+   `https://gritnook.com`. *URI de redirección*: la de arriba.
+5. Copia el **ID de cliente** y el **secreto**, y pégalos en Supabase:
+   **Authentication → Sign In / Providers → Google** → activar → guardar.
+
+**GitHub** (github.com → Settings → Developer settings → OAuth Apps):
+
+1. **New OAuth App**: nombre `GritNook`, *Homepage URL* `https://gritnook.com`,
+   *Authorization callback URL* la de arriba. **Register application**.
+2. **Generate a new client secret**. Copia el **Client ID** y el secreto y
+   pégalos en Supabase: **Authentication → Sign In / Providers → GitHub** →
+   activar → guardar.
+
+Dos cosas que conviene saber:
+
+- En la ventana de Google saldrá «continuar a rbdcjatjslbeljzlpkhv.supabase.co»
+  en vez de gritnook.com. Quitarlo exige un dominio propio en Supabase (de
+  pago: el plan Pro más el complemento). Para empezar, vale así.
+- Google no deja entrar desde el navegador de dentro de Instagram, TikTok o
+  Facebook. La app lo detecta y le dice a la persona que la abra en Chrome o
+  Safari (GitHub y el correo sí funcionan ahí). En el iPhone, con la app
+  instalada, la vuelta puede abrirse en Safari: si pasa, se entra desde Safari
+  o con el correo.
+
+## Seguridad: lo que queda por encender en el panel
+
+Supabase ya pone lo básico: contraseñas cifradas, conexiones seguras, sesiones
+que caducan y las reglas de la base de datos (que nadie ve lo de otro, probado
+con `probar-sql.js`). Lo que falta depende de ti, en este orden:
+
+- [ ] **Desactivar las claves antiguas** (Project Settings → API Keys → Legacy
+      → *Disable JWT-based API keys*). La app ya usa la nueva.
+- [ ] **Tu propio correo** (Resend o Brevo, abajo). Sin él, el correo de «he
+      olvidado la contraseña» no les llega a los demás.
+- [ ] **Después, volver a encender «Confirm email»** (Authentication → Sign In /
+      Providers → Email). Con Google o GitHub encendidos es importante: sin
+      confirmar, alguien podría crear una cuenta con el correo de otra persona
+      y quedar unida a la suya cuando esa persona entre con Google. La app ya
+      sabe decir «te hemos mandado un correo para confirmar».
+- [ ] **CAPTCHA contra bots** (Authentication → Attack Protection → Cloudflare
+      Turnstile, gratis). Antes de encenderlo, la app tiene que llevar la
+      clave pública del CAPTCHA: créala en Cloudflare, pásamela (la **site
+      key**, que es pública; la secreta va solo en Supabase) y la meto. Si lo
+      enciendes antes, nadie podrá entrar ni crear cuenta.
+- [ ] **Advisors → Security Advisor**: pásalo de vez en cuando. Avisa si alguna
+      tabla se queda sin reglas.
+- [ ] Firmar el DPA (paso 10 de arriba) y hacer la copia de seguridad de vez
+      en cuando (abajo).
+
 ## Lo que ves en el Panel, y lo que no
 
 **Arriba:** quién está usando la app **ahora** (la última hora), las veces que

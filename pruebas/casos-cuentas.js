@@ -35,7 +35,17 @@ function servidorFalso() {
       if (String(cuerpo.password || "").length < 8) return resp(422, { code: 422, error_code: "weak_password", msg: "Password should be at least 8 characters." });
       return resp(200, sesion(srv.crear(email, cuerpo.password).id));
     }
+    /* qué proveedores están encendidos (Google, GitHub…) */
+    if (ruta === "/auth/v1/settings") return resp(200, { external: Object.assign({ email: true, google: false, github: false }, srv.proveedores || {}) });
     if (ruta === "/auth/v1/token") {
+      /* la vuelta de Google o GitHub: el código solo vale una vez y solo con el secreto de quien salió */
+      if (q.get("grant_type") === "pkce") {
+        const c = (srv.codigos || new Map()).get(cuerpo.auth_code);
+        if (!c) return resp(404, { code: 404, error_code: "flow_state_not_found", msg: "invalid flow state, no valid flow state found" });
+        srv.codigos.delete(cuerpo.auth_code);
+        if ((await retoPkce(String(cuerpo.code_verifier || ""))) !== c.reto) return resp(403, { code: 403, error_code: "bad_code_verifier", msg: "code challenge does not match previously saved code verifier" });
+        return resp(200, sesion(c.uid));
+      }
       if (q.get("grant_type") === "password") {
         const x = srv.usuarios.find(y => y.email === String(cuerpo.email).toLowerCase() && y.pass === cuerpo.password);
         return x ? resp(200, sesion(x.id)) : resp(400, { code: 400, error_code: "invalid_credentials", msg: "Invalid login credentials" });
@@ -112,7 +122,7 @@ async function conNube(fn) {
   const ls = {}; Object.keys(localStorage).filter(k => k.startsWith("desk-daw:")).forEach(k => { ls[k] = localStorage.getItem(k); });
   const srv = servidorFalso();
   NUBE.url = "https://falso.supabase.co"; NUBE.clave = "clave-publica";
-  nubeFetch = srv.fetch; SESION = null; db = null; esAdminNube = false; nubeLatidoEn = 0; nubeUltimoEstado = "";
+  nubeFetch = srv.fetch; SESION = null; db = null; esAdminNube = false; nubeLatidoEn = 0; nubeUltimoEstado = ""; proveedoresNube = null;
   PANEL = { datos: null, cargando: false, error: "" };
   Object.keys(localStorage).filter(k => k.startsWith("desk-daw:")).forEach(k => localStorage.removeItem(k));
   try { sessionStorage.removeItem("desk-daw:sesion"); } catch (e) {}
@@ -122,7 +132,7 @@ async function conNube(fn) {
     /* que terminen los guardados de esta prueba antes de pasar a la siguiente */
     await dormir(1700);
     NUBE.url = antes.url; NUBE.clave = antes.clave; nubeFetch = antes.fetch; SESION = antes.SESION; db = antes.db;
-    esAdminNube = antes.esAdminNube; PANEL = antes.PANEL; confirmar = antes.confirmar; nubeLatidoEn = 0; nubeUltimoEstado = "";
+    esAdminNube = antes.esAdminNube; PANEL = antes.PANEL; confirmar = antes.confirmar; nubeLatidoEn = 0; nubeUltimoEstado = ""; proveedoresNube = null;
     ACC = null; const a = $("#acceso"); if (a) a.hidden = true;
     BV = antes.BV; $("#entrada").hidden = !BV;
     document.body.classList.remove("en-entrada");
@@ -180,7 +190,8 @@ grupo("Cuentas: entrar y crear la cuenta", () => {
       esperar(avisoAcceso()).contiene("al menos 8");
       await formulario({ correo: "ana@ejemplo.es", clave: "contraseña-larga", legal: false });
       esperar(avisoAcceso()).contiene("14 años");
-      esperar(srv.llamadas.length).igualA(0);
+      /* preguntar qué proveedores hay no manda nada tuyo */
+      esperar(srv.llamadas.filter(l => !l.includes("/auth/v1/settings")).length).igualA(0);
     });
   });
   prueba("una cuenta nueva entra y empieza por la bienvenida, con lo legal ya aceptado", async () => {
@@ -526,6 +537,92 @@ grupo("Cuentas: la clave pública, antigua o nueva", () => {
     const c = await cabeceras("sb_publishable_abc123", true);
     esperar(c.apikey).igualA("sb_publishable_abc123");
     esperar(c.Authorization).igualA("Bearer eyJ.token.sesion");
+  });
+});
+
+grupo("Cuentas: entrar con Google o GitHub", () => {
+  /* sale hacia el proveedor: se apunta a dónde, sin ir de verdad */
+  async function salirHacia(proveedor) {
+    const antes = irA; let a = "";
+    irA = url => { a = url; };
+    try { await entrarCon(proveedor); } finally { irA = antes; }
+    return new URL(a);
+  }
+  prueba("la huella del secreto es la de la norma (RFC 7636)", async () => {
+    esperar(await retoPkce("dBjftJeZ4CVP-mB92K27uhbUJU1p1r_wW1gFWFOEjXk")).igualA("E9Melhoa2OwvFrEMTJguCHaoeK1t8URWbuGJSstw-cM");
+  });
+  prueba("sin proveedores encendidos, solo sale el correo", async () => {
+    await conNube(async srv => {
+      abrirAcceso("entrar"); await dormir(80);
+      esperar($(".acc-prov")).nulo();
+      esperar($(".acc-o")).nulo();
+    });
+  });
+  prueba("con Google encendido sale su botón, y el de GitHub no", async () => {
+    await conNube(async srv => {
+      srv.proveedores = { google: true };
+      abrirAcceso("crear"); await hasta(() => $(".acc-prov"));
+      const b = [...document.querySelectorAll(".acc-prov")];
+      esperar(b.length).igualA(1);
+      esperar(b[0].textContent).contiene("Continuar con Google");
+      esperar(!!$("#accForm")).cierto();
+    });
+  });
+  prueba("al salir manda solo la huella del secreto y vuelve a la misma página", async () => {
+    await conNube(async srv => {
+      const u = await salirHacia("github"), pend = leeLS("pkce");
+      esperar(u.pathname).igualA("/auth/v1/authorize");
+      esperar(u.searchParams.get("provider")).igualA("github");
+      esperar(u.searchParams.get("redirect_to")).igualA(location.origin + location.pathname);
+      esperar(u.searchParams.get("code_challenge_method")).igualA("s256");
+      esperar(u.searchParams.get("code_challenge")).igualA(await retoPkce(pend.v));
+      esperar(u.href).noContiene(pend.v);
+    });
+  });
+  prueba("a la vuelta, el código y el secreto dan la sesión, y el secreto se borra", async () => {
+    await conNube(async srv => {
+      const u = await salirHacia("google"), ana = srv.crear("ana@ejemplo.es");
+      srv.codigos = new Map([["cod-1", { uid: ana.id, reto: u.searchParams.get("code_challenge") }]]);
+      esperar(await terminarOAuth(new URLSearchParams("code=cod-1"))).igualA("dentro");
+      esperar(SESION.usuario.email).igualA("ana@ejemplo.es");
+      esperar(leeLS("pkce")).nulo();
+    });
+  });
+  prueba("un código sin su secreto no sirve (y no se puede usar dos veces)", async () => {
+    await conNube(async srv => {
+      const u = await salirHacia("google"), ana = srv.crear("ana@ejemplo.es");
+      srv.codigos = new Map([["cod-2", { uid: ana.id, reto: u.searchParams.get("code_challenge") }]]);
+      guardaLS("pkce", { v: "otro-secreto-que-no-es-el-bueno-1234567890", p: "google", t: Date.now() });
+      esperar(await terminarOAuth(new URLSearchParams("code=cod-2"))).igualA("error");
+      esperar(SESION).nulo();
+      guardaLS("pkce", { v: "lo-que-sea", p: "google", t: Date.now() });
+      esperar(await terminarOAuth(new URLSearchParams("code=cod-2"))).igualA("error");
+      esperar(accesoVisible()).cierto();
+    });
+  });
+  prueba("si cancelas en Google, te lo dice y puedes entrar con el correo", async () => {
+    await conNube(async srv => {
+      await salirHacia("google");
+      esperar(await terminarOAuth(new URLSearchParams("error=access_denied&error_description=The+user+denied"))).igualA("error");
+      esperar(avisoAcceso()).contiene("Has cancelado la entrada con Google");
+      esperar(leeLS("pkce")).nulo();
+    });
+  });
+  prueba("sin venir de ningún proveedor no hace nada", async () => {
+    await conNube(async srv => {
+      esperar(await terminarOAuth(new URLSearchParams("instalar"))).igualA("nada");
+      esperar(await terminarOAuth(new URLSearchParams("error=algo"))).igualA("nada");
+      esperar(SESION).nulo();
+    });
+  });
+  prueba("un secreto caducado no se acepta", async () => {
+    await conNube(async srv => {
+      const ana = srv.crear("ana@ejemplo.es");
+      guardaLS("pkce", { v: "secreto-viejo-1234567890-abcdefghijklmnopq", p: "google", t: Date.now() - 20 * 60000 });
+      srv.codigos = new Map([["cod-3", { uid: ana.id, reto: await retoPkce("secreto-viejo-1234567890-abcdefghijklmnopq") }]]);
+      esperar(await terminarOAuth(new URLSearchParams("code=cod-3"))).igualA("error");
+      esperar(SESION).nulo();
+    });
   });
 });
 
