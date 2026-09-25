@@ -2003,9 +2003,9 @@ input:focus,select:focus,textarea:focus{border-color:var(--acento); box-shadow:0
   .riel-item[aria-current="page"]:hover{background:color-mix(in srgb, var(--acento) 24%, transparent)}
 }
 .riel-pronto-tag{display:block; max-width:100%; margin-top:-1px; font:600 9px/1 var(--sans); letter-spacing:.01em; color:var(--pronto); white-space:nowrap}
-.pronto{display:inline-flex; align-items:center; gap:6px; padding:3px 9px; border-radius:99px; font:600 11px/1.2 var(--sans); color:var(--pronto);
+.pronto:not(.banda){display:inline-flex; align-items:center; gap:6px; padding:3px 9px; border-radius:99px; font:600 11px/1.2 var(--sans); color:var(--pronto);
   background:var(--pronto-suave); box-shadow:inset 0 0 0 1px var(--pronto-borde); white-space:nowrap}
-.pronto::before{content:""; width:6px; height:6px; border-radius:50%; background:var(--pronto); animation:latido 2.2s ease-in-out infinite}
+.pronto:not(.banda)::before{content:""; width:6px; height:6px; border-radius:50%; background:var(--pronto); animation:latido 2.2s ease-in-out infinite}
 .pronto.grande{font-size:12.5px; padding:5px 12px}
 @keyframes latido{0%,100%{transform:scale(1); opacity:1} 50%{transform:scale(1.5); opacity:.55}}
 .hm-grupo{margin:14px 4px 6px; font:600 11px/1 var(--sans); letter-spacing:.06em; text-transform:uppercase; color:var(--ink-4)}
@@ -2797,6 +2797,36 @@ body.lx-arrastrando, body.lx-arrastrando *{-webkit-user-select:none; user-select
 .ins-n{flex:0 0 28px; height:28px; display:grid; place-items:center; border-radius:50%; background:var(--acento-suave); color:var(--acento-txt);
   box-shadow:inset 0 0 0 1px var(--acento-borde); font:700 13px/1 var(--sans)}
 .ins-ico{display:inline-block; width:18px; height:18px; margin:0 2px; vertical-align:-3px; color:var(--acento-txt)}
+/* ══ el móvil, repasado pantalla por pantalla ══ */
+/* un nombre largo en una fila se corta con «…» en vez de montarse encima de la fecha o la nota
+   (el texto iba en una etiqueta en línea, y ahí el recorte no funciona) */
+.fila .principal-fila{overflow:hidden}
+.fila .principal-fila > .t:only-child{display:block}
+@media (max-width:560px){
+  /* en el Inicio, «Lo próximo que vence» y el estado de las asignaturas van en dos líneas:
+     arriba el nombre entero (y la nota), debajo cómo va */
+  .panel[aria-labelledby="tProx"] .fila, .panel[aria-labelledby="tMods"] .fila{display:grid; grid-template-columns:auto minmax(0,1fr) auto; column-gap:10px; row-gap:6px; align-items:center}
+  .panel[aria-labelledby="tProx"] .fila > .codigo, .panel[aria-labelledby="tMods"] .fila > .codigo{grid-column:1; grid-row:1 / span 2; align-self:start; margin-top:1px}
+  .panel[aria-labelledby="tProx"] .fila > .principal-fila, .panel[aria-labelledby="tMods"] .fila > .principal-fila{grid-column:2; grid-row:1}
+  .panel[aria-labelledby="tProx"] .fila .t, .panel[aria-labelledby="tMods"] .fila .t{white-space:normal; display:-webkit-box; -webkit-line-clamp:2; -webkit-box-orient:vertical}
+  .panel[aria-labelledby="tProx"] .fila > .fecha{grid-column:3; grid-row:1; font-size:12px; color:var(--ink-3)}
+  .panel[aria-labelledby="tMods"] .fila > .num{grid-column:3; grid-row:1}
+  .panel[aria-labelledby="tProx"] .fila > .estado, .panel[aria-labelledby="tMods"] .fila > .estado{grid-column:2 / span 2; grid-row:2; justify-self:start}
+  /* la Lista de la Agenda: el título entero arriba (hasta dos líneas) y, debajo, la asignatura y la fecha */
+  .ls-fila{flex-wrap:wrap; row-gap:6px}
+  .ls-fila > .ls-tit{flex:1 1 calc(100% - 40px); white-space:normal; display:-webkit-box; -webkit-line-clamp:2; -webkit-box-orient:vertical}
+  .ls-fila > .ls-props{flex:1 1 100%; padding-left:30px; flex-wrap:wrap}
+  /* en Módulos, si el nombre y su estado no caben juntos, el estado baja a la línea de abajo */
+  .m2-cab{flex-wrap:wrap; row-gap:8px}
+  .m2-cab > .m2-nombre{max-width:100%}
+}
+/* la tabla de horas de Progreso se desliza de lado dentro de su tarjeta */
+.pg-tabla{max-width:100%; overflow-x:auto; -webkit-overflow-scrolling:touch}
+/* el avance de ChatClase: la tarjeta de una tarea compartida no se sale del mensaje */
+.prc-msg > div{min-width:0}
+.cc-tarea{max-width:100%; min-width:0; box-sizing:border-box}
+.cc-tarea-txt{min-width:0}
+.cc-tarea-txt strong{display:block; overflow:hidden; text-overflow:ellipsis; white-space:nowrap}
 </style>
 </head>
 <body>
@@ -4554,10 +4584,17 @@ const enBarra = () => profeActivo() ? ["escritorio", "entregas", "apuntes", "tut
 const secVisibles = () => SECCIONES.filter(s => (!s.solo || normalizarPerfil().etapa === s.solo) && (s.id !== "tutor" || profeActivo()) && (s.id !== "tutoria" || !profeActivo()) && (!s.admin || esAdminNube));
 const nombreSec = id => id === "modulos" ? voc(true, true) : (SECCIONES.find(s => s.id === id) || { txt: id }).txt;
 /* el curso en pocas letras: «DAW · 1.º», «ESO · 3.º», «Bach · 2.º», «B2» */
+/* «Desarrollo de Aplicaciones Web» → «DAW», «Administración de Sistemas Informáticos en Red» → «ASIR» */
+function siglasCiclo(n) {
+  n = String(n || "").trim();
+  if (n.length <= 12) return n;
+  const s = n.split(/\s+/).filter(p => p.length > 2 && !/^(del|las|los|con|para|por|una|que)$/i.test(p)).map(p => p.charAt(0).toUpperCase()).join("");
+  return s.length >= 2 ? s : n;
+}
 function etiquetaCorta() {
   const p = normalizarPerfil();
   const fp = p.etapa === "ciclo-sup" || p.etapa === "ciclo-medio";
-  const base = fp ? (String(p.ciclo || "").split(" · ")[0].trim() || "FP")
+  const base = fp ? (siglasCiclo(String(p.ciclo || "").split(" · ")[0]) || "FP")
     : ({ eso: "ESO", bach: "Bach", uni: "Uni", oposicion: "Opos", idioma: String(p.ciclo || "Idioma").split(" ")[0] })[p.etapa] || "";
   const curso = /^\d/.test(String(p.curso || "")) || p.etapa === "idioma" ? String(p.curso || "") : "";
   return [base, curso].filter(Boolean).join(" · ").slice(0, 16) || "Mi curso";

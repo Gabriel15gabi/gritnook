@@ -8,9 +8,9 @@ Eso levanta un servidor, abre un navegador sin ventana y escribe el resultado en
 la consola. Devuelve 1 si algo falla, que es lo que mira un servidor de
 integración continua.
 
-**745 pruebas.** Sin ventana pasan 739 y 6 se quedan en pendiente: son las que
+**752 pruebas.** Sin ventana pasan 746 y 6 se quedan en pendiente: son las que
 dibujan un PDF, y sin tarjeta gráfica eso tarda demasiado. Abriendo
-`pruebas/pruebas.html` en un navegador normal pasan las 745.
+`pruebas/pruebas.html` en un navegador normal pasan las 752.
 
 Aparte, las reglas de seguridad de la base de datos se prueban contra un
 Postgres de verdad: `node backend/probar-sql.js` (22 comprobaciones), y las del chat con
@@ -94,6 +94,7 @@ repinte la pantalla.
 | `casos-lanzamiento.js` | **El Inicio de «tu día»** (sin saludos; si trabajas, si no es día de estudio, lo que vence), **el tiempo** (sin ciudad no se pide nada; la ubicación redondeada y solo en el dispositivo; buscar ciudad; media hora guardado; fallos sin insistir; dentro de Claude, nada), **las libretas** (paleta, color propio, quitarlo, tapas claras, colores que no son colores) y **la pantalla de entrar** |
 | `casos-hoja.js` | **La hoja que se deja mover**: sangría con Tab y columnas con Tab en mitad de la línea, borrar al principio, subir, bajar, duplicar y alinear líneas, lo que se guarda (y en el texto plano, tabuladores), lo de Docs y Word, pegar texto con guiones y # como listas y títulos, pegar de otra web sin sus colores ni sus saltos de código, copiar de la propia hoja con sus subrayados, Ctrl+Mayús+V, el asa del margen (arrastrar arriba, abajo, a los lados y por debajo del texto; tocarla y su menú), tocar en blanco para escribir ahí y el deshacer del texto. **Y el móvil de verdad**, con el marco de la app estrechado a 390 px: la hoja a lo ancho con letra de 16 px, la barra abajo con botones de dedo, sin lista ni cabecera y la flecha para volver, módulo y etiquetas plegados, dibujar con un dedo, acercar con dos sin pintar, el lápiz que dibuja y el dedo que mueve, el color y el grosor al tocar otra vez el útil, la ventana estrecha del ordenador y cambiar de ancho sin perder lo escrito. **Los folios A4** (la hoja crece por folios enteros, con su número) y **el Folio del móvil**: abrir un apunte en la hoja entera, uno vacío para escribir, acercar con dos dedos, el doble toque, tocar las letras para escribir (y el blanco de al lado, no), los tres modos, las categorías con las mismas herramientas que el ordenador y que todo quepa en 360 px |
 | `casos-instalar.js` | **Instalar la app**: que en el ordenador sin instalador no se ofrezca nada; que con el del navegador salga en el menú de tu perfil y lo abra; los pasos del iPhone (con el icono de Compartir), de Android y desde Instagram; la ventana de pasos; el aviso del Inicio y su «Ahora no» de dos semanas; y el manifiesto con el icono adaptable y sus tres capturas |
+| `casos-movil.js` | **El móvil, sin nada que se pise ni se salga**, midiendo posiciones de verdad a 390 px: las filas del Inicio (lo que vence y el estado de las asignaturas), ninguna sección más ancha que la pantalla, la Lista de la Agenda en dos líneas, la tabla de Progreso que se desliza dentro de su tarjeta, los avisos ámbar que no se vuelven la pastilla de «Próximamente» y las siglas del ciclo en la etiqueta de arriba |
 | `casos-absurdos.js` | **Datos irreales**: notas de 900, faltas negativas, fechas del año 9999, emojis, árabe, textos de diez mil letras, estados de versiones que no existieron |
 
 ## Rellenar la app para verla funcionando
