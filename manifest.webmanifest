@@ -1,6 +1,7 @@
 {
   "name": "GritNook",
   "short_name": "GritNook",
+  "id": "./",
   "description": "El estudio que se adapta a tu vida: tu tiempo libre, tu trabajo, tus asignaturas, notas, exámenes y apuntes.",
   "lang": "es",
   "start_url": "./",
@@ -9,9 +10,49 @@
   "orientation": "any",
   "background_color": "#161826",
   "theme_color": "#161826",
+  "categories": [
+    "education",
+    "productivity"
+  ],
   "icons": [
-    { "src": "iconos/icono-192.png", "sizes": "192x192", "type": "image/png" },
-    { "src": "iconos/icono-512.png", "sizes": "512x512", "type": "image/png" },
-    { "src": "iconos/icono-maskable-512.png", "sizes": "512x512", "type": "image/png", "purpose": "maskable" }
+    {
+      "src": "iconos/icono-192.png",
+      "sizes": "192x192",
+      "type": "image/png"
+    },
+    {
+      "src": "iconos/icono-512.png",
+      "sizes": "512x512",
+      "type": "image/png"
+    },
+    {
+      "src": "iconos/icono-maskable-512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "maskable"
+    }
+  ],
+  "screenshots": [
+    {
+      "src": "capturas/movil/inicio.jpg",
+      "sizes": "780x1688",
+      "type": "image/jpeg",
+      "form_factor": "narrow",
+      "label": "Tu día: lo que te toca estudiar, repartido en tu tiempo libre"
+    },
+    {
+      "src": "capturas/movil/apuntes.jpg",
+      "sizes": "780x1688",
+      "type": "image/jpeg",
+      "form_factor": "narrow",
+      "label": "Tus apuntes en una hoja A4: escribe, subraya y dibuja"
+    },
+    {
+      "src": "capturas/movil/oposicion.jpg",
+      "sizes": "780x1688",
+      "type": "image/jpeg",
+      "form_factor": "narrow",
+      "label": "Para opositores: temario, vueltas y simulacros hasta la nota de corte"
+    }
   ]
 }

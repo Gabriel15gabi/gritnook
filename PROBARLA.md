@@ -21,8 +21,10 @@ enlaces por dentro, y ahí no se puede instalar y lo que guardes puede perderse:
 toca los tres puntos de arriba y elige *Abrir en el navegador*. La propia app te
 lo recuerda.
 
-**En el móvil, instálala.** Menú del navegador → *Añadir a pantalla de inicio*.
-Se abre como una app, funciona sin conexión y ocupa nada.
+**En el móvil, instálala.** Toca **Instalar la app** (en la pantalla de entrar o
+en el menú de tu perfil) y sigue los pasos: en Android es un toque; en el iPhone,
+Compartir → *Añadir a pantalla de inicio* → *Añadir*. Se abre como una app,
+funciona sin conexión y casi no ocupa nada.
 
 > **Si tienes iPhone, hazlo sí o sí.** Safari borra lo que guarda una web
 > cuando pasas siete días sin abrirla. Desde la pantalla de inicio eso no pasa.

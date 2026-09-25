@@ -2762,6 +2762,26 @@ body.lx-arrastrando, body.lx-arrastrando *{-webkit-user-select:none; user-select
   .lx-menu button{min-width:44px; padding:7px 4px 6px; font-size:10.5px}
 }
 @media (prefers-reduced-motion: reduce){ .lb-barra.lx-dock, .lx-menu, .lx-dock .lb-pop{transition:none; animation:none} }
+/* ══ instalar la app ══ */
+/* en la pantalla de entrar: una tarjeta que invita, debajo de todo */
+.acc-instalar{display:flex; align-items:center; gap:12px; width:100%; margin-top:18px; padding:12px 14px; border:1px solid var(--acento-borde); border-radius:14px;
+  background:linear-gradient(135deg, var(--acento-suave), color-mix(in srgb, var(--acento-suave) 40%, transparent)); color:var(--ink); text-align:left; cursor:pointer;
+  font:400 12.5px/1.4 var(--sans); transition:transform .15s var(--ease-salto, ease), box-shadow .15s}
+.acc-instalar:hover{box-shadow:0 8px 22px -12px color-mix(in srgb, var(--acento) 70%, transparent)}
+.acc-instalar svg.i{flex:0 0 22px; width:22px; height:22px; color:var(--acento-txt)}
+.acc-instalar strong{display:block; margin-bottom:2px; font:600 14px/1.25 var(--sans)}
+.acc-instalar span{color:var(--ink-2)}
+/* en el Inicio del móvil */
+.banda.instalar{border:1px solid var(--acento-borde); background:linear-gradient(135deg, var(--acento-suave), var(--surface-2))}
+.banda.instalar > svg.i{color:var(--acento-txt)}
+.banda.instalar strong{color:var(--ink)}
+/* los pasos */
+.ins-dlg p{margin:0 0 12px}
+.ins-pasos{display:grid; gap:12px; margin:4px 0 14px; padding:0; list-style:none}
+.ins-paso{display:flex; align-items:flex-start; gap:12px; font:400 14.5px/1.45 var(--sans)}
+.ins-n{flex:0 0 28px; height:28px; display:grid; place-items:center; border-radius:50%; background:var(--acento-suave); color:var(--acento-txt);
+  box-shadow:inset 0 0 0 1px var(--acento-borde); font:700 13px/1 var(--sans)}
+.ins-ico{display:inline-block; width:18px; height:18px; margin:0 2px; vertical-align:-3px; color:var(--acento-txt)}
 </style>
 </head>
 <body>
@@ -4689,7 +4709,7 @@ function vistaEscritorio() {
     ${datoInicio(ICO_AVISO, enRiesgo ? "var(--riesgo-txt)" : "var(--verde-texto)", enRiesgo, voc(true, true) + " en riesgo")}
   </div>
 
-  ${bandaDeApp()}${bandaCopia()}
+  ${bandaDeApp()}${bandaInstalar()}${bandaCopia()}
   ${inicioHTML(W)}`;
 }
 
@@ -7186,7 +7206,7 @@ function avisosDeEntrada() {
     marcarVisto("ios");
     abrirDlg("Añádela a tu pantalla de inicio", `
       <p>En el iPhone, <strong>Safari borra lo guardado por una web si pasas siete días sin abrirla</strong>. Tus notas y tus apuntes se irían con ello.</p>
-      <p style="margin-top:10px">Se arregla en diez segundos: toca <strong>Compartir</strong> ${icono("clip")} abajo y luego <strong>«Añadir a pantalla de inicio»</strong>. Desde ahí se abre como una app y ya no se borra nada.</p>
+      <p style="margin-top:10px">Se arregla en diez segundos: toca <strong>Compartir</strong> ${ICO_COMPARTIR} abajo y luego <strong>«Añadir a pantalla de inicio»</strong>. Desde ahí se abre como una app y ya no se borra nada.</p>
       <p class="meta" style="margin-top:10px">Y descárgate una copia de vez en cuando desde Ajustes → Datos.</p>`,
       [{ txt: "Ahora lo hago", clase: "btn primario" }]);
   }
@@ -8110,7 +8130,7 @@ function accesoFormHTML() {
       ${enviar("Guardar y entrar")}
     </form>`;
   return `${bandaDeApp()}<div class="acc-logo-movil">${logo}<p class="acc-lema-movil">El estudio que se adapta <em>a tu vida</em>.</p></div><div class="acc-form-anima">${cuerpo}</div>
-    <p class="acc-seguro">${ACC_ICO.candado}Tu contraseña viaja cifrada y no la ve nadie. Tus datos se guardan en la Unión Europea.</p>`;
+    <p class="acc-seguro">${ACC_ICO.candado}Tu contraseña viaja cifrada y no la ve nadie. Tus datos se guardan en la Unión Europea.</p>${instalarAccesoHTML()}`;
 }
 function pintaAcceso() {
   if (!ACC) return;
@@ -8464,6 +8484,7 @@ function abrirYo(boton) {
     <div class="ym-cab">${avatarYo("med")}<div class="ym-quien"><b>${esc(miNombre() || "Tú")}</b><span>${esc(donde)}</span></div></div>
     <button type="button" role="menuitem" class="ym-item" data-yo="perfil">${icono("yo")}Tu perfil y tu foto</button>
     <button type="button" role="menuitem" class="ym-item" data-yo="ajustes">${icono("ajustes")}Ajustes</button>
+    ${instalarItemYo()}
     ${conCuenta ? `<div class="ym-sep" role="separator"></div>
     <button type="button" role="menuitem" class="ym-item" data-yo="salir">${icono("salir")}Cerrar sesión</button>` : ""}`;
   m.hidden = false; YO.abierto = true; YO.desde = boton.id;
@@ -8495,6 +8516,7 @@ alEvento("click", e => {
     if (q === "perfil") dlgPerfil();
     else if (q === "ajustes") irASeccion("ajustes");
     else if (q === "salir") salirCuenta();
+    else if (q === "instalar") instalarApp();
     return;
   }
   if (YO.abierto && !t.closest("#yoMenu")) cerrarYo();
@@ -11082,6 +11104,102 @@ alEvento("selectionchange", () => {
     lbProvisionalesMirar(); lbAsaSitio(); lbEstadoColocar();
   }, 0);
 });
+
+
+/* ══════════════ Instalar GritNook en el móvil ══════════════
+   GritNook se instala desde el navegador, como una app: icono en la pantalla
+   de inicio, a pantalla completa y sin conexión. Hasta ahora había que saber
+   dónde tocar; ahora la app lo ofrece:
+   · en Android y en el ordenador (Chrome, Edge, Samsung…), con el instalador
+     del propio navegador, de un toque;
+   · en el iPhone, que no tiene ese instalador, con los tres pasos de Safari;
+   · y desde Instagram o TikTok, primero cómo abrirla en el navegador.
+   Sale en la pantalla de entrar, en el menú de tu perfil y en el Inicio del
+   móvil, y el enlace gritnook.com/?instalar lo abre directamente. */
+const INST = { evento: null };
+const enAndroid = () => /Android/i.test(navigator.userAgent || "");
+const esMovil = () => enIOS() || enAndroid() || (window.matchMedia && matchMedia("(pointer: coarse) and (max-width: 900px)").matches);
+/* hay algo que ofrecer: el instalador del navegador, o los pasos en un móvil */
+const puedeInstalar = () => !instalada() && !enClaude() && (!!INST.evento || esMovil());
+const ICO_COMPARTIR = '<svg class="i ins-ico" viewBox="0 0 16 16" aria-hidden="true"><path d="M8 10.2V1.8M5.2 4.4 8 1.6l2.8 2.8"/><path d="M5.6 6.4H4a1.2 1.2 0 0 0-1.2 1.2v5.6A1.2 1.2 0 0 0 4 14.4h8a1.2 1.2 0 0 0 1.2-1.2V7.6A1.2 1.2 0 0 0 12 6.4h-1.6"/></svg>';
+const ICO_ANADIR = '<svg class="i ins-ico" viewBox="0 0 16 16" aria-hidden="true"><rect x="2" y="2" width="12" height="12" rx="2.5"/><path d="M8 5v6M5 8h6"/></svg>';
+const ICO_PUNTOS = '<svg class="i ins-ico" viewBox="0 0 16 16" aria-hidden="true"><circle cx="8" cy="3" r="1.3" fill="currentColor" stroke="none"/><circle cx="8" cy="8" r="1.3" fill="currentColor" stroke="none"/><circle cx="8" cy="13" r="1.3" fill="currentColor" stroke="none"/></svg>';
+const ICO_INSTALAR = '<svg class="i" viewBox="0 0 16 16" aria-hidden="true"><rect x="4" y="1.5" width="8" height="13" rx="1.8"/><path d="M8 4.6v5M5.9 7.6 8 9.7l2.1-2.1M6.8 12.4h2.4"/></svg>';
+
+/* el navegador avisa de que se puede instalar: se guarda para el botón, sin su cartel */
+window.addEventListener("beforeinstallprompt", e => { e.preventDefault(); INST.evento = e; repintaInstalar(); });
+window.addEventListener("appinstalled", () => { INST.evento = null; aviso("¡Hecho! GritNook ya está en tu pantalla de inicio."); repintaInstalar(); });
+function repintaInstalar() {
+  try {
+    if (typeof ACC !== "undefined" && ACC) { pintaAcceso(); return; }
+    if (seccion === "escritorio" && !editando()) pinta();
+  } catch (e) {}
+}
+
+/* los pasos, según dónde estés */
+function pasosInstalar() {
+  const paso = (n, html) => `<li class="ins-paso"><span class="ins-n">${n}</span><span>${html}</span></li>`;
+  if (navegadorDeApp()) return {
+    titulo: "Primero, ábrela en el navegador",
+    html: `<p>Estás dentro de otra app (Instagram, TikTok…) y desde ahí no se puede instalar.</p>
+      <ol class="ins-pasos">${paso(1, `Toca ${ICO_PUNTOS} o <strong>⋯</strong> arriba a la derecha.`)}${paso(2, `Elige <strong>«Abrir en el navegador»</strong> (${enIOS() ? "Safari" : "Chrome"}).`)}${paso(3, `Allí, vuelve a tocar <strong>Instalar la app</strong>.`)}</ol>`
+  };
+  if (enIOS()) return {
+    titulo: "Instálala en tu iPhone",
+    html: `<p>Tres toques en <strong>Safari</strong> y la tendrás como una app más, con su icono, a pantalla completa y sin perder nada.</p>
+      <ol class="ins-pasos">${paso(1, `Toca <strong>Compartir</strong> ${ICO_COMPARTIR} en la barra de abajo.`)}${paso(2, `Baja y toca <strong>«Añadir a pantalla de inicio»</strong> ${ICO_ANADIR}.`)}${paso(3, `Toca <strong>«Añadir»</strong>, arriba a la derecha.`)}</ol>
+      <p class="meta">¿No te sale? Tiene que ser en Safari (o en Chrome del iPhone, desde su menú de compartir).</p>`
+  };
+  if (enAndroid()) return {
+    titulo: "Instálala en tu móvil",
+    html: `<p>Se queda como una app más, con su icono, a pantalla completa y sin conexión.</p>
+      <ol class="ins-pasos">${paso(1, `Toca el menú ${ICO_PUNTOS} arriba a la derecha.`)}${paso(2, `Elige <strong>«Instalar aplicación»</strong> o <strong>«Añadir a pantalla de inicio»</strong>.`)}${paso(3, `Confirma con <strong>«Instalar»</strong>.`)}</ol>`
+  };
+  return {
+    titulo: "Instálala en el ordenador",
+    html: `<p>En <strong>Chrome</strong> o <strong>Edge</strong>, pulsa el icono de instalar que sale a la derecha de la barra de direcciones y luego <strong>«Instalar»</strong>. En el Mac, con Safari: <strong>Archivo → Añadir al Dock</strong>.</p>
+      <p class="meta">Y en el móvil, abre <strong>gritnook.com</strong> y toca <strong>Instalar la app</strong>.</p>`
+  };
+}
+async function instalarApp() {
+  if (instalada()) { aviso("Ya la tienes instalada: ábrela desde su icono."); return; }
+  if (INST.evento) {
+    const e = INST.evento; INST.evento = null;
+    try { await e.prompt(); const r = await e.userChoice; if (r && r.outcome !== "accepted") INST.evento = null; } catch (err) {}
+    repintaInstalar(); return;
+  }
+  const p = pasosInstalar();
+  abrirDlg(p.titulo, `<div class="ins-dlg">${p.html}</div>`, [{ txt: "Entendido", clase: "btn primario" }]);
+}
+
+/* en la pantalla de entrar */
+function instalarAccesoHTML() {
+  if (!puedeInstalar()) return "";
+  return `<button type="button" class="acc-instalar" data-instalar>${ICO_INSTALAR}<span><strong>Instala GritNook en tu móvil</strong>Se abre como una app, a pantalla completa y sin conexión.</span></button>`;
+}
+/* en el menú de tu perfil */
+function instalarItemYo() {
+  return puedeInstalar() ? `<button type="button" role="menuitem" class="ym-item" data-yo="instalar">${ICO_INSTALAR}Instalar la app</button>` : "";
+}
+/* en el Inicio del móvil, hasta que la instales o digas «Ahora no» (vuelve a las dos semanas) */
+function bandaInstalar() {
+  if (!puedeInstalar() || !esMovil()) return "";
+  const luego = leeLS("instalar-luego");
+  if (esFecha(luego) && diasEntre(hoyISO(), luego) < 14) return "";
+  return `<div class="banda instalar" role="status">${ICO_INSTALAR}<span><strong>Instala GritNook en tu móvil.</strong> Con su icono, a pantalla completa y sin conexión.</span>
+    <button type="button" class="btn mini primario" data-instalar>Instalar</button>
+    <button type="button" class="btn mini fantasma" id="insLuego">Ahora no</button></div>`;
+}
+alEvento("click", e => {
+  const t = e.target; if (!t || !t.closest) return;
+  if (t.closest("[data-instalar]")) { instalarApp(); return; }
+  if (t.closest("#insLuego")) { guardaLS("instalar-luego", hoyISO()); pinta(); }
+});
+/* gritnook.com/?instalar: el enlace de la bio de Instagram abre los pasos directamente */
+if (/[?&]instalar(&|=|$)/.test(location.search)) {
+  try { const u = new URL(location.href); u.searchParams.delete("instalar"); history.replaceState(null, "", u.pathname + (u.search || "") + u.hash); } catch (e) {}
+  setTimeout(() => { try { instalarApp(); } catch (e) {} }, 900);
+}
 
 
 /* ══════════════════ pintado ══════════════════ */
@@ -14077,6 +14195,9 @@ alEvento("mousemove", e => {
   pon("link", { rel: "manifest", href: "manifest.webmanifest" });
   pon("link", { rel: "apple-touch-icon", href: "iconos/icono-180.png" });
   pon("meta", { name: "theme-color", content: "#161826" });
+  pon("meta", { name: "apple-mobile-web-app-capable", content: "yes" });
+  pon("meta", { name: "mobile-web-app-capable", content: "yes" });
+  pon("meta", { name: "apple-mobile-web-app-title", content: "GritNook" });
   window.addEventListener("load", () => navigator.serviceWorker.register("sw.js").catch(() => {}));
 })();
 

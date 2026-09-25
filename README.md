@@ -107,7 +107,7 @@ Y abre http://localhost:4173
 
 ## Instalarla en el móvil
 
-Desde GitHub Pages, o en local con `node servidor.js`, la app se instala como una más: en el móvil, menú del navegador → *Añadir a pantalla de inicio*; en el ordenador, el icono de instalar de la barra de direcciones. Funciona sin conexión. **En el iPhone conviene hacerlo**: Safari borra lo que guarda una web si pasas siete días sin abrirla, y desde la pantalla de inicio eso no pasa.
+Desde **gritnook.com**, o en local con `node servidor.js`, la app se instala como una más, con su icono, a pantalla completa y sin conexión. **La propia app lo ofrece**: en la pantalla de entrar, en el menú de tu perfil y en el Inicio del móvil hay un botón **Instalar la app**. En Android y en el ordenador (Chrome, Edge, Samsung…) abre el instalador del navegador, que enseña las capturas del manifiesto como una ficha de tienda; en el iPhone, que no tiene instalador, enseña los tres pasos de Safari (Compartir → *Añadir a pantalla de inicio* → *Añadir*); y si la abres desde Instagram o TikTok, primero cómo pasarla al navegador. El enlace **gritnook.com/?instalar** abre esos pasos directamente: es el que va en la bio. **En el iPhone conviene instalarla**: Safari borra lo que guarda una web si pasas siete días sin abrirla, y desde la pantalla de inicio eso no pasa.
 
 ## Dos versiones, una base
 
@@ -132,7 +132,7 @@ La versión pública es para verla y probarla. La de Claude usa sus capacidades 
 node pruebas/correr.js
 ```
 
-737 pruebas que corren **dentro de la app de verdad**, cargada en un iframe, sin
+745 pruebas que corren **dentro de la app de verdad**, cargada en un iframe, sin
 instalar nada. Cubren las cuentas de las notas, entender las fechas escritas a
 mano, el sanitizador, el estado, la libreta, el repaso espaciado, la pantalla de
 bienvenida entera, el modo opositor, las cuentas contra un servidor de mentira y una tanda de datos absurdos a propósito. Las reglas de la base de datos, aparte, contra un Postgres de verdad. El cómo y lo que han encontrado, en [pruebas/](pruebas/LEEME.md).
