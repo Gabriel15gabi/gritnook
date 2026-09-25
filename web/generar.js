@@ -1,6 +1,5 @@
 /* Las páginas públicas de gritnook.com, las que lee Google: la presentación
-   para opositores, la de estudiar y trabajar, la calculadora de aciertos
-   netos, los papeles (sacados de legal/*.md), la página 404, el mapa de la
+   para opositores, la de estudiar y trabajar, los papeles (sacados de legal/*.md), la página 404, el mapa de la
    web y robots.txt. La app sigue en la raíz (index.html) y no se toca.
 
        node web/generar.js
@@ -41,7 +40,7 @@ const faqLD = lista => ({ "@type": "FAQPage", mainEntity: lista.map(([p, r]) => 
 const EMPEZAR = `<a class="btn primario" href="/">Empieza gratis</a>`;
 
 /* ── el marco de todas las páginas ── */
-const NAV = [["/oposiciones/", "Oposiciones"], ["/estudiar-y-trabajar/", "Estudiar y trabajar"], ["/calculadora-aciertos-netos/", "Calculadora"]];
+const NAV = [["/oposiciones/", "Oposiciones"], ["/estudiar-y-trabajar/", "Estudiar y trabajar"]];
 const LEGALES = [["/privacidad/", "Privacidad"], ["/terminos/", "Términos"], ["/aviso-legal/", "Aviso legal"], ["/ia/", "La inteligencia artificial"]];
 const LOGO = `<picture><source srcset="/marca/gritnook-claro.svg" media="(prefers-color-scheme: light)"><img src="/marca/gritnook-oscuro.svg" width="112" height="35" alt="GritNook"></picture>`;
 const CSS = "/web/web.css?v=" + version("web/web.css");
@@ -86,7 +85,7 @@ ${cuerpo}
 </main>
 <footer class="pie"><div class="ancho">
   <div><p><strong>GritNook</strong> · El estudio que se adapta a tu vida.</p><p>© ${AÑO} GritNook · Gratis y sin publicidad · Tus datos en la Unión Europea</p></div>
-  <nav aria-label="Qué es GritNook">${NAV.map(([h, t]) => `<a href="${h}">${t === "Calculadora" ? "Calculadora de aciertos netos" : t === "Oposiciones" ? "Para opositores" : t}</a>`).join("")}<a href="/">Entrar</a></nav>
+  <nav aria-label="Qué es GritNook">${NAV.map(([h, t]) => `<a href="${h}">${t === "Oposiciones" ? "Para opositores" : t}</a>`).join("")}<a href="/">Entrar</a></nav>
   <nav aria-label="Legal">${LEGALES.map(([h, t]) => `<a href="${h}">${t}</a>`).join("")}</nav>
 </div></footer>
 ${scripts}</body>
@@ -102,7 +101,7 @@ const APP = { "@type": "WebApplication", "@id": WEB + "/#app", name: "GritNook",
 const FAQ_OPO = [
   ["¿Es gratis?", "Sí. GritNook es gratis y no tiene publicidad. Te haces una cuenta con tu correo y lo tuyo te sigue del móvil al ordenador."],
   ["¿Sirve para mi oposición?", "Sirve para cualquier oposición con temario: pegas el índice del tuyo y pones las reglas de tu convocatoria (preguntas, opciones, lo que resta un fallo y la nota de corte). Si tu examen tiene tema a desarrollar, también calcula las bolas."],
-  ["¿Qué son los aciertos netos?", `Tus aciertos menos lo que te quitan los fallos. Con 4 opciones lo normal es que cada fallo reste 1/3: 70 aciertos y 18 fallos son 70 − 18 × 1/3 = 64 aciertos netos. Es la cifra que se compara con la nota de corte. <a href="/calculadora-aciertos-netos/">Calcula los tuyos</a>.`],
+  ["¿Qué son los aciertos netos?", `Tus aciertos menos lo que te quitan los fallos. Con 4 opciones lo normal es que cada fallo reste 1/3: 70 aciertos y 18 fallos son 70 − 18 × 1/3 = 64 aciertos netos. Es la cifra que se compara con la nota de corte, y GritNook te la calcula en cada simulacro.`],
   ["¿Puedo usarla si trabajo?", "Para eso está pensada. Le dices qué días puedes y cuántas horas a la semana, y el plan se ajusta a eso. Si hoy no te toca, te lo dice; si solo tienes 25 minutos, también cuentan."],
   ["¿Funciona en el móvil?", "Sí. Se abre en el navegador y se puede instalar como una app en Android, iPhone y el ordenador, sin pasar por ninguna tienda."],
   ["¿Dónde se guardan mis datos?", `En tu cuenta, en servidores de la Unión Europea (Irlanda). No se venden ni se usan para publicidad. Los detalles están en la <a href="/privacidad/">política de privacidad</a>.`]
@@ -119,7 +118,7 @@ const OPOSICIONES = {
     <p class="eyebrow">Para opositores</p>
     <h1>Prepara la oposición con un plan que cabe <em>en tu vida</em></h1>
     <p class="lead">Pega el índice de tu temario y GritNook te dice cada día qué temas tocan, cuáles se te están enfriando y si llegas a las vueltas que quieres dar antes del examen. Con las horas que de verdad tienes, aunque trabajes.</p>
-    <div class="acciones">${EMPEZAR}<a class="btn" href="/calculadora-aciertos-netos/">Calcula tus aciertos netos</a></div>
+    <div class="acciones">${EMPEZAR}<a class="btn" href="/estudiar-y-trabajar/">Si además trabajas</a></div>
     <p class="nota-pie">Gratis · Sin publicidad · En el móvil y en el ordenador</p>
   </div>
   ${movil("/capturas/movil/oposicion.jpg", "La pantalla de oposición de GritNook: el temario por vueltas, el último simulacro en aciertos netos y los temas al día que hacen falta", true)}
@@ -244,82 +243,6 @@ const TRABAJO = {
 </div>`
 };
 
-/* ══════════════════ la calculadora ══════════════════ */
-const campo = (id, etq, attrs, ayuda = "") => `<label class="campo" for="${id}"><span>${etq}${ayuda ? ` <small>${ayuda}</small>` : ""}</span><input id="${id}" ${attrs}></label>`;
-const CALCULADORA = {
-  ruta: "/calculadora-aciertos-netos/",
-  titulo: "Calculadora de aciertos netos para oposiciones | GritNook",
-  tituloOg: "Calculadora de aciertos netos: tu nota con la penalización y lo que necesitas para el corte",
-  descripcion: "Calcula tus aciertos netos y tu nota sobre 10 con la penalización de tu examen, cuántas tienes que acertar para el corte y si compensa contestar. Gratis.",
-  ld: [ORG, { "@type": "WebApplication", "@id": WEB + "/calculadora-aciertos-netos/", name: "Calculadora de aciertos netos", url: WEB + "/calculadora-aciertos-netos/",
-    applicationCategory: "EducationalApplication", operatingSystem: "Web", inLanguage: "es", isAccessibleForFree: true,
-    offers: { "@type": "Offer", price: "0", priceCurrency: "EUR" }, publisher: { "@id": WEB + "/#org" } }],
-  scripts: `<script src="/web/calculadora.js?v=${version("web/calculadora.js")}" defer></script>\n`,
-  cuerpo: `<div class="ancho">
-<section class="hero" style="grid-template-columns:minmax(0,1fr); padding-bottom:12px">
-  <div>
-    <p class="eyebrow">Calculadora gratis</p>
-    <h1>Calculadora de <em>aciertos netos</em></h1>
-    <p class="lead">Pon las preguntas de tu examen, cuántas opciones tiene cada una, tus aciertos y tus fallos. Te sale tu nota con la penalización, lo que necesitas para la nota de corte y si te compensa arriesgar.</p>
-  </div>
-</section>
-
-<div class="calc" id="calc">
-  <section class="calc-caja" aria-labelledby="tNota">
-    <h2 id="tNota">Tu nota</h2>
-    <p>Las preguntas en blanco salen solas. Lo normal es que cada fallo reste 1/(opciones − 1); si tu convocatoria dice otra cosa, cámbialo.</p>
-    <div class="campos">
-      ${campo("cPreg", "Preguntas", 'type="number" inputmode="numeric" min="1" max="1000" step="1" value="100"')}
-      <label class="campo" for="cOpc"><span>Opciones por pregunta</span><select id="cOpc"><option>2</option><option>3</option><option selected>4</option><option>5</option></select></label>
-      ${campo("cPen", "Cada fallo resta", 'type="text" inputmode="decimal" value="1/3" autocomplete="off"', "(1/3, 0,25…)")}
-      ${campo("cAc", "Aciertos", 'type="number" inputmode="numeric" min="0" step="1" value="70"')}
-      ${campo("cFa", "Fallos", 'type="number" inputmode="numeric" min="0" step="1" value="18"')}
-    </div>
-    <div class="resultado" aria-live="polite">
-      <div class="cifra clave"><b id="rNeta">64</b><span>aciertos netos</span></div>
-      <div class="cifra"><b id="rNota">6,4</b><span>sobre 10</span></div>
-      <div class="cifra"><b id="rBlanco">12</b><span>en blanco</span></div>
-    </div>
-    <p class="frase" id="rCuenta">70 − 18 × 1/3 = 64 aciertos netos.</p>
-  </section>
-
-  <section class="calc-caja" aria-labelledby="tCorte">
-    <h2 id="tCorte">¿Cuántas tengo que acertar?</h2>
-    <p>Con la nota de corte (en aciertos netos) y las preguntas que piensas dejar en blanco. Usa las preguntas y la penalización de arriba.</p>
-    <div class="campos">
-      ${campo("cCorte", "Nota de corte", 'type="text" inputmode="decimal" value="58,25" autocomplete="off"', "(aciertos netos)")}
-      ${campo("cBlanco", "Dejo en blanco", 'type="number" inputmode="numeric" min="0" step="1" value="10"')}
-    </div>
-    <p class="frase" id="rCorte" aria-live="polite">Necesitas <b>67 aciertos</b> de 90 contestadas (23 fallos como mucho).</p>
-  </section>
-
-  <section class="calc-caja" aria-labelledby="tRiesgo">
-    <h2 id="tRiesgo">¿Contesto o la dejo en blanco?</h2>
-    <p>Lo que ganas de media contestando al azar entre las opciones que no hayas descartado. Por encima de cero, compensa arriesgar.</p>
-    <div class="riesgo" id="rRiesgo" aria-live="polite"></div>
-  </section>
-</div>
-<noscript><p class="frase">La calculadora necesita JavaScript. La cuenta es: aciertos netos = aciertos − fallos × penalización.</p></noscript>
-
-<section class="texto">
-  <h2>Cómo se calculan los <em>aciertos netos</em></h2>
-  <p>En casi todos los exámenes tipo test de oposición, cada fallo resta una parte de un acierto para que contestar a ciegas no salga gratis. Lo que te queda son los aciertos netos, y es la cifra que se compara con la nota de corte.</p>
-  <div class="formula">Aciertos netos = aciertos − fallos × penalización<small>Nota sobre 10 = aciertos netos ÷ preguntas × 10</small></div>
-  <p>Por ejemplo, en un examen de 100 preguntas con 4 opciones donde cada fallo resta 1/3: con 70 aciertos, 18 fallos y 12 en blanco tienes 70 − 18 × 1/3 = <strong>64 aciertos netos</strong>, un <strong>6,4 sobre 10</strong>.</p>
-  <h2>¿Cuánto resta un fallo?</h2>
-  <p>Lo dicen las bases de tu convocatoria. Lo más habitual es que reste 1/(opciones − 1): con 4 opciones, 1/3 (tres fallos quitan un acierto); con 3, 1/2; con 5, 1/4. Las preguntas en blanco no suman ni restan.</p>
-  <h2>¿Compensa contestar al azar?</h2>
-  <p>Con esa penalización, contestar a ciegas da de media cero: ni ganas ni pierdes. En cuanto descartas una opción, la media pasa a ser positiva y compensa arriesgar. Si tu examen resta más, puede que no.</p>
-</section>
-
-<section class="final">
-  <h2>Apunta tus simulacros y mira <em>si pasas el corte</em></h2>
-  <p class="sub">En GritNook cada simulacro se guarda con su nota, y ves tu evolución contra la nota de corte, tus temas flojos y cuánto arriesgas.</p>
-  <div class="acciones">${EMPEZAR}<a class="btn" href="/oposiciones/">Qué más hace para opositores</a></div>
-</section>
-</div>`
-};
-
 /* ══════════════════ los papeles, desde legal/*.md ══════════════════ */
 const DOCS = [
   ["privacidad", "PRIVACIDAD.md", "Política de privacidad", "Qué datos guarda GritNook, dónde viven, quién más los ve y cómo borrarlos."],
@@ -386,13 +309,13 @@ const NO_EXISTE = {
   <p class="eyebrow">Error 404</p>
   <h1>Esta página <em>no existe</em></h1>
   <p class="lead">Puede que el enlace esté mal escrito o que la página se haya movido. Lo tuyo sigue en la app.</p>
-  <div class="acciones"><a class="btn primario" href="/">Ir a GritNook</a><a class="btn" href="/oposiciones/">Para opositores</a><a class="btn" href="/calculadora-aciertos-netos/">Calculadora</a></div>
+  <div class="acciones"><a class="btn primario" href="/">Ir a GritNook</a><a class="btn" href="/oposiciones/">Para opositores</a></div>
 </div></section></div>`
 };
 
 /* ══════════════════ escribirlo todo ══════════════════ */
 const escribir = (rel, txt) => { const f = path.join(RAIZ, rel); fs.mkdirSync(path.dirname(f), { recursive: true }); fs.writeFileSync(f, txt); console.log("escrito " + rel); };
-const PAGINAS = [OPOSICIONES, TRABAJO, CALCULADORA, ...PAPELES];
+const PAGINAS = [OPOSICIONES, TRABAJO, ...PAPELES];
 for (const p of PAGINAS) escribir(p.ruta.replace(/^\//, "") + "index.html", pagina(p));
 escribir("404.html", pagina(NO_EXISTE));
 

@@ -132,14 +132,14 @@ La versión pública es para verla y probarla. La de Claude usa sus capacidades 
 node pruebas/correr.js
 ```
 
-801 pruebas que corren **dentro de la app de verdad**, cargada en un iframe, sin
+799 pruebas que corren **dentro de la app de verdad**, cargada en un iframe, sin
 instalar nada. Cubren las cuentas de las notas, entender las fechas escritas a
 mano, el sanitizador, el estado, la libreta, el repaso espaciado, la pantalla de
 bienvenida entera, el modo opositor, las cuentas contra un servidor de mentira y una tanda de datos absurdos a propósito. Las reglas de la base de datos, aparte, contra un Postgres de verdad. El cómo y lo que han encontrado, en [pruebas/](pruebas/LEEME.md).
 
 ## La web pública
 
-Alrededor de la app hay unas páginas sueltas para Google y para quien llega de fuera: [para opositores](https://gritnook.com/oposiciones/), [estudiar y trabajar](https://gritnook.com/estudiar-y-trabajar/), una [calculadora de aciertos netos](https://gritnook.com/calculadora-aciertos-netos/) gratis y los papeles legales. Salen de [web/generar.js](web/generar.js); cómo darlas de alta en Google y cómo conseguir enlaces, en [WEB.md](WEB.md).
+Alrededor de la app hay unas páginas sueltas para Google y para quien llega de fuera: [para opositores](https://gritnook.com/oposiciones/), [estudiar y trabajar](https://gritnook.com/estudiar-y-trabajar/) y los papeles legales. La calculadora de aciertos netos se queda dentro de la app, para quien tiene cuenta. Salen de [web/generar.js](web/generar.js); cómo darlas de alta en Google y cómo conseguir enlaces, en [WEB.md](WEB.md).
 
 ## Base de datos
 

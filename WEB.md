@@ -8,7 +8,6 @@ posicionar:
 |---|---|
 | [/oposiciones/](https://gritnook.com/oposiciones/) | app para opositores, organizar el temario, vueltas, simulacros |
 | [/estudiar-y-trabajar/](https://gritnook.com/estudiar-y-trabajar/) | estudiar y trabajar a la vez, plan de estudio con poco tiempo |
-| [/calculadora-aciertos-netos/](https://gritnook.com/calculadora-aciertos-netos/) | calculadora de aciertos netos, cuánto resta un fallo, nota de corte |
 | [/privacidad/](https://gritnook.com/privacidad/), [/terminos/](https://gritnook.com/terminos/), [/ia/](https://gritnook.com/ia/) | los papeles (Google los pide para el login con Google) |
 | [/aviso-legal/](https://gritnook.com/aviso-legal/) | público porque lo pide la ley, pero **fuera de Google** (`noindex`): lleva el NIF |
 
@@ -40,14 +39,14 @@ Sin esto Google acaba encontrando la web, pero tarda más y no ves nada.
      (es pública, no es una contraseña) y la pongo en la web.
 4. **Sitemaps** → escribe `sitemap.xml` → **Enviar**.
 5. **Inspección de URLs** → pega `https://gritnook.com/oposiciones/` →
-   **Solicitar indexación**. Lo mismo con la raíz y con la calculadora.
+   **Solicitar indexación**. Lo mismo con la raíz y con `/estudiar-y-trabajar/`.
 
 Después, **Bing Webmaster Tools** (bing.com/webmasters): entra con la misma
 cuenta y elige **Importar desde Google Search Console**. Bing alimenta también
 a DuckDuckGo y a las búsquedas de algunos asistentes de IA.
 
 **Qué esperar:** buscando «gritnook», en días o un par de semanas. Para
-«calculadora aciertos netos» o «app para opositores», meses: depende de que
+«app para opositores» o «estudiar y trabajar», meses: depende de que
 la web tenga contenido útil y de que otras webs la enlacen (lo de abajo).
 En Search Console verás qué buscan quienes llegan y en qué posición sales.
 
@@ -66,9 +65,9 @@ Por orden, lo que más rinde para empezar:
    SaaSHub, BetaList, Uneed.
 3. **Comunidades de opositores y de FP** (Reddit, Telegram, foros): no pegar
    el enlace y salir corriendo. Contestar dudas de verdad y, cuando venga a
-   cuento («¿cuánto resta un fallo?»), enlazar la calculadora.
-4. **Academias y blogs de oposiciones.** La calculadora gratis es la excusa:
-   escríbeles ofreciéndola para sus alumnos.
+   cuento («¿cómo me organizo si trabajo?»), enlazar la página que toca.
+4. **Academias y blogs de oposiciones.** Escríbeles ofreciendo GritNook gratis
+   para sus alumnos: si les sirve, lo enlazan en sus recursos.
 5. **Instagram y TikTok** no cuentan para Google (sus enlaces van marcados para
    que no), pero traen gente que luego te busca por el nombre, y eso sí cuenta.
 

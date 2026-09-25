@@ -1,21 +1,8 @@
 /* Lo que ven Google y quien llega de fuera: la cabecera de la app, las
-   páginas públicas (web/generar.js), el mapa de la web, la calculadora de
-   aciertos netos y que el service worker no confunda esas páginas con la app. */
+   páginas públicas (web/generar.js), el mapa de la web y que el service worker no confunda esas páginas con la app. */
 
 const traer = async ruta => { const r = await fetch(ruta, { cache: "no-store" }); return { ok: r.ok, estado: r.status, txt: await r.text() }; };
-const PUBLICAS = ["/oposiciones/", "/estudiar-y-trabajar/", "/calculadora-aciertos-netos/", "/privacidad/", "/terminos/", "/aviso-legal/", "/ia/"];
-/* una página pública en un marco escondido, para tocarla como una persona */
-async function enMarco(ruta, fn) {
-  const f = document.createElement("iframe");
-  f.style.cssText = "position:fixed; left:-2000px; top:0; width:1024px; height:800px; border:0";
-  f.src = ruta; document.body.appendChild(f);
-  try {
-    await new Promise((ok, ko) => { f.onload = ok; setTimeout(() => ko(new Error("no carga " + ruta)), 8000); });
-    await new Promise(r => setTimeout(r, 150));
-    return await fn(f.contentDocument, f.contentWindow);
-  } finally { f.remove(); }
-}
-
+const PUBLICAS = ["/oposiciones/", "/estudiar-y-trabajar/", "/privacidad/", "/terminos/", "/aviso-legal/", "/ia/"];
 grupo("Web: lo que lee Google de la app", () => {
   prueba("el título dice qué es y para quién, y hay descripción", () => {
     esperar(document.title.length > 0).cierto();
@@ -43,7 +30,7 @@ grupo("Web: lo que lee Google de la app", () => {
     const n = [...document.querySelectorAll("noscript")].map(x => x.textContent).join(" ");
     if (!n) saltar("sin cabecera de la web");
     esperar(n).contiene("oposiciones/");
-    esperar(n).contiene("calculadora-aciertos-netos/");
+    esperar(n).contiene("estudiar-y-trabajar/");
   });
   prueba("con la sesión abierta, la pestaña dice «GritNook» a secas", () => {
     const antes = db;
@@ -59,7 +46,7 @@ grupo("Web: lo que lee Google de la app", () => {
       abrirAcceso("entrar"); await dormir(40);
       const enlaces = [...document.querySelectorAll(".acc-web a")].map(a => a.getAttribute("href"));
       esperar(enlaces).contiene("oposiciones/");
-      esperar(enlaces).contiene("calculadora-aciertos-netos/");
+      esperar(enlaces).contiene("estudiar-y-trabajar/");
       esperar(enlaces).contiene("privacidad/");
     });
   });
@@ -88,7 +75,7 @@ grupo("Web: las páginas públicas", () => {
   });
   prueba("el mapa de la web tiene las páginas buenas y no el aviso legal", async () => {
     const m = (await traer("/sitemap.xml")).txt;
-    ["/", "/oposiciones/", "/estudiar-y-trabajar/", "/calculadora-aciertos-netos/", "/privacidad/"].forEach(r => esperar(m).contiene(`<loc>https://gritnook.com${r}</loc>`));
+    ["/", "/oposiciones/", "/estudiar-y-trabajar/", "/privacidad/"].forEach(r => esperar(m).contiene(`<loc>https://gritnook.com${r}</loc>`));
     esperar(m).noContiene("aviso-legal");
   });
   prueba("robots.txt deja pasar a Google y le dice dónde está el mapa", async () => {
@@ -103,31 +90,12 @@ grupo("Web: las páginas públicas", () => {
   });
 });
 
-grupo("Web: la calculadora de aciertos netos", () => {
-  prueba("con 70 aciertos y 18 fallos de 100 (4 opciones) salen 64 netos, un 6,4 y 12 en blanco", () => enMarco("/calculadora-aciertos-netos/", async d => {
-    esperar(d.getElementById("rNeta").textContent).igualA("64");
-    esperar(d.getElementById("rNota").textContent).igualA("6,4");
-    esperar(d.getElementById("rBlanco").textContent).igualA("12");
-  }));
-  prueba("cuenta lo mismo que la oposición de la app para el corte y para arriesgar", () => enMarco("/calculadora-aciertos-netos/", async d => {
-    const r = aciertosParaCorte(100, 10, 58.25, 1 / 3);
-    esperar(d.getElementById("rCorte").textContent).contiene(r.aciertos + " aciertos de " + r.respondidas);
-    const riesgo = d.getElementById("rRiesgo").textContent;
-    esperar(riesgo).contiene("+" + nota(valorDeArriesgar(4, 1, 1 / 3)));
-    esperar(riesgo).contiene("+" + nota(valorDeArriesgar(4, 2, 1 / 3)));
-  }));
-  prueba("al cambiar las opciones cambia la penalización, y se puede escribir a mano", () => enMarco("/calculadora-aciertos-netos/", async (d, w) => {
-    const pon = (id, v, ev = "input") => { const e = d.getElementById(id); e.value = v; e.dispatchEvent(new w.Event(ev, { bubbles: true })); };
-    pon("cOpc", "5", "change");
-    esperar(d.getElementById("cPen").value).igualA("1/4");
-    esperar(d.getElementById("rNeta").textContent).igualA(nota(70 - 18 / 4));
-    pon("cPen", "0,5");
-    esperar(d.getElementById("rNeta").textContent).igualA("61");
-    pon("cPen", "0");
-    esperar(d.getElementById("rCuenta").textContent).contiene("no restan");
-    pon("cAc", "90"); pon("cFa", "20");
-    esperar(d.getElementById("rCuenta").textContent).contiene("suman más que las preguntas");
-  }));
+grupo("Web: la calculadora se queda dentro de la app", () => {
+  prueba("no hay página pública de la calculadora: sin cuenta no se usa", async () => {
+    esperar((await traer("/calculadora-aciertos-netos/")).ok).falso();
+    esperar((await traer("/sitemap.xml")).txt).noContiene("calculadora");
+    for (const r of ["/oposiciones/", "/estudiar-y-trabajar/", "/404.html"]) esperar((await traer(r)).txt).noContiene("calculadora-aciertos-netos");
+  });
 });
 
 grupo("Web: el service worker no confunde las páginas con la app", () => {

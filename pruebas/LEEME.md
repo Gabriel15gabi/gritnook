@@ -8,9 +8,9 @@ Eso levanta un servidor, abre un navegador sin ventana y escribe el resultado en
 la consola. Devuelve 1 si algo falla, que es lo que mira un servidor de
 integración continua.
 
-**801 pruebas.** Sin ventana pueden quedarse en pendiente las 6 que dibujan un
+**799 pruebas.** Sin ventana pueden quedarse en pendiente las 6 que dibujan un
 PDF: sin tarjeta gráfica eso a veces tarda demasiado. Abriendo
-`pruebas/pruebas.html` en un navegador normal pasan las 801.
+`pruebas/pruebas.html` en un navegador normal pasan las 799.
 
 Aparte, las reglas de seguridad de la base de datos se prueban contra un
 Postgres de verdad: `node backend/probar-sql.js` (22 comprobaciones), y las del chat con
@@ -96,7 +96,7 @@ repinte la pantalla.
 | `casos-instalar.js` | **Instalar la app**: que en el ordenador sin instalador no se ofrezca nada; que con el del navegador salga en el menú de tu perfil y lo abra; los pasos del iPhone (con el icono de Compartir), de Android y desde Instagram; la ventana de pasos; el aviso del Inicio y su «Ahora no» de dos semanas; y el manifiesto con el icono adaptable y sus tres capturas |
 | `casos-movil.js` | **El móvil, sin nada que se pise ni se salga**, midiendo posiciones de verdad a 390 px: las filas del Inicio (lo que vence y el estado de las asignaturas), ninguna sección más ancha que la pantalla, la Lista de la Agenda en dos líneas, la tabla de Progreso que se desliza dentro de su tarjeta, los avisos ámbar que no se vuelven la pastilla de «Próximamente» y las siglas del ciclo en la etiqueta de arriba |
 | `casos-revision.js` | **Lo que se lee en pantalla**, tras revisar la app entera como opositor y como estudiante: que la oposición hable de «aciertos netos» (y explique qué son) en vez de «netas»; las concordancias con bloque, módulo, asignatura o destreza («todos tus bloques», «Elige una asignatura…»); el plan que junta los bloques de una misma asignatura y no dice «hay que apretar» a lo que aún no tiene notas; las fechas en castellano; el contraste de los grises, el verde y el ámbar en los dos temas; la gráfica de simulacros legible en el móvil y los nombres largos de los módulos enteros |
-| `casos-web.js` | **Lo que ven Google y quien llega de fuera**: la cabecera de la app (título, descripción, dirección canónica, foto para compartir y datos estructurados), el aviso sin JavaScript, las páginas públicas con su descripción y su canónica, el aviso legal fuera de Google, los papeles sin las notas internas, el mapa de la web y robots.txt; la calculadora de aciertos netos tocada como una persona y con las mismas cuentas que la app; y que el service worker no guarde esas páginas como si fueran la app |
+| `casos-web.js` | **Lo que ven Google y quien llega de fuera**: la cabecera de la app (título, descripción, dirección canónica, foto para compartir y datos estructurados), el aviso sin JavaScript, las páginas públicas con su descripción y su canónica, el aviso legal fuera de Google, los papeles sin las notas internas, el mapa de la web y robots.txt; que la calculadora no tenga página pública (sin cuenta no se usa); y que el service worker no guarde esas páginas como si fueran la app |
 | `casos-absurdos.js` | **Datos irreales**: notas de 900, faltas negativas, fechas del año 9999, emojis, árabe, textos de diez mil letras, estados de versiones que no existieron |
 
 ## Rellenar la app para verla funcionando
