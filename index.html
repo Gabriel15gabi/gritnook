@@ -2827,6 +2827,50 @@ body.lx-arrastrando, body.lx-arrastrando *{-webkit-user-select:none; user-select
 .cc-tarea{max-width:100%; min-width:0; box-sizing:border-box}
 .cc-tarea-txt{min-width:0}
 .cc-tarea-txt strong{display:block; overflow:hidden; text-overflow:ellipsis; white-space:nowrap}
+/* ══════════════════ repaso general: contraste, letras y huecos ══════════════════ */
+/* el gris más claro (horas del chat, «(opcional)», días de otro mes…) y los
+   textos verde y ámbar de las pastillas, legibles —4,5:1— en los dos temas */
+:root{--ink-4:#62667a; --verde-texto:#166534; --aviso-txt:#92400E}
+@media (prefers-color-scheme: dark){:root:not([data-theme="light"]){--ink-4:#8d91a6; --verde-texto:#4ADE80; --aviso-txt:#FBBF24}}
+:root[data-theme="dark"]{--ink-4:#8d91a6; --verde-texto:#4ADE80; --aviso-txt:#FBBF24}
+
+/* oposición: «26 días sin tocarlo» y las casillas del temario, que en oscuro se leían mal */
+.opo-fila-e.frio{color:var(--aviso-txt)}
+@media (prefers-color-scheme: dark){
+  :root:not([data-theme="light"]) .opo-e-v3{color:#161826}
+  :root:not([data-theme="light"]) .opo-e-dom{background:#15803D}
+}
+:root[data-theme="dark"] .opo-e-v3{color:#161826}
+:root[data-theme="dark"] .opo-e-dom{background:#15803D}
+/* la cabecera de la tabla de simulacros, con sus nombres enteros */
+.opo-th span{white-space:normal; line-height:1.25}
+
+/* objetivos: la letra de los días, más grande, y la línea de abajo en dos renglones antes que cortada */
+.dia-obj b{font-size:11px}
+.obj-texto .meta{white-space:normal; display:-webkit-box; -webkit-box-orient:vertical; -webkit-line-clamp:2; line-clamp:2}
+
+/* Módulos: el nombre entero (hasta dos renglones); si no cabe con su estado, el estado baja */
+.m2-cab{flex-wrap:wrap; row-gap:8px}
+.m2-cab > .m2-nombre{max-width:100%}
+.m2-t{white-space:normal; display:-webkit-box; -webkit-box-orient:vertical; -webkit-line-clamp:2; line-clamp:2}
+
+/* Inicio, estado de los módulos: el nombre en dos renglones antes que «Bases de …» (solo en el Inicio de siempre) */
+@media (min-width:561px){
+  .rejilla-12 .panel[aria-labelledby="tMods"] .fila .principal-fila > .t{white-space:normal; display:-webkit-box; -webkit-box-orient:vertical;
+    -webkit-line-clamp:2; line-clamp:2; overflow:hidden; text-overflow:clip}
+}
+
+/* Inicio, arriba: entre 980 y 1180 px el tiempo baja, y la frase del día no se queda en una columna de tres palabras */
+@media (min-width:981px) and (max-width:1180px){
+  .hd{grid-template-columns:minmax(0,1fr); gap:18px}
+  .hd-tiempo{width:auto}
+}
+/* Inicio, hoy: con el hueco justo, dos columnas y el examen debajo; en el móvil, una */
+@container (max-width:780px){
+  .hoy-rejilla{grid-template-columns:repeat(2,minmax(0,1fr))}
+  .hoy-rejilla > .hoy-examen{grid-column:1 / -1}
+}
+@container (max-width:480px){ .hoy-rejilla{grid-template-columns:minmax(0,1fr)} }
 </style>
 </head>
 <body>
@@ -3245,7 +3289,7 @@ const guardarTimer = () => guardaLS("timer", { activo: T.activo, fase: T.fase, f
 const segsRestantes = () => T.activo ? Math.max(0, Math.round((T.fin - Date.now()) / 1000)) : T.restante;
 function arrancarTick() { clearInterval(T.tick); T.tick = setInterval(() => { pintaReloj(); if (T.activo && segsRestantes() <= 0) terminarFase(); }, 500); }
 function iniciarTimer() {
-  if (!T.modId) { aviso("Elige primero el módulo que vas a estudiar."); return; }
+  if (!T.modId) { aviso("Elige primero " + vocG("el", "la") + " " + voc() + " que vas a estudiar."); return; }
   const mins = T.fase === "trabajo" ? num(S.config.pomodoro, 25) : num(S.config.descanso, 15);
   T.fin = Date.now() + (T.restante > 0 ? T.restante : mins * 60) * 1000;
   T.activo = true; T.restante = 0; T.aviso = ""; guardarTimer(); arrancarTick(); pintaReloj();
@@ -3414,7 +3458,7 @@ APUNTES (título: ${t}):
 const CHECK = '<svg viewBox="0 0 12 12" aria-hidden="true"><path d="M2.6 6.3 5 8.6 9.4 3.8"/></svg>';
 const OBJ_SUGERIDOS = [
   ["estudio", () => "Estudiar " + num(S.config.pomodoro, 25) + " min", "Se marca solo al completar una sesión del cronómetro."],
-  ["riesgo", () => "Estudiar el módulo que peor llevas", "Aparece si algún módulo está en riesgo; se marca al estudiarlo con el cronómetro."],
+  ["riesgo", () => "Estudiar " + vocG("el", "la") + " " + voc() + " que peor llevas", "Aparece si algún módulo está en riesgo; se marca al estudiarlo con el cronómetro."],
   ["descanso", () => "Descansar 15 min", "Suma los descansos del cronómetro; también puedes marcarlo a mano."],
   ["tarea", () => "Completar 1 entrega", "Aparece cuando tienes entregas pendientes; se marca al tachar una."],
   ["vocab", () => "Repasar vocabulario", "Aparece cuando te toca repasar palabras; se marca al contestar el repaso."],
@@ -4697,8 +4741,8 @@ function vistaEscritorio() {
     hoy: panelHoy(),
     sesion: `<section class="panel c-5" aria-labelledby="tSesion">
       <div class="panel-cab"><h2 class="etq" id="tSesion">Sesión de estudio</h2><span class="fase" id="faseTimer">Concentración</span></div>
-      <select id="selTimer" aria-label="Módulo que vas a estudiar">
-        <option value="">Elige un módulo…</option>
+      <select id="selTimer" aria-label="${esc(mayus(voc()))} que vas a estudiar">
+        <option value="">Elige ${vocG("un", "una")} ${esc(voc())}…</option>
         ${S.modulos.map(m => `<option value="${m.id}"${T.modId === m.id ? " selected" : ""}>${esc(m.cod)} · ${esc(m.nombre)}</option>`).join("")}
       </select>
       ${esOpositor() && normalizarOpo().temas.length ? `<select id="selTimerTema" class="sel-tema" aria-label="Tema que vas a estudiar">
@@ -4733,9 +4777,9 @@ function vistaEscritorio() {
           const txt = dd < 0 ? "Atrasada " + (-dd) + " d" : dd === 0 ? "Hoy" : dd === 1 ? "Mañana" : "En " + dd + " días";
           return `<div class="fila"><span class="codigo" style="${colorMod(m)}">${m ? esc(m.cod) : "—"}</span>
             <span class="principal-fila"><span class="t">${esc(t.titulo)}</span></span>
-            <span class="fecha">${t.fecha}</span>
+            <span class="fecha">${esc(fechaCorta(t.fecha))}</span>
             <span class="estado ${cl}"><span class="dot"></span>${txt}</span></div>`;
-        }).join("")}</div>` : `<p class="vacio">Nada pendiente apuntado. Añade tus entregas en la sección Entregas.</p>`}
+        }).join("")}</div>` : `<p class="vacio">Nada pendiente apuntado. Añade tus entregas y exámenes en la Agenda.</p>`}
       </section>`,
     nota: `<section class="panel" aria-labelledby="tNota">
         <div class="panel-cab"><h2 class="etq" id="tNota">Nota rápida</h2><span class="meta">Se guarda sola</span></div>
@@ -4749,7 +4793,7 @@ function vistaEscritorio() {
           <span class="codigo" style="${colorMod(m)}">${esc(m.cod)}</span>
           <span class="principal-fila"><span class="t">${esc(m.nombre)}</span></span>
           <span class="num meta">${c.media === null ? "—" : nota(c.media)}</span>
-          ${estadoHTML(c)}
+          ${estadoModulo(c)}
         </button>`).join("")}</div>
     </section>`
   };
@@ -4778,7 +4822,7 @@ function anilloNota(c) {
   return `<div class="m2-anillo" role="img" aria-label="${esc(etq)}">
     <svg viewBox="0 0 80 80" aria-hidden="true"><circle cx="40" cy="40" r="${R}" class="an-fondo"/>
       ${c.media === null ? "" : `<circle cx="40" cy="40" r="${R}" class="an-valor" stroke-dasharray="${(v * L).toFixed(1)} ${L.toFixed(1)}" transform="rotate(-90 40 40)"/>`}
-      <path d="M${p(R - 7.5)}L${p(R + 7.5)}" class="an-obj"/></svg>
+      <path d="M${p(R - 5)}L${p(R + 7.5)}" class="an-obj"/></svg>
     <span class="an-num${c.media === null ? " sin" : ""}">${c.media === null ? "—" : nota(c.media)}</span>
   </div>`;
 }
@@ -4854,7 +4898,7 @@ function vistaModulos() {
       <div class="m2-centro">${anilloNota(c)}<p class="m2-frase">${fraseModulo(c)}</p></div>
       <div class="m2-semana"><span>Esta semana</span><span class="num">${horasTxt(semana)}${meta ? " de " + num(m.metaSemanal) + " h" : ""}</span>
         ${meta ? `<div class="medidor"><i style="width:${clamp(semana / meta * 100, 0, 100)}%"></i></div>` : ""}</div>
-      <div class="m2-pie"><span class="m2-faltas ${faltas[0]}" title="Pierdes la evaluación continua al pasar de ${c.faltasMax} h (${nota(c.pct)} % de ${num(m.horas)} h).">${faltas[1]}</span>
+      <div class="m2-pie">${esOpositor() && !faltas[0] ? `<span class="m2-faltas"></span>` : `<span class="m2-faltas ${faltas[0]}" title="Pierdes la evaluación continua al pasar de ${c.faltasMax} h (${nota(c.pct)} % de ${num(m.horas)} h).">${faltas[1]}</span>`}
         <span class="m2-abrir" aria-hidden="true">Ver ficha<svg class="i" viewBox="0 0 16 16"><path d="M6 3.5 10.5 8 6 12.5"/></svg></span></div>
     </article>`;
   }).join("")}
@@ -5067,12 +5111,12 @@ function vistaApuntes() {
       <div class="editor-cab">
         <button type="button" class="lx-volver" id="apVolver" title="Volver a tus apuntes" aria-label="Volver a tus apuntes">${lbIcono("volver")}</button>
         <input type="text" class="editor-titulo" id="apTitulo" value="${esc(n.titulo)}" placeholder="Título del apunte" aria-label="Título">
-        <button type="button" class="lx-detalles" id="apDetalles" aria-expanded="${LB.detalles}" aria-controls="apMeta" title="Módulo y etiquetas" aria-label="Módulo y etiquetas">${lbIcono("detalles")}</button>
+        <button type="button" class="lx-detalles" id="apDetalles" aria-expanded="${LB.detalles}" aria-controls="apMeta" title="${esc(mayus(voc()))} y etiquetas" aria-label="${esc(mayus(voc()))} y etiquetas">${lbIcono("detalles")}</button>
         <button type="button" class="btn mini btn-rojo" data-borrar-apunte="${n.id}" title="Borrar este apunte"><svg class="i" viewBox="0 0 16 16" aria-hidden="true"><path d="M3 4.5h10M6.5 4.5V3h3v1.5M4.6 4.5l.7 8.3a1 1 0 0 0 1 .9h3.4a1 1 0 0 0 1-.9l.7-8.3"/></svg><span>Borrar apunte</span></button>
       </div>
       <div class="editor-meta${LB.detalles ? " abierta" : ""}" id="apMeta">
-        <select id="apModulo" aria-label="Módulo">
-          <option value="">Sin módulo</option>
+        <select id="apModulo" aria-label="${esc(mayus(voc()))}">
+          <option value="">Sin ${esc(voc())}</option>
           ${S.modulos.map(m => `<option value="${m.id}"${m.id === n.modId ? " selected" : ""}>${esc(m.cod)} · ${esc(m.nombre)}</option>`).join("")}
         </select>
         <input type="text" id="apTags" value="${esc((n.tags || []).join(", "))}" placeholder="Etiquetas separadas por comas" aria-label="Etiquetas">
@@ -5151,7 +5195,7 @@ function vistaEntregas() {
   <section class="panel">
     <div class="form-entrega">
       <label class="campo">Qué hay que entregar<input type="text" id="tTitulo" placeholder="Ejercicio 4: bucles anidados"></label>
-      <label class="campo">Módulo<select id="tModulo">${S.modulos.map(m => `<option value="${m.id}">${esc(m.cod)} · ${esc(m.nombre)}</option>`).join("")}</select></label>
+      <label class="campo">${esc(mayus(voc()))}<select id="tModulo">${S.modulos.map(m => `<option value="${m.id}">${esc(m.cod)} · ${esc(m.nombre)}</option>`).join("")}</select></label>
       <label class="campo">Fecha límite<input type="date" id="tFecha"></label>
       <label class="campo">Peso %<input type="number" id="tPeso" min="0" max="100" placeholder="Opcional"></label>
       <button class="btn primario" id="btnAddTarea">Apuntar</button>
@@ -6358,8 +6402,8 @@ function opoResumen() {
       <div class="rm-cifra">${va === Infinity ? "—" : Math.min(va, pl.objetivo)}<small>de ${pl.objetivo}</small></div>
       <div class="rm-sub">${va === Infinity ? "Todo el temario dominado" : faltanVuelta ? "Te faltan " + faltanVuelta + (faltanVuelta === 1 ? " tema" : " temas") + " para cerrarla" : "Vuelta cerrada"}</div></div>
     <div class="panel rm-tile"><div class="rm-etq">Último simulacro</div>
-      ${rs.n ? `<div class="rm-cifra">${nota(rs.ultima.neta)}<small>netas · ${nota(rs.ultima.nota10)}/10</small></div>
-        <div class="rm-sub">${corte ? (rs.ultima.neta >= corte.valor ? "Por encima del corte (" + nota(corte.valor) + ")" : "Te faltan " + nota(corte.valor - rs.ultima.neta) + " netas para el corte") : "Pon una nota de corte para compararte"}</div>`
+      ${rs.n ? `<div class="rm-cifra">${nota(rs.ultima.neta)}<small>aciertos netos</small></div>
+        <div class="rm-sub">${nota(rs.ultima.nota10)} sobre 10 · ${corte ? (rs.ultima.neta >= corte.valor ? "por encima del corte (" + nota(corte.valor) + ")" : "te faltan " + nota(corte.valor - rs.ultima.neta) + " para el corte") : "pon una nota de corte para compararte"}</div>`
       : `<div class="rm-cifra vacia">—</div><div class="rm-sub">Apunta tu primer simulacro</div>`}</div>
     <div class="panel rm-tile"><div class="rm-etq">Hacen falta</div>
       ${pl.sinFecha ? `<div class="rm-cifra vacia">—</div><div class="rm-sub">Sin fecha de examen</div>`
@@ -6392,7 +6436,7 @@ function opoResumen() {
 function opoSemanaHTML() {
   const s = semanaOpo(), e = s.esta, a = s.antes;
   if (![e.vueltas, e.simulacros, e.minutos, a.vueltas, a.simulacros, a.minutos].some(Boolean)) return "";
-  const dif = (x, y, fmt = v => v) => x === y ? "Igual que la anterior" : (x > y ? "+" : "−") + fmt(Math.abs(x - y)) + " que la anterior";
+  const dif = (x, y, fmt = v => v) => x === y ? "Igual que la semana anterior" : fmt(Math.abs(x - y)) + (x > y ? " más" : " menos") + " que la semana anterior";
   const item = (cifra, etq, sub) => `<div class="opo-sem"><b>${cifra}</b><span>${etq}</span><em>${sub}</em></div>`;
   return `<section class="panel">
     <div class="opo-cab-sec"><div class="etq">Tus últimos siete días</div><span class="meta">Comparados con los siete de antes</span></div>
@@ -6583,7 +6627,8 @@ function abrirYaLlevo() {
 
 function graficaSimulacros(rs, corte, preguntas) {
   if (!rs.n) return "";
-  const L = rs.lista.slice(-20), W = 640, H = 170, pad = 28, tope = Math.max(1, num(preguntas, 100));
+  const W = anchoGraficaOpo(), H = W < 520 ? 200 : 220;
+  const L = rs.lista.slice(-20), pad = 28, tope = Math.max(1, num(preguntas, 100));
   /* el eje va de un poco por debajo de lo peor a un poco por encima de lo mejor,
      con el corte dentro: si fuera de 0 a 100 la línea ocuparía un tercio */
   const vals = L.map(s => s.neta).concat(corte ? [corte.valor] : []);
@@ -6591,14 +6636,14 @@ function graficaSimulacros(rs, corte, preguntas) {
   const x = i => pad + 34 + (L.length === 1 ? (W - 2 * pad - 34) / 2 : i * (W - 2 * pad - 34) / (L.length - 1));
   const y = v => H - pad - (clamp(v, min, max) - min) / (max - min) * (H - 2 * pad);
   const puntos = L.map((s, i) => x(i).toFixed(1) + "," + y(s.neta).toFixed(1)).join(" ");
-  return `<svg class="opo-graf" viewBox="0 0 ${W} ${H}" role="img" aria-label="Netas de tus últimos ${L.length} simulacros${corte ? ", con el corte en " + nota(corte.valor) : ""}">
+  return `<svg class="opo-graf" viewBox="0 0 ${W} ${H}" role="img" aria-label="Aciertos netos de tus últimos ${L.length} simulacros${corte ? ", con el corte en " + nota(corte.valor) : ""}">
     <line x1="${pad + 34}" y1="${H - pad}" x2="${W - pad}" y2="${H - pad}" class="opo-graf-eje"/>
     <text x="${pad + 26}" y="${H - pad + 4}" text-anchor="end" class="opo-graf-eje-txt">${min}</text>
     <text x="${pad + 26}" y="${pad + 4}" text-anchor="end" class="opo-graf-eje-txt">${max}</text>
     ${corte ? `<line x1="${pad + 34}" y1="${y(corte.valor)}" x2="${W - pad}" y2="${y(corte.valor)}" class="opo-graf-corte"/>
       <text x="${pad + 38}" y="${y(corte.valor) - 7}" class="opo-graf-txt">corte ${esc(nota(corte.valor))}</text>` : ""}
     <polyline points="${puntos}" class="opo-graf-linea"/>
-    ${L.map((s, i) => `<circle cx="${x(i).toFixed(1)}" cy="${y(s.neta).toFixed(1)}" r="4" class="opo-graf-punto${corte && s.neta >= corte.valor ? " arriba" : ""}"><title>${esc(fechaCorta(s.s.fecha || hoyISO()) + ": " + nota(s.neta) + " netas")}</title></circle>`).join("")}
+    ${L.map((s, i) => `<circle cx="${x(i).toFixed(1)}" cy="${y(s.neta).toFixed(1)}" r="4" class="opo-graf-punto${corte && s.neta >= corte.valor ? " arriba" : ""}"><title>${esc(fechaCorta(s.s.fecha || hoyISO()) + ": " + nota(s.neta) + " aciertos netos (" + nota(s.nota10) + " sobre 10)")}</title></circle>`).join("")}
   </svg>`;
 }
 
@@ -6645,8 +6690,8 @@ function opoSimulacros() {
       <div class="rm-cifra">${nota(rs.media5)}<small>sobre 10</small></div>
       <div class="rm-sub">${rs.tendencia === null ? "Haz más para ver la tendencia" : rs.tendencia >= 0 ? "Subiendo " + nota(rs.tendencia) + " respecto a los anteriores" : "Bajando " + nota(-rs.tendencia) + " respecto a los anteriores"}</div></div>
     <div class="panel rm-tile"><div class="rm-etq">Tu mejor</div>
-      <div class="rm-cifra">${nota(rs.mejor.neta)}<small>netas</small></div>
-      <div class="rm-sub">${esc(fechaCorta(rs.mejor.s.fecha || hoyISO()))}</div></div>
+      <div class="rm-cifra">${nota(rs.mejor.neta)}<small>aciertos netos</small></div>
+      <div class="rm-sub">${nota(rs.mejor.nota10)} sobre 10 · ${esc(fechaCorta(rs.mejor.s.fecha || hoyISO()))}</div></div>
     <div class="panel rm-tile"><div class="rm-etq">Cuánto arriesgas</div>
       <div class="rm-cifra">${Math.round(rs.ultima.riesgo * 100)}<small>% contestado</small></div>
       <div class="rm-sub">Aciertas el ${Math.round(rs.ultima.acierto * 100)} % de lo que contestas${ritmo !== null ? ` · ${ritmo} s por pregunta (el examen da ${ritmoEx})` : ""}</div></div>
@@ -6655,7 +6700,7 @@ function opoSimulacros() {
 
   <section class="panel" id="opoFormSim">
     <div class="etq">Apuntar un simulacro</div>
-    <p class="meta" style="margin:6px 0 14px">Cada fallo resta ${textoPenalizacion(pen)}${ex.penalizacion === null ? " (" + ex.opciones + " opciones)" : ""}. Se cambia en «Examen y plan».</p>
+    <p class="meta" style="margin:6px 0 14px">${pen ? "Cada fallo te quita " + textoPenalizacion(pen) + " de acierto" + (ex.penalizacion === null ? " (" + ex.opciones + " opciones)" : "") + ". Lo que te queda son tus <b>aciertos netos</b>: aciertos − fallos × " + textoPenalizacion(pen) + ". Es la cifra que se compara con la nota de corte." : "En tu examen los fallos no restan: tus aciertos netos son tus aciertos."} Se cambia en «Examen y plan».</p>
     <div class="opo-form">
       <label class="campo">Fecha<input type="date" id="osFecha" value="${hoyISO()}"></label>
       <label class="campo opo-ancho">De qué<select id="osRef">${refs}</select></label>
@@ -6673,7 +6718,7 @@ function opoSimulacros() {
   ${todos.length ? `<section class="panel">
     <div class="etq">Todos · ${todos.length}</div>
     <div class="opo-tabla" role="table">
-      <div class="opo-tr opo-th" role="row"><span>Fecha</span><span>De qué</span><span>A · F · B</span><span>Netas</span><span>Nota</span><span></span></div>
+      <div class="opo-tr opo-th" role="row"><span>Fecha</span><span>De qué</span><span>Aciertos · fallos · en blanco</span><span>Aciertos netos</span><span>Sobre 10</span><span></span></div>
       ${todos.map(s => { const c = calcSimulacro(s, pen); return `<div class="opo-tr" role="row">
         <span>${esc(fechaCorta(s.fecha || hoyISO()))}</span><span>${esc(refTxt(s))}</span>
         <span>${c.aciertos} · ${c.fallos} · ${c.blancos}</span><span><b>${nota(c.neta)}</b></span><span>${nota(c.nota10)}</span>
@@ -6697,18 +6742,18 @@ function opoExamen() {
       ${campoOpo("Preguntas", "examen.preguntas", ex.preguntas, 'type="number" min="1" max="500" step="1"')}
       <label class="campo">Opciones por pregunta<select id="examen.opciones" data-opo-campo="examen.opciones">${[2, 3, 4, 5].map(o => `<option value="${o}"${num(ex.opciones) === o ? " selected" : ""}>${o}</option>`).join("")}</select></label>
       ${campoOpo("Cada fallo resta", "examen.penalizacion", ex.penalizacion, `type="number" min="0" max="5" step="0.01" placeholder="${esc(textoPenalizacion(1 / Math.max(1, num(ex.opciones, 4) - 1)))} (lo normal)"`)}
-      ${campoOpo("Nota de corte (netas)", "examen.corte", ex.corte, 'type="number" min="0" max="500" step="0.01" placeholder="Si la sabes"')}
+      ${campoOpo("Nota de corte (en aciertos netos)", "examen.corte", ex.corte, 'type="number" min="0" max="500" step="0.01" placeholder="Si la sabes"')}
       ${campoOpo("Minutos", "examen.minutos", ex.minutos, 'type="number" min="1" max="600" step="1"')}
       ${campoOpo("Preguntas de reserva", "examen.reserva", ex.reserva, 'type="number" min="0" max="50" step="1"')}
     </div>
-    <p class="meta" style="margin-top:12px">Cada fallo resta <b>${textoPenalizacion(pen)}</b> de acierto. ${ex.reserva ? "Las " + ex.reserva + " de reserva solo cuentan si anulan alguna: contéstalas igual." : ""}</p>
+    <p class="meta" style="margin-top:12px">${pen ? "Cada fallo te quita <b>" + textoPenalizacion(pen) + "</b> de acierto. Aciertos menos lo que restan los fallos son tus <b>aciertos netos</b>: es lo que se compara con la nota de corte." : "Los fallos no restan: tus aciertos netos son tus aciertos."} ${ex.reserva ? "Las " + ex.reserva + " de reserva solo cuentan si anulan alguna: contéstalas igual." : ""}</p>
   </section>
 
   <section class="panel">
     <div class="etq">¿Cuántas tengo que acertar?</div>
-    <p class="meta" style="margin:6px 0 14px">${corte ? "Con el corte " + (corte.de === "tuyo" ? "que has puesto" : corte.de) + ": " + nota(corte.valor) + " netas." : "Sin nota de corte todavía: pongo la mitad del examen como referencia."}</p>
+    <p class="meta" style="margin:6px 0 14px">${corte ? "Con el corte " + (corte.de === "tuyo" ? "que has puesto" : corte.de) + ": " + nota(corte.valor) + " aciertos netos." : "Sin nota de corte todavía: pongo la mitad del examen como referencia."}</p>
     <div class="opo-form">
-      <label class="campo">Corte (netas)<input type="number" id="ocCorte" value="${corte ? corte.valor : Math.round(num(ex.preguntas) / 2)}" min="0" step="0.5"></label>
+      <label class="campo">Corte (aciertos netos)<input type="number" id="ocCorte" value="${corte ? corte.valor : Math.round(num(ex.preguntas) / 2)}" min="0" step="0.5"></label>
       <label class="campo">Dejo en blanco<input type="number" id="ocBlanco" value="10" min="0" step="1"></label>
     </div>
     <p class="opo-calc" id="ocSalida" aria-live="polite">${c.valido && !c.imposible ? `Necesitas <b>${c.aciertos}</b> aciertos contestando todas.` : ""}</p>
@@ -6736,7 +6781,7 @@ function opoExamen() {
     </div>
     <p class="meta" style="margin-top:14px">${plan.sinFecha ? "Pon la fecha del examen y te digo el ritmo." : plan.pasado ? "La fecha del examen ya pasó." :
       `Quedan ${plan.dias} días: ${plan.utiles} para dar vueltas y ${plan.reserva} para simulacros. Con ${pl.diasSemana} días de estudio a la semana son ${plan.diasEstudio} días, así que ${plan.porDia ? "toca <b>" + nota(plan.porDia) + " temas por día</b>" : "ya lo tienes"}.` +
-      (plan.acabas ? ` A tu ritmo de las dos últimas semanas terminarías el ${esc(fechaCorta(plan.acabas))}, <b>${plan.llegas ? "a tiempo" : "tarde"}</b>.` : "")}</p>
+      (plan.acabas ? ` A tu ritmo de las dos últimas semanas terminarías el ${esc(fechaFrase(plan.acabas))}, <b>${plan.llegas ? "a tiempo" : "tarde"}</b>.` : "")}</p>
   </section>
 
   <section class="panel">
@@ -6754,7 +6799,7 @@ function opoExamen() {
     ${cv.cortes.length ? `<div class="opo-cortes">${cv.cortes.slice().sort((a, b) => num(b.anio) - num(a.anio)).map(x => `<span class="opo-corte">${esc(String(x.anio))}: <b>${esc(nota(num(x.corte)))}</b><button type="button" class="icono-btn" data-opo-quitar-corte="${esc(String(x.anio))}" aria-label="Quitar ${esc(String(x.anio))}">${icono("cerrar")}</button></span>`).join("")}</div>` : `<p class="meta">Sirven de referencia mientras no sepas el de tu convocatoria.</p>`}
     <div class="opo-form" style="margin-top:10px">
       <label class="campo">Año<input type="number" id="ocAnio" min="1990" max="2100" step="1" placeholder="${new Date().getFullYear() - 1}"></label>
-      <label class="campo">Corte (netas)<input type="number" id="ocValor" min="0" step="0.01"></label>
+      <label class="campo">Corte (aciertos netos)<input type="number" id="ocValor" min="0" step="0.01"></label>
       <div class="campo opo-boton"><button type="button" class="btn" id="opoAddCorte">Añadir</button></div>
     </div>
   </section>`;
@@ -6788,7 +6833,7 @@ function opoCalcularCorte() {
   if (!r.valido) { sal.innerHTML = `<span class="opo-err">Las que dejas en blanco tienen que ser menos que el total de preguntas.</span>`; return; }
   sal.innerHTML = r.imposible
     ? `Dejando ${num($("#ocBlanco").value)} en blanco <b>no llegas</b> ni acertando todas las ${r.respondidas}. Te toca arriesgar alguna más.`
-    : `Necesitas <b>${r.aciertos} aciertos</b> de ${r.respondidas} contestadas (${r.fallos} fallos como mucho). Te quedarían ${nota(r.neta)} netas.`;
+    : `Necesitas <b>${r.aciertos} aciertos</b> de ${r.respondidas} contestadas (${r.fallos} fallos como mucho). Te quedarían ${nota(r.neta)} aciertos netos.`;
 }
 function opoCalcularSim() {
   const out = $("#osCalc"); if (!out) return;
@@ -6796,7 +6841,7 @@ function opoCalcularSim() {
   const O = normalizarOpo(), n = num($("#osPreg").value), a = num($("#osAc").value), f = num($("#osFa").value);
   if (a + f > n) { out.innerHTML = `<span class="opo-err">Aciertos y fallos suman más que las preguntas.</span>`; return; }
   const c = calcSimulacro({ preguntas: n, aciertos: a, fallos: f }, penalizacionDe(O.examen));
-  out.innerHTML = `${c.blancos} en blanco · <b>${nota(c.neta)} netas</b> · ${nota(c.nota10)} sobre 10`;
+  out.innerHTML = `${c.blancos} en blanco · <b>${nota(c.neta)} aciertos netos</b> · ${nota(c.nota10)} sobre 10`;
 }
 /* lo que se ha entendido de «de qué temas eran los fallos» */
 function opoCalcularFT() {
@@ -6950,7 +6995,7 @@ function opoTarjetaInicio() {
   const pl = planOpo(), hoy = temasDeHoy(), rs = resumenSimulacros(), frios = temasFrios().length;
   return `<section class="panel opo-inicio">${opoAlertaPlazo()}
     <div class="opo-cuenta">${pl.dias !== undefined && pl.dias >= 0 ? `<b>${pl.dias}</b><span>${pl.dias === 1 ? "día" : "días"} para el examen</span>` : `<b>—</b><span>Sin fecha de examen</span>`}
-      ${rs.n ? `<span style="margin-top:10px">Último simulacro: ${nota(rs.ultima.neta)} netas</span>` : ""}
+      ${rs.n ? `<span style="margin-top:10px">Último simulacro: ${nota(rs.ultima.nota10)} sobre 10</span>` : ""}
       ${opoMarcha(true)}</div>
     <div class="opo-inicio-hoy">
       <div class="opo-cab-sec"><div class="etq">Hoy te tocan</div><span class="meta">${hoy.hechos} de ${hoy.cupo} hechos</span></div>
@@ -6981,7 +7026,7 @@ function opoContextoTutor() {
   const tema = t => t.n + " «" + t.titulo.slice(0, 90) + "»";
   const L = ["LA OPOSICIÓN"];
   L.push("Examen: " + (ex.fecha ? ex.fecha + " (" + cuandoTxt(pl.dias) + ")" : "sin fecha todavía") + "; " + ex.preguntas + " preguntas de "
-    + ex.opciones + " opciones, cada fallo resta " + textoPenalizacion(pen) + (corte ? "; corte de " + nota(corte.valor) + " netas" : "") + ".");
+    + ex.opciones + " opciones, cada fallo resta " + textoPenalizacion(pen) + (corte ? "; corte de " + nota(corte.valor) + " aciertos netos" : "") + ".");
   if (num(ex.bolas) > 0 && O.temas.length) {
     const k = temasPreparados().length;
     L.push("Hay tema a desarrollar: sacan " + ex.bolas + " bolas de " + O.temas.length + " temas. Con los " + k + " que lleva preparados, "
@@ -7001,7 +7046,7 @@ function opoContextoTutor() {
   const hoy = temasDeHoy().lista.slice(0, 4); if (hoy.length) L.push("Hoy le tocan: " + hoy.map(tema).join("; ") + ".");
   const frios = temasFrios().slice(0, 6); if (frios.length) L.push("Temas que se le enfrían: " + frios.map(tema).join("; ") + ".");
   const flojos = temasFlojos().slice(0, 6); if (flojos.length) L.push("Temas flojos: " + flojos.map(x => tema(x.t)).join("; ") + ".");
-  if (rs.n) L.push("Simulacros completos: " + rs.n + ". El último, " + nota(rs.ultima.neta) + " netas (" + nota(rs.ultima.nota10) + "/10): contestó el "
+  if (rs.n) L.push("Simulacros completos: " + rs.n + ". El último, " + nota(rs.ultima.neta) + " aciertos netos (" + nota(rs.ultima.nota10) + "/10): contestó el "
     + Math.round(rs.ultima.riesgo * 100) + " % y acertó el " + Math.round(rs.ultima.acierto * 100) + " % de lo contestado. Media de los últimos cinco: " + nota(rs.media5) + "/10.");
   return L;
 }
@@ -9920,8 +9965,8 @@ function resumenDia() {
   if (!pend.length) return { tit: "Plan de hoy <b>cumplido</b>", sub: `${esc(horasTxt(hecho))} hechas${trabaja ? ", con el trabajo encima" : ""}. Mañana, más.` + venceTxt, accion: "", total, hecho };
   const resta = total - hecho, m = modPorId(pend[0].modId);
   return {
-    tit: `Hoy te ${resta === 1 ? "toca" : "tocan"} <b>${esc(horasTxt(resta))}</b> de estudio`,
-    sub: `${hecho ? "Llevas " + esc(horasTxt(hecho)) + ". " : ""}Empieza por ${m ? pillMod(m) : ""} <span class="hd-motivo">${esc(pend[0].motivo)}</span>${trabaja ? ` <span class="hd-libre">· repartido en tu tiempo libre</span>` : ""}` + venceTxt,
+    tit: `Hoy te ${hecho ? (resta === 1 ? "queda" : "quedan") : (resta === 1 ? "toca" : "tocan")} <b>${esc(horasTxt(resta))}</b> de estudio`,
+    sub: `${hecho ? "Llevas " + esc(horasTxt(hecho)) + " del plan. " : ""}${hecho ? "Sigue con" : "Empieza por"} ${m ? pillMod(m) : ""} <span class="hd-motivo">· ${esc(pend[0].motivo.charAt(0).toLowerCase() + pend[0].motivo.slice(1))}</span>${trabaja ? ` <span class="hd-libre">· repartido en tu tiempo libre</span>` : ""}` + venceTxt,
     accion: m ? `<button type="button" class="btn primario" data-plan-empezar="${m.id}">Empezar con ${esc(m.cod)}</button>` : "", total, hecho
   };
 }
@@ -11272,6 +11317,57 @@ if (/[?&]instalar(&|=|$)/.test(location.search)) {
 }
 
 
+/* ══════════════════ repaso general ══════════════════
+   Lo que salió al revisar la app entera como opositor y como estudiante:
+   palabras que no se entendían («netas»), concordancias («todas tus
+   bloques»), filas repetidas en el plan y la gráfica de simulacros, que en
+   el móvil salía con letras de 4 px. */
+
+/* la palabra con el género de la que toca: vocG("todos", "todas") + " tus " + voc(true) */
+const vocG = (masc, fem) => /^(asignatura|destreza)/.test(voc()) ? fem : masc;
+/* «1 apunte», «3 apuntes» */
+const cuantos = (n, uno, varios) => n + " " + (n === 1 ? uno : varios);
+
+/* los bloques de 25 min de una misma asignatura, juntos: «ESP · 1 h 15 min»
+   en vez de tres filas iguales. Solo cambia cómo se enseña: el plan es el mismo */
+function juntarBloques(bloques) {
+  const g = [];
+  (bloques || []).forEach(b => {
+    let x = g.find(y => y.modId === b.modId);
+    if (!x) g.push(x = { modId: b.modId, min: 0, minHecho: 0, n: 0, hechos: 0, motivo: b.motivo });
+    x.min += b.min; x.n++;
+    if (b.hecho) { x.hechos++; x.minHecho += b.min; }
+  });
+  g.forEach(x => { x.hecho = x.hechos === x.n; });
+  return g;
+}
+const quedanBloque = x => x.hechos && !x.hecho ? " · te quedan " + horasTxt(x.min - x.minHecho) : "";
+
+/* la gráfica de simulacros se dibuja al ancho que de verdad tiene: así sus
+   letras miden lo mismo en el móvil que en el ordenador */
+function anchoGraficaOpo() {
+  const c = document.getElementById("contenido");
+  if (!c || !c.clientWidth) return 640;
+  const cs = getComputedStyle(c);
+  const w = c.clientWidth - parseFloat(cs.paddingLeft || 0) - parseFloat(cs.paddingRight || 0) - 48;
+  return w > 200 ? Math.round(clamp(w, 280, 1100)) : 640;
+}
+let revTGraf = 0;
+alEvento("resize", () => {
+  clearTimeout(revTGraf);
+  revTGraf = setTimeout(() => {
+    const g = document.querySelector(".opo-graf");
+    if (!g || seccion !== "oposicion") return;
+    if (Math.abs(g.viewBox.baseVal.width - anchoGraficaOpo()) < 30) return;
+    const O = normalizarOpo();
+    g.outerHTML = graficaSimulacros(resumenSimulacros(), corteDe(), O.examen.preguntas);
+  }, 200);
+}, window);
+
+/* «jueves, 12 de noviembre», para ir dentro de una frase */
+const fechaFrase = iso => new Date(iso + "T12:00:00").toLocaleDateString("es-ES", { weekday: "long", day: "numeric", month: "long" });
+
+
 /* ══════════════════ pintado ══════════════════ */
 function pinta() {
   if (BV) { pintaEntrada(); return; }
@@ -11355,7 +11451,7 @@ alEvento("click", async e => {
   if (t.closest("#btnTimer")) { T.activo ? pausarTimer() : iniciarTimer(); return; }
   if (t.closest("#btnReset")) { reiniciarTimer(); return; }
   if (t.closest("#btnManual")) {
-    if (!T.modId) { aviso("Elige antes el módulo."); return; }
+    if (!T.modId) { aviso("Elige antes " + vocG("el", "la") + " " + voc() + "."); return; }
     registrarMinutos(T.modId, 30); if (T.temaId) registrarMinutosTema(T.temaId, 30);
     aviso("30 minutos apuntados."); pinta(); return;
   }
@@ -11391,7 +11487,7 @@ alEvento("click", async e => {
     const m = modPorId(n.modId);
     $("#panelIA").classList.remove("oculto");
     $("#tituloIA").textContent = { resumen: "Resumen", explicar: "Explicación", examen: "Preguntas de examen" }[ia.dataset.ia];
-    await pedirAClaude(PROMPTS[ia.dataset.ia](n.titulo || "sin título", n.cuerpo.slice(0, 12000), m ? m.nombre : "el módulo"), $("#salidaIA"));
+    await pedirAClaude(PROMPTS[ia.dataset.ia](n.titulo || "sin título", n.cuerpo.slice(0, 12000), m ? m.nombre : vocG("el", "la") + " " + voc()), $("#salidaIA"));
     return;
   }
   if (t.closest("#btnCerrarIA")) { $("#panelIA").classList.add("oculto"); return; }
@@ -11405,7 +11501,7 @@ alEvento("click", async e => {
   if (t.closest("#btnExportarApunte")) {
     const n = S.apuntes[apunteActivo]; if (!n) return;
     const m = modPorId(n.modId);
-    const md = "# " + (n.titulo || "Apunte") + "\n\n" + (m ? "**Módulo:** " + m.nombre + "\n\n" : "") + htmlATexto(apunteHtml(n), true) + "\n";
+    const md = "# " + (n.titulo || "Apunte") + "\n\n" + (m ? "**" + mayus(voc()) + ":** " + m.nombre + "\n\n" : "") + htmlATexto(apunteHtml(n), true) + "\n";
     await bajarArchivo((n.titulo || "apunte").replace(/[^\w\sáéíóúñÁÉÍÓÚÑ-]/gi, "").trim().slice(0, 40) + ".md", md, "text/markdown;charset=utf-8");
     return;
   }
@@ -11672,7 +11768,7 @@ function tutorMirar() {
 
   const dias = Object.values(S.horas || {}).flatMap(o => Object.keys(o || {}).filter(k => num(o[k]) > 0)).sort();
   const sin = dias.length ? -diasEntre(dias[dias.length - 1], hoy) : -1;
-  if (sin >= 3) suelta("vuelta:" + hoy, "Llevas " + sin + " días sin estudiar por aquí. No pasa nada: empezamos suave, quince minutos de lo que menos pereza te dé. ¿Con qué módulo?");
+  if (sin >= 3) suelta("vuelta:" + hoy, "Llevas " + sin + " días sin estudiar por aquí. No pasa nada: empezamos suave, quince minutos de lo que menos pereza te dé. ¿Con qué " + voc() + "?");
 }
 
 /* ── lo que puede hacer él solo ── */
@@ -11804,7 +11900,7 @@ function tutorInstrucciones() {
   return `Eres el profesor particular de ${p.nombre || "un estudiante"}, que cursa ${quien} en España. Te llamas ${f.nombre} y le hablas por el chat de su app de estudio.
 
 TU ESPECIALIDAD
-Eres profesor especialista en ${curso}, y solo en eso.${asigs ? " Sus " + voc(true) + " son: " + asigs + "." : ""} Conoces ese curso por dentro: qué se da en cada ${voc()}, a qué nivel, cómo se evalúa y qué cae en los exámenes. Todo lo que expliques, al nivel de ese curso y con ejemplos de esas ${voc(true)}. Si te pregunta algo de otra materia o de otro nivel, se lo dices en una frase y lo llevas a lo suyo; si de verdad le sirve para una de sus ${voc(true)}, lo explicas desde ahí.${p.etapa === "eso" ? " Está en la ESO: háblale con palabras sencillas y adecuadas a su edad." : ""}
+Eres profesor especialista en ${curso}, y solo en eso.${asigs ? " Sus " + voc(true) + " son: " + asigs + "." : ""} Conoces ese curso por dentro: qué se da en cada ${voc()}, a qué nivel, cómo se evalúa y qué cae en los exámenes. Todo lo que expliques, al nivel de ese curso y con ejemplos de ${vocG("esos", "esas")} ${voc(true)}. Si te pregunta algo de otra materia o de otro nivel, se lo dices en una frase y lo llevas a lo suyo; si de verdad le sirve para una de sus ${voc(true)}, lo explicas desde ahí.${p.etapa === "eso" ? " Está en la ESO: háblale con palabras sencillas y adecuadas a su edad." : ""}
 
 CÓMO ENSEÑAS
 - ${cana}
@@ -12081,8 +12177,8 @@ function vistaTutor() {
     <div class="chat-sug">${TUTOR_SUG.map(s => `<button type="button" class="sug" data-sug="${esc(s)}">${esc(s)}</button>`).join("")}</div>
     <form class="chat-barra" id="chatForm" autocomplete="off">
       <div class="chat-adj" id="chatAdj">${tutorPendHTML()}</div>
-      <select id="chatMod" aria-label="Módulo del que habláis">
-        <option value="">Sin módulo</option>
+      <select id="chatMod" aria-label="${esc(mayus(voc()))} ${vocG("del que", "de la que")} habláis">
+        <option value="">Sin ${esc(voc())}</option>
         ${S.modulos.map(m => `<option value="${m.id}"${m.id === tutorMod ? " selected" : ""}>${esc(m.cod)} · ${esc(m.nombre)}</option>`).join("")}
       </select>
       <button type="button" class="btn" id="chatClip" aria-label="Adjuntar capturas o archivos de código" title="Adjuntar capturas o código">${icono("clip")}</button>
@@ -12580,9 +12676,9 @@ function bvPaso2() {
       <button type="button" class="btn borrar mini cuadrado" data-bv-quitar="${a.id}" aria-label="Borrar ${esc(a.nombre)}">×</button>
     </div>`).join("") : `<p class="vacio">Añade tus ${esc(voc(true))} a mano${siProfe(" o pídele la lista al profe")}.</p>`}
   </div>
-  <p class="meta" style="margin-top:12px">${marcadas} ${marcadas === 1 ? esc(voc()) : esc(voc(true))} ${marcadas === 1 ? "marcada" : "marcadas"}.</p>
+  <p class="meta" style="margin-top:12px">${marcadas} ${marcadas === 1 ? esc(voc()) : esc(voc(true))} ${vocG(marcadas === 1 ? "marcado" : "marcados", marcadas === 1 ? "marcada" : "marcadas")}.</p>
   ${hay ? `<label class="ent-linea" style="margin-top:16px"><input type="checkbox" id="bvReemplazar"${BV.reemplazar ? " checked" : ""}>
-    <span>Reemplazar ${esc(vocArt(true))} que ya tengo (se borran sus notas y sus horas). Si lo dejas sin marcar, solo se añaden las que no tengas.</span></label>` : ""}`;
+    <span>Reemplazar ${esc(vocArt(true))} que ya tengo (se borran sus notas y sus horas). Si lo dejas sin marcar, solo se añaden ${vocG("los", "las")} que no tengas.</span></label>` : ""}`;
 }
 function bvPaso3() {
   const p = BV.p;
@@ -12615,7 +12711,7 @@ function bvPaso3() {
 function bvPaso4() {
   return `
   <h1 class="ent-tit">¿Cómo te evalúan?</h1>
-  <p class="ent-lead">Esto es lo que permite decirte «te hace falta un 6,4 en lo que queda». Se aplica a todas tus ${esc(voc(true))} y luego cada una se puede cambiar por separado.</p>
+  <p class="ent-lead">Esto es lo que permite decirte «te hace falta un 6,4 en lo que queda». Se aplica a ${vocG("todos", "todas")} tus ${esc(voc(true))} y luego ${vocG("cada uno", "cada una")} se puede cambiar por separado.</p>
   <table class="tabla-pesos"><thead><tr><th>Apartado</th><th>Peso %</th><th></th></tr></thead><tbody>
     ${BV.pesos.map((x, i) => `<tr>
       <td><input type="text" value="${esc(x.nombre)}" data-bv-peso="nombre" data-i="${i}" aria-label="Nombre del apartado"></td>
@@ -12944,7 +13040,7 @@ function ajEval(p) {
   return `
   <section class="panel">
     <div class="etq">Plantilla de evaluación</div>
-    <p class="meta" style="margin:6px 0 14px">Sirve para poner los mismos apartados en todas tus ${esc(voc(true))} de golpe. Cada una se puede ajustar luego por separado.</p>
+    <p class="meta" style="margin:6px 0 14px">Sirve para poner los mismos apartados en ${vocG("todos", "todas")} tus ${esc(voc(true))} de golpe. ${vocG("Cada uno", "Cada una")} se puede ajustar luego por separado.</p>
     <div class="ent-chips">
       ${Object.keys(PLANTILLAS).map(k => `<button type="button" class="sug${clave === k ? " sel" : ""}" data-aj-plantilla="${k}">
         ${k === "escolar" ? "Colegio e instituto" : k === "fp" ? "FP" : k === "uni" ? "Universidad" : k === "oposicion" ? "Oposición" : "Idiomas"}</button>`).join("")}
@@ -12953,9 +13049,9 @@ function ajEval(p) {
       ${PLANTILLAS[clave].map(([n, w]) => `<span class="adj-chip">${esc(n)} · ${w} %</span>`).join("")}
     </div>
     <div class="barra-btns" style="margin-top:18px">
-      <button type="button" class="btn" id="apAplicarPlantilla">Aplicar a todas mis ${esc(voc(true))}</button>
+      <button type="button" class="btn" id="apAplicarPlantilla">Aplicar a ${vocG("todos", "todas")} mis ${esc(voc(true))}</button>
     </div>
-    <p class="meta" style="margin-top:10px">Ojo: al aplicarla se reemplazan los apartados de todas y <strong>se pierden las notas ya puestas</strong>. Te lo vuelvo a preguntar antes.</p>
+    <p class="meta" style="margin-top:10px">Ojo: al aplicarla se reemplazan los apartados de ${vocG("todos", "todas")} y <strong>se pierden las notas ya puestas</strong>. Te lo vuelvo a preguntar antes.</p>
     <hr class="separador">
     <div class="rejilla-campos">
       <label class="campo">% de faltas que te permiten<input type="number" id="apPct" value="${num(S.config.pctFaltas, 15)}" min="0" max="100"></label>
@@ -13031,7 +13127,7 @@ function ajAspecto() {
       ${[["auto", "Como el sistema"], ["light", "Claro"], ["dark", "Oscuro"]].map(([v, n]) =>
         `<button type="button" class="sug${t === v ? " sel" : ""}" data-aj-tema="${v}">${n}</button>`).join("")}
     </div>
-    <p class="meta" style="margin-top:14px">Los colores, las rampas y la tipografía vienen del sistema de GritNook: fondo azul noche en oscuro, papel en claro, acento blurple como línea y borde. El color de cada ${esc(voc())} se cambia en la pestaña de ${esc(voc(true, true))}.</p>
+    <p class="meta" style="margin-top:14px">En oscuro, fondo azul noche; en claro, color papel. «Como el sistema» cambia solo con tu móvil u ordenador. El color de cada ${esc(voc())} se cambia en la pestaña de ${esc(voc(true, true))}.</p>
   </section>`;
 }
 
@@ -13143,7 +13239,7 @@ function ajDatos() {
       : db ? "En tu cuenta de Claude: los ves igual desde el móvil y desde cualquier ordenador."
       : enClaude() ? "Solo en este navegador. Para que te sigan entre dispositivos, abre la app desde tu enlace de Claude."
       : "Solo en este navegador y en este dispositivo. Si vas a usarla en el móvil y en el ordenador, descárgate la copia aquí y cárgala allí."}</p>
-    <p class="meta" style="margin:6px 0 0">Ocupan ${tam} KB, con ${Object.keys(S.apuntes || {}).length} apuntes y ${Object.keys(S.casillero || {}).length} documentos.</p>
+    <p class="meta" style="margin:6px 0 0">Ocupan ${tam} KB, con ${cuantos(Object.keys(S.apuntes || {}).length, "apunte", "apuntes")} y ${cuantos(Object.keys(S.casillero || {}).length, "documento", "documentos")}.</p>
     <p class="meta" style="margin:10px 0 0">El detalle de qué se guarda y qué sale fuera está en <button type="button" class="lg-enlace" data-lg="privacidad">la política de privacidad</button>.</p>
     <hr class="separador">
     <div class="etq">Si algo va mal</div>
@@ -13222,7 +13318,7 @@ alEvento("click", async e => {
   if (pl) { normalizarPerfil().plantilla = pl.dataset.ajPlantilla; guardar("perfil"); pinta(); return; }
   if (t.closest("#apAplicarPlantilla")) {
     const clave = plantillaDe(normalizarPerfil());
-    if (!(await confirmar("Se ponen los apartados de «" + clave + "» en todas tus " + voc(true) + " y se borran las notas que ya habías puesto.", { titulo: "¿Aplicar esta evaluación a todo?", si: "Aplicar" }))) return;
+    if (!(await confirmar("Se ponen los apartados de «" + clave + "» en " + vocG("todos", "todas") + " tus " + voc(true) + " y se borran las notas que ya habías puesto.", { titulo: "¿Aplicar esta evaluación a todo?", si: "Aplicar" }))) return;
     S.modulos.forEach(m => { m.pesos = pesosDePlantilla(clave); });
     guardar("ajustes"); aviso("Plantilla aplicada."); pinta(); return;
   }
@@ -13441,7 +13537,7 @@ function planSemana(desde) {
     else if (dd <= 7) { w *= 1.8; motivo = "Examen " + cuandoTxt(dd); }
     else if (dd <= 14) { w *= 1.3; motivo = "Examen " + cuandoTxt(dd); }
     if (c.est === "riesgo") { w *= 1.5; motivo = motivo || "Vas justo"; }
-    else if (c.est === "aviso") { w *= 1.2; motivo = motivo || "Hay que apretar"; }
+    else if (c.est === "aviso") { w *= 1.2; motivo = motivo || (c.media === null ? "Lo que toca" : "Hay que apretar"); }
     if (c.yaEsta) { w *= .5; motivo = motivo || "Ya lo tienes, repaso suave"; }
     return { m, w, motivo: motivo || "Lo que toca", examen: ex && dd <= 14 ? ex : null };
   });
@@ -13722,14 +13818,14 @@ function agPlan() {
   return `
   <section class="panel">
     <div class="panel-cab"><h2 class="etq">Esta semana</h2><span class="meta num">${horasTxt(hecho)} de ${horasTxt(total)}</span></div>
-    <p class="meta" style="margin:6px 0 0">Sale de tus ${num(p.horasSemana)} h semanales, de los días que puedes (${esc((p.diasFuertes.length ? p.diasFuertes : ["lun", "mar", "mie", "jue", "vie"]).map(d => DIAS_NOMBRE[d].slice(0, 3)).join(", "))}), de tus exámenes y de lo que peor llevas. Cada bloque se tacha solo al estudiar esa ${esc(voc())} con el cronómetro.</p>
+    <p class="meta" style="margin:6px 0 0">Sale de tus ${num(p.horasSemana)} h semanales, de los días que puedes (${esc((p.diasFuertes.length ? p.diasFuertes : ["lun", "mar", "mie", "jue", "vie"]).map(d => DIAS_NOMBRE[d].slice(0, 3)).join(", "))}), de tus exámenes y de lo que peor llevas. Cada bloque se tacha solo al estudiar ${vocG("ese", "esa")} ${esc(voc())} con el cronómetro.</p>
   </section>
   <div class="plan-semana">
     ${semana.map(d => `<div class="pl-dia${d.fecha === hoy ? " hoy" : ""}${d.libre ? "" : " fuera"}">
       <div class="ho-cab">${DIAS_NOMBRE[d.dia].slice(0, 3)} <span class="meta">${new Date(d.fecha + "T12:00:00").getDate()}</span></div>
-      ${d.bloques.map(b => { const m = modPorId(b.modId); return `<div class="pl-bloque${b.hecho ? " hecho" : ""}" style="${colorMod(m)}">
-        <span class="pl-m">${m ? esc(m.cod) : "—"} <span class="meta">${b.min} min</span></span>
-        <span class="meta pl-por">${esc(mayus(b.motivo))}</span>
+      ${juntarBloques(d.bloques).map(b => { const m = modPorId(b.modId); return `<div class="pl-bloque${b.hecho ? " hecho" : ""}" style="${colorMod(m)}">
+        <span class="pl-m">${m ? esc(m.cod) : "—"} <span class="meta">${horasTxt(b.min)}</span></span>
+        <span class="meta pl-por">${esc(mayus(b.motivo) + quedanBloque(b))}</span>
         ${d.fecha === hoy && !b.hecho ? `<button type="button" class="btn mini" data-plan-empezar="${b.modId}">Empezar</button>` : b.hecho ? `<span class="pl-ok">${CHECK}</span>` : ""}
       </div>`; }).join("") || `<p class="meta ho-vacio">${d.libre ? "Descanso" : "No es día tuyo"}</p>`}
     </div>`).join("")}
@@ -13746,9 +13842,9 @@ function panelHoy() {
     <div class="panel-cab"><h2 class="etq" id="tHoy">Hoy</h2><button class="btn mini fantasma" data-ir-agenda="plan">Plan de la semana</button></div>
     <div class="hoy-rejilla">
       <div>
-        <div class="meta hoy-t">Te toca estudiar</div>
-        ${bloques.length ? bloques.map(b => { const m = modPorId(b.modId); return `<div class="hoy-bloque${b.hecho ? " hecho" : ""}" style="${colorMod(m)}">
-          ${pillMod(m)}<span class="hoy-txt">${b.min} min<span class="meta"> · ${esc(b.motivo)}</span></span>
+        <div class="meta hoy-t">${bloques.length ? "Te toca estudiar" : "Estudio"}</div>
+        ${bloques.length ? juntarBloques(bloques).map(b => { const m = modPorId(b.modId); return `<div class="hoy-bloque${b.hecho ? " hecho" : ""}" style="${colorMod(m)}">
+          ${pillMod(m)}<span class="hoy-txt">${horasTxt(b.min)}<span class="meta"> · ${esc(b.motivo + quedanBloque(b))}</span></span>
           ${b.hecho ? `<span class="pl-ok">${CHECK}</span>` : `<button type="button" class="btn mini" data-plan-empezar="${b.modId}">Empezar</button>`}</div>`; }).join("")
           : `<p class="meta">Hoy no es uno de tus días de estudio. Si te apetece, cualquier rato suma.</p>`}
       </div>
@@ -14009,7 +14105,7 @@ function vistaRepaso() {
     <div>
       <div class="eyebrow">Memoria</div>
       <h1 class="titulo">Repaso</h1>
-      <p class="lead">Tarjetas que vuelven justo cuando estás a punto de olvidarlas, y tests como los del examen. Hazlas a mano${siProfe(" o que te las saque el profe de tus apuntes")}.</p>
+      <p class="lead">Tarjetas que vuelven justo cuando estás a punto de olvidarlas, y tests como los del examen. Las creas tú${siProfe(" o te las saca el profe de tus apuntes")}.</p>
     </div>
   </header>
   <div class="rejilla-12">
@@ -14046,7 +14142,7 @@ function vistaRepaso() {
     ${porMod.length ? `<section class="panel c-12">
       <div class="etq" style="margin-bottom:10px">Por ${esc(voc())}</div>
       ${porMod.map(x => `<div class="fila"><span class="codigo" style="${colorMod(x.m)}">${esc(x.m.cod)}</span>
-        <span class="principal-fila"><span class="t">${esc(x.m.nombre)}</span><span class="meta">${x.total} tarjetas · ${x.dominadas} dominadas</span></span>
+        <span class="principal-fila"><span class="t">${esc(x.m.nombre)}</span><span class="meta">${cuantos(x.total, "tarjeta", "tarjetas")} · ${cuantos(x.dominadas, "dominada", "dominadas")}</span></span>
         ${x.hoy ? `<button type="button" class="btn mini" data-rp-mod="${x.m.id}">Repasar ${x.hoy}</button>` : `<span class="meta">Al día</span>`}</div>`).join("")}
     </section>` : ""}
   </div>`;
@@ -14202,13 +14298,13 @@ function vistaProgreso() {
   return `
   <header class="cab">
     <div>
-      <div class="eyebrow">Tu curso</div>
+      <div class="eyebrow">${esOpositor() ? "Tu oposición" : "Tu curso"}</div>
       <h1 class="titulo">Progreso</h1>
       <p class="lead">Las horas que le echas, cómo van tus notas contra tu objetivo y lo que ya has dejado atrás.</p>
     </div>
   </header>
   <div class="pg-datos">
-    <div class="panel"><span class="cifra">${horasTxt(totalCurso)}</span><span class="meta">Estudiadas en total</span></div>
+    <div class="panel"><span class="cifra">${horasTxt(totalCurso).replace(/ (h|min)\b/g, "&nbsp;$1")}</span><span class="meta">Estudiadas en total</span></div>
     <div class="panel"><span class="cifra">${mediaGeneral === null ? "—" : nota(mediaGeneral)}</span><span class="meta">Media de lo que tiene nota</span></div>
     <div class="panel"><span class="cifra">${racha()}</span><span class="meta">Días seguidos</span></div>
     <div class="panel"><span class="cifra">${exHechos.length}</span><span class="meta">Exámenes hechos</span></div>
