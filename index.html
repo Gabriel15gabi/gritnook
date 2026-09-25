@@ -2763,14 +2763,29 @@ body.lx-arrastrando, body.lx-arrastrando *{-webkit-user-select:none; user-select
 }
 @media (prefers-reduced-motion: reduce){ .lb-barra.lx-dock, .lx-menu, .lx-dock .lb-pop{transition:none; animation:none} }
 /* ══ instalar la app ══ */
-/* en la pantalla de entrar: una tarjeta que invita, debajo de todo */
-.acc-instalar{display:flex; align-items:center; gap:12px; width:100%; margin-top:18px; padding:12px 14px; border:1px solid var(--acento-borde); border-radius:14px;
-  background:linear-gradient(135deg, var(--acento-suave), color-mix(in srgb, var(--acento-suave) 40%, transparent)); color:var(--ink); text-align:left; cursor:pointer;
-  font:400 12.5px/1.4 var(--sans); transition:transform .15s var(--ease-salto, ease), box-shadow .15s}
-.acc-instalar:hover{box-shadow:0 8px 22px -12px color-mix(in srgb, var(--acento) 70%, transparent)}
-.acc-instalar svg.i{flex:0 0 22px; width:22px; height:22px; color:var(--acento-txt)}
-.acc-instalar strong{display:block; margin-bottom:2px; font:600 14px/1.25 var(--sans)}
-.acc-instalar span{color:var(--ink-2)}
+/* en la pantalla de entrar: un móvil con el icono de GritNook y lo que te llevas */
+.acc-instalar{display:flex; align-items:center; gap:18px; margin-top:22px; padding:18px 18px 18px 20px; border:1px solid var(--acento-borde); border-radius:18px;
+  background:radial-gradient(260px 160px at 0% 50%, color-mix(in srgb, var(--acento) 22%, transparent), transparent 70%), var(--surface);
+  box-shadow:0 14px 34px -22px color-mix(in srgb, var(--acento) 80%, transparent); cursor:pointer; animation:accInsEntra .5s .25s cubic-bezier(.2,.7,.2,1) both}
+@keyframes accInsEntra{from{opacity:0; transform:translateY(10px)}}
+.acc-movil{position:relative; flex:0 0 70px; height:118px; display:grid; place-items:center; border:2.5px solid color-mix(in srgb, var(--acento-txt) 75%, transparent); border-radius:16px;
+  background:linear-gradient(180deg, color-mix(in srgb, var(--acento) 18%, var(--bg)), var(--bg)); box-shadow:inset 0 0 0 3px var(--bg), 0 10px 24px -14px rgba(0,0,0,.7);
+  animation:accMovilFlota 5s ease-in-out infinite}
+.acc-movil-isla{position:absolute; top:7px; left:50%; width:20px; height:5px; margin-left:-10px; border-radius:99px; background:color-mix(in srgb, var(--acento-txt) 45%, transparent)}
+.acc-movil img{width:40px; height:40px; border-radius:11px; box-shadow:0 6px 16px -6px color-mix(in srgb, var(--acento) 90%, transparent)}
+@keyframes accMovilFlota{0%,100%{transform:translateY(0) rotate(-3deg)} 50%{transform:translateY(-5px) rotate(-1deg)}}
+.acc-ins-txt{flex:1; min-width:0}
+.acc-ins-txt strong{display:block; margin-bottom:4px; font:650 16.5px/1.25 var(--sans); letter-spacing:-.01em; color:var(--ink)}
+.acc-ins-txt > span{display:block; font:400 13px/1.45 var(--sans); color:var(--ink-2)}
+.acc-plat{display:flex; align-items:center; flex-wrap:wrap; gap:5px; margin:10px 0 12px; font:500 12px/1 var(--sans); color:var(--ink-2)}
+.acc-plat svg.i{width:14px; height:14px; color:var(--acento-txt)}
+.acc-plat i{width:3px; height:3px; margin:0 4px; border-radius:50%; background:var(--line-2)}
+.acc-ins-btn{height:40px; padding:0 16px; gap:8px; font-size:14px}
+.acc-ins-btn svg.i{width:16px; height:16px}
+.pc-corto{display:none}
+@media (max-width:440px){ .acc-instalar{gap:14px; padding:16px 14px} .acc-movil{flex-basis:56px; height:96px; border-radius:14px} .acc-movil img{width:32px; height:32px; border-radius:9px}
+  .acc-plat{gap:4px} .acc-plat i{margin:0 2px} .pc-largo{display:none} .pc-corto{display:inline} }
+@media (prefers-reduced-motion: reduce){ .acc-instalar, .acc-movil{animation:none} }
 /* en el Inicio del móvil */
 .banda.instalar{border:1px solid var(--acento-borde); background:linear-gradient(135deg, var(--acento-suave), var(--surface-2))}
 .banda.instalar > svg.i{color:var(--acento-txt)}
@@ -11173,9 +11188,27 @@ async function instalarApp() {
 }
 
 /* en la pantalla de entrar */
+/* La tarjeta de la pantalla de entrar: un móvil con el icono de GritNook dentro,
+   para que se entienda de un vistazo que es una app. Sale también en el
+   ordenador (ahí es donde más interesa saber que existe para el móvil); solo se
+   esconde si ya está instalada o dentro de Claude. */
+const ICO_PLAT = {
+  android: '<svg class="i" viewBox="0 0 16 16" aria-hidden="true"><path d="M3.6 11V8.6a4.4 4.4 0 0 1 8.8 0V11z"/><path d="M5.3 5.2 4.2 3.6M10.7 5.2l1.1-1.6"/><circle cx="6.2" cy="8.4" r=".7" fill="currentColor" stroke="none"/><circle cx="9.8" cy="8.4" r=".7" fill="currentColor" stroke="none"/></svg>',
+  iphone: '<svg class="i" viewBox="0 0 16 16" aria-hidden="true"><path fill="currentColor" stroke="none" d="M11.1 8.5c0-1.5 1.2-2.2 1.3-2.3a2.9 2.9 0 0 0-2.3-1.2c-1-.1-1.9.6-2.3.6-.5 0-1.2-.6-2-.6-1 0-2 .6-2.5 1.6-1.1 1.9-.3 4.8.8 6.3.5.8 1.1 1.6 1.9 1.6s1.1-.5 2-.5 1.2.5 2 .5 1.3-.8 1.8-1.5c.6-.8.8-1.6.8-1.7 0 0-1.5-.6-1.5-2.8zM9.6 3.9c.4-.5.7-1.2.6-1.9-.6 0-1.4.4-1.8.9-.4.4-.7 1.2-.6 1.8.7.1 1.4-.3 1.8-.8z"/></svg>',
+  pc: '<svg class="i" viewBox="0 0 16 16" aria-hidden="true"><rect x="1.8" y="2.6" width="12.4" height="8.4" rx="1.2"/><path d="M6 14h4M8 11v3"/></svg>'
+};
+const ICO_INS_BAJAR = '<svg class="i" viewBox="0 0 16 16" aria-hidden="true"><path d="M8 2v8.4M4.8 7.4 8 10.6l3.2-3.2M3 13.6h10"/></svg>';
 function instalarAccesoHTML() {
-  if (!puedeInstalar()) return "";
-  return `<button type="button" class="acc-instalar" data-instalar>${ICO_INSTALAR}<span><strong>Instala GritNook en tu móvil</strong>Se abre como una app, a pantalla completa y sin conexión.</span></button>`;
+  if (instalada() || enClaude()) return "";
+  return `<div class="acc-instalar" data-instalar>
+      <div class="acc-movil" aria-hidden="true"><i class="acc-movil-isla"></i><img src="iconos/icono-192.png" alt=""></div>
+      <div class="acc-ins-txt">
+        <strong>Llévate GritNook en el bolsillo</strong>
+        <span>Gratis. Con su icono, a pantalla completa y sin conexión.</span>
+        <div class="acc-plat">${ICO_PLAT.android}Android<i></i>${ICO_PLAT.iphone}iPhone<i></i>${ICO_PLAT.pc}<span class="pc-largo">Ordenador</span><span class="pc-corto">PC</span></div>
+        <button type="button" class="btn primario acc-ins-btn">${ICO_INS_BAJAR}Instalar la app</button>
+      </div>
+    </div>`;
 }
 /* en el menú de tu perfil */
 function instalarItemYo() {
