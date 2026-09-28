@@ -28,7 +28,7 @@ publique sin querer.
 
 - **Nombre:** Gabriel Rodríguez Blanco
 - **NIF:** 09215128V
-- **Correo:** gabriel_gabiz@hotmail.com
+- **Correo:** hola@gritnook.com (Cloudflare lo reenvía al Hotmail del titular). La cuenta de administrador de la app sigue siendo gabriel_gabiz@hotmail.com
 - **En vigor desde:** 20 de septiembre de 2026
 
 Ese correo es **público** y es el canal oficial: por ahí entran las peticiones

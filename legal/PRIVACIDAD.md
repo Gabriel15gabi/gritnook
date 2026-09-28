@@ -1,6 +1,6 @@
 # Política de privacidad
 
-En vigor desde el 25 de septiembre de 2026.
+En vigor desde el 28 de septiembre de 2026.
 
 ## Lo importante, en pocas líneas
 
@@ -21,7 +21,7 @@ entera cuando quieras, desde Ajustes → Datos.
 
 - **Responsable:** Gabriel Rodríguez Blanco
 - **NIF:** 09215128V
-- **Correo para todo lo relacionado con tus datos:** gabriel_gabiz@hotmail.com
+- **Correo para todo lo relacionado con tus datos:** hola@gritnook.com
 
 No hace falta delegado de protección de datos. El correo es el canal oficial:
 por ahí se atienden todas las peticiones, y se responden en un mes como máximo.
@@ -126,6 +126,7 @@ ande justo de espacio.
 | Supabase, Inc. (el servidor de las cuentas), como encargado de tratamiento | Tu correo, tu contraseña cifrada, tus datos (también tu foto de perfil, si pones una), tus archivos y los días que entras, para guardarlos. No los usa para nada más | Unión Europea (Irlanda) |
 | Open-Meteo (Suiza), solo si pones tu ciudad para ver el tiempo | La zona aproximada (redondeada a unos 10 km) y, como cualquier web, tu dirección IP. **Nada más: ni tu nombre, ni tu cuenta, ni tus datos de estudio** | Suiza (con decisión de adecuación de la Comisión Europea) |
 | Google o GitHub, solo si entras con ellos | Que entras en GritNook con tu cuenta de allí, como en cualquier «Continuar con Google». Ellos tratan ese inicio de sesión según su propia política de privacidad | Google: Unión Europea y Estados Unidos. GitHub: Estados Unidos |
+| Cloudflare, Inc. (el dominio gritnook.com y su correo), solo si escribes a hola@gritnook.com | Tu correo, que reenvía al buzón del responsable sin guardarlo. **No recibe ninguno de tus datos de estudio** | Estados Unidos, con servidores también en la Unión Europea |
 | GitHub Pages (GitHub, Inc.) | Solo sirve los archivos de la app. Como cualquier servidor web, registra la dirección IP y el navegador de quien la abre, por seguridad. **No recibe ninguno de tus datos de estudio** | Estados Unidos |
 
 **Lo que ve el responsable de la app.** Tiene un panel con, de cada cuenta: el
@@ -210,7 +211,7 @@ Puedes pedir, gratis y en cualquier momento:
   que entras o tus aperturas (esto último, en Ajustes → Datos).
 
 Casi todos los puedes ejercer tú solo desde la app, sin pedir permiso a nadie. Si
-prefieres escribir, el correo es gabriel_gabiz@hotmail.com. Se responde en un mes como
+prefieres escribir, el correo es hola@gritnook.com. Se responde en un mes como
 máximo.
 
 Si crees que no se han respetado tus derechos, puedes reclamar ante la **Agencia

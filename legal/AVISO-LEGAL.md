@@ -1,12 +1,12 @@
 # Aviso legal
 
-En vigor desde el 24 de septiembre de 2026.
+En vigor desde el 28 de septiembre de 2026.
 
 ## Quién está detrás de GritNook
 
 - **Titular:** Gabriel Rodríguez Blanco
 - **NIF:** 09215128V
-- **Correo de contacto:** gabriel_gabiz@hotmail.com
+- **Correo de contacto:** hola@gritnook.com
 - **Dirección de la aplicación:** https://gritnook.com/
 
 Esta información se publica para cumplir el artículo 10 de la Ley 34/2002, de
