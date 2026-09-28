@@ -148,7 +148,7 @@ con `probar-sql.js`). Lo que falta depende de ti, en este orden:
 - [x] **Desactivar las claves antiguas** (Project Settings → API Keys → Legacy
       → *Disable JWT-based API keys*). La app ya usa la nueva.
 - [x] **Tu propio correo**: Resend, desde no-responder@gritnook.com (arriba).
-- [ ] **Después, volver a encender «Confirm email»** (Authentication → Sign In /
+- [x] **Después, volver a encender «Confirm email»** (hecho el 28 de septiembre) (Authentication → Sign In /
       Providers → Email). Con Google o GitHub encendidos es importante: sin
       confirmar, alguien podría crear una cuenta con el correo de otra persona
       y quedar unida a la suya cuando esa persona entre con Google. La app ya

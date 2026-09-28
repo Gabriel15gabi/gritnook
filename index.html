@@ -8236,6 +8236,16 @@ async function arrancarNube() {
       const u = await nubePedir("/auth/v1/user");
       tomarSesion({ access_token: token, refresh_token: frag.get("refresh_token"), expires_in: frag.get("expires_in"), user: u });
       if (frag.get("type") === "recovery") { abrirAcceso("nueva"); return; }
+      /* vuelve del correo de «Confirma tu cuenta»: dentro, y lo legal ya lo aceptó al crearla */
+      if (frag.get("type") === "signup") {
+        await conectarNube();
+        apuntarOrigen();
+        const alta = leeLS("alta-aceptada");
+        if (BV && alta && Date.now() - num(alta) < 7 * 864e5) { BV.edadOk = true; BV.legalOk = true; pintaEntrada(); }
+        guardaLS("alta-aceptada", null);
+        aviso("Correo confirmado. Vamos a montar tu curso.");
+        return;
+      }
     } catch (e) { guardarSesion(null); abrirAcceso("entrar", e.message); return; }
   }
   if (!SESION) { marcaSync("Sin entrar", false); abrirAcceso("entrar"); return; }
@@ -8428,7 +8438,7 @@ alEvento("submit", async e => {
   try {
     if (m === "olvido") { await nubeOlvide(email); return decir("Si hay una cuenta con ese correo, te llega un enlace para poner una contraseña nueva. Mira también en correo no deseado.", true); }
     if (m === "nueva") await nubeNuevaClave(pass);
-    else if (m === "crear") await nubeCrearCuenta(email, pass);
+    else if (m === "crear") { guardaLS("alta-aceptada", Date.now()); await nubeCrearCuenta(email, pass); }
     else await nubeEntrar(email, pass);
     const nueva = m === "crear";
     cerrarAcceso();
@@ -8437,7 +8447,11 @@ alEvento("submit", async e => {
     /* quien acaba de aceptar al crear la cuenta no tiene que volver a marcarlo en la bienvenida */
     if (nueva && BV) { BV.edadOk = true; BV.legalOk = true; pintaEntrada(); }
     aviso(nueva ? "Cuenta creada. Vamos a montar tu curso." : m === "nueva" ? "Contraseña cambiada." : "Hola de nuevo.");
-  } catch (err) { decir(err.message); }
+  } catch (err) {
+    /* con «Confirm email» encendido, crear la cuenta acaba en «mira tu correo»: es una buena noticia, no un error */
+    if (err.codigo === "confirmar") { ACC.modo = "entrar"; return decir(err.message, true); }
+    decir(err.message);
+  }
 });
 
 /* ── tu cuenta, en Ajustes → Datos ── */

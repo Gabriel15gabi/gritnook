@@ -33,7 +33,10 @@ function servidorFalso() {
       const email = String(cuerpo.email || "").toLowerCase();
       if (srv.usuarios.some(x => x.email === email)) return resp(422, { code: 422, error_code: "user_already_exists", msg: "User already registered" });
       if (String(cuerpo.password || "").length < 8) return resp(422, { code: 422, error_code: "weak_password", msg: "Password should be at least 8 characters." });
-      return resp(200, sesion(srv.crear(email, cuerpo.password).id));
+      const nuevo = srv.crear(email, cuerpo.password);
+      /* con «Confirm email» encendido, Supabase no da sesión hasta que se confirma */
+      if (srv.confirmar) return resp(200, { id: nuevo.id, email: nuevo.email, confirmation_sent_at: hora() });
+      return resp(200, sesion(nuevo.id));
     }
     /* qué proveedores están encendidos (Google, GitHub…) */
     if (ruta === "/auth/v1/settings") return resp(200, { external: Object.assign({ email: true, google: false, github: false }, srv.proveedores || {}) });
@@ -537,6 +540,21 @@ grupo("Cuentas: la clave pública, antigua o nueva", () => {
     const c = await cabeceras("sb_publishable_abc123", true);
     esperar(c.apikey).igualA("sb_publishable_abc123");
     esperar(c.Authorization).igualA("Bearer eyJ.token.sesion");
+  });
+});
+
+grupo("Cuentas: confirmar el correo al crear la cuenta", () => {
+  prueba("crear la cuenta acaba en «mira tu correo», en verde y sin sesión todavía", async () => {
+    await conNube(async srv => {
+      srv.confirmar = true;
+      abrirAcceso("crear");
+      await formulario({ correo: "ana@ejemplo.es", clave: "contraseña-larga", legal: true });
+      await hasta(() => avisoAcceso().includes("confirmar"));
+      esperar($("#accAviso").classList.contains("ok")).cierto();
+      esperar(ACC.modo).igualA("entrar");
+      esperar(SESION).nulo();
+      esperar(typeof leeLS("alta-aceptada")).igualA("number");
+    });
   });
 });
 
