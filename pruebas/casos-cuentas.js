@@ -543,6 +543,87 @@ grupo("Cuentas: la clave pública, antigua o nueva", () => {
   });
 });
 
+grupo("Cuentas: el CAPTCHA contra robots", () => {
+  /* un Turnstile de mentira: cada vez que se pinta da una respuesta nueva (o falla, o no contesta) */
+  function turnstileFalso(modo = "bien") {
+    const t = { pintados: [], quitados: [] };
+    t.render = (caja, op) => {
+      t.pintados.push(op); const id = "w" + t.pintados.length;
+      setTimeout(() => { if (modo === "bien") op.callback("respuesta-" + id); else if (modo === "falla") op["error-callback"](); }, 5);
+      return id;
+    };
+    t.remove = id => t.quitados.push(id);
+    return t;
+  }
+  async function conCaptcha(modo, fn) {
+    const antes = { clave: NUBE.captcha, ts: window.turnstile };
+    NUBE.captcha = "clave-del-sitio"; window.turnstile = turnstileFalso(modo);
+    Object.assign(CAPTCHA, { token: "", id: null, carga: null, fallo: false });
+    try { return await conNube(async srv => {
+      const cuerpos = [], f = nubeFetch;
+      nubeFetch = (url, op = {}) => { cuerpos.push({ url, cuerpo: op.body ? JSON.parse(op.body) : null }); return f(url, op); };
+      return await fn(srv, cuerpos, window.turnstile);
+    }); }
+    finally { NUBE.captcha = antes.clave; window.turnstile = antes.ts; Object.assign(CAPTCHA, { token: "", id: null, carga: null, fallo: false }); }
+  }
+  const aLogin = cuerpos => cuerpos.filter(c => /grant_type=password|\/signup|\/recover/.test(c.url));
+  prueba("sin clave del sitio no hay CAPTCHA (en local y en las pruebas)", async () => {
+    await conNube(async () => {
+      abrirAcceso("entrar"); await dormir(30);
+      esperar($("#accCaptcha")).nulo();
+    });
+  });
+  prueba("al entrar, la respuesta del CAPTCHA viaja a Supabase y el siguiente intento lleva otra", async () => {
+    await conCaptcha("bien", async (srv, cuerpos, ts) => {
+      srv.crear("ana@ejemplo.es");
+      abrirAcceso("entrar"); await hasta(() => CAPTCHA.token);
+      esperar(ts.pintados[0].sitekey).igualA("clave-del-sitio");
+      esperar(ts.pintados[0].language).igualA("es");
+      await formulario({ correo: "ana@ejemplo.es", clave: "no-es-esta" });
+      const primero = aLogin(cuerpos)[0].cuerpo.gotrue_meta_security.captcha_token;
+      esperar(primero).contiene("respuesta-");
+      await hasta(() => CAPTCHA.token && CAPTCHA.token !== primero);
+      await formulario({ correo: "ana@ejemplo.es", clave: "contraseña-larga" });
+      const segundo = aLogin(cuerpos)[1].cuerpo.gotrue_meta_security.captcha_token;
+      esperar(segundo).distintoDe(primero);
+      esperar(SESION.usuario.email).igualA("ana@ejemplo.es");
+    });
+  });
+  prueba("también al crear la cuenta y al pedir una contraseña nueva", async () => {
+    await conCaptcha("bien", async (srv, cuerpos) => {
+      abrirAcceso("crear"); await hasta(() => CAPTCHA.token);
+      await formulario({ correo: "ana@ejemplo.es", clave: "contraseña-larga", legal: true });
+      esperar(!!aLogin(cuerpos).find(c => c.url.includes("/signup")).cuerpo.gotrue_meta_security).cierto();
+    });
+    await conCaptcha("bien", async (srv, cuerpos) => {
+      abrirAcceso("olvido"); await hasta(() => CAPTCHA.token);
+      await formulario({ correo: "ana@ejemplo.es" });
+      esperar(!!aLogin(cuerpos).find(c => c.url.includes("/recover")).cuerpo.gotrue_meta_security).cierto();
+    });
+  });
+  prueba("si aún no ha contestado, no se manda nada y pide esperar un segundo", async () => {
+    await conCaptcha("callado", async (srv, cuerpos) => {
+      abrirAcceso("entrar"); await dormir(40);
+      await formulario({ correo: "ana@ejemplo.es", clave: "contraseña-larga" });
+      esperar(avisoAcceso()).contiene("no eres un robot");
+      esperar(aLogin(cuerpos).length).igualA(0);
+    });
+  });
+  prueba("si el CAPTCHA no carga, no deja a nadie fuera: se manda sin él y decide Supabase", async () => {
+    await conCaptcha("falla", async (srv, cuerpos) => {
+      srv.crear("ana@ejemplo.es");
+      abrirAcceso("entrar"); await hasta(() => CAPTCHA.fallo);
+      await formulario({ correo: "ana@ejemplo.es", clave: "contraseña-larga" });
+      esperar(aLogin(cuerpos).length).igualA(1);
+      esperar(aLogin(cuerpos)[0].cuerpo.gotrue_meta_security).igualA(undefined);
+      esperar(SESION.usuario.email).igualA("ana@ejemplo.es");
+    });
+  });
+  prueba("si Supabase rechaza la respuesta, lo dice en castellano", () => {
+    esperar(errorNube(400, { error_code: "captcha_failed", msg: "captcha protection: request disallowed" }).message).contiene("no eres un robot");
+  });
+});
+
 grupo("Cuentas: confirmar el correo al crear la cuenta", () => {
   prueba("crear la cuenta acaba en «mira tu correo», en verde y sin sesión todavía", async () => {
     await conNube(async srv => {

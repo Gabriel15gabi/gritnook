@@ -154,11 +154,12 @@ con `probar-sql.js`). Lo que falta depende de ti, en este orden:
       confirmar, alguien podría crear una cuenta con el correo de otra persona
       y quedar unida a la suya cuando esa persona entre con Google. La app ya
       sabe decir «te hemos mandado un correo para confirmar».
-- [ ] **CAPTCHA contra bots** (Authentication → Attack Protection → Cloudflare
-      Turnstile, gratis). Antes de encenderlo, la app tiene que llevar la
-      clave pública del CAPTCHA: créala en Cloudflare, pásamela (la **site
-      key**, que es pública; la secreta va solo en Supabase) y la meto. Si lo
-      enciendes antes, nadie podrá entrar ni crear cuenta.
+- [ ] **CAPTCHA contra bots** (Cloudflare Turnstile, gratis). La app ya lleva
+      la clave del sitio (`0x4AAAAAAFIEbI7ywRjs9E9V`, pública, solo vale en
+      gritnook.com) y manda la respuesta al entrar, al crear la cuenta y al
+      pedir una contraseña nueva. Falta encenderlo en **Authentication → Attack
+      Protection → Enable Captcha protection → Turnstile**, con la **clave
+      secreta** del widget de Cloudflare (esa no va nunca en la app).
 - [ ] **Advisors → Security Advisor**: pásalo de vez en cuando. Avisa si alguna
       tabla se queda sin reglas.
 - [x] El DPA ya va incluido en las condiciones de Supabase (paso 10).

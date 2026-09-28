@@ -160,7 +160,7 @@ grupo("Dibujar: lo que se guarda en el apunte", () => {
       esperar(!!n.dibujo).cierto();
       esperar(n.dibujo.trazos.length).igualA(1);
       esperar(n.dibujo.v).igualA(1);            /* la versión del formato */
-      esperar(n.editado.slice(0, 10)).igualA(hoyISO());
+      esperar(hoyISO(n.editado)).igualA(hoyISO());   /* el día de aquí: a las 00:30 en España aún es «ayer» en UTC */
     });
   });
 });

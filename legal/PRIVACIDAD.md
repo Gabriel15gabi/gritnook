@@ -1,6 +1,6 @@
 # Política de privacidad
 
-En vigor desde el 28 de septiembre de 2026.
+En vigor desde el 29 de septiembre de 2026.
 
 ## Lo importante, en pocas líneas
 
@@ -117,6 +117,14 @@ repetirlos) y los últimos fallos que haya dado, que no salen de tu dispositivo.
 Si tu navegador lo permite, la app le pide que **no borre estos datos** cuando
 ande justo de espacio.
 
+**Contra los robots.** Al entrar, crear la cuenta o pedir una contraseña nueva,
+Cloudflare Turnstile comprueba que quien lo hace es una persona y no un programa
+que prueba contraseñas o crea cuentas a montones. Casi siempre no se ve; a veces
+pide marcar una casilla. Para eso mira datos técnicos del navegador en ese
+momento y tu dirección IP. **No pone cookies de seguimiento ni se usa para
+publicidad**: es una medida de seguridad, basada en el interés legítimo de
+proteger las cuentas de todos.
+
 ## 5. Quién más ve tus datos
 
 | Quién | Qué ve | Dónde está |
@@ -127,7 +135,7 @@ ande justo de espacio.
 | Open-Meteo (Suiza), solo si pones tu ciudad para ver el tiempo | La zona aproximada (redondeada a unos 10 km) y, como cualquier web, tu dirección IP. **Nada más: ni tu nombre, ni tu cuenta, ni tus datos de estudio** | Suiza (con decisión de adecuación de la Comisión Europea) |
 | Google o GitHub, solo si entras con ellos | Que entras en GritNook con tu cuenta de allí, como en cualquier «Continuar con Google». Ellos tratan ese inicio de sesión según su propia política de privacidad | Google: Unión Europea y Estados Unidos. GitHub: Estados Unidos |
 | Resend, el servicio que manda los correos de la app, como encargado de tratamiento | Tu correo electrónico y el mensaje, solo cuando la app te escribe: el enlace para confirmar tu cuenta o para cambiar la contraseña. No los usa para nada más | Los envía desde Irlanda (Unión Europea); es una empresa de Estados Unidos |
-| Cloudflare, Inc. (el dominio gritnook.com y su correo), solo si escribes a hola@gritnook.com | Tu correo, que reenvía al buzón del responsable sin guardarlo. **No recibe ninguno de tus datos de estudio** | Estados Unidos, con servidores también en la Unión Europea |
+| Cloudflare, Inc. (el dominio gritnook.com, su correo y el control contra robots) | Si escribes a hola@gritnook.com, tu correo, que reenvía al buzón del responsable sin guardarlo. Al entrar o crear la cuenta, datos técnicos del navegador y tu dirección IP para comprobar que no eres un robot (Turnstile). **No recibe ninguno de tus datos de estudio** | Estados Unidos, con servidores también en la Unión Europea |
 | GitHub Pages (GitHub, Inc.) | Solo sirve los archivos de la app. Como cualquier servidor web, registra la dirección IP y el navegador de quien la abre, por seguridad. **No recibe ninguno de tus datos de estudio** | Estados Unidos |
 
 **Lo que ve el responsable de la app.** Tiene un panel con, de cada cuenta: el
