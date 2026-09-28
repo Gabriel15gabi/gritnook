@@ -50,9 +50,10 @@ Va a tu nombre, así que estos pasos no los puede dar nadie por ti.
      service_role) dejan de servir y no hay ninguna secreta de más por ahí.
 9. Cuando esté puesto, **crea tu cuenta en la app con el correo del paso 5**.
    En el menú te aparece **Panel**. A los demás no.
-10. **Organization Settings → Legal Documents**: firma el acuerdo de
-    tratamiento de datos (DPA) de Supabase. La política de privacidad lo da
-    por hecho.
+10. **Organization Settings → Legal Documents**: el acuerdo de tratamiento de
+    datos (DPA) de Supabase ya va incluido en sus condiciones y no hay que
+    firmarlo aparte. Descarga el DPA y la evaluación de transferencias (TIA) y
+    guárdalos, por si alguien los pide.
 
 La clave **publishable** es **pública por diseño**: va dentro de la app y cualquiera
 puede verla. Sola no abre nada: la base de datos solo le devuelve a cada uno
@@ -160,8 +161,8 @@ con `probar-sql.js`). Lo que falta depende de ti, en este orden:
       enciendes antes, nadie podrá entrar ni crear cuenta.
 - [ ] **Advisors → Security Advisor**: pásalo de vez en cuando. Avisa si alguna
       tabla se queda sin reglas.
-- [ ] Firmar el DPA (paso 10 de arriba) y hacer la copia de seguridad de vez
-      en cuando (abajo).
+- [x] El DPA ya va incluido en las condiciones de Supabase (paso 10).
+- [ ] Hacer la copia de seguridad de vez en cuando (abajo).
 
 ## Lo que ves en el Panel, y lo que no
 
@@ -195,7 +196,7 @@ estudio de otras personas, algunas menores**. Eso trae obligaciones:
 - [x] Política de privacidad y ficha de datos, reescritas para las cuentas.
 - [x] Botón de «Borrar mi cuenta» que borra de verdad, también del servidor
       (Ajustes → Datos).
-- [ ] Firmar el DPA de Supabase (paso 10).
+- [x] DPA de Supabase: incluido en sus condiciones (paso 10).
 - [ ] Si un día hay una brecha de seguridad: **72 horas** para avisar a la
       Agencia Española de Protección de Datos.
 - [ ] El plan gratis **no hace copias automáticas**. De vez en cuando, en
