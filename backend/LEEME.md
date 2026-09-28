@@ -68,21 +68,28 @@ publishable. Probado de verdad con una cuenta de usar y tirar: alta, guardar,
 leer, que sin cuenta no se ve nada, el panel cerrado a los demás y borrar la
 cuenta.
 
-## Recomendado antes de compartirla con mucha gente: tu propio correo
+## Los correos de la app: Resend (hecho el 28 de septiembre de 2026)
 
-El correo de serie de Supabase **solo manda a direcciones de tu equipo** y
-unos pocos por hora. Para lo del día a día da igual (sin confirmación, el alta
-no manda nada), pero el correo de «he olvidado la contraseña» **no les
-llegaría a los demás**. Se arregla con un servicio de correo gratis:
+El correo de serie de Supabase solo manda a direcciones de tu equipo y unos
+pocos por hora. Por eso los correos de la cuenta salen por **Resend** (gratis
+hasta 3.000 al mes y 100 al día), desde `no-responder@gritnook.com`, con el
+dominio verificado en Irlanda (registros `send`, `rsend` y
+`resend._domainkey` en Cloudflare). En Supabase, **Authentication → Emails →
+SMTP Settings**: host `smtp.resend.com`, puerto `465`, usuario `resend` y
+como contraseña una clave de Resend con permiso solo de envío.
 
-1. Crea una cuenta en **Resend** o **Brevo** (los dos tienen plan gratis).
-2. Te dan unos datos SMTP (servidor, puerto, usuario y contraseña).
-3. En Supabase: **Authentication → Emails → SMTP Settings** → actívalo y
-   pégalos. Remitente: `GritNook`.
+**Los correos, en español.** En **Authentication → Emails → Templates**:
 
-Mientras no lo hagas, si alguien olvida la contraseña: en **Authentication →
-Users** puedes borrar su usuario y que se haga otra cuenta (perdería lo suyo,
-salvo que tenga una copia de Ajustes → Datos).
+| Plantilla | Asunto | Cuerpo |
+|---|---|---|
+| Confirm signup | `Confirma tu cuenta de GritNook` | [correos/confirmar.html](correos/confirmar.html) |
+| Reset password | `Tu enlace para poner una contraseña nueva en GritNook` | [correos/recuperar.html](correos/recuperar.html) |
+
+El cuerpo se pega entero en la pestaña del código (Source). Lo que va entre
+`{{ }}` lo rellena Supabase.
+
+**Los correos que recibe la gente** (`hola@gritnook.com`) van por otro lado:
+Cloudflare Email Routing los reenvía al Hotmail del titular.
 
 ## Entrar con Google y con GitHub (lo haces tú, 20 minutos)
 
@@ -138,10 +145,9 @@ Supabase ya pone lo básico: contraseñas cifradas, conexiones seguras, sesiones
 que caducan y las reglas de la base de datos (que nadie ve lo de otro, probado
 con `probar-sql.js`). Lo que falta depende de ti, en este orden:
 
-- [ ] **Desactivar las claves antiguas** (Project Settings → API Keys → Legacy
+- [x] **Desactivar las claves antiguas** (Project Settings → API Keys → Legacy
       → *Disable JWT-based API keys*). La app ya usa la nueva.
-- [ ] **Tu propio correo** (Resend o Brevo, abajo). Sin él, el correo de «he
-      olvidado la contraseña» no les llega a los demás.
+- [x] **Tu propio correo**: Resend, desde no-responder@gritnook.com (arriba).
 - [ ] **Después, volver a encender «Confirm email»** (Authentication → Sign In /
       Providers → Email). Con Google o GitHub encendidos es importante: sin
       confirmar, alguien podría crear una cuenta con el correo de otra persona
