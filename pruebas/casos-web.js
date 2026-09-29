@@ -26,6 +26,14 @@ grupo("Web: lo que lee Google de la app", () => {
     esperar(app.offers.price).igualA("0");
     esperar(ld["@graph"].some(x => x["@type"] === "WebSite")).cierto();
   });
+  prueba("la pestaña lleva el icono de GritNook como archivo (favicon.ico y el de 96 px que usa Google)", async () => {
+    const enlaces = [...document.querySelectorAll('link[rel="icon"]')].map(l => l.getAttribute("href"));
+    if (enlaces.some(h => /^data:/.test(h))) saltar("favicon incrustado: es la versión de Claude");
+    esperar(enlaces).contiene("favicon.ico");
+    esperar(enlaces).contiene("iconos/icono-96.png");
+    for (const f of ["/favicon.ico", "/iconos/icono-96.png", "/iconos/icono-192.png", "/iconos/icono-512.png", "/iconos/icono-maskable-512.png", "/iconos/icono-180.png"])
+      esperar((await fetch(f, { method: "HEAD", cache: "no-store" })).ok).cierto();
+  });
   prueba("sin JavaScript también se sabe qué es y adónde ir", () => {
     const n = [...document.querySelectorAll("noscript")].map(x => x.textContent).join(" ");
     if (!n) saltar("sin cabecera de la web");

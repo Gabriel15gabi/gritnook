@@ -8,6 +8,19 @@ usarlo.
 Esto lo tienes que hacer tú: va a tu nombre, con tu certificado o DNI
 electrónico y pagando tú. Aquí está todo preparado.
 
+## El logo
+
+El símbolo es una **G con dos anillas de libreta y la cinta roja** del marcapáginas.
+Los originales, con fondo transparente, están en [marca/](marca/):
+`simbolo-color.webp` (lila y rojo, para fondo oscuro), `simbolo-claro.webp` y
+`simbolo-oscuro.webp` (a una tinta). El nombre «GritNook», con las «o» de anilla,
+sigue en `gritnook-oscuro.svg` y `gritnook-claro.svg`.
+
+Los iconos de la app (`iconos/` y `favicon.ico`) llevan el símbolo sin tocarlo, sobre
+el azul noche de la app (#161826), **centrado por su peso** y no por su caja: la G
+pesa mucho más que las anillas y la cinta, y centrado por la caja se ve torcido a la
+derecha y arriba.
+
 ## Qué registrar
 
 **Una marca denominativa: la palabra `GRITNOOK`**, sin dibujo. Es la que más
