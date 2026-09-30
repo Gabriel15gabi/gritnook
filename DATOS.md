@@ -24,6 +24,7 @@ hay cookies.
 | Actividad | Los días que entra en la app y cuántas veces cada día (como mucho una cada media hora). Nada de lo que hace dentro | La app, al abrirla |
 | De dónde llegó | Al crear la cuenta, una vez: de dónde venía el enlace (Instagram, WhatsApp, TikTok, directo…) y si era móvil, tableta u ordenador. Tabla `origenes` | La app, al crear la cuenta |
 | Aperturas (anónimas) | Contadores por día y hora: de dónde llega el enlace, móvil, tableta u ordenador y si está instalada. **Sin cuenta, sin IP, sin identificador** y sin guardar nada en el dispositivo. Tabla `visitas`. No se cuenta si se apaga en Ajustes → Datos o si el navegador pide «no rastrear» | La app, al abrirse |
+| Edad | **Mes y año de nacimiento** (`perfil.nacido`, «AAAA-MM»), para comprobar que tiene 14 años o más y saber a quién afecta si la ley sube la edad. El día se pide pero no se guarda. Si la fecha no llega a la edad, el navegador guarda un día `desk-daw:edad-no` (solo la hora del intento) para que no baste con cambiar el año | El alumno, al crear la cuenta o en la bienvenida |
 | Perfil | Nombre o apodo, **foto de perfil** (opcional: se recorta en el navegador a 256 × 256 px y se guarda como imagen dentro del perfil; solo entra webp, jpeg o png), etapa (ESO, Bachillerato, FP, universidad, oposición, idiomas), curso, ciclo o grado, modalidad, centro (opcional), si trabaja, horas de estudio a la semana, nota a la que apunta, qué le cuesta más y para qué estudia | El alumno, en la bienvenida |
 | Asignaturas | Nombre, código, horas del curso, nota objetivo, meta semanal, color, apartados de evaluación con sus pesos y **sus notas**, y **faltas de asistencia** | El alumno |
 | Agenda | Entregas y exámenes (título, asignatura, fecha, hora, estado, pasos y notas) y el horario de clases | El alumno o el tutor, si se le autoriza |
@@ -36,10 +37,10 @@ hay cookies.
 | Tutor | **La conversación entera** con el profe, los archivos y capturas que se le pasen, los temas trabajados y los repasos que pone | El alumno |
 | Ajustes | Tema claro u oscuro, preferencias de la libreta, minutos del cronómetro, cómo debe tratarle el tutor y, si lo has cambiado, cómo tienes colocado el Inicio (dónde va cada panel, su tamaño, cuáles se ven y en qué orden en el móvil) | El alumno |
 | El tiempo (opcional) | La ciudad que eliges o tu ubicación redondeada a un decimal (unos 10 km), y la última previsión, guardada media hora. **Solo en el navegador** (`desk-daw:tiempo`), nunca en la cuenta; se borra al cerrar sesión o con «Quitar mi ciudad» | El alumno |
-| De la propia app | La fecha de la última copia de seguridad, qué avisos ya se han visto y los últimos 20 fallos que haya dado la app (con su mensaje y dónde pasó) | La app |
+| De la propia app | La fecha de la última copia de seguridad, qué avisos ya se han visto (también qué versión de los papeles se avisó, `perfil.legalVisto`) y los últimos 20 fallos que haya dado la app (con su mensaje y dónde pasó) | La app |
 | Oposición (solo si opositas) | El temario (número, título y bloque de cada tema, sus vueltas con fecha, si está dominado, su dificultad, los minutos estudiados, tus notas y un enlace a la ley), las reglas del examen (fecha, preguntas, opciones, penalización, corte, minutos, preguntas de reserva y bolas si hay tema a desarrollar), el plan de vueltas, los simulacros (fecha, de qué, preguntas, aciertos, fallos, minutos y, si lo apuntas, de qué temas eran los fallos), el simulacro con reloj que esté en marcha (hora de inicio y de entrega) y la convocatoria (plazas, aspirantes, enlace a las bases, cortes de otros años, fin del plazo de solicitud y si ya la has presentado). Las tarjetas de repaso que crees desde un tema llevan apuntado de qué tema son | El opositor |
 
-**No se guarda:** teléfono, dirección, fecha de nacimiento, datos de pago,
+**No se guarda:** teléfono, dirección, día de nacimiento, datos de pago,
 ubicación ni ningún identificador publicitario.
 
 ## 2. Dónde se guardan

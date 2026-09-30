@@ -69,20 +69,27 @@ por qué no está, y se vuelve a pasar `generar.js`.
 
 ## Lo que falta en la app para que esto sea verdad
 
-- [x] Edad mínima de 14 años al entrar, y aviso a menores de 18.
+- [x] Edad mínima de 14 años al entrar, preguntada con la fecha de nacimiento
+      (se guardan el mes y el año; si no llega, el navegador lo recuerda un día),
+      y aviso a menores de 18. La ESO empieza en 3.º. Para subirla a 16 basta
+      cambiar `EDAD_MIN` y estos textos.
+- [x] Aviso en el Inicio cuando cambian los papeles, para quien aceptó una
+      versión anterior.
+- [x] Punto de contacto y avisos de contenido ilegal del Reglamento de
+      Servicios Digitales (`TERMINOS.md`, punto 9).
 - [x] Un interruptor para apagar el profe (no enviar nada a la IA).
 - [x] Enlace a estos cuatro documentos desde Ajustes.
 - [x] Cuentas: el panel del creador solo enseña correo y actividad, nunca el
       contenido, que es lo que promete `PRIVACIDAD.md` (punto 5).
 - [x] Borrar la cuenta de verdad, también del servidor (Ajustes → Datos).
-- [ ] Firmar el DPA de Supabase (Organization Settings → Legal Documents).
+- [x] DPA de Supabase: va incluido en sus condiciones (`backend/LEEME.md`, paso 10).
 - [ ] Leer de verdad el correo de contacto: ahí llegan las peticiones del RGPD, y
       hay un mes para responderlas.
 
-Quien ya tuviera la app antes del 20 de septiembre de 2026 no pasa por la puerta
-de edad, porque no vuelve a ver la pantalla de entrada. Hoy no hay usuarios, así
-que da igual; pero el día que se cambien los términos de verdad habrá que pedir la
-aceptación otra vez dentro de la app.
+Quien creó su cuenta antes del 30 de septiembre de 2026 marcó la casilla de
+«tengo 14 años» y no tiene fecha guardada. Si la ley sube la edad, se le pedirá
+al entrar. El registro de tratamientos, el análisis de riesgos y el protocolo de
+brechas son documentos internos y no están en este repositorio, que es público.
 
 ## Cuándo hay que revisarlos otra vez
 

@@ -1,6 +1,6 @@
 # Términos de uso
 
-En vigor desde el 23 de septiembre de 2026.
+En vigor desde el 30 de septiembre de 2026.
 
 ## 1. Qué es esto
 
@@ -23,11 +23,19 @@ normas de tu ciclo.**
 
 ## 3. Quién puede usarla
 
-Hay que tener **14 años cumplidos**. Con menos, hace falta que tu padre, tu madre
-o tu tutor lo autoricen y la usen contigo.
+Hay que tener **14 años cumplidos**, y al crear la cuenta se pide la fecha de
+nacimiento para comprobarlo. **Con menos de 14 no se puede tener cuenta**,
+tampoco con permiso de tus padres: la app no tiene forma de comprobar ese
+permiso. Si se descubre que una cuenta es de alguien menor de 14, se borra.
+
+Si vives en otro país donde la edad para decidir sobre tus datos en internet es
+mayor que 14, necesitas tener esa edad.
 
 Si tienes entre 14 y 18 años puedes usarla, pero al aceptar estos términos estás
 diciendo que en casa lo saben.
+
+GritNook está hecha para estudiar en España: los cursos, las oposiciones y las
+fechas que conoce son los de aquí.
 
 ## 4. Tu cuenta
 
@@ -38,7 +46,8 @@ diciendo que en casa lo saben.
 - Puedes borrarla cuando quieras desde Ajustes → Datos → Borrar mi cuenta.
 - El titular puede suspender o borrar una cuenta que se use para romper estos
   términos (por ejemplo, para subir contenido ilegal o para atacar la
-  aplicación), avisándote antes salvo que haya un motivo grave.
+  aplicación), avisándote antes salvo que haya un motivo grave y diciéndote
+  siempre por qué (lo explica el punto 9).
 
 ## 5. Cuánto cuesta
 
@@ -78,7 +87,31 @@ médicos de nadie), ni nada que pueda dañar la aplicación o a quien la use.
 
 Tú respondes de lo que subes.
 
-## 9. El profe con inteligencia artificial
+## 9. Avisar de contenido ilegal
+
+**El punto de contacto de GritNook**, para quien la usa y para las autoridades,
+es **hola@gritnook.com** (artículos 11 y 12 del Reglamento de Servicios Digitales
+de la UE). Se atiende en español.
+
+Lo que guardas es privado: **nadie revisa tus apuntes ni tus archivos**, ni una
+persona ni un programa. Pero si alguien cree que hay algo ilegal guardado en
+GritNook, puede avisar a ese correo contando:
+
+- por qué cree que es ilegal;
+- dónde está, lo más exacto posible;
+- su nombre y su correo (salvo en los casos en que la ley no los exige);
+- que lo cuenta de buena fe y que cree que es cierto.
+
+Se contesta que ha llegado y **lo decide una persona**, sin procesos
+automáticos. Si al final se retira algo o se suspende una cuenta, se le dice a
+quien la tiene **qué se ha hecho, por qué y en qué norma se basa**, y puede
+contestar a ese mismo correo para que se revise la decisión. También puede
+acudir a los tribunales.
+
+Si hubiera indicios de un delito que ponga en peligro la vida o la seguridad de
+alguien, se avisará a la policía.
+
+## 10. El profe con inteligencia artificial
 
 Léete el [aviso sobre la IA](IA.md). En resumen:
 
@@ -90,7 +123,7 @@ Léete el [aviso sobre la IA](IA.md). En resumen:
   te dé y entregarlo como tuyo puede ser una falta académica en tu centro: eso es
   cosa tuya y de las normas de tu escuela.
 
-## 10. Que funcione
+## 11. Que funcione
 
 Se hace lo posible para que la aplicación esté disponible y no falle, pero no se
 promete que esté siempre ni que no tenga errores. Puede haber cortes por
@@ -99,14 +132,14 @@ mantenimiento, por cambios o porque falle un proveedor.
 **Haz copias.** Ajustes → Datos → Descargar copia. Si borras los datos del
 navegador, cambias de dispositivo o se estropea, sin copia no hay vuelta atrás.
 
-## 11. Hasta cuándo
+## 12. Hasta cuándo
 
 Puedes dejar de usarla cuando quieras: borrando tu cuenta desde Ajustes → Datos
 o simplemente dejando de entrar. El titular puede retirar la aplicación o dejar de
 prestar el servicio avisando con antelación razonable dentro de la app, para que
 te dé tiempo a descargarte tus cosas.
 
-## 12. Responsabilidad
+## 13. Responsabilidad
 
 El titular responde de los daños que cause por dolo o por negligencia grave, y de
 todo lo que la ley no permita excluir. Fuera de eso, y en la medida en que la ley
@@ -120,12 +153,12 @@ lo permita, no responde de:
 
 **Si eres consumidor, nada de esto te quita los derechos que te da la ley.**
 
-## 13. Cambios
+## 14. Cambios
 
 Estos términos se pueden cambiar. Los cambios importantes se avisan dentro de la
 aplicación antes de que entren en vigor. Seguir usándola después es aceptarlos.
 
-## 14. Ley y conflictos
+## 15. Ley y conflictos
 
 Se aplica la ley española. Si algo se tuerce, escribe primero al correo de
 contacto: casi todo se arregla así. Si no, los tribunales competentes serán los

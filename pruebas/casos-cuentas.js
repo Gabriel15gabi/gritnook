@@ -147,10 +147,13 @@ async function conNube(fn) {
   }
 }
 /* rellenar y mandar el formulario de entrar como lo haría una persona */
-async function formulario({ correo, clave, legal } = {}) {
+async function formulario({ correo, clave, legal, nacido } = {}) {
   if (correo !== undefined) $("#accCorreo").value = correo;
   if (clave !== undefined) $("#accClave").value = clave;
   if (legal !== undefined) $("#accLegal").checked = legal;
+  /* al crear la cuenta, una fecha de alguien mayor de edad salvo que la prueba diga otra */
+  const n = nacido !== undefined ? nacido : legal !== undefined ? { d: 12, m: 5, a: 2000 } : undefined;
+  if (n && $("#accNacD")) { $("#accNacD").value = n.d; $("#accNacM").value = n.m; $("#accNacA").value = n.a; }
   $("#accForm").requestSubmit();
   await dormir(20);
   await hasta(() => !ACC || !ACC.cargando);
@@ -192,7 +195,7 @@ grupo("Cuentas: entrar y crear la cuenta", () => {
       await formulario({ correo: "ana@ejemplo.es", clave: "corta", legal: true });
       esperar(avisoAcceso()).contiene("al menos 8");
       await formulario({ correo: "ana@ejemplo.es", clave: "contraseña-larga", legal: false });
-      esperar(avisoAcceso()).contiene("14 años");
+      esperar(avisoAcceso()).contiene("aceptar los términos");
       /* preguntar qué proveedores hay no manda nada tuyo */
       esperar(srv.llamadas.filter(l => !l.includes("/auth/v1/settings")).length).igualA(0);
     });
@@ -634,7 +637,9 @@ grupo("Cuentas: confirmar el correo al crear la cuenta", () => {
       esperar($("#accAviso").classList.contains("ok")).cierto();
       esperar(ACC.modo).igualA("entrar");
       esperar(SESION).nulo();
-      esperar(typeof leeLS("alta-aceptada")).igualA("number");
+      /* cuándo se aceptó y el mes y el año de nacimiento, para cuando vuelva del correo */
+      esperar(leeLS("alta-aceptada").nacido).igualA("2000-05");
+      esperar(typeof leeLS("alta-aceptada").t).igualA("number");
     });
   });
 });

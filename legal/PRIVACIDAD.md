@@ -1,11 +1,11 @@
 # Política de privacidad
 
-En vigor desde el 29 de septiembre de 2026.
+En vigor desde el 30 de septiembre de 2026.
 
 ## Lo importante, en pocas líneas
 
 Para usar GritNook te haces una **cuenta con tu correo y una contraseña**, o
-entras con tu cuenta de **Google** o de **GitHub**. No se pide teléfono, ni dirección, ni datos de pago. Lo que escribes —tus asignaturas,
+entras con tu cuenta de **Google** o de **GitHub**. Hace falta tener **14 años cumplidos**. No se pide teléfono, ni dirección, ni datos de pago. Lo que escribes —tus asignaturas,
 tus notas, tus apuntes y tus archivos— se guarda **en tu cuenta, en un servidor
 de la Unión Europea (Irlanda)**, y en tu navegador, para que funcione
 también sin conexión. Si abres la app desde Claude, se guarda en tu cuenta de
@@ -35,7 +35,8 @@ tus minutos de estudio y tus conversaciones con el profe.
 
 Para tu cuenta: tu **correo electrónico** y tu **contraseña**, que no se guarda
 tal cual sino cifrada de forma que no se puede leer (nadie puede verla, tampoco el
-responsable). Y, para saber cuánto se usa la app, **qué días entras** (el día y
+responsable). Y tu **fecha de nacimiento**, que se pide solo para comprobar que
+tienes la edad mínima: de ella **se guardan el mes y el año**, no el día. Y, para saber cuánto se usa la app, **qué días entras** (el día y
 cuántas veces), cuándo te diste de alta, la última vez que entraste y **de dónde
 llegaste** al crear la cuenta (por ejemplo, desde Instagram o desde un enlace de
 WhatsApp).
@@ -86,6 +87,7 @@ apunte. Te recomendamos no escribirlos.
 | Sincronizar entre tus dispositivos, si abres la app desde Claude | Ejecutar el contrato (art. 6.1.b RGPD) |
 | Enseñarte el tiempo de tu zona en el Inicio, si lo pides | Tu consentimiento, que das al elegir tu ciudad o tu ubicación y retiras quitándola (art. 6.1.a RGPD) |
 | Recordar el tema claro u oscuro y tus preferencias de la libreta | Interés legítimo en que la app se vea como la dejaste (art. 6.1.f RGPD) |
+| Comprobar que tienes la edad mínima para tener cuenta, y poder saber a quién afecta si la ley la cambia | Cumplir la ley que fija esa edad (art. 6.1.c RGPD, en relación con el art. 7 LOPDGDD) |
 | Atender tus derechos y responder a lo que preguntes | Obligación legal (art. 6.1.c RGPD) |
 
 **No se usan** para publicidad, ni para perfilarte, ni para entrenar modelos de
@@ -111,9 +113,11 @@ pedir consentimiento (art. 22.2 LSSI). No se usa para seguirte ni para medir nad
 y se borra entero desde Ajustes → Datos o borrando los datos del sitio en tu
 navegador.
 
-Ahí se guardan también tres cosas pequeñas de la propia app: la fecha de tu
+Ahí se guardan también unas pocas cosas pequeñas de la propia app: la fecha de tu
 última copia de seguridad (para recordártela), qué avisos ya has visto (para no
-repetirlos) y los últimos fallos que haya dado, que no salen de tu dispositivo.
+repetirlos) y los últimos fallos que haya dado, que no salen de tu dispositivo. Y,
+si al crear una cuenta se pone una fecha que no llega a la edad mínima, el
+navegador lo recuerda **durante un día**, para que no baste con cambiar el año.
 Si tu navegador lo permite, la app le pide que **no borre estos datos** cuando
 ande justo de espacio.
 
@@ -201,6 +205,8 @@ Mientras tú quieras. No hay borrado automático ni caducidad.
   tu contraseña, todos tus datos, tus archivos y los días que entraste. No se
   puede deshacer.
 - Si cierras sesión, se borra lo de ese navegador; lo tuyo sigue en tu cuenta.
+- El mes y el año de nacimiento se guardan mientras tengas la cuenta, y se borran
+  con ella.
 - Si la app cierra algún día, se avisará con tiempo para que te descargues lo
   tuyo, y después se borrarán todas las cuentas.
 
@@ -229,18 +235,26 @@ Española de Protección de Datos** (www.aepd.es, C/ Jorge Juan 6, 28001 Madrid)
 
 ## 9. Menores de edad
 
-Para usar GritNook hay que tener **14 años cumplidos**. Es la edad que fija la ley
-española (art. 7 de la Ley Orgánica 3/2018) para que alguien pueda decidir por sí
-mismo sobre sus datos en un servicio como este.
+Para tener cuenta en GritNook hay que tener **14 años cumplidos**. Es la edad que
+fija la ley española (art. 7 de la Ley Orgánica 3/2018) para que alguien pueda
+decidir por sí mismo sobre sus datos en un servicio como este. Si vives en otro
+país donde esa edad es mayor, necesitas tener la de tu país.
 
-Si tienes menos de 14 años, necesitas que tu padre, tu madre o tu tutor lo
-autoricen y usen la app contigo.
+Por eso, al crear la cuenta se pide la **fecha de nacimiento**. Se guardan el mes
+y el año: sirven para saber que se cumplió la edad y, si la ley la sube (hay un
+proyecto para llevarla a 16), para saber a qué cuentas afecta y avisarlas.
+
+**Con menos de 14 años no se puede tener cuenta**, tampoco con permiso de los
+padres: GritNook no tiene forma de comprobar ese permiso, así que no lo acepta. Si
+se descubre que una cuenta es de alguien menor de 14, se borra con todos sus
+datos.
 
 Si tienes entre 14 y 18, puedes usarla tú solo, pero es buena idea contárselo en
-casa, sobre todo porque el profe funciona con inteligencia artificial.
+casa.
 
-Padres y tutores: podéis escribir al correo de contacto para preguntar qué datos
-hay, corregirlos o pedir que se borren.
+**Padres, madres y tutores:** si creéis que vuestro hijo o hija menor de 14 tiene
+cuenta, escribid a hola@gritnook.com y se borra. Si tiene 14 años o más, podéis
+escribir igualmente para cualquier duda sobre sus datos.
 
 ## 10. Seguridad
 

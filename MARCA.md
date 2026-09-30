@@ -23,10 +23,30 @@ derecha y arriba.
 
 ## Qué registrar
 
-**Una marca denominativa: la palabra `GRITNOOK`**, sin dibujo. Es la que más
-protege: cubre el nombre se escriba con la letra que se escriba. El logotipo
-(las anillas y el marcapáginas) se puede registrar aparte más adelante, como
-marca figurativa, si hace falta.
+Dos marcas, cada una por su lado:
+
+1. **El logo: una marca figurativa del símbolo solo** (la G con las anillas y la
+   cinta), sin el nombre y **en negro**. En negro protege la forma, la pongas del
+   color que la pongas. Es la que hace el logo tuyo: nadie podrá usar uno igual o
+   parecido para apps o educación. Y como no lleva la palabra «NOOK», no choca
+   con nadie (ver «Antes de pagar»).
+2. **El nombre: una marca denominativa, la palabra `GRITNOOK`**, sin dibujo.
+   Cubre el nombre se escriba con la letra que se escriba.
+
+No conviene una sola marca con el logo y el nombre juntos: protege esa
+combinación, y cada parte por separado queda más floja.
+
+**Orden recomendado:** primero el logo (no tiene riesgo) y luego el nombre,
+cuando hayas hecho la comprobación de «NOOK».
+
+Los archivos para subir están en tu carpeta **Documentos → GritNook-marca →
+para-registrar** (no en este repositorio): `logo-GritNook-negro.jpg` (el que
+se recomienda) y `logo-GritNook-color.jpg` (si prefieres proteger justo los
+colores: lila **#B5AAFB** y rojo **#F0616B**).
+
+**«Para siempre»** es literal: una marca dura 10 años y se renueva cada 10 sin
+límite. Dos condiciones: **renovarla a tiempo** (apunta la fecha) y **usarla**
+(si pasan 5 años sin usarla, cualquiera puede pedir que te la quiten).
 
 ### Las clases (lo que cubre)
 
@@ -51,6 +71,12 @@ en España, que es donde empiezas.
   (Tasas publicadas por la OEPM, vigentes desde el 1 de abril de 2026: compruébalas
   al pagar, cambian cada año).
   - Solo la 9: **125,36 €**. La 9 y la 41: **206,57 €**. Las tres: **287,78 €**.
+  - El logo y el nombre, las dos con las tres clases: **575,56 €**.
+- **Ayuda de la UE (SME Fund):** devuelve el **75 %** de las tasas (hasta 700 €),
+  pero solo a empresas y **autónomos dados de alta**, y hay que pedir el bono
+  **antes** de presentar la marca. En 2026 se puede pedir hasta el 4 de diciembre
+  o hasta que se acabe el dinero; suele repetirse cada año. Si vas a darte de
+  alta como autónomo pronto, espera y ahorra; si no, no retrases el logo por esto.
 - Tarda **entre 4 y 8 meses** si nadie se opone. Dura **10 años** y se renueva.
 - Mientras tanto puedes poner **™** detrás del nombre. La **®** solo cuando esté
   concedida (ponerla antes es ilegal).
@@ -61,6 +87,21 @@ europea (o la internacional) manteniendo la fecha de la española: es la
 «prioridad».
 
 ## Antes de pagar: mirar que no choque con otra
+
+**Comprobado el 30 de septiembre de 2026 en TMview** (España, la UE y el resto
+de oficinas):
+
+- `GRITNOOK` y `GRIT NOOK`: **ninguna marca**. El nombre está libre.
+- `NOOK`: **Nook Digital, LLC** (Barnes & Noble) la tiene registrada en la UE
+  para las clases 9, 41 y 42 (n.º 010738094 y 010481761). Juega a tu favor que
+  en esas mismas clases conviven muchas «…NOOK» de otros (RIOT NOOK, ANIMULA
+  NOOK de Tencent, PICNOOK, y STREET NOOK en España), pero el riesgo de que se
+  opongan al nombre existe. **Al logo no le afecta: no lleva la palabra.**
+- Para el logo, en TMview hay **búsqueda por imagen**: sube
+  `logo-GritNook-negro.jpg` y mira que no salga nada parecido en las clases 9,
+  41 y 42.
+
+Cómo repetirlo tú:
 
 Una marca se deniega (o te la tumban luego) si **se parece a otra anterior para
 cosas parecidas**. Es la parte más importante:
@@ -84,7 +125,11 @@ cosas parecidas**. Es la parte más importante:
 
 1. Entra en la **sede electrónica de la OEPM** (sede.oepm.gob.es) con tu
    certificado digital, DNI electrónico o Cl@ve.
-2. **Solicitud de marca nacional** → tipo **denominativa** → `GRITNOOK`.
+2. **Solicitud de marca nacional**. Para el logo: tipo **figurativa**, sube
+   `logo-GritNook-negro.jpg` y, si pide descripción: «Letra G estilizada con
+   dos anillas de cuaderno a la izquierda y una cinta de marcapáginas que cuelga
+   de su parte inferior». Sin reivindicar colores. Para el nombre: tipo
+   **denominativa** → `GRITNOOK`.
 3. Solicitante: **tú**, como persona física (con tu NIF). No hace falta ser
    autónomo ni tener empresa.
 4. Clases y productos: copia los textos de la tabla de arriba.
@@ -96,6 +141,20 @@ cosas parecidas**. Es la parte más importante:
 **Cuidado con las cartas falsas.** Tras publicarse la solicitud llegan correos y
 cartas de «registros internacionales» cobrando cientos de euros por inscribirte
 en listas que no sirven para nada. La OEPM no cobra nada que tú no hayas pedido.
+
+## Lo que ya te protege hoy, sin pagar
+
+- **Derechos de autor.** Si el dibujo lo hiciste tú (o quien lo hizo te cedió
+  los derechos por escrito), es tuyo desde que lo creaste. Si lo generó una IA
+  sin trabajo creativo tuyo, esos derechos son dudosos: por eso la marca es lo
+  que de verdad lo protege.
+- **Dibujo comunitario no registrado.** Un logo publicado en la UE queda
+  protegido contra copias durante **3 años** desde que se hizo público (el
+  29 de septiembre de 2026, en gritnook.com). Solo frente a copias, no frente a
+  quien llegue a algo parecido por su cuenta: la marca es más fuerte.
+- **Pruebas con fecha.** El historial de este repositorio (el logo entró el 29 de
+  septiembre de 2026) y tus publicaciones. Si quieres una prueba más, puedes
+  registrarlo en Safe Creative o en el Registro de la Propiedad Intelectual.
 
 ## Mientras tanto
 
