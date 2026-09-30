@@ -8,9 +8,9 @@ Eso levanta un servidor, abre un navegador sin ventana y escribe el resultado en
 la consola. Devuelve 1 si algo falla, que es lo que mira un servidor de
 integración continua.
 
-**829 pruebas.** Sin ventana pueden quedarse en pendiente las 6 que dibujan un
+**869 pruebas.** Sin ventana pueden quedarse en pendiente las 6 que dibujan un
 PDF: sin tarjeta gráfica eso a veces tarda demasiado. Abriendo
-`pruebas/pruebas.html` en un navegador normal pasan las 829.
+`pruebas/pruebas.html` en un navegador normal pasan las 869.
 
 Aparte, las reglas de seguridad de la base de datos se prueban contra un
 Postgres de verdad: `node backend/probar-sql.js` (22 comprobaciones), y las del chat con
@@ -98,6 +98,7 @@ repinte la pantalla.
 | `casos-revision.js` | **Lo que se lee en pantalla**, tras revisar la app entera como opositor y como estudiante: que la oposición hable de «aciertos netos» (y explique qué son) en vez de «netas»; las concordancias con bloque, módulo, asignatura o destreza («todos tus bloques», «Elige una asignatura…»); el plan que junta los bloques de una misma asignatura y no dice «hay que apretar» a lo que aún no tiene notas; las fechas en castellano; el contraste de los grises, el verde y el ámbar en los dos temas; la gráfica de simulacros legible en el móvil y los nombres largos de los módulos enteros |
 | `casos-web.js` | **Lo que ven Google y quien llega de fuera**: la cabecera de la app (título, descripción, dirección canónica, foto para compartir y datos estructurados), el aviso sin JavaScript, las páginas públicas con su descripción y su canónica, el aviso legal fuera de Google, los papeles sin las notas internas, el mapa de la web y robots.txt; que la calculadora no tenga página pública (sin cuenta no se usa); y que el service worker no guarde esas páginas como si fueran la app |
 | `casos-menores.js` | **La edad mínima y los menores**: la cuenta de los años (cumpleaños, víspera, 29 de febrero), la fecha de nacimiento neutra en vez de la casilla, que con menos de 14 no se mande nada al servidor y el bloqueo de un día, que solo se guarden el mes y el año, la bienvenida para quien entra con Google o GitHub, la ESO desde 3.º, el aviso de papeles nuevos en el Inicio y que la privacidad y los términos digan lo mismo (sin «menos de 14 con permiso», con el canal de avisos de contenido ilegal) |
+| `casos-opo3.js` | **Oposiciones, tercera tanda**: los diez temarios del BOE (cuántos temas, sus bloques, las reglas del test), cargarlos sin tocar la fecha ni el corte, elegirlos en la bienvenida y en la pestaña; la Pascua y los días hábiles; el calendario (subsanar a 10 días hábiles, avisos a una semana, al calendario del móvil, añadir, marcar y quitar); el plan con turnos (un día sin rato no lleva temas, los días de estudio pesados por turno, turnos rotos que se tiran, el diálogo); la corrección de «Ponte a prueba» (palabras que cuentan, seis de cada diez, ideas de su campo o de las notas), la elección del tema al azar, la prueba entera con el cursor a salvo al repintar, sin ideas o puntuándote tú, guardarla como apunte, y el reto sorpresa |
 | `casos-absurdos.js` | **Datos irreales**: notas de 900, faltas negativas, fechas del año 9999, emojis, árabe, textos de diez mil letras, estados de versiones que no existieron |
 
 ## Rellenar la app para verla funcionando

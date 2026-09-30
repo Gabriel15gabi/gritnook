@@ -2916,6 +2916,102 @@ body.lx-arrastrando, body.lx-arrastrando *{-webkit-user-select:none; user-select
 .banda.legal > span{font-weight:400; color:var(--ink-2)}
 .banda.legal strong{display:block; margin-bottom:2px; font-weight:600; color:var(--ink)}
 .banda.legal .lg-btns{display:flex; gap:8px; flex:0 0 auto; margin-left:auto}
+/* ── oposiciones: el temario del BOE ── */
+.cat-etq{margin:16px 0 8px}
+.cat-etq:first-child{margin-top:0}
+.cat-lista{display:grid; grid-template-columns:repeat(auto-fill, minmax(210px,1fr)); gap:8px}
+.cat-item{display:grid; gap:3px; text-align:left; padding:11px 13px; border-radius:var(--r-m); border:1px solid var(--line-2); background:var(--surface);
+  color:var(--ink); font:inherit; cursor:pointer; transition:border-color .12s, background .12s}
+.cat-item:hover, .cat-item:focus-visible{border-color:var(--acento-borde); background:var(--acento-suave)}
+.cat-item b{font:600 14px/1.3 var(--sans)}
+.cat-item span{font:400 12px/1.35 var(--sans); color:var(--ink-3)}
+.cat-tit{margin:12px 0 2px; font:600 19px/1.25 var(--sans); color:var(--ink)}
+.cat-datos{display:flex; flex-wrap:wrap; gap:6px}
+.cat-datos span{padding:5px 10px; border-radius:999px; background:var(--surface-2); font:400 12.5px/1.2 var(--sans); color:var(--ink-2)}
+.cat-datos b{color:var(--ink); font-weight:600}
+.cat-grupos{display:grid; gap:6px}
+.cat-grupos details{border:1px solid var(--line); border-radius:var(--r-m); padding:9px 12px; background:var(--surface)}
+.cat-grupos summary{cursor:pointer; font:600 13.5px/1.35 var(--sans); color:var(--ink)}
+.cat-grupos ol{margin:8px 0 2px; padding-left:28px; display:grid; gap:6px; font:400 13px/1.5 var(--sans); color:var(--ink-2)}
+.cat-aviso{margin:12px 0 0; padding:10px 12px; border-radius:var(--r-m); font:400 13px/1.45 var(--sans);
+  background:color-mix(in srgb, #F59E0B 11%, var(--surface)); color:var(--aviso-txt, var(--ink))}
+
+/* ── el calendario de la convocatoria ── */
+.hitos{list-style:none; margin:0 0 16px; padding:0; display:grid; gap:2px}
+.hito{display:grid; grid-template-columns:46px minmax(0,1fr) auto; align-items:center; gap:12px; padding:8px 8px 8px 0; border-radius:var(--r-m)}
+.hito-f{display:grid; place-items:center; width:46px; height:46px; border-radius:12px; background:var(--surface-2); line-height:1}
+.hito-f b{font:600 17px/1 var(--sans); color:var(--ink)}
+.hito-f small{font:500 10.5px/1 var(--sans); text-transform:uppercase; letter-spacing:.04em; color:var(--ink-3); margin-top:-6px}
+.hito-t{display:grid; gap:2px; min-width:0}
+.hito-t b{font:500 14px/1.35 var(--sans); color:var(--ink)}
+.hito-t .meta{font-size:12.5px}
+.hito-b{display:flex; align-items:center; gap:4px}
+.hito-b .icono-btn{width:30px; height:30px; color:var(--ink-3)}
+.hito.pasado{opacity:.55}
+.hito.pasado .hito-t b{text-decoration:line-through; text-decoration-color:var(--ink-3)}
+.hito.prox .hito-f{background:var(--acento-suave); box-shadow:inset 0 0 0 1px var(--acento-borde)}
+.hito.prox .hito-f b{color:var(--acento-txt)}
+.hito.urgente .hito-f{background:color-mix(in srgb, #DC2626 12%, var(--surface)); box-shadow:inset 0 0 0 1px color-mix(in srgb, #DC2626 45%, transparent)}
+.hito.urgente .hito-f b{color:#DC2626}
+.hito.examen .hito-t b{font-weight:600}
+.hito-nuevo{padding-top:14px; border-top:1px solid var(--line)}
+@media (max-width:560px){
+  .hito{grid-template-columns:42px minmax(0,1fr); row-gap:6px}
+  .hito-f{width:42px; height:42px}
+  .hito-b{grid-column:2; justify-content:flex-start}
+}
+
+/* ── los turnos ── */
+.t-L{--tu:#16A34A} .t-M{--tu:#0284C7} .t-T{--tu:#EA580C} .t-N{--tu:#6366F1} .t-P{--tu:#DB2777}
+.tu-bloque{margin-top:16px; padding-top:14px; border-top:1px solid var(--line)}
+.tu-tira{display:grid; grid-template-columns:repeat(14, minmax(0,1fr)); gap:4px; margin-top:12px}
+.tu-dia{display:grid; justify-items:center; gap:1px; padding:5px 0 6px; border-radius:9px; border:0; font:inherit;
+  background:color-mix(in srgb, var(--tu) 13%, var(--surface)); color:color-mix(in srgb, var(--tu) 70%, var(--ink))}
+.tu-dia small{font:500 10px/1.2 var(--sans); color:var(--ink-3)}
+.tu-dia b{font:600 14px/1.2 var(--sans)}
+.tu-dia em{font:400 10px/1.2 var(--sans); font-style:normal; color:var(--ink-3); white-space:nowrap}
+.tu-dia.hoy{box-shadow:inset 0 0 0 1.5px var(--tu)}
+@media (max-width:560px){ .tu-tira{grid-template-columns:repeat(7, minmax(0,1fr))} }
+.tu-ciclo{display:grid; grid-template-columns:repeat(7, minmax(0,1fr)); gap:6px}
+.tu-ciclo .tu-dia{cursor:pointer; padding:7px 0 8px}
+.tu-ciclo .tu-dia:hover{box-shadow:inset 0 0 0 1.5px var(--tu)}
+.tu-leyenda{display:flex; flex-wrap:wrap; gap:6px 14px; margin-top:10px; font:400 12.5px/1.3 var(--sans); color:var(--ink-2)}
+.tu-leyenda span{display:inline-flex; align-items:center; gap:6px}
+.tu-leyenda .tu-dia{width:24px; padding:3px 0}
+.tu-leyenda .tu-dia b{font-size:12px}
+.tu-min{display:grid; grid-template-columns:repeat(auto-fill, minmax(96px,1fr)); gap:10px}
+
+/* ── ponte a prueba ── */
+.banda.reto{border:1px solid var(--acento-borde); background:linear-gradient(135deg, var(--acento-suave), var(--surface-2))}
+.banda.reto > svg.i{color:var(--acento-txt)}
+.prb-entrada{display:flex; align-items:center; justify-content:space-between; gap:14px; flex-wrap:wrap}
+.prb-entrada .btn .i{width:16px; height:16px}
+.prb-tema{display:flex; align-items:flex-start; gap:10px; margin:0 0 12px}
+.prb-tema b{font:500 14.5px/1.45 var(--sans); color:var(--ink)}
+.prb-sin{padding:9px 12px; border-radius:var(--r-m); background:var(--surface-2)}
+.prb-reloj{font:600 22px/1 var(--sans); font-variant-numeric:tabular-nums; color:var(--ink)}
+.prb-reloj.fin{color:var(--riesgo-txt)}
+#prTexto{min-height:300px; font:400 15px/1.6 var(--sans)}
+#prTexto[readonly]{opacity:.75}
+.prb-fin{margin:10px 0 0; font:500 13.5px/1.4 var(--sans); color:var(--riesgo-txt)}
+.prb-pie{display:flex; align-items:center; justify-content:space-between; gap:12px; flex-wrap:wrap; margin-top:12px}
+.prc-cab{display:flex; align-items:center; gap:16px; margin-bottom:14px}
+.prc-pct{flex:0 0 auto; display:grid; place-items:center; width:92px; height:92px; border-radius:50%; text-align:center;
+  background:color-mix(in srgb, var(--pc) 13%, var(--surface)); box-shadow:inset 0 0 0 2px color-mix(in srgb, var(--pc) 55%, transparent)}
+.prc-pct b{font:600 25px/1 var(--sans); color:color-mix(in srgb, var(--pc) 80%, var(--ink)); margin-top:10px}
+.prc-pct span{font:400 11px/1 var(--sans); color:var(--ink-3); margin-top:-14px}
+.prc-bien{--pc:#16A34A} .prc-medio{--pc:#D97706} .prc-flojo{--pc:#DC2626}
+.prc-ideas{list-style:none; margin:0; padding:0; display:grid; gap:6px}
+.prc-ideas li{display:flex; align-items:flex-start; gap:10px; padding:8px 10px; border-radius:var(--r-m); background:var(--surface-2); font:400 13.5px/1.45 var(--sans); color:var(--ink)}
+.prc-ideas li.si{background:color-mix(in srgb, #16A34A 9%, var(--surface))}
+.prc-ideas em{display:block; margin-top:3px; font-style:normal; font-size:12.5px; color:var(--ink-3)}
+.prc-marca{flex:0 0 auto; width:26px; height:26px; border-radius:50%; border:0; cursor:pointer; font:600 13px/1 var(--sans);
+  background:color-mix(in srgb, #DC2626 14%, var(--surface)); color:#DC2626}
+.prc-ideas li.si .prc-marca{background:#16A34A; color:#fff}
+.prc-tuyo{margin-top:12px}
+.prc-tuyo summary{cursor:pointer; font:500 13px/1.4 var(--sans); color:var(--ink-2)}
+.prc-texto{margin-top:8px; padding:10px 12px; border-radius:var(--r-m); background:var(--surface-2); white-space:pre-wrap; font:400 13px/1.55 var(--sans); color:var(--ink-2); max-height:240px; overflow:auto}
+.prc-mini{font-weight:600; color:color-mix(in srgb, var(--pc) 80%, var(--ink))}
 </style>
 </head>
 <body>
@@ -5843,14 +5939,14 @@ function OPO_DEF() {
     v: 1,
     temas: [],
     examen: { fecha: "", preguntas: 100, opciones: 4, penalizacion: null, corte: null, minutos: 90, reserva: 0, bolas: null },
-    plan: { vueltas: 3, diasSemana: 6, diasSimulacro: 14 },
+    plan: { vueltas: 3, diasSemana: 6, diasSimulacro: 14, turnos: null },
     simulacros: [],
-    convocatoria: { plazas: null, aspirantes: null, enlace: "", cortes: [], plazoFin: "", presentada: false },
-    crono: null
+    convocatoria: { plazas: null, aspirantes: null, enlace: "", cortes: [], plazoFin: "", presentada: false, hitos: [] },
+    crono: null, pruebas: [], prueba: null, catalogo: null
   };
 }
 const esOpositor = () => normalizarPerfil().etapa === "oposicion";
-const TEMA_DEF = [["titulo", ""], ["modId", ""], ["grupo", ""], ["dominado", false], ["dificultad", "normal"], ["notas", ""], ["ley", ""], ["minutos", 0]];
+const TEMA_DEF = [["titulo", ""], ["modId", ""], ["grupo", ""], ["dominado", false], ["dificultad", "normal"], ["notas", ""], ["ley", ""], ["minutos", 0], ["ideas", ""]];
 const esFecha = v => /^\d{4}-\d{2}-\d{2}$/.test(v) && !isNaN(new Date(v + "T12:00:00"));
 
 /* lo que llegue —de otra versión, de una copia a medias, de la sincronización—
@@ -5887,6 +5983,7 @@ function normalizarOpo() {
     if (!idBueno(s.id)) s.id = uid();
     if (s.fecha !== undefined && !esFecha(s.fecha)) s.fecha = "";
   });
+  normalizarOpo3(O);
   const c = O.crono;
   if (c !== null && !(esObj(c) && num(c.inicio) > 0 && num(c.minutos) > 0 && num(c.preguntas) > 0)) O.crono = null;
   else if (c) { c.minutos = clamp(Math.round(num(c.minutos)), 1, 600); c.preguntas = clamp(Math.round(num(c.preguntas)), 1, 500); }
@@ -6083,8 +6180,9 @@ function temasFlojos() {
   });
   return O.temas.map(t => {
     const c = cuenta[t.id], tasa = c && c.pregs ? c.fallos / c.pregs : null, fallosSim = sim[t.id] || 0;
-    const peso = (tasa === null ? 0 : tasa) + (t.dificultad === "dificil" ? .25 : 0) + Math.min(.6, fallosSim / 10);
-    return { t, tasa, fallosSim, peso };
+    const prueba = ultimaPrueba(t.id);
+    const peso = (tasa === null ? 0 : tasa) + (t.dificultad === "dificil" ? .25 : 0) + Math.min(.6, fallosSim / 10) + (prueba && prueba.pct < 50 ? .3 : 0);
+    return { t, tasa, fallosSim, peso, prueba };
   }).filter(x => !x.t.dominado && x.peso >= .2).sort((a, b) => b.peso - a.peso);
 }
 function vueltaActual() {
@@ -6125,11 +6223,11 @@ function planOpo(hoy = hoyISO()) {
   const objetivo = clamp(Math.round(num(pl.vueltas, 3)), 1, 8);
   const pendiente = O.temas.reduce((s, t) => s + (t.dominado ? 0 : Math.max(0, objetivo - vueltasDe(t))), 0);
   const hechas14 = O.temas.reduce((s, t) => s + t.vueltas.filter(f => f > sumaDias(hoy, -14) && f <= hoy).length, 0);
-  const porSemana = clamp(num(pl.diasSemana, 6), 1, 7);
+  const tu = turnosActivos(), porSemana = tu ? tu.porSemana : clamp(num(pl.diasSemana, 6), 1, 7);
   /* el ritmo, por día de estudio, que es como lo cuenta un opositor y como se
      cuenta lo que hace falta: si estudias seis días de siete, dos semanas son doce */
-  const ritmo = hechas14 / (14 * porSemana / 7);
-  const r = { objetivo, pendiente, ritmo, sinFecha: !ex.fecha, temas: O.temas.length };
+  const ritmo = hechas14 / (tu ? Math.max(1, diasEquiv(tu, sumaDias(hoy, -13), 14)) : 14 * porSemana / 7);
+  const r = { objetivo, pendiente, ritmo, sinFecha: !ex.fecha, temas: O.temas.length, turnos: !!tu };
   if (!ex.fecha) return r;
   const dias = diasEntre(ex.fecha, hoy);
   r.dias = dias;
@@ -6137,7 +6235,7 @@ function planOpo(hoy = hoyISO()) {
   const reserva = clamp(Math.round(num(pl.diasSimulacro, 14)), 0, 120);
   const utiles = Math.max(0, dias - reserva);
   r.utiles = utiles; r.reserva = reserva;
-  r.diasEstudio = Math.max(0, Math.floor(utiles * porSemana / 7));
+  r.diasEstudio = Math.max(0, Math.floor(tu ? diasEquiv(tu, hoy, utiles) + 1e-9 : utiles * porSemana / 7));
   r.porDia = r.diasEstudio ? pendiente / r.diasEstudio : (pendiente ? Infinity : 0);
   if (ritmo > 0) {
     /* a tu ritmo, cuántos días de calendario te quedan para acabar */
@@ -6158,12 +6256,13 @@ let opoMas = { fecha: "", n: 0 };
 function temasDeHoy(hoy = hoyISO()) {
   const O = normalizarOpo(), pl = planOpo(hoy);
   const extra = opoMas.fecha === hoy ? opoMas.n : 0;
-  const cupo = clamp(Math.ceil(isFinite(pl.porDia) && pl.porDia > 0 ? pl.porDia : 2), 1, 8) + extra;
+  const base = isFinite(pl.porDia) && pl.porDia > 0 ? pl.porDia : 2, tu = turnosActivos(), f = tu ? factorDia(tu, hoy) : 1;
+  const cupo = (f > 0 ? clamp(Math.ceil(base * f - 1e-9), 1, 8) : 0) + extra;
   const hechosHoy = new Set(O.temas.filter(t => t.vueltas.includes(hoy)).map(t => t.id));
   const frios = temasFrios(hoy).filter(t => !hechosHoy.has(t.id));
   const resto = O.temas.filter(t => !t.dominado && !hechosHoy.has(t.id) && !frios.includes(t) && vueltasDe(t) < pl.objetivo)
     .sort((a, b) => vueltasDe(a) - vueltasDe(b) || (ultimaVuelta(a) || "").localeCompare(ultimaVuelta(b) || "") || a.n - b.n);
-  return { lista: frios.concat(resto).slice(0, Math.max(0, cupo - hechosHoy.size)), hechos: hechosHoy.size, cupo };
+  return { lista: frios.concat(resto).slice(0, Math.max(0, cupo - hechosHoy.size)), hechos: hechosHoy.size, cupo, turno: tu ? turnoDia(tu, hoy) : null };
 }
 function darVuelta(t, dia = hoyISO()) {
   if (!t) return;
@@ -6374,8 +6473,8 @@ function opoMarcha(irA) {
     : `<button type="button" class="opo-marcha vivo" ${destino}>${icono("reloj")}<span>Simulacro en marcha</span><b data-opo-crono>${relojTxt(segsSimulacro(c))}</b></button>`;
 }
 function opoAlertaPlazo() {
-  const a = avisoPlazo(); if (!a) return "";
-  return banda("calendario", a.txt, `<button type="button" class="btn mini" data-opo-presentada>Ya la he presentado</button>`, a.tipo);
+  const a = avisoPlazo();
+  return (a ? banda("calendario", a.txt, `<button type="button" class="btn mini" data-opo-presentada>Ya la he presentado</button>`, a.tipo) : "") + opoAlertaHitos();
 }
 
 function vistaOposicion() {
@@ -6406,7 +6505,7 @@ function vistaOposicion() {
   <div class="aj-tabs" role="tablist">
     ${OPO_TABS.map(([id, t]) => `<button type="button" class="aj-tab" role="tab" aria-selected="${opoTab === id}" data-opo-tab="${id}">${t}</button>`).join("")}
   </div>
-  <div class="opo-cuerpo">${opoTab === "temario" ? opoTemario() : opoTab === "simulacros" ? opoSimulacros() : opoTab === "examen" ? opoExamen() : opoResumen()}</div>`;
+  <div class="opo-cuerpo">${O.prueba ? opoPruebaPanel() : opoTab === "temario" ? opoTemario() : opoTab === "simulacros" ? opoSimulacros() : opoTab === "examen" ? opoExamen() : opoResumen()}</div>`;
 }
 
 function opoMontar() {
@@ -6416,7 +6515,9 @@ function opoMontar() {
   return `<section class="panel opo-montar">
     <div class="etq">Monta tu oposición</div>
     <ol class="opo-pasos">
-      ${paso(1, hecho[0], "Pega el índice del temario", "Tal cual sale en la convocatoria o en el PDF de tu academia. Cada línea con número se convierte en un tema.", `<button type="button" class="btn${hecho[0] ? "" : " primario"}" id="opoPegar">${hecho[0] ? "Añadir más" : "Pegar el índice"}</button>`)}
+      ${paso(1, hecho[0], "Tu temario", "Elige tu oposición de la lista y el temario y las reglas del test salen del BOE. Si no está, pega el índice de tu convocatoria.", hecho[0]
+        ? `<button type="button" class="btn" id="opoPegar">Añadir más</button>`
+        : `<div class="barra-btns"><button type="button" class="btn primario" id="opoElegir">Elegir mi oposición</button><button type="button" class="btn" id="opoPegar">Pegar el índice</button></div>`)}
       ${paso(2, !!O.examen.fecha, "La fecha del examen", "Si aún no ha salido, déjalo para luego: lo demás funciona igual.", `<button type="button" class="btn" data-opo-tab="examen">Ponerla</button>`)}
       ${paso(3, corteDe() !== null, "Las reglas del test", "Cuántas preguntas, cuántas opciones y cuánto resta cada fallo. Con eso sale cuántas tienes que acertar.", `<button type="button" class="btn" data-opo-tab="examen">Ponerlas</button>`)}
     </ol>
@@ -6435,10 +6536,12 @@ function opoResumen() {
   /* los temas que aún no han llegado a esta vuelta */
   const faltanVuelta = va === Infinity ? 0 : O.temas.filter(t => !t.dominado && vueltasDe(t) < va).length;
   const flojoTxt = x => x.tasa !== null ? Math.round(x.tasa * 100) + " % de fallos"
-    : x.fallosSim ? x.fallosSim + (x.fallosSim === 1 ? " fallo" : " fallos") + " en simulacros" : "Marcado difícil";
+    : x.fallosSim ? x.fallosSim + (x.fallosSim === 1 ? " fallo" : " fallos") + " en simulacros"
+    : x.prueba && x.prueba.pct < 50 ? x.prueba.pct + " % en tu última prueba" : "Marcado difícil";
 
   return `
   ${opoAlertaPlazo()}
+  ${opoRetoHTML()}
   ${!O.examen.fecha || corteDe() === null ? opoMontar() : ""}
   <div class="resumen-mod cuatro">
     <div class="panel rm-tile"><div class="rm-etq">Temario</div>
@@ -6459,11 +6562,13 @@ function opoResumen() {
   </div>
 
   <section class="panel">
-    <div class="opo-cab-sec"><div class="etq">Hoy te tocan</div><span class="meta">${hoy.hechos} de ${hoy.cupo} hechos</span></div>
+    <div class="opo-cab-sec"><div class="etq">Hoy te tocan</div><span class="meta">${metaHoy(hoy)}</span></div>
     ${hoy.lista.length ? `<div class="opo-lista">${hoy.lista.map(t => filaTema(t, txtVueltas(t))).join("")}</div>`
-      : `<div class="opo-hecho"><p class="meta">${hoy.hechos ? (frios.length ? "Plan de hoy hecho. Si te queda cuerda, repasa alguno de los que se enfrían, aquí abajo." : "Plan de hoy hecho. Si te queda cuerda, adelanta uno.") : "No queda nada pendiente para hoy."}</p>
+      : `<div class="opo-hecho"><p class="meta">${hoy.hechos ? (frios.length ? "Plan de hoy hecho. Si te queda cuerda, repasa alguno de los que se enfrían, aquí abajo." : "Plan de hoy hecho. Si te queda cuerda, adelanta uno.") : (hoy.cupo === 0 && hoy.turno ? "Hoy no toca estudiar: " + hoy.turno.nombre.toLowerCase() + ". Descansar también cuenta." : "No queda nada pendiente para hoy.")}</p>
         ${hoy.hechos && !frios.length ? `<button type="button" class="btn mini" id="opoUnoMas">${icono("mas")}Uno más</button>` : ""}</div>`}
   </section>
+
+  ${opoPruebaEntrada()}
 
   ${frios.length ? `<section class="panel">
     <div class="opo-cab-sec"><div class="etq">Se te están enfriando</div><span class="meta">Hace tiempo que no los tocas</span></div>
@@ -6512,6 +6617,7 @@ function opoTemario() {
     <div class="opo-cab-sec">
       <div class="etq">Tu temario · ${O.temas.length} temas</div>
       <div class="barra-btns"><button type="button" class="btn mini" id="opoPegar">${icono("mas")}Pegar más temas</button>
+        <button type="button" class="btn mini" id="opoElegir">Temario del BOE…</button>
         <button type="button" class="btn mini" id="opoYaLlevo">Ya llevo estudiado…</button>
         <button type="button" class="btn mini fantasma" id="opoNuevoTema">Añadir uno</button></div>
     </div>
@@ -6539,8 +6645,9 @@ function abrirTema(id) {
   const fs = fallosSimDe()[t.id] || 0;
   const cuerpo = `
     <div class="opo-ficha-datos"><span>${t.minutos ? horasTxt(t.minutos) + " estudiadas" : "Sin horas apuntadas"}</span>
+      ${pruebasDe(t.id).length ? `<span>${pruebasDe(t.id).length} ${pruebasDe(t.id).length === 1 ? "prueba" : "pruebas"} · la última, ${ultimaPrueba(t.id).pct} %</span>` : ""}
       ${fs ? `<span>${fs} ${fs === 1 ? "fallo" : "fallos"} en simulacros</span>` : ""}</div>
-    <label class="campo">Título<input type="text" id="otTitulo" value="${esc(t.titulo)}" maxlength="300"></label>
+    <label class="campo">Título<textarea id="otTitulo" rows="2" maxlength="1000">${esc(t.titulo)}</textarea></label>
     <div class="rejilla-campos" style="grid-template-columns:90px minmax(0,1fr); margin-top:12px">
       <label class="campo">Número<input type="number" id="otN" value="${t.n}" min="1" max="999" step="1"></label>
       <label class="campo">Bloque<select id="otBloque">${opcionesBloque}</select></label>
@@ -6567,11 +6674,14 @@ function abrirTema(id) {
     </div>`)}
     <label class="campo" style="margin-top:18px">Ley o norma que entra (enlace al BOE)<input type="url" id="otLey" value="${esc(t.ley)}" placeholder="https://www.boe.es/buscar/act.php?id=BOE-A-…"></label>
     ${t.ley && /^https?:\/\//i.test(t.ley) ? `<p class="meta" style="margin-top:6px"><a href="${esc(t.ley)}" target="_blank" rel="noopener">Abrir la ley en el BOE</a>. Los textos del BOE son públicos: consulta siempre la versión consolidada.</p>` : ""}
-    <label class="campo" style="margin-top:14px">Tus notas del tema<textarea id="otNotas" rows="4" maxlength="4000" placeholder="Lo que siempre se te olvida, trampas del test, artículos clave…">${esc(t.notas)}</textarea></label>`;
+    <label class="campo" style="margin-top:14px">Tus notas del tema<textarea id="otNotas" rows="4" maxlength="4000" placeholder="Lo que siempre se te olvida, trampas del test, artículos clave…">${esc(t.notas)}</textarea></label>
+    <label class="campo" style="margin-top:14px">Ideas clave <span class="meta">· una por línea: lo que no puede faltar si te cae este tema</span><textarea id="otIdeas" rows="5" maxlength="4000" placeholder="La Constitución se aprobó en referéndum el 6 de diciembre de 1978&#10;Tiene 169 artículos…">${esc(t.ideas)}</textarea></label>
+    <p class="meta" style="margin-top:6px">Con ellas, al ponerte a prueba te digo qué porcentaje has tocado. Si las dejas vacías, uso tus notas.</p>
+    ${vueltasDe(t) || t.dominado ? `<div class="barra-btns" style="margin-top:10px"><button type="button" class="btn mini" id="otPrueba">${icono("chispa")}Ponme a prueba con este tema</button></div>` : ""}`;
   let dificultad = t.dificultad;
   /* lo que haya en la ficha se guarda igual al pulsar Guardar que al irte al profe */
   const guardarFicha = () => {
-    t.titulo = ($("#otTitulo").value.trim() || t.titulo).slice(0, 300);
+    t.titulo = ($("#otTitulo").value.replace(/\s+/g, " ").trim() || t.titulo).slice(0, 1000);
     t.n = clamp(Math.round(num($("#otN").value, t.n)), 1, 999);
     t.modId = $("#otBloque").value || t.modId;
     t.dificultad = dificultad;
@@ -6579,6 +6689,7 @@ function abrirTema(id) {
     const ley = $("#otLey").value.trim();
     t.ley = /^https?:\/\//i.test(ley) || !ley ? ley.slice(0, 500) : "https://" + ley.slice(0, 490);
     t.notas = $("#otNotas").value.slice(0, 4000);
+    t.ideas = $("#otIdeas").value.slice(0, 4000);
     guardar("oposicion");
   };
   abrirDlg("Tema " + t.n, cuerpo, [
@@ -6605,6 +6716,7 @@ function abrirTema(id) {
       aviso("Tarjeta añadida: te sale hoy en Repaso.");
       return;
     }
+    if (e.target.closest("#otPrueba")) { guardarFicha(); $("#dlg").close(); prepararPrueba(t.id); return; }
     if (e.target.closest("#otProfe")) { guardarFicha(); $("#dlg").close(); preguntarTema(t); }
   };
 }
@@ -6732,6 +6844,7 @@ function opoSimulacros() {
   const ritmoEx = Math.round(num(ex.minutos, 90) * 60 / Math.max(1, num(ex.preguntas, 100)));
   return `
   ${opoCronoPanel()}
+  ${opoPruebasHTML()}
   ${rs.n ? `<div class="resumen-mod">
     <div class="panel rm-tile"><div class="rm-etq">Media de los últimos 5</div>
       <div class="rm-cifra">${nota(rs.media5)}<small>sobre 10</small></div>
@@ -6796,6 +6909,8 @@ function opoExamen() {
     <p class="meta" style="margin-top:12px">${pen ? "Cada fallo te quita <b>" + textoPenalizacion(pen) + "</b> de acierto. Aciertos menos lo que restan los fallos son tus <b>aciertos netos</b>: es lo que se compara con la nota de corte." : "Los fallos no restan: tus aciertos netos son tus aciertos."} ${ex.reserva ? "Las " + ex.reserva + " de reserva solo cuentan si anulan alguna: contéstalas igual." : ""}</p>
   </section>
 
+  ${opoCalendarioHTML()}
+
   <section class="panel">
     <div class="etq">¿Cuántas tengo que acertar?</div>
     <p class="meta" style="margin:6px 0 14px">${corte ? "Con el corte " + (corte.de === "tuyo" ? "que has puesto" : corte.de) + ": " + nota(corte.valor) + " aciertos netos." : "Sin nota de corte todavía: pongo la mitad del examen como referencia."}</p>
@@ -6823,11 +6938,12 @@ function opoExamen() {
     <div class="etq">Plan de vueltas</div>
     <div class="opo-form" style="margin-top:12px">
       <label class="campo">Vueltas que quieres dar<select id="plan.vueltas" data-opo-campo="plan.vueltas">${[1, 2, 3, 4, 5, 6].map(v => `<option value="${v}"${num(pl.vueltas) === v ? " selected" : ""}>${v}</option>`).join("")}</select></label>
-      <label class="campo">Días de estudio a la semana<select id="plan.diasSemana" data-opo-campo="plan.diasSemana">${[3, 4, 5, 6, 7].map(v => `<option value="${v}"${num(pl.diasSemana) === v ? " selected" : ""}>${v}</option>`).join("")}</select></label>
+      <label class="campo"${plan.turnos ? ' style="display:none"' : ""}>Días de estudio a la semana<select id="plan.diasSemana" data-opo-campo="plan.diasSemana">${[3, 4, 5, 6, 7].map(v => `<option value="${v}"${num(pl.diasSemana) === v ? " selected" : ""}>${v}</option>`).join("")}</select></label>
       ${campoOpo("Días finales para simulacros", "plan.diasSimulacro", pl.diasSimulacro, 'type="number" min="0" max="120" step="1"')}
     </div>
+    ${opoTurnosHTML()}
     <p class="meta" style="margin-top:14px">${plan.sinFecha ? "Pon la fecha del examen y te digo el ritmo." : plan.pasado ? "La fecha del examen ya pasó." :
-      `Quedan ${plan.dias} días: ${plan.utiles} para dar vueltas y ${plan.reserva} para simulacros. Con ${pl.diasSemana} días de estudio a la semana son ${plan.diasEstudio} días, así que ${plan.porDia ? "toca <b>" + nota(plan.porDia) + " temas por día</b>" : "ya lo tienes"}.` +
+      `Quedan ${plan.dias} días: ${plan.utiles} para dar vueltas y ${plan.reserva} para simulacros. ${plan.turnos ? "Con tus turnos, contando lo que da de sí cada día, son " + plan.diasEstudio + " días de estudio" : "Con " + pl.diasSemana + " días de estudio a la semana son " + plan.diasEstudio + " días"}, así que ${plan.porDia ? "toca <b>" + nota(plan.porDia) + " temas por día</b>" : "ya lo tienes"}.` +
       (plan.acabas ? ` A tu ritmo de las dos últimas semanas terminarías el ${esc(fechaFrase(plan.acabas))}, <b>${plan.llegas ? "a tiempo" : "tarde"}</b>.` : "")}</p>
   </section>
 
@@ -6837,8 +6953,7 @@ function opoExamen() {
       ${campoOpo("Plazas", "convocatoria.plazas", cv.plazas, 'type="number" min="0" step="1"')}
       ${campoOpo("Aspirantes (aprox.)", "convocatoria.aspirantes", cv.aspirantes, 'type="number" min="0" step="1"')}
       <label class="campo opo-ancho">Enlace a las bases<input id="convocatoria.enlace" data-opo-campo="convocatoria.enlace" type="url" value="${esc(cv.enlace)}" placeholder="https://www.boe.es/…"></label>
-      ${campoOpo("Fin del plazo de solicitud", "convocatoria.plazoFin", cv.plazoFin, 'type="date"')}
-      <label class="ent-linea opo-ancho opo-check"><input type="checkbox" id="convocatoria.presentada" data-opo-campo="convocatoria.presentada"${cv.presentada ? " checked" : ""}><span>Solicitud presentada y tasa pagada</span></label>
+
     </div>
     ${num(cv.plazas) && num(cv.aspirantes) ? `<p class="meta" style="margin-top:12px">${nota(num(cv.aspirantes) / num(cv.plazas))} aspirantes por plaza. No es tu rival: tu rival es el corte.</p>` : ""}
     ${cv.enlace && /^https?:\/\//i.test(cv.enlace) ? `<p class="meta" style="margin-top:6px"><a href="${esc(cv.enlace)}" target="_blank" rel="noopener">Abrir las bases</a></p>` : ""}
@@ -7040,12 +7155,12 @@ function opoTarjetaInicio() {
       <button type="button" class="btn primario" data-sec="oposicion">Empezar</button></div>
   </section>`;
   const pl = planOpo(), hoy = temasDeHoy(), rs = resumenSimulacros(), frios = temasFrios().length;
-  return `<section class="panel opo-inicio">${opoAlertaPlazo()}
+  return `<section class="panel opo-inicio">${opoAlertaPlazo()}${opoRetoHTML()}
     <div class="opo-cuenta">${pl.dias !== undefined && pl.dias >= 0 ? `<b>${pl.dias}</b><span>${pl.dias === 1 ? "día" : "días"} para el examen</span>` : `<b>—</b><span>Sin fecha de examen</span>`}
       ${rs.n ? `<span style="margin-top:10px">Último simulacro: ${nota(rs.ultima.nota10)} sobre 10</span>` : ""}
       ${opoMarcha(true)}</div>
     <div class="opo-inicio-hoy">
-      <div class="opo-cab-sec"><div class="etq">Hoy te tocan</div><span class="meta">${hoy.hechos} de ${hoy.cupo} hechos</span></div>
+      <div class="opo-cab-sec"><div class="etq">Hoy te tocan</div><span class="meta">${metaHoy(hoy)}</span></div>
       ${hoy.lista.length ? `<div class="opo-lista">${hoy.lista.slice(0, 3).map(t => filaTema(t, txtVueltas(t))).join("")}</div>`
         : `<p class="meta">${hoy.hechos ? (frios ? "Plan de hoy hecho. Tienes " + frios + (frios === 1 ? " tema enfriándose" : " temas enfriándose") + " en tu oposición." : "Plan de hoy hecho.") : "Nada pendiente para hoy."}</p>`}
     </div>
@@ -7256,6 +7371,7 @@ function eventosCalendario(hoy = hoyISO()) {
     if (esFecha(cv.plazoFin) && cv.plazoFin >= hoy && !cv.presentada)
       ev.push({ uid: "opo-plazo", titulo: "Último día para presentar la solicitud", fecha: cv.plazoFin, hora: "", minutos: 0,
         desc: "Presentar la instancia y pagar la tasa" + (cv.enlace ? "\n" + cv.enlace : "") });
+    hitosICS(ev, hoy);
   }
   return ev.sort((a, b) => (a.fecha + (a.hora || "")).localeCompare(b.fecha + (b.hora || "")));
 }
@@ -11680,6 +11796,627 @@ alEvento("click", e => {
 });
 
 
+/* ══════════════════ temarios oficiales ══════════════════
+   Los índices de los temarios, copiados tal cual del BOE (los programas de
+   las convocatorias son actos oficiales, sin derechos de autor: art. 13 de
+   la Ley de Propiedad Intelectual). Solo los títulos de los temas y las
+   reglas del primer test; nada de contenido, que es lo de las academias.
+   Lo genera scratchpad/boe/generar-temarios.js: no se toca a mano. */
+const OPO_CATALOGO = [{"id":"age-auxiliar","ambito":"Administración General del Estado","corto":"Auxiliar Administrativo del Estado","nombre":"Auxiliar Administrativo del Estado","cuerpo":"Cuerpo General Auxiliar de la Administración del Estado (C2)","fuente":{"boe":"BOE-A-2025-26262","fecha":"2025-12-22","anexo":"Anexo I","url":"https://www.boe.es/diario_boe/txt.php?id=BOE-A-2025-26262"},"examen":{"preguntas":110,"opciones":4,"penalizacion":null,"minutos":90,"reserva":10},"nota":"Ejercicio único en dos partes a la vez: 60 preguntas (30 del bloque I y 30 psicotécnicas) y 50 del bloque II, en 90 minutos.","grupos":[["I. Organización pública",["La Constitución Española de 1978. Características. Los principios constitucionales y los valores superiores. Derechos y deberes fundamentales. Su garantía y suspensión.","El Tribunal Constitucional. La reforma de la Constitución. La Corona: funciones constitucionales del Rey. Sucesión y regencia.","Las Cortes Generales: composición, atribuciones y funcionamiento del Congreso de los Diputados y Senado. El Defensor del Pueblo.","El Poder Judicial. El Consejo General del Poder Judicial. El Tribunal Supremo. La organización judicial española.","El Gobierno y la Administración. El Presidente del Gobierno. El Consejo de Ministros. Designación, causas de cese y responsabilidad del Gobierno.","El Gobierno Abierto: concepto y principios informadores. La Agenda 2030 y los Objetivos de Desarrollo Sostenible.","La Ley 19/2013, de 9 de diciembre, de transparencia, acceso a la información pública y buen gobierno.","La Administración General del Estado. Órganos centrales. Órganos superiores y órganos directivos. Órganos territoriales. Otros órganos administrativos. La Administración del Estado en el exterior.","La Organización territorial del Estado. Las Comunidades Autónomas: Constitución y distribución de competencias entre el Estado y las Comunidades Autónomas. La Administración local: entidades que la integran. La provincia, el municipio y la isla.","La organización de la Unión Europea. El Consejo Europeo, el Consejo, el Parlamento Europeo, la Comisión Europea y el Tribunal de Justicia de la Unión Europea.","Las Leyes del Procedimiento Administrativo Común de las Administraciones Públicas y del Régimen Jurídico del Sector Público. El procedimiento administrativo común y sus fases. La revisión de los actos en vía administrativa: revisión de oficio y recursos administrativos. El recurso contencioso-administrativo. Actividad administrativa impugnable. Las partes: capacidad, legitimación, representación y defensa.","La protección de datos personales y su régimen jurídico: principios, derechos y obligaciones.","El personal funcionario al servicio de las Administraciones públicas: concepto y clases. Régimen jurídico. El Registro Central de Personal. Programación de efectivos y Oferta de Empleo Público. Selección. Provisión de puestos de trabajo. Situaciones administrativas de los funcionarios.","Derechos y deberes de los funcionarios. La carrera administrativa. Promoción interna. El sistema de retribuciones e indemnizaciones. Régimen disciplinario. El régimen de la Seguridad Social de los funcionarios.","El presupuesto del Estado en España. Contenido, elaboración y estructura. Fases del ciclo presupuestario.","Políticas de igualdad y contra la violencia de género. Políticas de igualdad de trato y no discriminación de las personas LGTBI. Discapacidad y dependencia: régimen jurídico."]],["II. Actividad administrativa y ofimática",["Atención al público: acogida e información al ciudadano. Atención de personas con discapacidad.","Los servicios de información administrativa. Información general y particular al ciudadano. Iniciativas. Reclamaciones. Quejas. Peticiones.","Concepto de documento, registro y archivo. Funciones del registro y del archivo. Clases de archivo y criterios de ordenación.","Administración electrónica y servicios al ciudadano. La información administrativa. Análisis de principales páginas web de carácter público. Servicios telemáticos. Oficinas integradas de atención al ciudadano. Ventanilla única empresarial. El Punto de Acceso General de la Administración General del Estado.","Informática básica: conceptos fundamentales sobre el hardware y el software. Sistemas de almacenamiento de datos. Sistemas operativos. Nociones básicas de seguridad informática.","Introducción al sistema operativo: el entorno Windows. Fundamentos. Trabajo en el entorno gráfico de Windows: ventanas, iconos, menús contextuales, cuadros de diálogo. El escritorio y sus elementos. El menú inicio. Copilot.","El explorador de Windows. Gestión de carpetas y archivos. Operaciones de búsqueda. Herramientas «Este equipo» y «Acceso rápido». Accesorios. Herramientas del sistema.","Procesadores de texto: Word 365. Principales funciones y utilidades. Creación y estructuración del documento. Gestión, grabación, recuperación e impresión de ficheros. Personalización del entorno de trabajo.","Hojas de cálculo: Excel 365. Principales funciones y utilidades. Libros, hojas y celdas. Configuración. Introducción y edición de datos. Fórmulas y funciones. Gráficos. Gestión de datos. Personalización del entorno de trabajo.","Bases de datos: Access 365. Principales funciones y utilidades. Tablas. Consultas. Formularios. Informes. Relaciones. Importación, vinculación y exportación de datos.","Correo electrónico: Outlook 365. Conceptos elementales y funcionamiento. El entorno de trabajo. Enviar, recibir, responder y reenviar mensajes. Creación de mensajes. Reglas de mensaje. Libreta de direcciones.","La Red Internet: origen, evolución y estado actual. Conceptos elementales sobre protocolos y servicios en Internet. Funcionalidades básicas de los navegadores web."]]]},{"id":"age-administrativo","ambito":"Administración General del Estado","corto":"Administrativo del Estado","nombre":"Administrativo del Estado","cuerpo":"Cuerpo General Administrativo de la Administración del Estado (C1)","fuente":{"boe":"BOE-A-2025-26262","fecha":"2025-12-22","anexo":"Anexo III","url":"https://www.boe.es/diario_boe/txt.php?id=BOE-A-2025-26262"},"examen":{"preguntas":90,"opciones":4,"penalizacion":null,"minutos":100,"reserva":10},"nota":"Ejercicio único: 70 preguntas del programa y un supuesto práctico de 20 preguntas, en 100 minutos.","grupos":[["I. Organización del Estado y de la Administración pública",["La Constitución Española de 1978: estructura y contenido. Derechos y deberes fundamentales. Su garantía y suspensión. El Tribunal Constitucional. El Defensor del Pueblo. Reforma de la Constitución.","La Jefatura del Estado. La Corona: funciones constitucionales del Rey. Sucesión y regencia.","Las Cortes Generales: composición, atribuciones y funcionamiento del Congreso de los Diputados y del Senado.","El Poder Judicial. El Consejo General del Poder Judicial. El Tribunal Supremo. La organización judicial española.","El Gobierno y la Administración. El Presidente del Gobierno. El Consejo de Ministros. Designación, causas de cese y responsabilidad del Gobierno. Las funciones del Gobierno. Relaciones entre el Gobierno y las Cortes Generales.","El Gobierno Abierto: concepto y principios informadores. La Agenda 2030 y los Objetivos de Desarrollo Sostenible.","La Ley 19/2013, de 9 de diciembre, de transparencia, acceso a la información pública y buen gobierno.","La Administración General del Estado. Órganos centrales. Órganos superiores y directivos. Órganos territoriales. La Administración del Estado en el Exterior.","La Organización territorial del Estado: las Comunidades Autónomas. Constitución y distribución de competencias entre el Estado y las Comunidades Autónomas. Estatutos de Autonomía.","La Administración local: entidades que la integran. La provincia, el municipio y la isla.","La organización de la Unión Europea. El Consejo Europeo, el Consejo, el Parlamento Europeo, la Comisión Europea y el Tribunal de Justicia de la Unión Europea. Efectos de la integración europea sobre la organización del Estado español."]],["II. Organización de oficinas públicas",["Atención al público. Atención de personas con discapacidad. Los servicios de información administrativa. Información general y particular al ciudadano. Iniciativas. Reclamaciones. Quejas. Peticiones.","Concepto de documento, registro y archivo. Funciones del registro y del archivo. Clases de archivo y criterios de ordenación.","Administración electrónica y servicios al ciudadano. Análisis de principales páginas web de carácter público. Servicios telemáticos. Oficinas integradas de atención al ciudadano. Ventanilla única empresarial. El Punto de Acceso General de la Administración General del Estado.","La protección de datos personales y su régimen Jurídico: principios, derechos, responsable y encargado del tratamiento, delegado y autoridades de protección de datos. Derechos digitales."]],["III. Derecho administrativo general",["Las fuentes del derecho administrativo. La jerarquía de las fuentes. La ley. Las disposiciones del Ejecutivo con fuerza de ley: decreto-ley y decreto legislativo. El reglamento: concepto, clases y límites. Otras fuentes del derecho administrativo.","El acto administrativo: concepto, clases y elementos. Eficacia y validez de los actos administrativos. Su motivación y notificación.","Las Leyes del Procedimiento Administrativo Común de las Administraciones Públicas y del Régimen Jurídico del Sector Público. Procedimiento administrativo común y su alcance: iniciación, ordenación, instrucción y terminación. La revisión de los actos en vía administrativa: revisión de oficio y recursos administrativos. El recurso contencioso-administrativo. Actividad administrativa impugnable. Las partes: capacidad, legitimación, representación y defensa.","Los contratos del sector público: concepto y clases. Preparación, adjudicación, efectos, cumplimiento y extinción. La revisión de precios y otras alteraciones contractuales. Régimen de invalidez y recursos.","Procedimientos y formas de la actividad administrativa. La actividad de limitación, arbitral, de servicio público y de fomento. Formas de gestión de los servicios públicos.","La responsabilidad patrimonial de las Administraciones públicas. Concepto y clases. Requisitos generales. Efectos.","Políticas de igualdad y contra la violencia de género. Políticas de igualdad de trato y no discriminación de las personas LGTBI. Discapacidad y dependencia: régimen jurídico."]],["IV. Gestión de personal",["El personal al servicio de las Administraciones públicas: concepto y clases. El texto refundido del Estatuto Básico del Empleado Público y demás normativa de aplicación. Las competencias en materia de personal. El Registro Central de Personal.","Selección de personal. Los procesos selectivos en la Administración pública y su conexión con la Oferta de Empleo Público. Principios constitucionales. Acceso al empleo público y provisión de puestos de trabajo de las personas con discapacidad.","El personal funcionario al servicio de las Administraciones públicas: funcionarios de carrera y funcionarios interinos. La selección de los funcionarios.","Adquisición y pérdida de la condición de funcionario. Situaciones administrativas de los funcionarios. Supuestos y efectos de cada una de ellas.","Provisión de puestos de trabajo en la función pública. Los deberes y derechos de los funcionarios. La carrera administrativa. Promoción interna.","Las incompatibilidades. Régimen disciplinario: faltas, sanciones y procedimiento.","El régimen de la Seguridad Social de los funcionarios. La MUFACE y las clases pasivas.","El personal laboral al servicio de las Administraciones públicas. Selección. Derechos, deberes e incompatibilidades. El IV Convenio único para el personal laboral de la Administración General del Estado: ámbito de aplicación y sistema de clasificación.","El régimen de la Seguridad Social del personal laboral. La acción protectora. Tipos y características de las prestaciones."]],["V. Gestión financiera",["El presupuesto: concepto. Los principios presupuestarios. El ciclo presupuestario. El presupuesto por programas: concepto y fases. Terminología y desarrollo del proceso presupuestario.","El presupuesto del Estado en España: concepto y estructura. Los créditos presupuestarios: clasificación. Gastos plurianuales. Las modificaciones presupuestarias: créditos extraordinarios y suplementos de crédito. Ampliaciones de crédito. Generaciones de crédito. Transferencias de crédito. Incorporaciones de crédito. Anticipos de tesorería.","El procedimiento administrativo de ejecución del presupuesto de gasto. Órganos competentes. Fases del procedimiento y sus documentos contables. Compromisos de gasto para ejercicios posteriores. La ordenación del pago: concepto y competencia. Realización del pago: modos y perceptores. Control del gasto público. Clases. Especial referencia al control de legalidad. El Tribunal de Cuentas.","Las retribuciones e indemnizaciones de los funcionarios públicos y del personal laboral al servicio de la Administración pública. Nóminas: estructura y normas de confección. Altas y bajas: su justificación. Retribuciones básicas: sueldos, trienios, pagas extraordinarias. Retribuciones complementarias y otras remuneraciones. Devengo y liquidación de derechos económicos. El pago de las retribuciones del personal en activo. Formas de pago.","Gastos para la compra de bienes y servicios. Gastos de inversión. Gastos de transferencias: corrientes y de capital. Pagos: concepto y tipos. Pagos por obligaciones presupuestarias. Anticipos de caja fija. Pagos «a justificar». Justificación de libramientos.","Gestión económica y financiera de los contratos del sector público. Gestión económica y financiera de subvenciones."]],["VI. Informática básica y ofimática",["Informática básica: conceptos fundamentales sobre el hardware y el software. Sistemas de almacenamiento de datos. Sistemas operativos. Nociones básicas de seguridad informática.","Introducción al sistema operativo: el entorno Windows. Fundamentos. Trabajo en el entorno gráfico de Windows: ventanas, iconos, menús contextuales, cuadros de diálogo. El escritorio y sus elementos. El menú inicio. Copilot.","El explorador de Windows. Gestión de carpetas y archivos. Operaciones de búsqueda. Herramientas «Este equipo» y «Acceso rápido». Accesorios. Herramientas del sistema.","Procesadores de texto: Word 365. Principales funciones y utilidades. Creación y estructuración del documento. Gestión, grabación, recuperación e impresión de ficheros. Personalización del entorno de trabajo.","Hojas de cálculo: Excel 365. Principales funciones y utilidades. Libros, hojas y celdas. Configuración. Introducción y edición de datos. Fórmulas y funciones. Gráficos. Gestión de datos. Personalización del entorno de trabajo.","Bases de datos: Access 365. Principales funciones y utilidades. Tablas. Consultas. Formularios. Informes. Relaciones. Importación, vinculación y exportación de datos.","Correo electrónico: Outlook 365. Conceptos elementales y funcionamiento. El entorno de trabajo. Enviar, recibir, responder y reenviar mensajes. Creación de mensajes. Reglas de mensaje. Libreta de direcciones.","La Red Internet: origen, evolución y estado actual. Conceptos elementales sobre protocolos y servicios en Internet. Funcionalidades básicas de los navegadores web."]]]},{"id":"age-tai","ambito":"Administración General del Estado","corto":"Técnico Auxiliar de Informática (TAI)","nombre":"Técnico Auxiliar de Informática del Estado","cuerpo":"Cuerpo de Técnicos Auxiliares de Informática de la Administración del Estado (C1)","fuente":{"boe":"BOE-A-2025-26262","fecha":"2025-12-22","anexo":"Anexo V","url":"https://www.boe.es/diario_boe/txt.php?id=BOE-A-2025-26262"},"examen":{"preguntas":100,"opciones":4,"penalizacion":null,"minutos":120,"reserva":10},"nota":"Ejercicio único: 80 preguntas del programa y un supuesto práctico de 20 preguntas, en 120 minutos.","grupos":[["I. Organización del Estado y Administración electrónica",["La Constitución Española de 1978. Derechos y deberes fundamentales. Su garantía y suspensión. La Corona: funciones constitucionales del Rey.","Las Cortes Generales: atribuciones del Congreso de los Diputados y del Senado. El Tribunal Constitucional: composición y atribuciones. El Defensor del Pueblo.","El Gobierno: composición, nombramiento y cese. Las funciones del Gobierno. Relaciones entre el Gobierno y las Cortes Generales.","El texto refundido del Estatuto Básico del Empleo Público y demás normativa de aplicación: derechos y deberes, formas de provisión de puestos, promoción interna y carrera profesional; situaciones administrativas, incompatibilidades y régimen sancionador. La Ley 19/2013, de 9 de diciembre, de transparencia, acceso a la información pública y buen gobierno. La Agenda 2030 y los Objetivos de Desarrollo Sostenible.","Políticas de igualdad y contra la violencia de género. Políticas de igualdad de trato y no discriminación de las personas LGTBI. Discapacidad y dependencia: régimen jurídico.","La sociedad de la información. Identidad y firma electrónica: régimen jurídico. El DNI electrónico. La Agenda Digital para España.","La protección de datos personales y su régimen jurídico: principios, derechos y obligaciones. Derechos digitales.","Acceso electrónico de los ciudadanos a los servicios públicos y normativa de desarrollo. La gestión electrónica de los procedimientos administrativos: registros, notificaciones y uso de medios electrónicos. Esquema Nacional de Seguridad y de Interoperabilidad. Normas técnicas de Interoperabilidad.","Instrumentos para el acceso electrónico a las Administraciones públicas: sedes electrónicas, canales y puntos de acceso, identificación y autenticación. Infraestructuras y servicios comunes en materia de administración electrónica."]],["II. Tecnología básica",["Informática básica. Representación y comunicación de la información: elementos constitutivos de un sistema de información. Características y funciones. Arquitectura de ordenadores. Componentes internos de los equipos microinformáticos.","Periféricos: conectividad y administración. Elementos de impresión. Elementos de almacenamiento. Elementos de visualización y digitalización.","Tipos abstractos y Estructuras de datos. Organizaciones de ficheros. Algoritmos. Formatos de información y ficheros.","Sistemas operativos. Características y elementos constitutivos. Sistemas Windows. Sistemas Unix y Linux. Sistemas operativos para dispositivos móviles.","Sistemas de gestión de bases de datos relacionales, orientados a objetos y NoSQL: características y componentes."]],["III. Desarrollo de sistemas",["Modelado de datos, metodologías y reglas. Entidades, atributos y relaciones. Diseño de bases de datos. Diseño lógico y físico. El modelo lógico relacional. Normalización.","Lenguajes de programación. Representación de tipos de datos. Operadores. Instrucciones condicionales. Bucles y recursividad. Procedimientos, funciones y parámetros. Vectores y registros. Estructura de un programa.","Lenguajes de interrogación de bases de datos. Estándar ANSI SQL. Procedimientos almacenados. Eventos y disparadores.","Diseño y programación orientada a objetos. Elementos y componentes software: objetos, clases, herencia, métodos, sobrecarga. Ventajas e inconvenientes. Patrones de diseño y lenguaje de modelado unificado (UML).","Arquitectura Java EE/Jakarta EE y plataforma.NET: componentes, persistencia y seguridad. Características, elementos, lenguajes y funciones en ambos entornos. Desarrollo de interfaces.","Arquitectura de sistemas cliente/servidor y multicapas: componentes y operación. Arquitecturas de servicios web y protocolos asociados.","Aplicaciones web. Desarrollo web front-end y en servidor, multiplataforma y multidispositivo. Lenguajes: HTML, XML y sus derivaciones. Navegadores y lenguajes de programación web. Lenguajes de script.","Accesibilidad, diseño universal y usabilidad. Acceso y usabilidad de las tecnologías, productos y servicios relacionados con la sociedad de la información. Confidencialidad y disponibilidad de la información en puestos de usuario final. Conceptos de seguridad en el desarrollo de los sistemas.","Repositorios: estructura y actualización. Generación de código y documentación. Metodologías de desarrollo. Pruebas. Programas para control de versiones. Plataformas de desarrollo colaborativo de software."]],["IV. Sistemas y comunicaciones",["Administración del Sistema operativo y software de base. Actualización, mantenimiento y reparación del sistema operativo.","Administración de bases de datos. Sistemas de almacenamiento y su virtualización. Políticas, sistemas y procedimientos de backup y su recuperación. Backup de sistemas físicos y virtuales. Virtualización de sistemas y virtualización de puestos de usuario.","Administración de servidores de correo electrónico sus protocolos. Administración de contenedores y microservicios.","Administración de redes de área local. Gestión de usuarios. Gestión de dispositivos. Monitorización y control de tráfico.","Conceptos de seguridad de los sistemas de información. Seguridad física. Seguridad lógica. Amenazas y vulnerabilidades. Técnicas criptográficas y protocolos seguros. Mecanismos de firma digital. Infraestructura física de un CPD: acondicionamiento y equipamiento. Sistemas de gestión de incidencias. Control remoto de puestos de usuario.","Comunicaciones. Medios de transmisión. Modos de comunicación. Equipos terminales y equipos de interconexión y conmutación. Redes de comunicaciones. Redes de conmutación y redes de difusión. Comunicaciones móviles e inalámbricas.","El modelo TCP/IP y el modelo de referencia de interconexión de sistemas abiertos (OSI) de ISO. Protocolos TCP/IP.","Internet: arquitectura de red. Origen, evolución y estado actual. Principales servicios. Protocolos HTTP, HTTPS y SSL/TLS.","Seguridad y protección en redes de comunicaciones. Seguridad perimetral. Acceso remoto seguro a redes. Redes privadas virtuales (VPN). Seguridad en el puesto del usuario.","Redes locales. Tipología. Técnicas de transmisión. Métodos de acceso. Dispositivos de interconexión."]]]},{"id":"age-gestion","ambito":"Administración General del Estado","corto":"Gestión del Estado (A2)","nombre":"Gestión de la Administración Civil del Estado","cuerpo":"Cuerpo de Gestión de la Administración Civil del Estado (A2)","fuente":{"boe":"BOE-A-2025-26262","fecha":"2025-12-22","anexo":"Anexo VII","url":"https://www.boe.es/diario_boe/txt.php?id=BOE-A-2025-26262"},"examen":{"preguntas":100,"opciones":4,"penalizacion":null,"minutos":90,"reserva":5},"nota":"Primer ejercicio: 100 preguntas en 90 minutos. Después, un supuesto práctico escrito.","grupos":[["I. Organización del Estado y de la Administración Pública",["La Constitución Española de 1978: estructura y contenido. La reforma de la Constitución.","Derechos y deberes fundamentales. Su garantía y suspensión. El Defensor del Pueblo.","El Tribunal Constitucional. Organización, composición y atribuciones.","La Corona. Funciones constitucionales del Rey. Sucesión y regencia. El refrendo.","El poder legislativo. Las Cortes Generales. Composición y atribuciones del Congreso de los Diputados y del Senado.","El poder ejecutivo. El Presidente del Gobierno y el Consejo de Ministros. Relaciones entre el Gobierno y las Cortes Generales. Designación, causas de cese y responsabilidad del Gobierno. El Consejo de Estado.","El Poder Judicial. El principio de unidad jurisdiccional. El Consejo General del Poder Judicial. La organización judicial española.","La Administración General del Estado. Principios de organización y funcionamiento. Órganos centrales. Órganos superiores y órganos directivos: creación, nombramiento, cese y funciones. Los servicios comunes de los ministerios. Órganos territoriales. La Administración del Estado en el Exterior.","El sector público institucional: entidades que lo integran y régimen jurídico.","Organización territorial (I): las Comunidades Autónomas. Los Estatutos de Autonomía. Organización política y administrativa. La delimitación de competencias entre el Estado y las Comunidades Autónomas en la Constitución y en los Estatutos de Autonomía.","Organización territorial (II): la Administración local: entidades que la integran. La autonomía local. El municipio: organización y competencias. La provincia: organización y competencias."]],["II. Unión Europea",["La Unión Europea: Antecedentes. Objetivos y naturaleza jurídica. Los Tratados originarios y modificativos. El Tratado de la Unión Europea y el Tratado de Funcionamiento de la Unión Europea. El proceso de ampliación. Las cooperaciones reforzadas.","La organización de la Unión Europea (I): el Consejo Europeo, el Consejo y la Comisión Europea. Composición y funciones. El procedimiento decisorio. La participación de los Estados miembros en las diferentes fases del proceso.","La organización de la Unión Europea (II): el Parlamento Europeo. El Tribunal de Justicia de la Unión Europea. El Tribunal de Cuentas. El Banco Central Europeo.","Las fuentes del derecho de la Unión Europea. Derecho originario. Derecho derivado: Reglamentos, directivas y decisiones. Otras fuentes. Las relaciones entre el Derecho de la Unión Europea y el ordenamiento jurídico de los Estados miembros.","El presupuesto comunitario. Los fondos europeos. La cohesión económica y social.","Políticas de la Unión Europea: mercado interior. Política económica y monetaria. Política exterior y de seguridad común. El espacio de seguridad, libertad y justicia. Defensa de la competencia. Política agrícola y pesquera."]],["III. Políticas públicas",["Políticas de modernización de la Administración General del Estado. La Administración electrónica. Acceso electrónico de los ciudadanos a los servicios públicos. La Agenda Digital para España. La calidad de los servicios públicos y de atención al ciudadano. Mejora Regulatoria y Análisis de Impacto Normativo.","Política económica actual. Política presupuestaria. Evolución y distribución actual del gasto público. Política fiscal. La unidad de mercado.","Política ambiental. Distribución de competencias. Conservación de la biodiversidad. Prevención de la contaminación y el cambio climático.","La Seguridad Social: estructura y financiación. Problemas actuales y líneas de actuación. El régimen general y los regímenes especiales. La acción protectora de la Seguridad Social. Tipos y características de las prestaciones.","La evolución del empleo en España. Los servicios públicos de empleo: régimen de prestaciones y políticas de empleo.","Política de inmigración. Régimen de los extranjeros en España. Derecho de asilo y condición de refugiado.","El Gobierno Abierto: concepto, principios informadores y planes de acción de España. La Ley 19/2013, de 9 de diciembre, de transparencia, acceso a la información pública y buen gobierno.","La protección de datos personales y su régimen jurídico: principios, derechos, responsable y encargado del tratamiento, delegado y autoridades de protección de datos. Derechos digitales.","Políticas de igualdad y contra la violencia de género: régimen jurídico. Políticas de igualdad de trato y no discriminación de las personas LGTBI. Discapacidad y dependencia: régimen jurídico.","Otras políticas públicas. El sistema sanitario: distribución de competencias, gestión y financiación. Política exterior y de cooperación al desarrollo. Régimen de telecomunicaciones y desarrollo de la sociedad de la información. La Agenda 2030 y los Objetivos de Desarrollo Sostenible."]],["IV. Derecho administrativo general",["Las fuentes del derecho administrativo: concepto y clases. La jerarquía de las fuentes.","La ley. Tipos de leyes. Reserva de ley. Disposiciones del Gobierno con fuerza de ley: decreto-ley y decreto legislativo.","El reglamento: concepto, clases y límites. Los principios generales del Derecho. Los tratados internacionales.","El acto administrativo: concepto, clases y elementos. Eficacia y validez de los actos administrativos. Su motivación y notificación.","Los contratos del sector público (I): concepto, clases y elementos. Preparación, adjudicación, efectos, cumplimiento y extinción. La revisión de precios y otras alteraciones contractuales. Régimen de invalidez y recursos.","Los contratos regulados por la Ley de Contratos del Sector Público (II). Tipos. Características generales.","Procedimientos y formas de la actividad administrativa. La actividad de intervención, arbitral, de servicio público y de fomento. Formas de gestión de los servicios públicos. Ayudas y subvenciones públicas: régimen jurídico.","La expropiación forzosa: concepto, naturaleza y elementos. Procedimientos de expropiación. Garantías jurisdiccionales.","El régimen patrimonial de las Administraciones públicas. El dominio público. Los bienes patrimoniales del Estado. El Patrimonio Nacional. Los bienes comunales.","La responsabilidad patrimonial de las Administraciones públicas. Procedimiento de responsabilidad patrimonial.","Las Leyes del Procedimiento Administrativo Común de las Administraciones Públicas y del Régimen Jurídico del Sector Público. Procedimiento administrativo común y su alcance: iniciación, ordenación, instrucción y terminación. La obligación de resolver. El silencio administrativo.","Los derechos de los ciudadanos en el procedimiento administrativo. Las garantías en el desarrollo del procedimiento. La revisión de los actos en vía administrativa: revisión de oficio y recursos administrativos.","La jurisdicción contencioso-administrativa: funciones, órganos y competencias. El recurso contencioso-administrativo. Actividad administrativa impugnable. Las partes: capacidad, legitimación, representación y defensa."]],["V. Administración de recursos humanos",["El personal al servicio de las Administraciones públicas: concepto y clases. Adquisición y pérdida de la relación de servicio. Régimen jurídico.","Derechos y deberes del personal al servicio de las Administraciones Públicas. Régimen disciplinario.","Planificación de recursos humanos. Ofertas de empleo público. Selección de personal. Las competencias en materia de personal.","Formas de provisión de puestos de trabajo y movilidad en la Administración del Estado. Promoción interna y carrera profesional.","Situaciones administrativas del personal al servicio de las administraciones públicas. Incompatibilidades.","El sistema de retribuciones de los funcionarios. Retribuciones básicas y retribuciones complementarias. Las indemnizaciones por razón del servicio.","El personal laboral al servicio de las Administraciones públicas: su régimen jurídico. El IV Convenio Único para el personal laboral al servicio de la Administración General del Estado: ámbito de aplicación y sistema de clasificación.","Negociación colectiva, representación y participación institucional de los empleados públicos. El derecho de huelga y su ejercicio.","El régimen especial de la Seguridad Social de los funcionarios civiles del Estado. MUFACE y las clases pasivas: acción protectora. Concepto y clases de prestaciones. Derechos pasivos.","Acceso al empleo público y provisión de puestos de trabajo de las personas con discapacidad."]],["VI. Gestión financiera y Seguridad Social",["El presupuesto. Concepto y clases. La Ley General Presupuestaria: principios generales y estructura. Las leyes de estabilidad presupuestaria.","Las leyes anuales de presupuestos. Su contenido. El presupuesto del Estado. Principios de programación y de gestión. Contenido, elaboración y estructura. Desglose de aplicaciones presupuestarias.","Gastos plurianuales. Modificaciones de los créditos iniciales. Transferencias de crédito. Créditos extraordinarios. Suplementos de crédito. Ampliaciones de créditos. Incorporaciones de créditos. Generaciones de créditos.","Control del gasto público en España. La Intervención General de la Administración del Estado. Función interventora, control financiero permanente y auditoría pública. El Tribunal de Cuentas.","El procedimiento administrativo de ejecución del presupuesto de gasto. Órganos competentes. Fases del procedimiento y su relación con la actuación administrativa. Especial referencia a la contratación administrativa y la gestión de subvenciones. Documentos contables que intervienen en la ejecución de los gastos y de los pagos. Gestión de la tesorería del Estado.","Gastos para la compra de bienes y servicios. Gastos de inversión. Gastos de transferencias: corrientes y de capital. Anticipos de caja fija. Pagos «a justificar». Justificación de libramientos.","Los ingresos públicos: concepto y clasificación. El sistema tributario español: régimen actual. Especial referencia al régimen de tasas y precios públicos.","Retribuciones de los funcionarios públicos. Nóminas: estructura y normas de confección. Altas y bajas, su justificación. Ingresos en formalización. Devengo y liquidación de derechos económicos."]]]},{"id":"just-auxilio","ambito":"Administración de Justicia","corto":"Auxilio Judicial","nombre":"Auxilio Judicial","cuerpo":"Cuerpo de Auxilio Judicial (C2)","fuente":{"boe":"BOE-A-2025-27053","fecha":"2025-12-30","anexo":"Anexo VI.c","url":"https://www.boe.es/diario_boe/txt.php?id=BOE-A-2025-27053"},"examen":{"preguntas":100,"opciones":4,"penalizacion":0.25,"minutos":100,"reserva":4},"nota":"Primer ejercicio: 100 preguntas en 100 minutos; cada acierto vale 0,60 y cada fallo resta 0,15 (un cuarto). Después, 40 preguntas sobre dos casos prácticos.","grupos":[["",["La Constitución española de 1978: Estructura y contenido. Las atribuciones de la Corona. Las Cortes Generales: Composición, atribuciones y funcionamiento. La elaboración de las leyes. El Tribunal Constitucional. Composición y funciones.","Derecho de igualdad y no discriminación por razón de género: especial referencia a la Ley Orgánica 3/2007, para la Igualdad Efectiva de Mujeres y Hombres. La Ley Orgánica 1/2004, de Medidas de Protección Integral contra la Violencia de Género. Antecedentes. Objeto y principios rectores. Medidas de sensibilización, prevención y detección. Derechos de las mujeres víctimas de la violencia de género. Tutela institucional. Ley 15/2022, de 12 de julio, integral para la igualdad de trato y la no discriminación. La Ley 4/2023, de 28 de febrero, para la igualdad real y efectiva de las personas trans y para la garantía de los derechos de las personas LGTBI.","El Gobierno y la Administración. El Presidente del Gobierno. El Consejo de Ministros. Organización administrativa española: Ministros, Secretarios de Estado, Subsecretarios y Directores Generales. La Administración periférica del Estado. Los Delegados de Gobierno en la Comunidad Autónoma y los Subdelegados de Gobierno. La Secretaria de Estado de Justicia: Principales competencias.","Organización territorial del Estado en la Constitución. Las Comunidades Autónomas: Su constitución y competencias. Los Estatutos de Autonomía. La Administración Local. La provincia y el municipio.","La Unión Europea. Competencias de la Unión Europea. Instituciones y órganos de la Unión Europea: el Parlamento Europeo, el Consejo Europeo, el Consejo de la Unión Europea, la Comisión Europea, el Tribunal de Justicia de la Unión Europea y el Tribunal de Cuentas.","El Poder Judicial. El Consejo General del Poder Judicial: composición y funciones. La jurisdicción: Jueces y Magistrados. La independencia judicial. El Ministerio Fiscal: Organización y funciones.","Organización y competencia del Tribunal Supremo, de la Audiencia Nacional, de los Tribunales Superiores de Justicia y de las Audiencias Provinciales.","De los Tribunales de Instancia y del Tribunal Central de Instancia. Organización y competencia de los Tribunales de Instancia: Sección Única, Secciones Civil, De Instrucción, De Familia, Infancia y Capacidad, De lo Mercantil, De Violencia sobre la Mujer, De Violencia contra la Infancia y la Adolescencia, De lo Penal, De Menores, De Vigilancia Penitenciaria, De lo Contencioso-Administrativo y De lo Social. La Sección de lo Mercantil del Tribunal de Instancia de Alicante: Tribunal de Marca de la Unión Europea. Los jueces o juezas de Paz, Oficina de Justicia en el Municipio, las Agrupaciones de Oficinas de Justicia: Organización y competencias, elección del Juez o Jueza de Paz, la Secretaría de las Oficinas de Justicia.","La carta de Derechos de los Ciudadanos ante la Justicia. Derechos de información, de atención y gestión, de identificación de actuaciones y funcionarios, derechos lingüísticos. Derechos frente a los profesionales que asisten y representan al ciudadano: Abogados, Procuradores, Graduados Sociales. El Derecho a la Justicia Gratuita.","La modernización de la oficina judicial: Nuevo modelo de organización judicial. La eficiencia organizativa del Servicio Público de Justicia para la implantación de los Tribunales de Instancia y las Oficinas de Justicia en los municipios: su regulación en la Ley Orgánica del Poder Judicial. La Administración de justicia y las nuevas tecnologías: Presentación de escritos y documentos por vía telemática. Concepto de expediente digital y firma digital. La Videoconferencia. Incidencia de la legislación de protección de datos en el uso de las aplicaciones informáticas.","El Letrado de la Administración de Justicia en la Ley Orgánica del Poder Judicial: funciones y competencias. Ordenación del cuerpo superior jurídico de Letrados de la Administración de Justicia: Secretario de Gobierno y Secretarios Coordinadores.","Cuerpos de Funcionarios al servicio de la Administración de Justicia. Cuerpos Generales y Cuerpos Especiales: Definición y Cuerpos que los integran. Cuerpos Especiales: El Cuerpo de Médicos Forenses: Funciones.","Los Cuerpos Generales (I): Funciones. Formas de acceso. Promoción interna. Adquisición y pérdida de la condición de funcionario. La rehabilitación. Derechos, deberes e incompatibilidades. Jornada y horarios. Vacaciones, permisos y licencias.","Los Cuerpos Generales (II): Situaciones administrativas. Ordenación de la actividad profesional. Provisión de puestos de trabajo. Régimen disciplinario.","Libertad sindical. El Sindicato en la Constitución Española. Elecciones sindicales según la Ley de órganos de representación y el Estatuto Básico del Empleado Público. El derecho de huelga. Salud y prevención de riesgos laborales.","Los procedimientos declarativos en la Ley de Enjuiciamiento Civil 1/2000: juicio ordinario; juicio verbal; procedimientos especiales. Nociones generales de los procesos especiales en la Ley de Enjuiciamiento Civil. Especial consideración a los procesos matrimoniales y al procedimiento monitorio; el requerimiento de pago en el juicio monitorio. Medios adecuados de solución de controversias en vía no jurisdiccional. Nociones generales de jurisdicción voluntaria.","Los procedimientos de ejecución en la Ley de Enjuiciamiento Civil. La ejecución dineraria, no dineraria y supuestos especiales: nociones básicas Las medidas cautelares. Diligencia de embargo, diligencia de lanzamiento, remociones y depósitos judiciales.","Los procedimientos penales en la Ley de Enjuiciamiento Criminal: ordinario, abreviado, juicio sobre delitos leves y de jurado. Especial mención a los Juicios Rápidos. Breve referencia al procedimiento restaurativo.","Los procedimientos contencioso-administrativos: ordinario, abreviado y especiales.","El proceso laboral. Procedimiento ordinario. Procedimiento por despido. Procesos de seguridad social.","Los actos procesales. Requisitos de los actos procesales: a) lugar; b) tiempo: Términos y plazos: Cómputo de los plazos; c) forma (consideración de la lengua oficial). Defectos de los actos: Nulidad, anulabilidad, irregularidad; subsanación de defectos.","Las resoluciones de los órganos judiciales. Clases de resoluciones judiciales: Contenido y características. Las resoluciones de los órganos judiciales colegiados. Las resoluciones del Letrado de la Administración de Justicia.","Los actos de comunicación con otros Tribunales y Autoridades: oficios y mandamientos. El auxilio judicial: los exhortos y los mandamientos en el proceso penal. Cooperación jurídica internacional: las comisiones rogatorias.","Actos de comunicación a las partes y otros intervinientes en el proceso: notificaciones, requerimientos, citaciones y emplazamientos. Notificaciones, citaciones y mandamientos en el proceso penal. Formas de notificación y nuevas tecnologías.","El Registro Civil. Estructura del Registro Civil. Las Oficinas del Registro Civil: Oficina Central, Oficinas Generales y Oficinas Consulares y sus funciones. Hechos y actos inscribibles en el Registro Civil. Las inscripciones: Inscripción de nacimiento y filiación; inscripciones relativas al matrimonio; inscripción del fallecimiento. Otras inscripciones. Certificaciones. Expedientes del Registro Civil.","Conceptos de archivo judicial y de documentación judicial en relación con la legislación vigente en materia de archivos judiciales. Formas de remisión de documentación judicial y relaciones documentales. Nuevas tecnologías en los archivos judiciales de gestión. Las juntas de expurgo de la documentación judicial."]]]},{"id":"just-tramitacion","ambito":"Administración de Justicia","corto":"Tramitación Procesal","nombre":"Tramitación Procesal y Administrativa","cuerpo":"Cuerpo de Tramitación Procesal y Administrativa (C1)","fuente":{"boe":"BOE-A-2025-27053","fecha":"2025-12-30","anexo":"Anexo VI.b","url":"https://www.boe.es/diario_boe/txt.php?id=BOE-A-2025-27053"},"examen":{"preguntas":100,"opciones":4,"penalizacion":0.25,"minutos":100,"reserva":4},"nota":"Primer ejercicio: 100 preguntas de los temas 1 a 31 en 100 minutos; cada fallo resta un cuarto. Después, un caso práctico de 10 preguntas y 20 preguntas de Windows y Office.","grupos":[["Programa (temas 1 a 31)",["La Constitución española de 1978: Estructura y contenido. Las atribuciones de la Corona. Las Cortes Generales: Composición, atribuciones y funcionamiento. La elaboración de las leyes. El Tribunal Constitucional. Composición y funciones.","Derecho de igualdad y no discriminación por razón de género: especial referencia a la Ley Orgánica 3/2007, para la Igualdad Efectiva de Mujeres y Hombres. La Ley Orgánica 1/2004, de Medidas de Protección Integral contra la Violencia de Género. Antecedentes. Objeto y principios rectores. Medidas de sensibilización, prevención y detección. Derechos de las mujeres víctimas de la violencia de género. Tutela institucional. Ley 15/2022, de 12 de julio, integral para la igualdad de trato y la no discriminación. La Ley 4/2023, de 28 de febrero, para la igualdad real y efectiva de las personas trans y para la garantía de los derechos de las personas LGTBI.","El Gobierno y la Administración. El Presidente del Gobierno. El Consejo de Ministros. Organización administrativa española: Ministros, Secretarios de Estado, Subsecretarios y Directores Generales. La Administración periférica del Estado. Los Delegados de Gobierno en la Comunidad Autónoma y los Subdelegados de Gobierno. La Secretaria de Estado de Justicia: Principales competencias.","Organización territorial del Estado en la Constitución. El Estado de las Autonomías. Las Comunidades Autónomas: Su constitución y competencias. Los Estatutos de Autonomía. La Administración Local. La provincia y el municipio.","La Unión Europea. Competencias de la UE. Instituciones y órganos de la Unión Europea: el Parlamento Europeo, el Consejo Europeo, el Consejo de la Unión Europea, la Comisión Europea, el Tribunal de Justicia de la Unión Europea, el Tribunal de Cuentas.","El Poder Judicial. El Consejo General del Poder Judicial: composición y funciones. La jurisdicción: Jueces y Magistrados: Funciones y competencias. La independencia judicial. El Ministerio Fiscal: Organización y funciones. Sistemas de acceso a las carreras judicial y fiscal.","Examen de la organización y competencia del Tribunal Supremo, de la Audiencia Nacional, de los Tribunales Superiores y de las Audiencias Provinciales.","De los Tribunales de Instancia y del Tribunal Central de Instancia. Examen de la organización y competencia de los Tribunales de Instancia: Sección Única, Secciones Civil, De Instrucción, De Familia, Infancia y Capacidad, De lo Mercantil, De Violencia sobre la Mujer, De Violencia contra la Infancia y la Adolescencia, De lo Penal, De Menores, De Vigilancia Penitenciaria, De lo Contencioso-Administrativo y De lo Social. La Sección de lo Mercantil del Tribunal de Instancia de Alicante: Tribunal de Marca de la Unión Europea. Los jueces o juezas de Paz, Oficina de Justicia en el Municipio, las Agrupaciones de Oficinas de Justicia: Organización y competencias, elección del Juez o Jueza de Paz, la Secretaría de las Oficinas de Justicia.","La carta de Derechos de los Ciudadanos ante la Justicia. Derechos de información, de atención y gestión, de identificación de actuaciones y funcionarios, derechos lingüísticos. Derechos frente a los profesionales que asisten y representan al ciudadano: Abogados, Procuradores, Graduados Sociales. El Derecho a la Justicia Gratuita en la Carta de Derechos. El plan de Transparencia Judicial.","La modernización de la oficina judicial. Nuevo modelo de organización judicial: La eficiencia organizativa del Servicio Público de Justicia para la implantación de los Tribunales de Instancia y las Oficinas de Justicia en los municipios: su regulación en la Ley Orgánica del Poder Judicial. La administración de justicia y las nuevas tecnologías. Código de Conducta para usuarios de equipos y sistemas informáticos al servicio de la Administración de Justicia. El expediente digital y la presentación telemática de escritos y documentos. La firma digital, el correo electrónico. Incidencia de la legislación de protección de datos en el uso de las aplicaciones informáticas.","El Letrado de la Administración de Justicia en la Ley Orgánica del Poder Judicial: funciones y competencias. Ordenación del cuerpo superior jurídico de Letrados de la Administración de Justicia: Secretario de Gobierno y Secretarios Coordinadores.","Cuerpos de Funcionarios al servicio de la Administración de Justicia. Cuerpos Generales y Cuerpos Especiales: Definición y Cuerpos que los integran. Cuerpos Especiales: El Cuerpo de Médicos Forenses: Funciones.","Los Cuerpos Generales (I): Funciones. Formas de acceso. Promoción interna. Adquisición y pérdida de la condición de funcionarios. La rehabilitación. Derechos, deberes e incompatibilidades. Jornada y horarios. Vacaciones, permisos y licencias.","Los Cuerpos Generales (II): Situaciones administrativas. Ordenación de la actividad profesional. Provisión de puestos de trabajo. Régimen disciplinario.","Libertad sindical: El Sindicato en la Constitución Española. Elecciones sindicales según la Ley de órganos de representación y el Estatuto Básico del Empleado Público. El derecho de huelga. Salud y prevención de riesgos laborales.","Medios adecuados de solución de controversias en vía no jurisdiccional. Los procedimientos declarativos en la Ley de Enjuiciamiento Civil: juicio ordinario y verbal.","Los procedimientos de ejecución en la Ley de Enjuiciamiento Civil. Clases de ejecución: disposiciones generales de cada una de ellas. Especial referencia a la libranza de mandamientos, efectividad de los embargos acordados en el decreto acordando medidas ejecutivas concretas para llevar a cabo lo dispuesto por la orden general de ejecución y en los decretos de mejora, averiguación patrimonial, preparación procesal de la vía de apremio de muebles e inmuebles, actas de celebración de subastas y trámite de depósito judicial. Las medidas cautelares.","Procesos especiales en la Ley de Enjuiciamiento Civil. Especial consideración a los procesos matrimoniales y al proceso monitorio. El requerimiento de pago en el procedimiento monitorio. El juicio cambiario.","La jurisdicción voluntaria: Naturaleza y clases de procedimientos. Especial referencia a los actos de conciliación.","Los procedimientos penales en la Ley de Enjuiciamiento Criminal; ordinario, abreviado y de jurado. Breve referencia al procedimiento restaurativo.","Procedimiento de juicio sobre delitos leves. Juicios Rápidos. La ejecución en el proceso penal, con especial referencia a la ejecución de los delitos leves. La pieza de responsabilidad civil en el proceso penal.","Recurso contencioso-administrativo. Procedimientos ordinarios, abreviados y especiales.","El proceso laboral. Procedimiento ordinario. Procedimiento por despido. Procesos de seguridad social.","Recursos. Cuestiones generales sobre el derecho al recurso. El depósito para recurrir. Los recursos en el ámbito civil: Reposición, revisión contra resoluciones del Letrado de la Administración de Justicia, queja, apelación y casación. Los recursos en el procedimiento penal: reforma, apelación, queja, recurso de casación y el recurso de revisión de sentencias firmes. Los recursos contra las resoluciones del Letrado de la Administración de Justicia.","Los actos procesales. Requisitos de los actos procesales: a) lugar; b) tiempo: Términos y plazos: Cómputo de los plazos; c) forma (consideración de la lengua oficial). Defectos de los actos: Nulidad, anulabilidad, irregularidad; subsanación de defectos.","Las resoluciones de los órganos judiciales. Clases de resoluciones judiciales: Contenido y características. Las resoluciones de los órganos judiciales colegiados. Las resoluciones del Letrado de la Administración de Justicia.","Los actos de comunicación con otros Tribunales y Autoridades: oficios y mandamientos. El auxilio judicial: los exhortos y los mandamientos en el proceso penal. Cooperación jurídica internacional: las comisiones rogatorias.","Actos de comunicación a las partes y otros intervinientes en el proceso: notificaciones, requerimientos, citaciones y emplazamientos. Notificaciones, citaciones y mandamientos en el proceso penal. Formas de notificación y nuevas tecnologías.","El Registro Civil. Estructura del Registro Civil. las Oficinas del Registro Civil: Oficina Central, Oficinas Generales y Oficinas Consulares y sus funciones. Hechos y actos inscribibles en el Registro Civil.","Las inscripciones: Inscripción de nacimiento y filiación; inscripciones relativas al matrimonio; inscripción del fallecimiento. Otras inscripciones. Certificaciones. Expedientes del Registro Civil.","Conceptos de archivo judicial y de documentación judicial en relación con la legislación vigente en materia de archivos judiciales. Formas de remisión de documentación judicial y relaciones documentales. Nuevas tecnologías en los archivos judiciales de gestión. Las juntas de expurgo de la documentación judicial."]],["Informática: Windows y Office (temas 32 a 37)",["Informática básica: conceptos fundamentales sobre el hardware y el software. Sistemas de almacenamiento de datos. Sistemas operativos. Nociones básicas de seguridad informática.","Introducción al sistema operativo: el entorno Windows. Fundamentos. Trabajo en el entorno gráfico de Windows: ventanas, iconos, menús contextuales, cuadros de diálogo. El escritorio y sus elementos. El menú inicio.","El explorador de Windows. Gestión de carpetas y archivos. Operaciones de búsqueda. Herramientas «Este equipo» y «Acceso rápido». Accesorios. Herramientas del sistema.","Procesadores de texto: Word 365. Principales funciones y utilidades. Creación y estructuración del documento. Gestión, grabación, recuperación e impresión de ficheros. Personalización del entorno de trabajo.","Correo electrónico: Outlook 365. Conceptos elementales y funcionamiento. El entorno de trabajo. Enviar, recibir, responder y reenviar mensajes. Creación de mensajes. Reglas de mensaje. Libreta de direcciones.","La Red Internet: origen, evolución y estado actual. Conceptos elementales sobre protocolos y servicios en Internet. Funcionalidades básicas de los navegadores web."]]]},{"id":"just-gestion","ambito":"Administración de Justicia","corto":"Gestión Procesal","nombre":"Gestión Procesal y Administrativa","cuerpo":"Cuerpo de Gestión Procesal y Administrativa (A2)","fuente":{"boe":"BOE-A-2025-27053","fecha":"2025-12-30","anexo":"Anexo VI.a","url":"https://www.boe.es/diario_boe/txt.php?id=BOE-A-2025-27053"},"examen":{"preguntas":100,"opciones":4,"penalizacion":0.25,"minutos":100,"reserva":4},"nota":"Primer ejercicio: 100 preguntas en 100 minutos; cada fallo resta un cuarto. Después, un caso práctico y un ejercicio de desarrollo.","grupos":[["Derecho Constitucional, Derechos Fundamentales y Organización del Estado",["La Constitución española de 1978: Estructura y contenido. Las atribuciones de la Corona. Las Cortes Generales: Composición, atribuciones y funcionamiento. La elaboración de las leyes. El Tribunal Constitucional. Composición y funciones.","Derecho de igualdad y no discriminación por razón de género: especial referencia a la Ley Orgánica 3/2007, para la Igualdad Efectiva de Mujeres y Hombres. La Ley Orgánica 1/2004, de Medidas de Protección Integral contra la Violencia de Género. Antecedentes. Objeto y principios rectores. Medidas de sensibilización, prevención y detección. Derechos de las mujeres víctimas de la violencia de género. Tutela institucional. La Ley 15/2022, de 12 de julio, integral para la igualdad de trato y la no discriminación. La Ley 4/2023, de 28 de febrero, para la igualdad real y efectiva de las personas trans y para la garantía de los derechos de las personas LGTBI.","El Gobierno y la Administración. El Presidente del Gobierno. El Consejo de Ministros. Organización administrativa española: Ministros, Secretarios de Estado, Subsecretarios y Directores Generales. La Administración periférica del Estado. Los Delegados de Gobierno en la Comunidad Autónoma y los Subdelegados de Gobierno. La Secretaría de Estado de Justicia: Principales competencias.","Organización territorial del Estado en la Constitución. El Estado de las Autonomías. Las Comunidades Autónomas: Su constitución y competencias. Los Estatutos de Autonomía. La Administración Local. La provincia y el municipio.","La Unión Europea. Competencias de la UE. Instituciones y órganos de la Unión Europea: El Parlamento Europeo, el Consejo Europeo, el Consejo de la Unión Europea, la Comisión Europea, el Tribunal de Justicia de la Unión Europea, el Tribunal de Cuentas."]],["Organización y Estructura del Poder Judicial",["El Poder Judicial. El Consejo General del Poder Judicial: composición y funciones. La jurisdicción: Jueces y Magistrados: Funciones y competencias. La independencia judicial. El Ministerio Fiscal: Organización y funciones. Sistemas de acceso a las carreras judicial y fiscal.","Examen de la organización y competencia del Tribunal Supremo, de la Audiencia Nacional, de los Tribunales Superiores y de las Audiencias Provinciales.","De los Tribunales de Instancia y del Tribunal Central de Instancia. Examen de la organización y competencia de los Tribunales de Instancia: Sección Única, Secciones Civil, De Instrucción, De Familia, Infancia y Capacidad, De lo Mercantil, De Violencia sobre la Mujer, De Violencia contra la Infancia y la Adolescencia, De lo Penal, De Menores, De Vigilancia Penitenciaria, De lo Contencioso-Administrativo y De lo Social. La Sección de lo Mercantil del Tribunal de Instancia de Alicante: Tribunal de Marca de la Unión Europea.","La Justicia de Paz. El Juez o Jueza de Paz, la Oficina de Justicia en el Municipio y las Agrupaciones de Oficinas de Justicia: Organización y competencias, elección del Juez o Jueza de Paz, la Secretaría de las Oficinas de Justicia. La justicia de paz en el ámbito de la cooperación jurisdiccional y en los procesos civiles y penales. Sistema de recursos contra las resoluciones dictadas por los Jueces o Juezas de Paz.","La carta de Derechos de los Ciudadanos ante la Justicia. Derechos de información, de atención y gestión, de identificación de actuaciones y funcionarios, derechos lingüísticos. Derechos frente a los profesionales que asisten y representan al ciudadano: Abogados, Procuradores, Graduados Sociales. El Derecho a la Justicia Gratuita en la Carta de Derechos. El plan de Transparencia Judicial.","La modernización de la oficina judicial. Nuevo modelo de organización judicial: La eficiencia organizativa del Servicio Público de Justicia para la implantación de los Tribunales de Instancia y las Oficinas de Justicia en los municipios: su regulación en la Ley Orgánica del Poder Judicial. La administración de justicia y las nuevas tecnologías. Código de Conducta para usuarios de equipos y sistemas informáticos al servicio de la Administración de Justicia. El expediente digital y la presentación telemática de escritos y documentos. La firma digital, el correo electrónico. Incidencia de la legislación de protección de datos en el uso de las aplicaciones informáticas.","El Letrado de la Administración de Justicia en la Ley Orgánica del Poder Judicial: funciones y competencias. Ordenación del cuerpo superior jurídico de Letrados de la Administración de Justicia: Secretario de Gobierno y Secretarios Coordinadores.","Cuerpos de Funcionarios al servicio de la Administración de Justicia. Cuerpos Generales y Cuerpos Especiales: Definición y Cuerpos que los integran. Cuerpos Especiales: El Cuerpo de Médicos Forenses: Funciones.","Los Cuerpos Generales (I): Funciones. Formas de acceso. Promoción interna. Adquisición y pérdida de la condición de funcionarios. La rehabilitación. Derechos, deberes e incompatibilidades. Jornada y horarios. Vacaciones, permisos, días y licencias.","Los Cuerpos Generales (II): Situaciones administrativas. Ordenación de la actividad profesional. Provisión de puestos de trabajo. Régimen disciplinario.","Libertad sindical: El Sindicato en la Constitución Española. Elecciones sindicales según la Ley de órganos de representación y el Estatuto Básico del Empleado Público. El derecho de huelga. Salud y prevención de riesgos laborales."]],["Procedimientos Judiciales · A) Normas Comunes a todos los Procedimientos Civiles",["Cuestiones generales sobre el proceso civil: Las partes en el proceso civil: Capacidad procesal y capacidad para ser parte. Pluralidad de partes. Litisconsorcio activo y pasivo, su tratamiento procesal.","La representación y sus clases. Legitimación en el proceso civil. Asistencia letrada y representación procesal, estatuto jurídico, derechos y deberes. Intervención no preceptiva de estos profesionales. La intervención en los procesos civiles del Ministerio Fiscal y del Abogado del Estado.","Jurisdicción y competencia. Acumulación de acciones y de procedimientos, concepto. La tramitación de las cuestiones de jurisdicción y competencia. La competencia de los Tribunales Civiles: Objetiva, funcional y territorial, los fueros legales disponibles e indisponibles. Concepto y tramitación.","Los actos procesales. Requisitos de los actos procesales: a) lugar; b) tiempo: Términos y plazos: Cómputo de los plazos; c) forma (consideración de la lengua oficial). Defectos de los actos: Nulidad, anulabilidad, irregularidad; subsanación de defectos.","Las resoluciones de los órganos judiciales. Clases de resoluciones judiciales: Contenido y características. Las resoluciones de los órganos judiciales colegiados. Las resoluciones del Letrado de la Administración de Justicia.","Los actos de comunicación con otros Tribunales y Autoridades: Oficios y mandamientos. El auxilio judicial: los exhortos y los mandamientos en el proceso penal. Cooperación jurídica internacional: las comisiones rogatorias.","Actos de comunicación a las partes y otros intervinientes en el proceso: Notificaciones, requerimientos, citaciones y emplazamientos. Notificaciones, citaciones y mandamientos en el proceso penal. Formas de notificación y nuevas tecnologías.","Conceptos de archivo judicial y de documentación judicial en relación con la legislación vigente en materia de archivos judiciales. Formas de remisión de documentación judicial y relaciones documentales. Nuevas tecnologías en los archivos judiciales de gestión. Las juntas de expurgo de la documentación judicial."]],["Procedimientos Judiciales · B) Procedimientos Civiles",["Los procedimientos declarativos en la Ley de Enjuiciamiento Civil 1/2000: Diligencias preparatorias, diligencias preliminares. Averiguación de hechos, aseguramiento y práctica anticipada de la prueba. Medios adecuados de solución de controversias en vía no jurisdiccional.","Juicio ordinario. Procesos que se sustancian por los trámites del juicio declarativo ordinario. La demanda y su objeto, documentos que deben acompañarla. La contestación a la demanda y otras actitudes del demandado: la rebeldía. Problemas derivados de la ampliación de la demanda y la reconvención. Audiencia previa. Vista de juicio. Diligencias finales. Terminación del procedimiento por medio de sentencia, auto o decreto, aspectos formales de estas resoluciones. Allanamiento, desistimiento, transacción, satisfacción extraprocesal.","El juicio verbal. Procesos que se sustancian por el trámite del juicio verbal. Clases de demandas. Admisión y traslado de la demanda y citación para la vista. Inasistencia de las partes a la vista. Desarrollo de la vista. Recursos frente a las resoluciones interlocutorias. Juicios verbales de carácter plenario y sumario. El verbal de desahucio. El precario. El juicio sobre tutela posesoria. La tutela de derechos reales inscritos. El juicio de alimentos. La rectificación de hechos. El juicio verbal en materias de compraventas a plazos y arrendamientos financieros.","Procesos especiales: Procedimientos para la división judicial de patrimonios: A) De la división de la herencia. B) Procedimiento para la liquidación del régimen económico matrimonial.","Procesos especiales: El proceso monitorio. Concepto y características. Casos en que procede. Competencia. Procedimiento: petición inicial y documentos. Admisión. Requerimiento de pago y posibles conductas del demandado. La transformación del procedimiento. La cosa juzgada. El proceso monitorio europeo. El juicio cambiario. Concepto y características. Naturaleza. Casos en que procede. Competencia. Procedimiento. La sentencia sobre la oposición y su eficacia.","Los procesos matrimoniales y sus clases. Competencia. Procedimientos: a) nulidad, separación y divorcio contenciosos; b) separación o divorcio de mutuo acuerdo. Referencia a las crisis de las uniones estables de pareja. Medidas Provisionales. Medidas definitivas. Ejecución forzosa de los pronunciamientos sobre medidas. Los procesos especiales: Características comunes. Los procesos sobre la adopción de medidas judiciales de apoyo a personas con discapacidad: competencia y legitimación; pruebas preceptivas en primera y en segunda instancia; la sentencia; la revisión de las medidas de apoyo judicialmente adoptadas.","Procedimientos de jurisdicción voluntaria: la Ley 15/2015, de 2 de julio, de la Jurisdicción Voluntaria. Disposiciones generales y normas comunes en materia de tramitación de los expedientes de jurisdicción voluntaria. Expedientes de jurisdicción voluntaria en materia de personas. Expedientes en materia de familia. Expedientes relativos al Derecho sucesorio. Expedientes relativos al Derecho de obligaciones. Expedientes relativos a los derechos reales. Expedientes de subastas voluntarias. Expedientes en materia mercantil. La conciliación.","Los recursos. Concepto. Clases de recursos. Efectos de los recursos y de su desistimiento. El depósito para recurrir. Los recursos de reposición y de revisión. El recurso de queja. El recurso de apelación. Apelación y segunda instancia; el derecho a la segunda instancia. Resoluciones contra las que procede apelación. Sustanciación del recurso. Oposición a la apelación e impugnación de la sentencia. La prueba en la apelación.","El recurso de casación. Características. Resoluciones recurribles. Motivos de recurso. Objeto y efectos del recurso. Competencia. Procedimiento. Medios de rescisión de las sentencias firmes. La audiencia al demandado rebelde. La revisión de las sentencias firmes.","La ejecución forzosa. El papel del Letrado de la Administración de Justicia en la ejecución. El título ejecutivo y sus clases: Judiciales y no judiciales; españoles y extranjeros. Ejecución de resoluciones extranjeras. Breve referencia al Título Ejecutivo Europeo. La demanda ejecutiva. Tribunal competente. Orden general de ejecución y despacho de la ejecución. Acumulación de ejecuciones. Oposición a la ejecución. Suspensión de la ejecución. Ejecución provisional. Concepto y naturaleza. Presupuestos. Despacho de la ejecución. Oposición a la ejecución provisional. Revocación o confirmación de la sentencia provisionalmente ejecutada.","Ejecución dineraria. Supuestos en que procede. Integración del título. Requerimiento de pago. Embargo de bienes. Reembargo. Tercería de dominio.","El procedimiento de apremio. Valoración de los bienes embargados. La subasta de los bienes trabados. Alternativas a la subasta judicial: El convenio de realización y la realización por persona o entidad especializada. La administración para pago. Tercería de mejor derecho. Especialidades de la ejecución sobre bienes hipotecados, pignorados o con garantía real.","Ejecuciones no dinerarias. Ejecuciones de dar, de hacer y de no hacer. Determinación de frutos y rentas. Liquidación de daños y perjuicios. Ejecución de sentencias que llevan aparejada la entrega de la posesión de un inmueble, especial referencia a las sentencias de ejecución de desahucios.","Las medidas cautelares: Concepto. Tipos de medidas cautelares. Tramitación con audiencia y sin audiencia al demandado. Oposición a las medidas cautelares. Ejecución de las medidas cautelares. Caución y caución sustitutoria.","Costas y gastos procesales. La condena en costas. La tasación de costas. La impugnación de las costas. Los intereses y su liquidación. La tasa judicial. Pagos, depósitos y consignaciones judiciales. Ingresos en el Tesoro Público. La Asistencia Jurídica Gratuita."]],["Procedimientos Judiciales · C) Registro Civil",["El Registro Civil: legislación vigente. Naturaleza, contenido y competencias. Derechos y deberes ante el Registro Civil y principios de funcionamiento. Estructura del Registro Civil. Las Oficinas del Registro Civil: Oficina Central, Oficinas Generales y Oficinas Consulares y sus funciones.","Los asientos registrales y sus clases: reglas generales para su práctica, inscripciones, anotaciones registrales y cancelaciones. Hechos y actos inscribibles en el Registro Civil: Inscripción de nacimiento y filiación; inscripciones relativas al matrimonio; inscripción del fallecimiento. Otras inscripciones.","Publicidad del Registro Civil: medios de publicidad. Las certificaciones y sus clases. Datos con publicidad restringida y acceso a asientos con datos especialmente protegidos. Régimen de recursos frente a decisiones adoptadas en materia de registro civil. Los procedimientos registrales: reglas generales para su tramitación y legitimación para promoverlos. Rectificación de los asientos del Registro Civil: rectificación judicial y rectificación por procedimiento registral. Las declaraciones con valor de simple presunción. Normas sobre derecho internacional privado."]],["Procedimientos Judiciales · D) Procedimiento Penal",["El sistema procesal penal de la Ley de Enjuiciamiento Criminal: Principio del juez imparcial, separación de instrucción y enjuiciamiento. Principios del proceso penal. Competencia objetiva y funcional. Justicia restaurativa. Aforamientos y privilegios procesales. Inmunidad de jurisdicción. La competencia territorial. La inhibición de oficio y a instancia de parte; cuestiones de competencia territorial.","Las partes en el proceso penal: Ministerio Fiscal; acusador particular; perjudicado y acción popular; acusador privado. El ejercicio de la acción penal: de oficio o a instancia de parte. Denuncia; querella; atestado. Extinción de la acción penal: especial referencia a la renuncia. El ejercicio de la acción civil: el actor civil. El ofrecimiento de acciones. Extinción de la acción civil. El investigado o encausado. La rebeldía. El responsable civil. Representación y defensa de las partes. Defensa de oficio y beneficio de justicia gratuita.","El Sumario: Incoación del proceso. Las actuaciones de la Policía Judicial. Comprobación del delito: Cuerpo del delito. Identificación del presunto delincuente. La inspección ocular. Declaraciones testificales. Prueba pericial y su valor. Prueba documental. Piezas de convicción.","Las medidas cautelares personales en el proceso penal. La citación judicial. La detención. La prisión provisional. La libertad provisional. Las fianzas en el proceso penal. Medidas limitadoras de derechos fundamentales: Pruebas biológicas; entrada y registro en lugar cerrado; intervención de comunicaciones postales, telegráficas, telefónicas e informáticas. Especial mención a las entregas controladas y a la figura del agente encubierto.","El denominado período intermedio; auto de conclusión del sumario; eventual revocación del auto y nuevas diligencias y resoluciones. El sobreseimiento y sus clases. El auto de apertura del juicio oral. Los artículos de previo pronunciamiento. Las calificaciones provisionales de las partes. Conformidad del acusado.","La prueba en el proceso penal. Medios de prueba. Proposición, admisión o denegación; prueba anticipada; proposición en el acto del juicio; prueba acordada «ex officio». El juicio oral. La suspensión del juicio oral: causas y consecuencias.","El procedimiento abreviado: Información de derechos, prueba anticipada. Conclusión de la fase instructora, la conformidad por reconocimiento de hechos. La fase de juicio oral: Admisión de pruebas, señalamiento del juicio e información a la víctima. Celebración del juicio oral, especialidades. La sentencia; especialidades: a) sentencia oral; b) conformidad de las partes sobre la firmeza inicial de la sentencia; c) principio acusatorio, d) notificación. Los recursos contra las resoluciones procesales en el ámbito del procedimiento abreviado: a) Los recursos contra las resoluciones judiciales b) Los recursos contra las resoluciones del Letrado de la Administración de Justicia. Ejecución de sentencias.","Procedimiento para el enjuiciamiento rápido de determinados delitos: Ámbito de aplicación. Actuaciones de la Policía Judicial. Diligencias urgentes ante el servicio de guardia; instrucción y conclusión. Preparación y desarrollo del juicio oral. Sentencia.","El proceso ante el Tribunal del Jurado. Competencia. Composición y constitución del Jurado: Estatuto jurídico de los jurados; su selección. La fase de instrucción y la fase intermedia. La fase de juicio oral: trámites precedentes: Designación del Magistrado-Ponente; cuestiones previas; auto de hechos justiciables; celebración del juicio oral: La vista; suspensión del juicio oral. Posible disolución del Jurado: sus causas. El veredicto: Determinación del objeto del veredicto, deliberación y veredicto; instrucción a los jurados; deliberación y votación; acta. Sentencia.","La tutela judicial ante los Tribunales de Instancia –Secciones de violencia sobre la mujer–. Especialidades procesales. Pérdida de la competencia cuando se produzcan actos de violencia sobre la mujer. Medidas judiciales de protección y de seguridad de las víctimas. La tutela judicial ante los Tribunales de Instancia –Secciones de Violencia contra la Infancia y la Adolescencia–.","El procedimiento de Responsabilidad Penal del Menor. Principios reguladores. Las fases del procedimiento. Sentencia y régimen de recursos. Principios generales en la ejecución de las medidas.","Tramitación del juicio sobre delitos leves. Convocatoria de la vista de juicio sobre delitos leves. Sistema de recursos a las sentencias dictadas en juicios sobre delitos leves. La ejecución de la sentencia de delitos leves: Aspectos penales y civiles.","Régimen general de recursos en el proceso penal. Los recursos no devolutivos: Reforma y súplica. Recursos devolutivos: La apelación en el proceso ordinario y en el procedimiento abreviado; El recurso de queja contra la inadmisión de otro recurso y como sustitutivo de la apelación. El recurso de casación penal. La revisión penal. El recurso de rescisión de la sentencia dictada contra reos ausentes. Los recursos contra las resoluciones del Letrado de la Administración de Justicia.","La ejecución de sentencias penales. Los Tribunales sentenciadores; el Tribunal de Instancia –Sección de Vigilancia Penitenciaria– y Administración Penitenciaria: Sus respectivas funciones. Recursos contra las resoluciones de la Administración Penitenciaria y de los Tribunales de Instancia –Sección de Vigilancia Penitenciaria–. Tasación de costas. La ejecución civil en el proceso penal."]],["Procedimientos Judiciales · E) Procedimiento Contencioso Administrativo y Laboral",["Breve referencia del recurso contencioso-administrativo. Organización de la jurisdicción contenciosa-administrativa.","Recurso contencioso-administrativo: Capacidad procesal, legitimación, representación y defensa. Actos impugnables.","Recurso contencioso-administrativo: Diligencias preliminares. Interposición del recurso y reclamación del expediente. Emplazamiento de los demandados y admisión del recurso.","Recurso contencioso-administrativo: Demanda y contestación. Alegaciones previas. Prueba. Vista y conclusiones. Sentencias. Otros medios de terminación del procedimiento.","El procedimiento abreviado en el ámbito contencioso-administrativo.","Los recursos en el proceso contencioso administrativo. Los recursos contra las resoluciones del Letrado de la Administración de Justicia.","Procedimientos especiales: Procedimientos para la protección de los derechos fundamentales de las personas. Cuestión de ilegalidad. Procedimientos en los casos de suspensión administrativa previa de acuerdos.","Disposiciones comunes a los procedimientos contencioso-administrativos: Plazos. Medidas cautelares. Incidentes e invalidez de actos procesales. costas procesales. Ejecución de sentencias.","El proceso laboral: Principios que lo informan. Competencia objetiva y territorial. Cuestiones de competencia. Representación y defensa en el procedimiento laboral. Fondo de Garantía Salarial. Justicia gratuita.","La evitación del proceso: Conciliación previa y reclamación administrativa previa. El proceso ordinario: Demanda, conciliación y juicio. Recursos: de suplicación y de casación, con referencia al recurso de casación para la unificación de doctrina; disposiciones comunes a los recursos de suplicación y casación.","Procesos especiales: Despidos, Seguridad Social, Conflictos Colectivos, Impugnación de los convenios colectivos. Tutela de derechos fundamentales."]],["Procedimientos Judiciales · F) Normativa sobre Derecho Mercantil",["El Concurso de acreedores. Concepto de concurso sus clases, la competencia objetiva y territorial. El administrador concursal. Aspectos procesales: Procedimiento ordinario. Las secciones del concurso; el incidente concursal. Los recursos. El preconcurso: presupuestos, Efectos de la comunicación de apertura de negociaciones sobre acciones y procedimientos ejecutivos y procedimiento de homologación. El procedimiento especial para microempresas: ámbito de aplicación y reglas procesales especiales del procedimiento."]]]},{"id":"policia-basica","ambito":"Seguridad","corto":"Policía Nacional (Escala Básica)","nombre":"Policía Nacional, Escala Básica","cuerpo":"Policía Nacional, Escala Básica, categoría de Policía","fuente":{"boe":"BOE-A-2026-15055","fecha":"2026-07-10","anexo":"Anexo I","url":"https://www.boe.es/diario_boe/txt.php?id=BOE-A-2026-15055"},"examen":{"preguntas":100,"opciones":3,"penalizacion":null,"minutos":50,"reserva":0},"nota":"Prueba de conocimientos: 100 preguntas con tres opciones en 50 minutos; cada fallo resta la mitad. Además hay pruebas físicas, psicotécnicos, entrevista y reconocimiento médico.","grupos":[["A) Ciencias Jurídicas",["El Derecho: concepto y acepciones. Las normas jurídicas positivas: concepto, estructura, clases y caracteres. El principio de jerarquía normativa. La persona en sentido jurídico: concepto y clases; su nacimiento y extinción; capacidad jurídica y capacidad de obrar. Adquisición, conservación y pérdida de la nacionalidad española. El domicilio. La vecindad civil.","La Constitución Española (I): estructura y caracteres de la Constitución Española de 1978. Los valores de la Constitución. Los principios del régimen constitucional: Estado democrático, Estado de derecho, Estado social, Monarquía parlamentaria y Estado autonomista. Los derechos y deberes fundamentales establecidos en la Constitución: especial referencia a los derechos fundamentales y libertades públicas, así como, a las garantías de los mismos y a la suspensión de los derechos y libertades. El Defensor del Pueblo.","La Constitución Española (II): De la Corona. De las Cortes Generales. Del Gobierno y la Administración. De las relaciones entre el Gobierno y las Cortes Generales. Del Poder Judicial. De la organización territorial del Estado. Del Tribunal Constitucional. De la reforma constitucional.","La Unión Europea: referencia histórica. El Derecho derivado. Instituciones más importantes de la Unión Europea. La cooperación policial internacional. Especial referencia al Tribunal Europeo de Derechos Humanos y el Tribunal de Justicia de la Unión Europea.","La organización y funcionamiento de la Administración General del Estado: Principios de organización, funcionamiento y relaciones con los ciudadanos; órganos superiores y órganos directivos en la organización central. El Gobierno: composición, organización y funciones; el Gobierno en funciones.","Los funcionarios públicos: concepto y clases. Adquisición y pérdida de la condición de funcionario.","El Ministerio del Interior: estructura orgánica básica. La Secretaría de Estado de Seguridad: estructura y funciones.","La Dirección General de la Policía. Estructura orgánica y funciones de los servicios centrales y territoriales de la Policía Nacional. La Policía Nacional: funciones, escalas y categorías; sistemas de acceso; régimen disciplinario y situaciones administrativas.","La Ley Orgánica 2/1986, de 13 de marzo, de Fuerzas y Cuerpos de Seguridad: disposiciones generales; principios básicos de actuación; disposiciones estatutarias comunes. De las Fuerzas y Cuerpos de Seguridad del Estado: los derechos de representación colectiva; el Consejo de Policía; organización de las unidades de Policía Judicial; de las Policías de las Comunidades Autónomas; de la colaboración y coordinación entre el Estado y las Comunidades Autónomas; de las Policías Locales.","Entrada, libre circulación y residencia en España de ciudadanos de los Estados miembros de la Unión Europea y de otros Estados parte en el Acuerdo sobre el Espacio Económico Europeo. Derechos y libertades de los extranjeros en España y su integración social. La entrada y salida del territorio español. La autorización de estancia y de residencia.","De las infracciones en materia de extranjería y su régimen sancionador. Tipos de infracciones: infracciones leves, infracciones graves e infracciones muy graves. Sanciones. Prescripción de las infracciones y de las sanciones. Efectos de la expulsión y devolución. Efectos de la denegación de entrada.","La protección internacional. Reglas procedimentales para el reconocimiento de la protección internacional. De los menores y otras personas vulnerables. Centros de acogida a refugiados. Apátridas y desplazados.","Disposiciones generales en materia de seguridad privada en España. Coordinación. Empresas de seguridad privada y despachos de detectives privados. Personal de seguridad privada. Servicios y medidas de seguridad.","La Ley Orgánica 4/2015, de 30 de marzo, de protección de la seguridad ciudadana. Disposiciones generales. Documentación e identificación personal. Actuaciones para el mantenimiento y restablecimiento de la seguridad ciudadana. Potestades especiales de policía administrativa de seguridad. Régimen sancionador.","Medidas para la Protección de Infraestructuras Críticas. El Catálogo Nacional de Infraestructuras Críticas. El Sistema de Protección de Infraestructuras Críticas. Ciberseguridad.","Derecho Penal Parte General: concepto. Principios informadores del Derecho Penal. La infracción penal. Concepto material de delito. Grados de ejecución del delito. Personas físicas y jurídicas criminalmente responsables. Las consecuencias jurídicas de la infracción penal. Vigencia temporal y espacial de la Ley Penal. La edad penal y sus efectos. Circunstancias modificativas de la responsabilidad criminal.","Derecho Penal Especial: Del homicidio y sus formas. Del aborto. De las lesiones. Delitos contra la libertad. De las torturas y otros delitos contra la integridad moral. Delitos contra la libertad sexual.","Delitos contra el patrimonio y contra el orden socioeconómico. El hurto. El robo. La extorsión. Robo y hurto de uso de vehículos a motor. Usurpación. De las defraudaciones: estafas; apropiación indebida; defraudaciones de fluido eléctrico y análogo.","Delitos contra el orden público: de los atentados contra la autoridad, sus agentes y los funcionarios públicos, resistencia y desobediencia. Desórdenes públicos. Disposición común. Tenencia, tráfico y depósito de armas, municiones o explosivos.","Delitos informáticos. Especial consideración al derecho a la intimidad. La prueba digital en el proceso penal.","Noción de Derecho Procesal Penal. Concepto de jurisdicción y de competencia. Los órganos de la jurisdicción penal. Concepto de denuncia y la obligación de denunciar. La detención: concepto y duración. La obligación de detener. Los derechos del detenido. El procedimiento de habeas corpus. Procedimiento integral de la detención policial. El Ministerio Fiscal: funciones. La Policía Judicial.","La Ley 4/2015, de 27 de abril, del Estatuto de la víctima del delito. Ámbito. Concepto general de víctima. Derechos básicos. Protección de las víctimas. Medidas de protección a la víctima.","Políticas de igualdad, protección y no discriminación en la AGE. La Ley Orgánica 3/2007, de 22 de marzo, para la igualdad efectiva de mujeres y hombres. Los Planes para la igualdad en la Administración General del Estado y en sus organismos públicos. Políticas contra la violencia de género. La Ley Orgánica 1/2004, de 28 de diciembre, de medidas de protección integral contra la violencia de género. Políticas de integración de las personas con discapacidad. La Ley 39/2006, de 14 de diciembre, de promoción de la autonomía personal y atención a las personas en situación de dependencia. Ley 4/2023, de 28 de febrero, para la igualdad real y efectiva de las personas trans y para la garantía de los derechos de las personas LGTBI.","Introducción a la Prevención de Riesgos Laborales. Concepto general de trabajo. Concepto de salud y condiciones de trabajo. El trabajo y la salud. Concepto general de riesgos Laborales. Principios generales de la actividad preventiva. Conceptos de prevención y protección. Consecuencia de los riesgos. Daños a la salud.","Marco normativo básico en prevención de riesgos laborales. La Ley 31/1995, de Prevención de Riesgos Laborales. RD 39/1997, Reglamento de los servicios de prevención. El RD 2/2006, sobre Prevención de Riesgos Laborales en los funcionarios del Cuerpo Nacional de Policía. El RD 67/2010 sobre adaptación de la Prevención de Riesgos Laborales en la Administración General del Estado. Derechos y deberes básicos en materia de Prevención de Riesgos laborales.","La protección de datos de carácter personal: la Ley Orgánica 3/2018, de 5 de diciembre, de Protección de Datos Personales y garantía de los derechos digitales. Ley Orgánica 7/2021, de 26 de mayo, de protección de datos personales tratados para fines de prevención, detección, investigación y enjuiciamiento de infracciones penales y de ejecución de sanciones penales."]],["B) Ciencias Sociales",["Derechos Humanos. Declaración Universal de Derechos Humanos. Convenio Europeo para la Protección de los Derechos Humanos y Libertades Fundamentales. Convenio contra la Tortura. Protocolo facultativo de la Convención contra la tortura. Mecanismo Nacional de Prevención de la Tortura del Defensor del Pueblo.","Globalización y antiglobalización. Conceptos y características. Consecuencia de la globalización. Reacciones a la globalización. El Movimiento Antiglobalización: Organizaciones, objetivos e historia. El Foro Social Mundial.","Actitudes y valores sociales. Formación de las actitudes: concepto, componentes y funciones. Estereotipos, prejuicios y discriminación. Actitudes de la personalidad autoritaria: xenofobia y dogmatismo. Los grupos sociales.","Principios éticos de la sociedad actual. Transmisión de valores en la sociedad actual: proceso de socialización. Libertad responsabilidad. Igualdad-solidaridad. Tolerancia. Contravalores, reacciones sociales a los valores mayoritarios: Racismo, fanatismo, fundamentalismo, sectarismo, hooliganismo. Especial consideración de los delitos de odio.","Inmigración. Movimientos migratorios: concepto y causas de las migraciones. Tipos y efectos. Las grandes migraciones a través de la historia. Las migraciones en la actualidad. Integración social: factor esencial de la cohesión social.","Concepto de geografía humana. La ciudad, corrientes de estudio de la misma. Población, estructura y grupos sociales. La demografía: densidad demográfica, tasas de natalidad y mortalidad, crecimiento vegetativo. La sociedad de masas. Contaminación y protección del medio ambiente.","La seguridad. Concepto. Seguridad individual y seguridad colectiva. Seguridad pública y seguridad privada. La inseguridad. Teorías explicativas de la delincuencia: concepto, modelos explicativos y clases de delincuencia.","Drogodependencias. Conceptos de droga, consumidor, métodos de administración, adicción, dependencia, tolerancia, politoxicomanías. Clasificación de las drogas. Últimas tendencias en el consumo de drogas en nuestra sociedad.","El desarrollo sostenible. Concepto. Coordinación y cooperación internacional. Sociedad y desarrollo sostenible. Instrumentos de gestión ambiental.","Gramática de la lengua española. Morfología. Sufijos, sustantivos y pronombres. Adjetivos: sus grados y tipos. Los adverbios y sus tipos. Verbos: modos y conjugación. Preposiciones y conjunciones. Sintaxis. La oración: partes y tipos. Análisis sintáctico.","Ortografía de la lengua española. Reglas ortográficas. Uso de las letras o grafemas. Uso de la tilde, de los signos ortográficos y de las letras mayúsculas y minúsculas. Representación gráfica de las unidades léxicas. Ortografía de las expresiones procedentes de otras lenguas, de nombres propios y expresiones numéricas."]],["C) Materias Técnico-Científicas",["Fundamentos de sistemas operativos: Funciones de un sistema operativo. Tipologías: MS/DOS; UNIX; Linux; Windows; MAC OS. Sistemas operativos móviles: iOS, Android. Sistemas de almacenamiento. Sistemas de archivos.","Redes informáticas: Modelo OSI. Modelo TCP/IP. Dispositivos de red: Concentradores (hubs); conmutadores (switches); encaminadores (routers); cortafuegos (firewall); servidores DHCP; servidores DNS; servidores proxy. Direccionamiento IP: clase de redes; IPv4; IPv6.","Inteligencia: dato, información e inteligencia. Tipologías de Inteligencia. Ciclo de la Inteligencia. Inteligencia de Fuentes Abiertas (OSINT). Surface Web. Deep Web. Dark Web. Dark Net.","Ciberdelincuencia y agentes de la Amenaza: Botnet; Business E-mail Compromise; Cartas nigerianas; Cryptojacking; Denegación de servicio; Ingeniería social; Inyección SQL; Malware; Pharming; Phishing; Spear phishing; Ransomware; Skimming; Spoofing; Spyware, Troyano; XSS; Zero-day. Cibercriminales. Crimen as Service. Hacktivistas. Insider threat. APTs. Cyber Kill Chain.","Origen de las armas de fuego. Definición, clasificación, categorías y funcionamiento de las armas de fuego: especial referencia al reglamento de armas. Cartucho: definición y componentes. Armas prohibidas. Documentación que ampara la tenencia y porte de armas. Balística forense.","El vehículo prioritario. Definición de vehículo prioritario. Facultades de los conductores de vehículos prioritarios. Comportamiento de los demás conductores respecto de los vehículos prioritarios. La conducción de vehículos en situación de emergencia. Utilización de las señales de emergencia.","La Seguridad en la Conducción de Vehículos Prioritarios. Definición de Seguridad Activa y Pasiva. Sistemas de Seguridad Activa y Pasiva en vehículos tipo turismo y motocicleta. Influencia de los Sistemas de Seguridad en los accidentes de tráfico. Repercusión de los Sistemas de Seguridad en la conducción policial y traslado de detenidos.","Prevención de Riesgos Laborales en Seguridad Vial. Factores del Tráfico y su influencia en la siniestralidad vial. Factor Humano, Factor Ambiental y Factor Vehículo. Riesgos Laborales en la conducción de vehículos prioritarios. Equipos de Protección Individual del conductor y pasajeros de vehículos policiales. Estrategias y mantenimiento preventivo del vehículo prioritario."]]]},{"id":"aeat-agentes","ambito":"Hacienda","corto":"Agente de Hacienda","nombre":"Agentes de la Hacienda Pública","cuerpo":"Cuerpo General Administrativo, especialidad de Agentes de la Hacienda Pública (C1)","fuente":{"boe":"BOE-A-2025-27056","fecha":"2025-12-30","anexo":"Anexo I","url":"https://www.boe.es/diario_boe/txt.php?id=BOE-A-2025-27056"},"examen":{"preguntas":80,"opciones":4,"penalizacion":0.25,"minutos":90,"reserva":0},"nota":"Primer ejercicio: 80 preguntas en hora y media; cada fallo resta un cuarto. Después, diez supuestos prácticos por escrito.","grupos":[["Materias comunes · Organización del Estado y funcionamiento de la Administración General del Estado",["La Constitución Española de 1978: Estructura y contenido. Derechos y deberes fundamentales. Su garantía y suspensión. La Corona. El Tribunal Constitucional.","Las Cortes Generales: Composición, atribuciones y funcionamiento. El Defensor del Pueblo. El Poder Judicial. El Consejo General del Poder Judicial. El Tribunal Supremo. La organización judicial española.","El Gobierno: Nombramiento y cese. Las funciones del Gobierno. La Administración Pública: Principios constitucionales informadores. La Administración central y periférica del Estado. Tipos de Entes Públicos.","La organización territorial del Estado. Comunidades y Ciudades Autónomas. Las Entidades Locales. Las Instituciones de la Unión Europea: El Consejo, el Parlamento Europeo, la Comisión, el Tribunal de Justicia.","El funcionamiento electrónico del sector público. Derecho y obligación de relacionarse electrónicamente con las Administraciones Públicas, registros y archivo electrónico. El Gobierno abierto, la transparencia, el acceso a la información pública, la participación en la rendición de cuentas y el buen gobierno. Normativa reguladora de la protección de datos personales: principios, derechos de las personas y ejercicios de los derechos.","Políticas de igualdad de género, no discriminación y contra la violencia de género. Discapacidad y dependencia: régimen jurídico.","Régimen jurídico del personal al servicio de las Administraciones Públicas. El Estatuto Básico del Empleado Público. Derechos y deberes de los funcionarios. La provisión de puestos de trabajo y la carrera administrativa. Situaciones administrativas. Incompatibilidades y régimen disciplinario. El régimen de Seguridad Social de los funcionarios."]],["Materias comunes · Derecho Administrativo General",["Las fuentes del Derecho Administrativo. La jerarquía de las fuentes. La Constitución. La Ley. El Reglamento. El ordenamiento jurídico de la Unión Europea.","Los actos administrativos. Concepto y clases. Motivación, forma y eficacia de los actos administrativos. Notificación y publicación. Nulidad y anulabilidad. La revisión de oficio.","El procedimiento administrativo común. La capacidad de obrar y el concepto de interesado. Representación. Identificación y firma de los interesados. Derechos del interesado en el procedimiento administrativo. Obligación de resolver y silencio administrativo. Términos y plazos.","Las fases del procedimiento administrativo: Iniciación, ordenación, instrucción y finalización. La ejecución de los actos y resoluciones administrativas.","Los recursos administrativos: concepto y clases. Recurso de alzada. Recurso potestativo de reposición. Recurso extraordinario de revisión. La jurisdicción contencioso-administrativa: objeto y plazos de interposición del recurso contencioso-administrativo."]],["Materias específicas · Organización de la Hacienda Pública y Derecho Tributario",["El sistema fiscal español. Principios impositivos en la Constitución Española. Los impuestos de titularidad estatal y sus características. La Hacienda Pública Estatal, Autonómica y Local.","La Agencia Estatal de Administración Tributaria: creación, naturaleza, objetivos, funciones y organización.","Derecho Tributario: concepto y contenido. Fuentes. Los tributos: concepto y clasificación. La obligación tributaria. Hecho imponible. Devengo. Base imponible y liquidable. Cuota y deuda tributaria.","Obligaciones tributarias formales. Derechos y garantías de los obligados tributarios. Los obligados tributarios. La capacidad de obrar en el orden tributario. Representación y domicilio fiscal. Plazos de prescripción.","Información y Asistencia a los obligados tributarios. La colaboración social en la aplicación de los tributos. Carácter reservado de los datos con trascendencia tributaria. Normas comunes sobre actuaciones y procedimientos tributarios: fases. Las liquidaciones tributarias. Obligación de resolver y plazos de resolución. Carga de la prueba. Las notificaciones.","Las declaraciones tributarias: concepto y clases. Las autoliquidaciones. Las comunicaciones de datos. Los pagos a cuenta.","Actuaciones y procedimiento de gestión tributaria. Los procedimientos de gestión tributaria: iniciación, trámites y terminación. El procedimiento de verificación de datos. El procedimiento de comprobación de valores. El procedimiento de comprobación limitada. Rectificación de autoliquidaciones, declaraciones, comunicaciones de datos e iniciación del procedimiento de devolución.","Actuaciones y procedimiento de inspección: funciones y facultades. Documentación de las actuaciones de inspección. La personación de la inspección en el domicilio o locales del contribuyente. El procedimiento de inspección: iniciación, desarrollo y terminación. Las medidas cautelares en el procedimiento inspector.","La extinción de la deuda tributaria (I). Medios de extinción de la deuda. El pago o cumplimiento: forma, momento, plazos, imputación, consignación y medios de pago. Aplazamiento y fraccionamiento del pago.","La extinción de la deuda tributaria (II). Otras formas de extinción de las deudas: la compensación, la extinción de deudas de las entidades de derecho público mediante deducciones sobre transferencias. La condonación. Baja provisional por insolvencia. Terminación del procedimiento de apremio.","Las actuaciones y el procedimiento de recaudación tributaria: la recaudación en período ejecutivo. Iniciación. Efectos. Recargos del período ejecutivo. Procedimiento de apremio: características, concurrencia y suspensión del procedimiento. Providencia de apremio: concepto y plazos para el pago. Las garantías de la deuda tributaria: tipos y ejecución de garantías.","El embargo. Facultades de la recaudación. Las diligencias de embargo: concepto y motivos de oposición. Práctica del embargo de bienes y derechos. Depósito y enajenación de los bienes embargados. El procedimiento frente a responsables. Procedimiento de recaudación frente a los sucesores.","La potestad sancionadora en materia tributaria. Principios. Sujetos responsables. Concepto y clases de infracciones y sanciones tributarias. Cuantificación de las sanciones tributarias pecuniarias. Extinción de la responsabilidad derivada de las infracciones tributarias y extinción de las sanciones tributarias. Procedimiento sancionador en materia tributaria: iniciación, instrucción y terminación.","Revisión en vía administrativa. El recurso de reposición. Las reclamaciones económico-administrativas. Los Tribunales Económico-Administrativos.","El Impuesto sobre la Renta de las Personas Físicas (I). Naturaleza, objeto y ámbito de aplicación. Sujeción al impuesto: aspectos materiales, personales y temporales. Rendimientos del trabajo, rendimientos del capital mobiliario, rendimientos del capital inmobiliario, rendimientos de actividades económicas. Imputación de rentas inmobiliarias. Ganancias y pérdidas patrimoniales.","El Impuesto sobre la Renta de las Personas Físicas (II): clases de Renta. Integración y compensación de rentas. Base liquidable general y del ahorro. Adecuación del impuesto a las circunstancias personales y familiares del contribuyente. Cálculo del impuesto estatal. Cuota diferencial. Tributación familiar. Gestión del Impuesto.","El Impuesto sobre Sociedades: naturaleza y ámbito de aplicación. Hecho imponible. Contribuyentes. Concepto y determinación de la base imponible. Reglas de imputación temporal. Reducciones en la base imponible. Período impositivo y devengo del impuesto. Tipo de gravamen y cuota íntegra. Deducciones para evitar la doble imposición internacional. Bonificaciones. Declaración, autoliquidación y liquidación provisional. Devolución.","El Impuesto sobre el Valor Añadido (I). Naturaleza y ámbito de aplicación. Entregas de bienes y prestaciones de servicios: hecho imponible. Exenciones. Lugar de realización del hecho imponible.","El Impuesto sobre el Valor Añadido (II). Sujetos pasivos. Repercusión del impuesto. Devengo del impuesto. Base imponible. Deducciones: requisitos subjetivos de la deducción y limitaciones del derecho a deducir. Régimen de deducciones en sectores diferenciados de la actividad empresarial o profesional. Regla de prorrata. Regularización de deducciones por bienes de inversión. Devoluciones.","La Aduana: representación aduanera. Deuda aduanera de importación y deuda aduanera de exportación. Inclusión de mercancías en un régimen aduanero: disposiciones generales."]]]},{"id":"iipp-ayudantes","ambito":"Seguridad","corto":"Ayudante de Prisiones","nombre":"Ayudantes de Instituciones Penitenciarias","cuerpo":"Cuerpo de Ayudantes de Instituciones Penitenciarias (C1)","fuente":{"boe":"BOE-A-2026-13226","fecha":"2026-06-18","anexo":"Anexo I","url":"https://www.boe.es/diario_boe/txt.php?id=BOE-A-2026-13226"},"examen":{"preguntas":120,"opciones":4,"penalizacion":null,"minutos":105,"reserva":3},"nota":"Primera parte: 120 preguntas en 1 h 45 min; cada fallo resta un tercio. Segunda parte: ocho supuestos prácticos de cinco preguntas.","grupos":[["Primera parte · I. Organización del Estado. Derecho Administrativo General. Gestión de Personal y Gestión Financiera",["La Constitución Española de 1978: principios generales, estructura y contenido. Derechos y deberes fundamentales. La Corona. Funciones constitucionales del Rey. Las Cortes Generales. La elaboración de las leyes. El Defensor del Pueblo. Nombramiento y «status». Competencias.","El Poder Judicial. La organización judicial. Actuaciones judiciales. El Consejo General del Poder Judicial. El Tribunal Constitucional: Composición y atribuciones. El Ministerio Fiscal.","El Gobierno: El Consejo de Ministros, el Presidente del Gobierno, los Ministros, otros miembros. La Administración Periférica del Estado: Los Delegados de Gobierno, Subdelegados del Gobierno y Directores Insulares, breve referencia a sus competencias.","La Organización Territorial del Estado: La ordenación del territorio del Estado en la Constitución actual. Instituciones Fundamentales de las Comunidades Autónomas: la Asamblea; el Presidente y Consejo de Gobierno; el Tribunal Superior de Justicia. Comunidades Autónomas. Competencias de las mismas en materia penitenciaria.","La Unión Europea: Tratados originarios y modificativos. Las Instituciones Comunitarias: El Parlamento, el Consejo, El Consejo Europeo, la Comisión, el Tribunal de Justicia, el Tribunal de Cuentas, el Banco Central Europeo. Efectos de la integración europea sobre la organización del Estado Español.","Estructura orgánica del Ministerio de Interior. La Secretaría General de Instituciones Penitenciarias. Entidad Pública Estatal de Trabajo Penitenciario y Formación para el Empleo: organización y competencias.","El personal de Instituciones Penitenciarias: Los diferentes cuerpos de funcionarios. El Cuerpo de Ayudantes de Instituciones Penitenciarias: Funciones generales y funciones a desempeñar en las distintas unidades de servicio. Personal en régimen de derecho laboral.","Régimen jurídico del personal al servicio de las Administraciones Públicas. El Real Decreto Legislativo 5/2015, de 30 de octubre, por el que se aprueba el texto refundido de la Ley del Estatuto Básico del Empleado Público. Derechos y deberes del personal al servicio de las Administraciones Públicas. Régimen de incompatibilidades. La responsabilidad disciplinaria: Faltas, sanciones y ejecución de las mismas. Prescripción y cancelación.","El acceso al empleo público: Principios rectores y requisitos generales. Sistemas selectivos. La adquisición y pérdida de la condición de funcionario público. La provisión de los puestos de trabajo. Las situaciones administrativas de los funcionarios.","Los contratos del Sector Público: conceptos y clases. Procedimiento de adjudicación. Su cumplimiento. La revisión de precios y otras alteraciones contractuales. Incumplimiento de los contratos del Sector Público.","Ley 45/2015, de 14 de octubre, de Voluntariado. Objeto. Ámbito de aplicación. Concepto de voluntariado: Derechos y deberes. Relaciones entre los voluntarios y las organizaciones en las que se integran. Medidas de fomento del voluntariado.","Políticas Públicas. Políticas sociales de igualdad de género y no discriminación. Políticas contra la violencia de género. Políticas de integración de las personas con discapacidad. Régimen jurídico de la Dependencia: Ley 39/2006, de 14 de diciembre, de Promoción de la Autonomía Personal y Atención a las personas en situación de dependencia. Normativa vigente. Administración Electrónica.","El Gobierno abierto. Especial referencia a la transparencia y el acceso a la información pública, a la participación en la rendición de cuentas y al buen gobierno.","La actividad de las Administraciones Públicas. Normas generales de actuación: Derechos y obligaciones de las personas en sus relaciones con la Administración Pública. Registro y archivos. Obligación de resolver. El silencio administrativo.","Las fuentes del Derecho Administrativo. El principio de legalidad en la actuación administrativa. La jerarquía de las fuentes. El acto administrativo: Concepto, clases y elementos. Eficacia y validez de los actos administrativos. Recursos administrativos. Revisión, anulación y revocación.","El Régimen Jurídico de las Administraciones Públicas. El Procedimiento Administrativo Común: garantías y fases. El procedimiento administrativo sancionador.","El Presupuesto: concepto. Los principios presupuestarios. El presupuesto del Estado en España: concepto y estructura. El Presupuesto como instrumento de planificación económica: aspectos generales de las leyes de estabilidad presupuestaria."]],["Segunda parte · I. Derecho Penal",["El Derecho Penal. Concepto, contenido y fuentes. El poder punitivo del Estado. Concepto y límites. Las garantías penales y de la aplicación de la Ley Penal. El Código Penal Español: Estructura y contenido.","Delitos: Concepto y clases. Grados de ejecución. Formas de resolución manifestada. Circunstancias modificativas de la responsabilidad criminal.","De las personas criminalmente responsables de los delitos. Las penas: Concepto y fines. Sus clases y efectos. Las penas privativas de libertad y su desarrollo histórico. Especial referencia a la pena de prisión permanente revisable.","De las formas de suspensión de la ejecución de las penas privativas de libertad. Las penas privativas de derechos. Especial referencia a la pena de trabajos en beneficio de la comunidad. Las medidas de seguridad: clases y aplicación. Medidas de seguridad competencia de la Administración Penitenciaria. Extinción de la responsabilidad criminal.","Principales delitos (1): El homicidio y sus formas. Las lesiones. Delitos vinculados a la violencia de género y doméstica. Delitos contra el patrimonio: el hurto y los robos. Delitos contra la libertad: La detención ilegal y los secuestros. Las amenazas. Las coacciones. Delitos contra la salud pública: tráfico de drogas.","Principales delitos (2): De las torturas y otros delitos contra la integridad moral. Delitos contra la libertad sexual. Delitos contra el honor: calumnia e injuria. Las falsedades: Falsificación de documentos públicos y oficiales. La usurpación de funciones públicas y el intrusismo.","Delitos contra la Administración Pública. La prevaricación. El abandono de destino y la omisión del deber de perseguir delitos. De la desobediencia y denegación de auxilio. De la infidelidad en la custodia de documentos y de la violación de secretos. Del cohecho. Tráfico de influencias. La malversación. Negociaciones y actividades prohibidas a los funcionarios públicos y de los abusos en el ejercicio de su función.","Delitos contra la Administración de Justicia. Especial referencia al quebrantamiento de condena. Delitos contra las Instituciones del Estado y la división de poderes. Especial referencia a la usurpación de atribuciones. Delitos relativos al ejercicio de los derechos fundamentales y libertades públicas. De los delitos cometidos por los funcionarios públicos contra las garantías constitucionales en especial los cometidos en el ámbito penitenciario.","La jurisdicción penal. El proceso penal: Concepto, objeto y tipos. Las partes en el proceso penal. Los actos procesales con especial referencia a las medidas cautelares que suponen privación de libertad y a las resoluciones judiciales.","El denominado procedimiento ordinario: Principios fundamentales, ámbito de aplicación y fases. El procedimiento abreviado. Especial referencia al procedimiento de «Habeas Corpus». Teoría general de los recursos. Los recursos de reforma, apelación, súplica, queja, casación, revisión y amparo."]],["Segunda parte · II. Derecho Penitenciario",["La regulación supranacional en materia penitenciaria: Convenios, Tratados, Pactos, Declaraciones y Recomendaciones. Especial referencia a los acuerdos sobre traslados de personas condenadas. Organismos de vigilancia y control. Especial consideración de la labor de las Naciones Unidas y del Consejo de Europa. La ley 23/2014, de 20 de noviembre, de reconocimiento mutuo de resoluciones penales en la Unión Europea.","El Derecho Penitenciario: Concepto, contenido y fuentes. Breve referencia a la evolución histórica de la legislación penitenciaria en España. La normativa penitenciaria vigente. Las líneas generales de la ejecución en nuestro ordenamiento fijadas por el artículo 25.2 de la Constitución.","La relación jurídico-penitenciaria: naturaleza y fundamento. Derechos de los internos: Clases y límites, sistema de protección y régimen de garantías. Deberes de los internos.","Prestaciones de la Administración Penitenciaria. Asistencia sanitaria. Higiene y alimentación. Asistencia religiosa. Acción Social Penitenciaria.","El Régimen Penitenciario (1): Concepto y principios inspiradores. Normas generales en la organización de un Centro Penitenciario. El ingreso. Las relaciones con el exterior: comunicaciones, visitas, paquetes. La participación de los internos en las actividades. Información, quejas, recursos. Las conducciones y traslados en sus diferentes modalidades.","El Régimen Penitenciario (2). La seguridad en los Establecimientos Penitenciarios. La seguridad exterior: Competencia y fines. La seguridad interior: Principios generales, medidas preventivas y medidas de control. Los medios coercitivos y su aplicación.","Clasificación de los distintos tipos de establecimientos y sus características. El régimen ordinario: Principios generales y características. El régimen de preventivos.","El régimen cerrado: Criterios de aplicación y características. Modalidades. El régimen abierto: Objetivos, criterios de aplicación y centros de destino.","El Tratamiento Penitenciario (1): Concepto, fines y principios inspiradores. La separación interior. La clasificación en grados. El principio de individualización científica. La Central Penitenciaria de Observación. La observación del interno: El papel de los funcionarios de servicio interior.","El Tratamiento Penitenciario (2): Elementos y programas de tratamiento. La formación, la cultura y el deporte como elementos de los diferentes programas de tratamiento. La necesaria colaboración régimen-tratamiento para la ejecución de los programas.","La relación laboral en el medio penitenciario: Características. Los distintos tipos de trabajo en el medio penitenciario. Extinción y suspensión de la relación laboral. La Entidad Pública Estatal de Trabajo Penitenciario y Formación para el Empleo. Gestión de nóminas y seguridad social de los internos trabajadores.","Los permisos de salida: Concepto y naturaleza. Clases, duración y requisitos. Procedimiento de concesión.","Libertad y excarcelación en sus distintas formas. El procedimiento de expulsión de extranjeros. Suspensión de la ejecución del resto de la pena y concesión de la libertad condicional: Requisitos para su concesión y revocación. Mecanismos de control de esta situación. Los beneficios penitenciarios y sus clases.","Formas especiales de ejecución de la pena de prisión: Modos de internamiento, características y criterios para su asignación. El cumplimiento de la pena de prisión permanente revisable. El cumplimiento de la pena de trabajo en beneficio de la comunidad. Las suspensiones de condenas. El cumplimiento de la pen/a de localización permanente. Los Servicios de Gestión de Penas y Medidas Alternativas.","El régimen disciplinario: Principios generales y ámbito de aplicación. Clasificación de las faltas y determinación de las sanciones. Procedimiento sancionador. Ejecutoriedad. Prescripción y cancelación. Las recompensas.","El control de la actividad penitenciaria por el Juez de Vigilancia: Normativa vigente. Atribución de competencias. Cuestiones procesales. Los recursos contra sus resoluciones.","El modelo organizativo penitenciario: estructura y régimen jurídico. Órganos colegiados: Composición y funciones. Órganos unipersonales: Director, Subdirectores, Administrador, Jefes de Servicios. Atribuciones y horarios.","El régimen administrativo de los Establecimientos Penitenciarios (1). La oficina de gestión penitenciaria: organización. El expediente personal del interno: Estructura, documentos y trámites administrativos. Sentencia y liquidación de condena: Cálculos y fechas de repercusión penitenciaria. Documentación y procedimientos de la gestión de tratamiento. El expediente personal de los sentenciados a penas y medidas alternativas. Documentación. Trámites y procedimiento de gestión.","El régimen administrativo de los Establecimientos Penitenciarios (2). Funcionamiento administrativo de la oficina de servicio interior. Redacción de partes disciplinarios, de recuento y otros. Realización de trámites relativos a las unidades de servicios de: Acceso, rastrillo, comunicaciones y visitas, ingresos y salidas, recepción y salida de paquetes y encargos. La oficina de identificación: Obtención y clasificación de los dactilogramas.","El régimen económico de los Establecimientos Penitenciarios: Principios generales y régimen patrimonial. Contabilidad general. Las cuentas presupuestarias y extrapresupuestarias. Gestión de almacenes. Las formas de gestión de los servicios de economatos, cocinas, alimentación y vestuario. El peculio de los internos: formas de gestión. Las pertenencias de los internos: Administración y custodia. La oficina de habilitación: Gestión de nóminas y seguridad social de los empleados públicos. Inventario general de equipamiento, utensilio y mobiliario en un Centro Penitenciario."]],["Segunda parte · III. Conducta humana",["Elementos de la conducta humana. Estímulos y respuestas. Refuerzo y castigo. Técnicas de evaluación de la conducta humana. La observación, la autoobservación, el auto-registro, los auto-informes y los registros psicofisiológicos. La integración de los datos de la evaluación y realización de informes.","Organización social de la prisión: Control formal e informal. Código del recluso, jerga y lenguaje. Subculturas carcelarias. Fenómenos de hacinamiento y conducta del recluso. Efectos psicológicos de la reclusión. Factores determinantes. Consecuencias físicas y psicosociales. Prisionización y socialización.","El comportamiento social. El concepto de asertividad. Habilidades sociales. Evaluación y medida de las habilidades sociales y sus déficits. Programas de entrenamiento en habilidades sociales y su aplicación al ámbito penitenciario. La conducta adictiva en prisión."]]]}];
+
+/* ══════════════════ oposiciones: temario del BOE, calendario, turnos y ponte a prueba ══════════════════
+   Cuatro cosas que pedían los opositores:
+   · elegir tu oposición de una lista y que el temario y las reglas del test
+     salgan del BOE, sin pegar nada (OPO_CATALOGO, en temarios.js);
+   · todas las fechas de la convocatoria, no solo el plazo de la solicitud,
+     con los plazos en días hábiles calculados y avisos antes de que venzan;
+   · que el plan cuente con los turnos del trabajo: más temas el día libre,
+     menos después de una noche;
+   · ponerte a prueba con un tema al azar de los que ya has visto:
+     lo desarrollas sin mirar y la app te dice qué porcentaje de las ideas
+     clave has tocado. A veces te lo propone ella sola: el reto sorpresa. */
+
+/* ── lo nuevo dentro de S.opo, con su forma ── */
+const TURNOS = [["L", "Libre", 240], ["M", "Mañana", 150], ["T", "Tarde", 120], ["N", "Noche", 60], ["P", "Partido", 60]];
+const TURNO_NOMBRE = Object.fromEntries(TURNOS.map(([k, n]) => [k, n]));
+const HITOS = [
+  { id: "publicacion", txt: "Sale la convocatoria" },
+  { id: "admitidos", txt: "Lista provisional de admitidos", sigue: ["subsanacion", 10] },
+  { id: "subsanacion", txt: "Último día para subsanar", accion: "Mira que estás en la lista de admitidos y, si no, corrige lo que te pidan", hecho: "Revisado" },
+  { id: "definitiva", txt: "Lista definitiva de admitidos" },
+  { id: "plantilla", txt: "Plantilla provisional de respuestas", sigue: ["impugnacion", 3] },
+  { id: "impugnacion", txt: "Último día para impugnar preguntas", accion: "Compara tus respuestas con la plantilla y reclama las que veas mal", hecho: "Hecho" },
+  { id: "notas", txt: "Salen las notas" },
+  { id: "siguiente", txt: "Siguiente ejercicio" },
+  { id: "aprobados", txt: "Lista de aprobados", sigue: ["documentacion", 20] },
+  { id: "documentacion", txt: "Último día para presentar la documentación", accion: "Títulos, DNI y lo que pidan las bases", hecho: "Presentada" },
+  { id: "destinos", txt: "Petición de destinos", accion: "Ordena los destinos que quieres", hecho: "Pedidos" },
+  { id: "otro", txt: "Otra fecha" }
+];
+const HITO = Object.fromEntries(HITOS.map(h => [h.id, h]));
+const idOpoBueno = id => typeof id === "string" && /^[A-Za-z0-9_-]{1,60}$/.test(id);
+const esObjOpo = x => x && typeof x === "object" && !Array.isArray(x);
+function hitoBueno(h) { return esObjOpo(h) && idOpoBueno(h.id) && !!HITO[h.tipo] && esFecha(h.fecha); }
+function turnosBuenos(tu) {
+  if (!esObjOpo(tu) || !Array.isArray(tu.ciclo) || !tu.ciclo.length || tu.ciclo.length > 42) return false;
+  if (!tu.ciclo.every(k => TURNO_NOMBRE[k]) || !esFecha(tu.inicio)) return false;
+  if (!esObjOpo(tu.min)) tu.min = {};
+  TURNOS.forEach(([k, , m]) => { tu.min[k] = clamp(Math.round(num(tu.min[k], m)), 0, 720); });
+  return true;
+}
+/* lo llama normalizarOpo: barato, que va en cada pintado */
+function normalizarOpo3(O) {
+  if (!Array.isArray(O.pruebas)) O.pruebas = [];
+  else if (!O.pruebas.every(esObjOpo)) O.pruebas = O.pruebas.filter(esObjOpo);
+  const pr = O.prueba;
+  if (pr === undefined || (pr !== null && !(esObjOpo(pr) && idOpoBueno(pr.temaId) && num(pr.inicio) > 0))) O.prueba = null;
+  else if (pr) { pr.minutos = clamp(Math.round(num(pr.minutos, 15)), 1, 240); if (typeof pr.texto !== "string") pr.texto = ""; }
+  const cv = O.convocatoria;
+  if (!Array.isArray(cv.hitos)) cv.hitos = [];
+  else if (!cv.hitos.every(hitoBueno)) cv.hitos = cv.hitos.filter(hitoBueno);
+  cv.hitos.forEach(h => { h.hecho = h.hecho === true; if (typeof h.txt !== "string") h.txt = ""; });
+  if (O.plan.turnos !== null && !turnosBuenos(O.plan.turnos)) O.plan.turnos = null;
+  if (O.catalogo === undefined || (O.catalogo !== null && typeof O.catalogo !== "string")) O.catalogo = null;
+  O.temas.forEach(t => { if (typeof t.ideas !== "string") t.ideas = String(t.ideas || ""); });
+}
+const fechaCortaAnio = iso => esFecha(iso) ? new Date(iso + "T12:00:00").toLocaleDateString("es-ES", { day: "numeric", month: "short", year: "numeric" }).replace(".", "") : "";
+const fechaTxt = iso => esFecha(iso) ? new Date(iso + "T12:00:00").toLocaleDateString("es-ES", { day: "numeric", month: "long", year: "numeric" }) : "";
+
+/* ══════ 1. el temario del BOE ══════ */
+const opoCatalogo = id => OPO_CATALOGO.find(c => c.id === id) || null;
+function opoCatalogoDe(nombre) {
+  const n = sinTildes(String(nombre || "")).trim();
+  return n ? OPO_CATALOGO.find(c => sinTildes(c.nombre) === n || sinTildes(c.corto) === n) || null : null;
+}
+const temasCatalogo = c => c.grupos.reduce((s, g) => s + g[1].length, 0);
+/* carga el temario y las reglas del primer test; la fecha y el corte no se tocan */
+function cargarCatalogo(c, sustituir) {
+  const O = normalizarOpo(), temas = [];
+  c.grupos.forEach(([g, lista]) => lista.forEach(titulo => temas.push({ n: temas.length + 1, titulo, grupo: g })));
+  const n = crearTemas({ temas, grupos: c.grupos.map(g => g[0]) }, sustituir);
+  const d = c.examen;
+  Object.assign(O.examen, { preguntas: d.preguntas, opciones: d.opciones, penalizacion: d.penalizacion, minutos: d.minutos, reserva: d.reserva });
+  if (!O.convocatoria.enlace) O.convocatoria.enlace = c.fuente.url;
+  O.catalogo = c.id;
+  /* la has elegido de la lista: se llama como en el BOE */
+  const p = normalizarPerfil();
+  if (p.ciclo !== c.nombre) { p.ciclo = c.nombre; guardar("perfil"); }
+  guardar("oposicion");
+  return n;
+}
+function abrirCatalogo() {
+  const O = normalizarOpo(), hay = O.temas.length, conCosas = O.temas.some(t => t.vueltas.length || t.notas || t.ideas);
+  let sel = null;
+  const lista = () => [...new Set(OPO_CATALOGO.map(c => c.ambito))].map(a => `<div class="etq cat-etq">${esc(a)}</div>
+    <div class="cat-lista">${OPO_CATALOGO.filter(c => c.ambito === a).map(c => `<button type="button" class="cat-item" data-cat="${c.id}">
+      <b>${esc(c.corto)}</b><span>${temasCatalogo(c)} temas · BOE del ${esc(fechaCortaAnio(c.fuente.fecha))}</span></button>`).join("")}</div>`).join("")
+    + `<p class="meta" style="margin-top:14px">¿No está la tuya? Cierra y pega el índice de tu convocatoria: vale para cualquier oposición.</p>`;
+  const ficha = c => {
+    let k = 0;
+    return `<button type="button" class="btn mini fantasma" data-cat-volver>← Todas</button>
+    <h3 class="cat-tit">${esc(c.nombre)}</h3><p class="meta" style="margin:0 0 12px">${esc(c.cuerpo)}</p>
+    <div class="cat-datos"><span><b>${temasCatalogo(c)}</b> temas</span><span><b>${c.examen.preguntas}</b> preguntas</span>
+      <span><b>${c.examen.opciones}</b> opciones</span><span>un fallo resta <b>${esc(textoPenalizacion(penalizacionDe(c.examen)))}</b></span><span><b>${c.examen.minutos}</b> min</span></div>
+    <p class="meta" style="margin:12px 0">${esc(c.nota)}</p>
+    <div class="cat-grupos">${c.grupos.map(([g, l]) => { const ini = k + 1; k += l.length;
+      return `<details><summary>${esc(g || "Temario")} <span class="meta">· temas ${ini} a ${k}</span></summary><ol start="${ini}">${l.map(t => `<li>${esc(t)}</li>`).join("")}</ol></details>`; }).join("")}</div>
+    <p class="meta" style="margin-top:12px">Tal cual sale en el <a href="${esc(c.fuente.url)}" target="_blank" rel="noopener">BOE del ${esc(fechaTxt(c.fuente.fecha))}</a> (${esc(c.fuente.anexo)}). Si sale una convocatoria nueva, el temario puede cambiar: manda siempre lo que digan tus bases.</p>
+    ${hay ? `<p class="cat-aviso">Ya tienes ${hay} ${hay === 1 ? "tema" : "temas"}: se sustituyen${conCosas ? ", y con ellos sus vueltas y sus notas" : ""}.</p>` : ""}`;
+  };
+  const pintar = () => {
+    $("#catCuerpo").innerHTML = sel ? ficha(sel) : lista();
+    const b = $("#dlgPie .primario"); if (b) b.style.display = sel ? "" : "none";
+    $("#catCuerpo").scrollTop = 0;
+  };
+  abrirDlg("Elige tu oposición", `<div id="catCuerpo"></div>`, [
+    { txt: "Cancelar", clase: "btn fantasma" },
+    { txt: hay ? "Sustituir mi temario" : "Cargar el temario", clase: "btn primario", accion: () => {
+      if (!sel) return true;
+      const c = sel, hacer = () => {
+        const n = cargarCatalogo(c, true); opoTab = "temario"; pinta();
+        aviso(n + " temas cargados del BOE, con las reglas del examen. Si ya llevabas alguno estudiado, márcalo en «Ya llevo estudiado».");
+      };
+      if (conCosas) { confirmar("Se sustituye el temario entero, y con él las vueltas y las notas de cada tema.", { titulo: "¿Sustituir el temario?", si: "Sustituir" }).then(ok => { if (ok) hacer(); }); return false; }
+      hacer(); return false;
+    } }
+  ]);
+  pintar();
+  $("#dlgCuerpo").onclick = e => {
+    const it = e.target.closest("[data-cat]"); if (it) { sel = opoCatalogo(it.dataset.cat); pintar(); return; }
+    if (e.target.closest("[data-cat-volver]")) { sel = null; pintar(); }
+  };
+}
+/* en la bienvenida: las que hay en la lista, para no tener que escribirla */
+function bvOpoChips(p) {
+  const actual = opoCatalogoDe(p.ciclo);
+  return `<div class="etq" style="margin:22px 0 10px">¿Es una de estas? Te cargo su temario del BOE</div>
+    <div class="ent-chips">${OPO_CATALOGO.map(c => `<button type="button" class="sug${actual === c ? " sel" : ""}" data-bv-opo="${c.id}">${esc(c.corto)}</button>`).join("")}</div>`;
+}
+
+/* ══════ 2. el calendario de la convocatoria ══════
+   Los plazos de las bases se cuentan en días hábiles (art. 30 de la Ley
+   39/2015): sin sábados, domingos ni festivos, empezando el día siguiente.
+   Aquí van los festivos nacionales; los de cada comunidad, no. */
+function pascua(y) {
+  const a = y % 19, b = Math.floor(y / 100), c = y % 100, d = Math.floor(b / 4), e = b % 4, f = Math.floor((b + 8) / 25), g = Math.floor((b - f + 1) / 3);
+  const h = (19 * a + b - d - g + 15) % 30, i = Math.floor(c / 4), k = c % 4, l = (32 + 2 * e + 2 * i - h - k) % 7, m = Math.floor((a + 11 * h + 22 * l) / 451);
+  const n = h + l - 7 * m + 114;
+  return y + "-" + dosDig(Math.floor(n / 31)) + "-" + dosDig(n % 31 + 1);
+}
+function festivoNacional(iso) {
+  if (["01-01", "01-06", "05-01", "08-15", "10-12", "11-01", "12-06", "12-08", "12-25"].includes(iso.slice(5))) return true;
+  return iso === sumaDias(pascua(+iso.slice(0, 4)), -2);   /* Viernes Santo */
+}
+function esHabil(iso) { const d = new Date(iso + "T12:00:00").getDay(); return d !== 0 && d !== 6 && !festivoNacional(iso); }
+function sumarHabiles(iso, n) {
+  if (!esFecha(iso)) return "";
+  let f = iso, k = 0;
+  while (k < n) { f = sumaDias(f, 1); if (esHabil(f)) k++; }
+  return f;
+}
+const nombreHito = h => h.tipo === "otro" && h.txt ? h.txt : HITO[h.tipo].txt;
+/* todas las fechas en fila: la solicitud y el examen viven donde siempre */
+function lineaConvocatoria() {
+  const O = normalizarOpo(), cv = O.convocatoria, f = [];
+  if (esFecha(cv.plazoFin)) f.push({ id: "plazo", fecha: cv.plazoFin, txt: "Último día para presentar la solicitud y pagar la tasa", accion: "La instancia y la tasa (modelo 790)", hechoTxt: "Presentada", hecho: !!cv.presentada });
+  if (esFecha(O.examen.fecha)) f.push({ id: "examen", fecha: O.examen.fecha, txt: "El examen", examen: true });
+  cv.hitos.forEach(h => { const d = HITO[h.tipo]; f.push({ id: h.id, fecha: h.fecha, txt: nombreHito(h), accion: d.accion || "", hechoTxt: d.hecho || "", hecho: h.hecho, hito: true }); });
+  return f.sort((a, b) => a.fecha.localeCompare(b.fecha));
+}
+function faltanTxt(d) {
+  if (d === 0) return "hoy";
+  if (d === 1) return "mañana";
+  if (d === -1) return "ayer";
+  return d > 0 ? "dentro de " + d + " días" : "hace " + -d + " días";
+}
+function opoCalendarioHTML() {
+  const hoy = hoyISO(), f = lineaConvocatoria();
+  const prox = f.find(x => x.fecha >= hoy && !x.hecho);
+  const fila = x => {
+    const d = diasEntre(x.fecha, hoy), pasado = d < 0 || x.hecho, dt = new Date(x.fecha + "T12:00:00");
+    const urg = !pasado && x.accion && d <= 3;
+    return `<li class="hito${pasado ? " pasado" : ""}${x === prox ? " prox" : ""}${urg ? " urgente" : ""}${x.examen ? " examen" : ""}">
+      <span class="hito-f"><b>${dt.getDate()}</b><small>${esc(dt.toLocaleDateString("es-ES", { month: "short" }).replace(".", ""))}</small></span>
+      <div class="hito-t"><b>${esc(x.txt)}</b><span class="meta">${x.hecho ? esc(x.hechoTxt) : mayus(faltanTxt(d))}${x.accion && !x.hecho && d >= 0 ? " · " + esc(x.accion) : ""}</span></div>
+      <span class="hito-b">${x.accion ? `<button type="button" class="btn mini${x.hecho ? " fantasma" : ""}" data-hito-hecho="${x.id}">${x.hecho ? "Deshacer" : esc(x.hechoTxt)}</button>` : ""}
+      ${x.hito || x.id === "plazo" ? `<button type="button" class="icono-btn" data-hito-quitar="${x.id}" aria-label="Quitar «${esc(x.txt)}»">${icono("cerrar")}</button>` : ""}</span>
+    </li>`;
+  };
+  return `<section class="panel" id="opoCalendario">
+    <div class="opo-cab-sec"><div class="etq">El calendario de tu convocatoria</div>${f.some(x => x.fecha >= hoy) ? `<button type="button" class="btn mini" id="opoICS">${icono("calendario")}Al calendario del móvil</button>` : ""}</div>
+    ${f.length ? `<ol class="hitos">${f.map(fila).join("")}</ol>` : `<p class="meta" style="margin:0 0 12px">Apunta cada fecha según salga en el boletín: la app te avisa antes de que venza cada plazo, que es donde más plazas se pierden.</p>`}
+    <div class="opo-form hito-nuevo">
+      <label class="campo">Qué<select id="hiTipo"><option value="plazo">Último día de la solicitud</option><option value="examen">El examen</option>${HITOS.map(h => `<option value="${h.id}">${esc(h.txt)}</option>`).join("")}</select></label>
+      <label class="campo">Fecha<input type="date" id="hiFecha"></label>
+      <label class="campo opo-ancho oculto" id="hiTxtCampo">Nombre<input type="text" id="hiTxt" maxlength="80" placeholder="Ej.: prueba de idioma"></label>
+      <div class="campo opo-boton"><button type="button" class="btn" id="hiAdd">Añadir</button></div>
+      <label class="ent-linea opo-ancho oculto" id="hiSigueCampo"><input type="checkbox" id="hiSigue" checked><span id="hiSigueTxt"></span></label>
+    </div>
+    <p class="meta" style="margin-top:10px">Los días hábiles se cuentan sin sábados, domingos ni festivos nacionales. Si por medio cae un festivo de tu comunidad, muévelo un día. Y manda siempre lo que digan tus bases.</p>
+  </section>`;
+}
+function hiSigueTxt() {
+  const t = HITO[($("#hiTipo") || {}).value], campo = $("#hiSigueCampo"), txt = $("#hiTxtCampo");
+  if (txt) txt.classList.toggle("oculto", !t || t.id !== "otro");
+  if (!campo) return;
+  campo.classList.toggle("oculto", !(t && t.sigue));
+  if (t && t.sigue) $("#hiSigueTxt").textContent = "Añadir también «" + HITO[t.sigue[0]].txt + "»: " + t.sigue[1] + " días hábiles después (compruébalo en las bases).";
+}
+function nuevoHito(tipo, fecha, txt = "", conSigue = true) {
+  const O = normalizarOpo(), cv = O.convocatoria;
+  if (!esFecha(fecha)) return 0;
+  if (tipo === "plazo") { ponCampoOpo("convocatoria.plazoFin", fecha); return 1; }
+  if (tipo === "examen") { ponCampoOpo("examen.fecha", fecha); return 1; }
+  const d = HITO[tipo]; if (!d) return 0;
+  cv.hitos.push({ id: uid(), tipo, fecha, hecho: false, txt: tipo === "otro" ? String(txt || "").trim().slice(0, 80) : "" });
+  let n = 1;
+  if (d.sigue && conSigue) { cv.hitos.push({ id: uid(), tipo: d.sigue[0], fecha: sumarHabiles(fecha, d.sigue[1]), hecho: false, txt: "" }); n++; }
+  guardar("oposicion");
+  return n;
+}
+/* el plazo más cercano que pide hacer algo, si vence en una semana */
+function avisoHitos(hoy = hoyISO()) {
+  const h = normalizarOpo().convocatoria.hitos.filter(x => HITO[x.tipo].accion && !x.hecho && x.fecha >= hoy && diasEntre(x.fecha, hoy) <= 7)
+    .sort((a, b) => a.fecha.localeCompare(b.fecha))[0];
+  if (!h) return null;
+  const d = diasEntre(h.fecha, hoy), tt = HITO[h.tipo];
+  return { h, d, tipo: d <= 2 ? "urgente" : "pronto",
+    txt: (d === 0 ? "Hoy" : d === 1 ? "Mañana" : "En " + d + " días") + " es el " + tt.txt.charAt(0).toLowerCase() + tt.txt.slice(1) + ". " + tt.accion + "." };
+}
+function opoAlertaHitos() {
+  const a = avisoHitos(); if (!a) return "";
+  return banda("calendario", a.txt, `<button type="button" class="btn mini" data-hito-hecho="${a.h.id}">${esc(HITO[a.h.tipo].hecho)}</button>`, a.tipo);
+}
+function hitosICS(ev, hoy) {
+  normalizarOpo().convocatoria.hitos.filter(h => h.fecha >= hoy && !h.hecho).forEach(h =>
+    ev.push({ uid: "opo-hito-" + h.id, titulo: nombreHito(h), fecha: h.fecha, hora: "", minutos: 0, desc: HITO[h.tipo].accion || "" }));
+}
+
+/* ══════ 3. los turnos del trabajo ══════
+   Un ciclo de días (de 1 a 42) que se repite desde una fecha, y cuánto
+   puedes estudiar según el turno de ese día. El plan cuenta los días de
+   estudio pesando cada uno por lo que da de sí comparado con un día normal
+   tuyo, y reparte los temas de hoy igual. */
+const TURNOS_MODELOS = [
+  ["Mañanas de lunes a viernes", "MMMMMLL"],
+  ["Tardes de lunes a viernes", "TTTTTLL"],
+  ["Noches de lunes a viernes", "NNNNNLL"],
+  ["Mañana y tarde, una semana cada una", "MMMMMLLTTTTTLL"],
+  ["Mañana, tarde y noche, una semana cada una", "MMMMMLLTTTTTLLNNNNNLL"],
+  ["Dos mañanas, dos tardes, dos noches y cuatro libres", "MMTTNNLLLL"]
+];
+const minTurno = (tu, k) => clamp(Math.round(num(tu.min && tu.min[k], (TURNOS.find(x => x[0] === k) || [0, 0, 0])[2])), 0, 720);
+function turnosActivos() {
+  const tu = normalizarOpo().plan.turnos;
+  if (!tu) return null;
+  const caps = tu.ciclo.map(k => minTurno(tu, k)), con = caps.filter(m => m > 0);
+  if (!con.length) return null;
+  const ref = con.reduce((a, b) => a + b, 0) / con.length;
+  return Object.assign({}, tu, { ref, porSemana: clamp(7 * caps.reduce((a, b) => a + b, 0) / ref / tu.ciclo.length, 0.1, 7) });
+}
+function turnoDe(tu, fecha) { const n = tu.ciclo.length, d = diasEntre(fecha, tu.inicio); return tu.ciclo[((d % n) + n) % n]; }
+const factorDia = (tu, fecha) => minTurno(tu, turnoDe(tu, fecha)) / tu.ref;
+function diasEquiv(tu, desde, n) { let s = 0; for (let i = 0; i < n; i++) s += factorDia(tu, sumaDias(desde, i)); return s; }
+function turnoDia(tu, fecha) { const k = turnoDe(tu, fecha); return { k, nombre: TURNO_NOMBRE[k], min: minTurno(tu, k) }; }
+const DIA_LETRA = ["D", "L", "M", "X", "J", "V", "S"];
+const letraDia = iso => DIA_LETRA[new Date(iso + "T12:00:00").getDay()];
+function opoTurnosHTML() {
+  const tu = turnosActivos(), hoy = hoyISO();
+  const tira = tu ? Array.from({ length: 14 }, (_, i) => { const f = sumaDias(hoy, i), d = turnoDia(tu, f);
+    return `<span class="tu-dia t-${d.k}${i === 0 ? " hoy" : ""}" title="${esc(fechaCorta(f) + ": " + d.nombre)}"><small>${letraDia(f)}</small><b>${d.k}</b><em>${d.min ? horasTxt(d.min).replace(" min", "′") : "—"}</em></span>`; }).join("") : "";
+  return `<div class="tu-bloque">
+    <label class="ent-linea"><input type="checkbox" id="opoTurnosOn"${tu ? " checked" : ""}><span><b>Trabajo a turnos</b>: que el plan cuente con ellos (más temas el día libre, menos después de una noche).</span></label>
+    ${tu ? `<div class="tu-tira" aria-label="Tus próximos 14 días">${tira}</div>
+      <p class="meta" style="margin:8px 0 0">De media, ${horasTxt(Math.round(tu.porSemana * tu.ref))} de estudio a la semana. <button type="button" class="lg-enlace" id="opoTurnosEditar">Cambiar mis turnos</button></p>` : ""}
+  </div>`;
+}
+function abrirTurnos() {
+  const O = normalizarOpo(), hoy = hoyISO();
+  const tmp = O.plan.turnos ? clonar(O.plan.turnos) : { ciclo: TURNOS_MODELOS[0][1].split(""), inicio: lunesDe(hoy), min: Object.fromEntries(TURNOS.map(([k, , m]) => [k, m])) };
+  const cicloHTML = () => tmp.ciclo.map((k, i) => { const f = sumaDias(tmp.inicio, i);
+    return `<button type="button" class="tu-dia t-${k}" data-tu-dia="${i}" aria-label="Día ${i + 1}, ${esc(fechaCorta(f))}: ${TURNO_NOMBRE[k]}. Toca para cambiarlo"><small>${letraDia(f)}</small><b>${k}</b></button>`; }).join("");
+  const resumen = () => {
+    const t = Object.assign({}, tmp, { min: tmp.min }), caps = t.ciclo.map(k => minTurno(t, k)), total = caps.reduce((a, b) => a + b, 0);
+    return total ? "De media, " + horasTxt(Math.round(total * 7 / t.ciclo.length)) + " de estudio a la semana." : "Con esto no te queda ningún rato para estudiar.";
+  };
+  const repinta = () => { $("#tuCiclo").innerHTML = cicloHTML(); $("#tuResumen").textContent = resumen(); $("#tuLargo").value = tmp.ciclo.length; $("#tuInicio").value = tmp.inicio; };
+  abrirDlg("Tus turnos", `
+    <p class="meta" style="margin:0 0 12px">Dile a la app cómo trabajas y el plan de vueltas reparte los temas según el tiempo que de verdad tienes cada día.</p>
+    <div class="etq" style="margin-bottom:8px">Empieza por uno parecido</div>
+    <div class="ent-chips">${TURNOS_MODELOS.map(([t], i) => `<button type="button" class="sug" data-tu-modelo="${i}">${esc(t)}</button>`).join("")}</div>
+    <div class="rejilla-campos" style="grid-template-columns:repeat(2,minmax(0,1fr)); margin-top:14px">
+      <label class="campo">Días que dura el ciclo<input type="number" id="tuLargo" min="1" max="42" step="1" value="${tmp.ciclo.length}"></label>
+      <label class="campo">El ciclo empieza el<input type="date" id="tuInicio" value="${tmp.inicio}"></label>
+    </div>
+    <div class="etq" style="margin:16px 0 8px">Cada día del ciclo <span class="meta">· toca uno para cambiar su turno</span></div>
+    <div class="tu-ciclo" id="tuCiclo">${cicloHTML()}</div>
+    <div class="tu-leyenda">${TURNOS.map(([k, n]) => `<span><i class="tu-dia t-${k}"><b>${k}</b></i>${n}</span>`).join("")}</div>
+    <div class="etq" style="margin:16px 0 8px">Horas que puedes estudiar según el turno</div>
+    <div class="tu-min">${TURNOS.map(([k, n]) => `<label class="campo">${n}<input type="number" data-tu-min="${k}" min="0" max="12" step="0.25" value="${num(tmp.min[k]) / 60}"></label>`).join("")}</div>
+    <p class="meta" id="tuResumen" style="margin-top:12px">${resumen()}</p>`,
+    [].concat(O.plan.turnos ? [{ txt: "Quitar los turnos", clase: "btn borrar fantasma", izquierda: true, accion: () => { O.plan.turnos = null; guardar("oposicion"); pinta(); aviso("Turnos quitados: el plan vuelve a los días de estudio a la semana."); } }] : [])
+      .concat([{ txt: "Cancelar", clase: "btn fantasma" },
+        { txt: "Guardar", clase: "btn primario", accion: () => {
+          if (!tmp.ciclo.some(k => minTurno(tmp, k) > 0)) { aviso("Deja al menos un rato para estudiar en algún turno.", "mal"); return true; }
+          O.plan.turnos = tmp; guardar("oposicion"); pinta(); aviso("Turnos guardados. El plan ya cuenta con ellos."); } }]));
+  const cuerpo = $("#dlgCuerpo");
+  cuerpo.onclick = e => {
+    const m = e.target.closest("[data-tu-modelo]");
+    if (m) { tmp.ciclo = TURNOS_MODELOS[+m.dataset.tuModelo][1].split(""); tmp.inicio = tmp.ciclo.length % 7 ? hoy : lunesDe(hoy);
+      cuerpo.querySelectorAll("[data-tu-modelo]").forEach(b => b.classList.toggle("sel", b === m)); repinta(); return; }
+    const d = e.target.closest("[data-tu-dia]");
+    if (d) { const i = +d.dataset.tuDia, orden = TURNOS.map(x => x[0]); tmp.ciclo[i] = orden[(orden.indexOf(tmp.ciclo[i]) + 1) % orden.length]; repinta();
+      const b = cuerpo.querySelector(`[data-tu-dia="${i}"]`); if (b) b.focus(); }
+  };
+  cuerpo.onchange = e => {
+    if (e.target.id === "tuLargo") {
+      const n = clamp(Math.round(num(e.target.value, tmp.ciclo.length)), 1, 42);
+      while (tmp.ciclo.length < n) tmp.ciclo.push("L");
+      tmp.ciclo.length = n; repinta();
+    }
+    if (e.target.id === "tuInicio" && esFecha(e.target.value)) { tmp.inicio = e.target.value; repinta(); }
+    const mi = e.target.closest("[data-tu-min]");
+    if (mi) { tmp.min[mi.dataset.tuMin] = clamp(Math.round(num(mi.value) * 60), 0, 720); $("#tuResumen").textContent = resumen(); }
+  };
+}
+/* la cabecera de «Hoy te tocan», con el turno si lo hay */
+function metaHoy(hoy) {
+  const n = hoy.hechos + " de " + hoy.cupo + " hechos";
+  return hoy.turno ? esc(hoy.turno.nombre) + (hoy.turno.min ? " · " + horasTxt(hoy.turno.min) + " para estudiar" : "") + " · " + n : n;
+}
+
+/* ══════ 4. ponte a prueba ══════
+   Un tema al azar de los que ya has visto; lo escribes sin mirar y, al
+   entregar, la app busca en lo que has escrito las palabras importantes de
+   cada idea clave del tema. Tocar una idea es que salgan al menos seis de
+   cada diez de sus palabras (sin contar «de», «la», «que»…, y dando igual
+   el plural o las tildes). No sabe si lo que dices es verdad: sabe si lo
+   has dicho. Por eso cada idea se puede corregir a mano. */
+const temasVistos = () => normalizarOpo().temas.filter(t => t.dominado || vueltasDe(t) > 0);
+const pruebasDe = id => normalizarOpo().pruebas.filter(p => p.temaId === id).sort((a, b) => (a.fecha || "").localeCompare(b.fecha || ""));
+const ultimaPrueba = id => { const l = pruebasDe(id); return l.length ? l[l.length - 1] : null; };
+/* las ideas: las que escribiste para eso y, si no hay, tus notas del tema, línea a línea */
+function fuenteIdeas(t) {
+  const lineas = s => String(s || "").split(/\n+/).map(l => l.replace(/^\s*(?:[-•*·–]|\d{1,2}[.)])\s*/, "").trim()).filter(l => prClaves(l).length).slice(0, 60);
+  const i = lineas(t && t.ideas);
+  if (i.length) return { lista: i, de: "ideas" };
+  const n = lineas(t && t.notas);
+  return n.length ? { lista: n, de: "notas" } : { lista: [], de: "" };
+}
+const PR_VACIAS = new Set(("a al algo alguna algunas algunos alguno ante antes aqui asi aun bajo bien cada cual cuales cuando como con contra cuanto de del desde donde dos durante e el ella ellas ello ellos en entre era es esa esas ese eso esos esta estan estas este esto estos fue ha hacia han hasta hay la las le les lo los mas me mediante mismo muy ni no nos o otra otras otro otros para pero poco por porque puede pueden que quien se segun ser si sin sobre son su sus tambien tan tanto te tiene tienen todo todos tras tu un una unas uno unos y ya").split(" "));
+function prRaiz(w) {
+  const s = sinTildes(w);
+  if (/^\d/.test(s)) return s;
+  let r = s;
+  if (r.length > 5 && r.endsWith("es")) r = r.slice(0, -2); else if (r.length > 4 && r.endsWith("s")) r = r.slice(0, -1);
+  return r.slice(0, 7);
+}
+const prPalabras = txt => String(txt || "").toLowerCase().match(/[\p{L}\d]+(?:[\/.]\d+)*/gu) || [];
+function prClaves(txt) {
+  const vistas = new Set(), out = [];
+  prPalabras(txt).forEach(w => {
+    const s = sinTildes(w);
+    if ((s.length < 3 && !/^\d/.test(s)) || PR_VACIAS.has(s)) return;
+    const r = prRaiz(w); if (vistas.has(r)) return;
+    vistas.add(r); out.push({ r, w });
+  });
+  return out;
+}
+function corregirTexto(ideas, texto) {
+  const hay = new Set(prPalabras(texto).map(prRaiz));
+  const r = ideas.map(txt => {
+    const c = prClaves(txt), bien = c.filter(x => hay.has(x.r)).length;
+    return { txt, total: c.length, ok: c.length > 0 && bien >= Math.ceil(c.length * .6 - 1e-9), faltan: c.filter(x => !hay.has(x.r)).map(x => x.w).slice(0, 6) };
+  }).filter(x => x.total > 0);
+  const tocadas = r.filter(x => x.ok).length;
+  return { ideas: r, tocadas, total: r.length, pct: r.length ? Math.round(tocadas / r.length * 100) : 0 };
+}
+/* al azar, pero no a ciegas: pesan más los que se enfrían, los que nunca has
+   probado, los que te salieron mal y los que tienen ideas para corregirte */
+function elegirTemaPrueba(excluir = "", azar = n => azarEntero(n)) {
+  const vistos = temasVistos().filter(t => t.id !== excluir);
+  if (!vistos.length) return null;
+  const hoy = hoyISO(), frios = new Set(temasFrios(hoy).map(t => t.id));
+  const pesos = vistos.map(t => {
+    const u = ultimaPrueba(t.id); let w = 1;
+    if (frios.has(t.id)) w += 1;
+    if (fuenteIdeas(t).lista.length) w += 1;
+    if (!u) w += 1; else if (u.pct < 60) w += 1; else if (diasEntre(hoy, u.fecha) < 7) w *= .3;
+    return w;
+  });
+  const total = pesos.reduce((a, b) => a + b, 0);
+  let r = azar(1e6) / 1e6 * total;
+  for (let i = 0; i < vistos.length; i++) { r -= pesos[i]; if (r < 0) return vistos[i]; }
+  return vistos[vistos.length - 1];
+}
+const PRUEBA_MINUTOS = [10, 15, 20, 30, 45, 60];
+function prepararPrueba(temaId) {
+  if (normalizarOpo().prueba) { opoTab = "resumen"; irASeccion("oposicion"); return; }
+  let t = temaId ? temaPorId(temaId) : elegirTemaPrueba();
+  if (!t) { aviso("La prueba sale de los temas que ya has visto: apunta alguna vuelta primero.", "mal"); return; }
+  const mins = PRUEBA_MINUTOS.includes(num(leeLS("prueba-min"))) ? num(leeLS("prueba-min")) : 15;
+  const cuerpo = () => { const f = fuenteIdeas(t); return `
+    <p class="meta" style="margin:0 0 12px">Escribe todo lo que sepas del tema, como si te cayera en el examen, sin mirar nada. Al entregar te digo qué porcentaje de las ideas clave has tocado.</p>
+    <div class="prb-tema"><span class="opo-n">${t.n}</span><b>${esc(t.titulo)}</b></div>
+    <p class="meta${f.lista.length ? "" : " prb-sin"}" style="margin:12px 0">${f.lista.length
+      ? "Te corrijo con " + f.lista.length + (f.lista.length === 1 ? " idea clave" : " ideas clave") + (f.de === "notas" ? ", sacadas de tus notas del tema." : " del tema.")
+      : "Este tema aún no tiene ideas clave. Al terminar podrás escribirlas y te corrijo, o puntuarte tú."}</p>
+    <label class="campo" style="max-width:220px">Tiempo<select id="prMin">${PRUEBA_MINUTOS.map(m => `<option value="${m}"${m === mins ? " selected" : ""}>${m} minutos</option>`).join("")}</select></label>`; };
+  abrirDlg("Ponte a prueba", cuerpo(), [
+    { txt: "Otro tema", clase: "btn fantasma", izquierda: true, accion: () => {
+      const otro = elegirTemaPrueba(t.id); if (!otro) { aviso("Solo has visto este tema de momento."); return true; }
+      t = otro; const m = $("#prMin").value; $("#dlgCuerpo").innerHTML = cuerpo(); $("#prMin").value = m; return true; } },
+    { txt: "Ahora no", clase: "btn fantasma" },
+    { txt: "Empezar", clase: "btn primario", accion: () => { empezarPrueba(t.id, $("#prMin").value); } }
+  ]);
+}
+function empezarPrueba(temaId, minutos) {
+  const O = normalizarOpo(); if (!temaPorId(temaId)) return;
+  O.prueba = { temaId, inicio: Date.now(), minutos: clamp(Math.round(num(minutos, 15)), 1, 240), texto: "" };
+  guardaLS("prueba-min", O.prueba.minutos);
+  guardar("oposicion");
+  opoTab = "resumen"; irASeccion("oposicion");
+  const ta = $("#prTexto"); if (ta) ta.focus();
+}
+const segsPrueba = (pr, ahora = Date.now()) => Math.max(0, pr.minutos * 60 - Math.floor((ahora - pr.inicio) / 1000));
+const palabrasTxt = s => { const n = (String(s || "").trim().match(/\S+/g) || []).length; return n + (n === 1 ? " palabra" : " palabras"); };
+function opoPruebaPanel() {
+  const pr = normalizarOpo().prueba, t = temaPorId(pr.temaId), s = segsPrueba(pr), fin = s === 0;
+  if (!t) return `<section class="panel prb-panel"><p class="meta">El tema de esta prueba ya no existe.</p><div class="barra-btns"><button type="button" class="btn" id="prAbandonar">Cerrar la prueba</button></div></section>`;
+  return `<section class="panel prb-panel">
+    <div class="opo-cab-sec"><div class="etq">Ponte a prueba · sin mirar</div><b class="prb-reloj${fin ? " fin" : ""}" data-prb-reloj aria-label="Tiempo que queda">${relojTxt(s)}</b></div>
+    <div class="prb-tema"><span class="opo-n">${t.n}</span><b>${esc(t.titulo)}</b></div>
+    <textarea id="prTexto" rows="14" maxlength="20000" placeholder="Escribe aquí todo lo que sepas del tema: definiciones, artículos, plazos, órganos, clasificaciones…"${fin ? " readonly" : ""}>${esc(pr.texto)}</textarea>
+    <p class="prb-fin" id="prFin"${fin ? "" : " hidden"}>Se acabó el tiempo. Entrega y mira cómo te ha ido.</p>
+    <div class="prb-pie"><span class="meta" id="prCuenta">${palabrasTxt(pr.texto)}</span>
+      <div class="barra-btns"><button type="button" class="btn fantasma" id="prAbandonar">Abandonar</button><button type="button" class="btn primario" id="prEntregar">Entregar</button></div></div>
+  </section>`;
+}
+let prTick = null, prGuarda = null;
+function arrancarPrTick() {
+  if (prTick) return;
+  prTick = setInterval(() => {
+    const pr = S.opo && S.opo.prueba;
+    if (!pr) { clearInterval(prTick); prTick = null; return; }
+    const el = document.querySelector("[data-prb-reloj]"); if (!el) return;
+    const s = segsPrueba(pr); el.textContent = relojTxt(s);
+    if (s === 0 && !el.classList.contains("fin")) {
+      el.classList.add("fin");
+      const ta = $("#prTexto"); if (ta) { pr.texto = ta.value.slice(0, 20000); ta.readOnly = true; }
+      const m = $("#prFin"); if (m) m.hidden = false;
+      guardar("oposicion");
+    }
+  }, 1000);
+}
+/* pintar la sección entera no puede llevarse lo que estás escribiendo: se guarda el cursor antes y se deja donde estaba */
+function prCapturarFoco() {
+  const a = document.activeElement;
+  return a && a.id === "prTexto" ? { i: a.selectionStart, f: a.selectionEnd, y: a.scrollTop } : null;
+}
+function prDespuesDePintar(foco) {
+  if (!S.opo || !S.opo.prueba) return;
+  arrancarPrTick();
+  const ta = $("#prTexto");
+  if (ta && foco) { ta.focus({ preventScroll: true }); try { ta.setSelectionRange(foco.i, foco.f); } catch (e) {} ta.scrollTop = foco.y; }
+}
+function entregarPrueba() {
+  const O = normalizarOpo(), pr = O.prueba; if (!pr) return;
+  const ta = $("#prTexto"); if (ta) pr.texto = ta.value.slice(0, 20000);
+  const t = temaPorId(pr.temaId), texto = pr.texto;
+  const mins = clamp(Math.round((Math.min(Date.now(), pr.inicio + pr.minutos * 60000) - pr.inicio) / 60000), 1, pr.minutos);
+  O.prueba = null; clearTimeout(prGuarda);
+  if (t) { registrarMinutosTema(t.id, mins); if (modPorId(t.modId)) registrarMinutos(t.modId, mins); }
+  guardar("oposicion"); pinta();
+  if (t) corregirPrueba(t, texto, mins);
+}
+function guardarResultado(t, pct, tocadas, total, mins, auto) {
+  const O = normalizarOpo(), r = { id: uid(), fecha: hoyISO(), temaId: t.id, pct: clamp(Math.round(num(pct)), 0, 100), tocadas, total, minutos: mins, auto };
+  O.pruebas.push(r);
+  if (O.pruebas.length > 300) O.pruebas = O.pruebas.slice(-300);
+  guardar("oposicion");
+  return r;
+}
+const fraseNota = pct => pct >= 80 ? "Muy bien: este tema lo llevas." : pct >= 50 ? "Bien, pero te dejas cosas: repasa las que te faltaron." : "Flojo todavía: vuelve a este tema pronto.";
+function corregirPrueba(t, texto, mins) {
+  const f = fuenteIdeas(t);
+  if (!f.lista.length) { sinIdeas(t, texto, mins); return; }
+  const c = corregirTexto(f.lista, texto), r = guardarResultado(t, c.pct, c.tocadas, c.total, mins, true);
+  const cab = () => `<div class="prc-pct ${r.pct >= 80 ? "prc-bien" : r.pct >= 50 ? "prc-medio" : "prc-flojo"}"><b>${r.pct} %</b><span>de acierto</span></div>
+    <div><b>Tema ${t.n}</b><p class="meta" style="margin:4px 0 0">Has tocado ${r.tocadas} de ${r.total} ${r.total === 1 ? "idea clave" : "ideas clave"} en ${horasTxt(mins)}. ${fraseNota(r.pct)}</p></div>`;
+  abrirDlg("Así te ha ido", `
+    <div class="prc-cab" id="pcCab">${cab()}</div>
+    <ul class="prc-ideas">${c.ideas.map((x, i) => `<li class="${x.ok ? "si" : "no"}"><button type="button" class="prc-marca" data-pc="${i}" aria-pressed="${x.ok}" aria-label="${x.ok ? "Tocada" : "No tocada"}: toca para cambiarlo">${x.ok ? "✓" : "✗"}</button>
+      <span>${esc(x.txt)}${!x.ok && x.faltan.length ? `<em>Te faltó: ${esc(x.faltan.join(", "))}</em>` : ""}</span></li>`).join("")}</ul>
+    <p class="meta" style="margin-top:10px">La app mira si en lo que escribiste salen las palabras importantes de cada idea${f.de === "notas" ? " (sacadas de tus notas del tema)" : ""}. Si una la dijiste con otras palabras, tócala y cuenta.</p>
+    <details class="prc-tuyo"><summary>Lo que escribiste · ${esc(palabrasTxt(texto))}</summary><div class="prc-texto">${esc(texto) || "<em>Nada.</em>"}</div></details>`,
+    [{ txt: "Guardar como apunte", clase: "btn", accion: () => { pruebaAApunte(t, texto, r.pct); return true; } },
+     { txt: "Cerrar", clase: "btn primario", accion: () => { pinta(); } }]);
+  $("#dlgCuerpo").onclick = e => {
+    const b = e.target.closest("[data-pc]"); if (!b) return;
+    const x = c.ideas[+b.dataset.pc]; x.ok = !x.ok;
+    b.textContent = x.ok ? "✓" : "✗"; b.setAttribute("aria-pressed", x.ok); b.closest("li").className = x.ok ? "si" : "no";
+    const em = b.parentNode.querySelector("em"); if (em) em.hidden = x.ok;
+    r.tocadas = c.ideas.filter(y => y.ok).length; r.pct = Math.round(r.tocadas / r.total * 100); r.auto = false;
+    guardar("oposicion"); $("#pcCab").innerHTML = cab();
+  };
+}
+/* sin ideas clave no hay con qué comparar: o las escribes ahora (y se quedan en el tema) o te puntúas tú */
+function sinIdeas(t, texto, mins) {
+  abrirDlg("¿Con qué te corrijo?", `
+    <p class="meta" style="margin:0 0 12px">El tema ${t.n} no tiene ideas clave. Escríbelas ahora, una por línea —lo que no puede faltar si te cae—, y te digo tu porcentaje. Se quedan guardadas en el tema para la próxima vez.</p>
+    <label class="campo">Ideas clave del tema ${t.n}<textarea id="pcIdeas" rows="7" maxlength="4000" placeholder="La Constitución se aprobó en referéndum el 6 de diciembre de 1978&#10;Tiene 169 artículos, 4 disposiciones adicionales…"></textarea></label>
+    <div class="etq" style="margin:18px 0 6px">O puntúate tú</div>
+    <label class="campo">¿Qué parte del tema crees que has tocado? <b id="pcAutoTxt">50 %</b><input type="range" id="pcAuto" min="0" max="100" step="10" value="50"></label>`,
+    [{ txt: "Puntuarme yo", clase: "btn", accion: () => {
+        const pct = num($("#pcAuto").value, 50), r = guardarResultado(t, pct, 0, 0, mins, false); pinta();
+        aviso("Apuntado: " + r.pct + " % en el tema " + t.n + ". " + fraseNota(r.pct)); } },
+     { txt: "Corregir con estas ideas", clase: "btn primario", accion: () => {
+        const v = $("#pcIdeas").value.trim();
+        if (!v) { aviso("Escribe al menos una idea, o puntúate tú.", "mal"); return true; }
+        t.ideas = v.slice(0, 4000); guardar("oposicion");
+        setTimeout(() => corregirPrueba(t, texto, mins), 0); } }]);
+  $("#dlgCuerpo").oninput = e => { if (e.target.id === "pcAuto") $("#pcAutoTxt").textContent = e.target.value + " %"; };
+}
+function pruebaAApunte(t, texto, pct) {
+  const ahora = new Date().toISOString(), cuerpo = typeof textoAHtml === "function" ? textoAHtml(texto) : esc(texto).replace(/\n/g, "<br>");
+  const n = { id: uid(), titulo: "Prueba del tema " + t.n + " · " + pct + " %", cuerpo, modId: modPorId(t.modId) ? t.modId : ((S.modulos[0] || {}).id || ""), tags: ["prueba"],
+    creado: ahora, editado: ahora };
+  S.apuntes[n.id] = n; guardarApunte(n);
+  aviso("Guardado en Apuntes: «" + n.titulo + "».");
+}
+function abandonarPrueba() {
+  const O = normalizarOpo(); if (!O.prueba) return;
+  confirmar("Se pierde lo que llevas escrito y no cuenta como prueba.", { titulo: "¿Abandonar la prueba?", si: "Abandonar", no: "Seguir escribiendo" })
+    .then(ok => { if (!ok) return; O.prueba = null; guardar("oposicion"); pinta(); });
+}
+/* el reto sorpresa: unos cuatro días de cada diez, si ya has visto tres temas y hoy no te has probado */
+function hashTxt(s) { let h = 2166136261; for (let i = 0; i < s.length; i++) { h ^= s.charCodeAt(i); h = Math.imul(h, 16777619); } return h >>> 0; }
+function tocaReto(hoy = hoyISO()) {
+  const O = normalizarOpo();
+  if (O.prueba || temasVistos().length < 3) return false;
+  if (O.pruebas.some(p => p.fecha === hoy) || leeLS("reto-no") === hoy) return false;
+  return hashTxt(hoy + "·" + (O.temas[0] ? O.temas[0].id : "")) % 10 < 4;
+}
+function opoRetoHTML() {
+  if (!tocaReto()) return "";
+  return banda("chispa", "Reto sorpresa: un tema al azar de los que ya has visto, para desarrollarlo sin mirar. Al acabar te digo tu porcentaje de acierto.",
+    `<button type="button" class="btn mini primario" data-prb-empezar>Acepto el reto</button><button type="button" class="btn mini fantasma" data-prb-hoyno>Hoy no</button>`, "reto");
+}
+/* en el Resumen: la entrada de siempre, esté o no el reto */
+function opoPruebaEntrada() {
+  const vistos = temasVistos().length; if (!vistos) return "";
+  const hechas = normalizarOpo().pruebas, media = hechas.length ? Math.round(hechas.slice(-10).reduce((s, p) => s + num(p.pct), 0) / Math.min(10, hechas.length)) : null;
+  return `<section class="panel prb-entrada">
+    <div><div class="etq">Ponte a prueba</div>
+      <p class="meta" style="margin:4px 0 0">Un tema al azar de los ${vistos} que ya has visto, a desarrollar sin mirar.${media !== null ? " Tus últimas pruebas: " + media + " % de media." : ""}</p></div>
+    <button type="button" class="btn" data-prb-empezar>${icono("chispa")}Ponme a prueba</button>
+  </section>`;
+}
+/* en Simulacros: lo que llevas hecho */
+function opoPruebasHTML() {
+  const O = normalizarOpo(), l = O.pruebas.slice().reverse().slice(0, 12);
+  if (!l.length) return "";
+  return `<section class="panel">
+    <div class="opo-cab-sec"><div class="etq">Tus pruebas de desarrollo</div><button type="button" class="btn mini" data-prb-empezar>${icono("chispa")}Otra</button></div>
+    <div class="opo-lista">${l.map(p => { const t = temaPorId(p.temaId);
+      return `<div class="opo-fila"><button type="button" class="opo-fila-t"${t ? ` data-opo-tema="${t.id}"` : ""}><span class="opo-n">${t ? t.n : "?"}</span><span class="opo-titulo">${esc(t ? t.titulo : "Tema borrado")}</span></button>
+        <span class="opo-fila-e">${esc(fechaCorta(p.fecha))} · <b class="prc-mini ${p.pct >= 80 ? "prc-bien" : p.pct >= 50 ? "prc-medio" : "prc-flojo"}">${p.pct} %</b>${p.auto === false && !p.total ? " (tuyo)" : ""}</span></div>`; }).join("")}</div>
+  </section>`;
+}
+
+/* ── clics y campos de todo lo de arriba ── */
+alEvento("click", async e => {
+  const t = e.target; if (!t || !t.closest) return;
+  const bo = t.closest("[data-bv-opo]");
+  if (bo && BV) { const c = opoCatalogo(bo.dataset.bvOpo); if (c) { bvLeerCampos(); BV.p.ciclo = c.nombre; pintaEntrada(); } return; }
+  if (t.closest("#opoElegir")) { abrirCatalogo(); return; }
+  if (t.closest("[data-prb-empezar]")) { prepararPrueba(); return; }
+  if (t.closest("[data-prb-hoyno]")) { guardaLS("reto-no", hoyISO()); pinta(); aviso("Hoy no. Otro día te vuelvo a retar."); return; }
+  if (t.closest("#prEntregar")) { entregarPrueba(); return; }
+  if (t.closest("#prAbandonar")) { abandonarPrueba(); return; }
+  if (t.closest("#otPrueba")) { const id = t.closest("#otPrueba").dataset.tema; $("#dlg").close(); prepararPrueba(id); return; }
+  if (t.closest("#opoICS")) { bajarCalendario(); return; }
+  if (t.closest("#opoTurnosEditar")) { abrirTurnos(); return; }
+  if (t.closest("#hiAdd")) {
+    const tipo = $("#hiTipo").value, fecha = $("#hiFecha").value;
+    if (!esFecha(fecha)) { aviso("Pon la fecha.", "mal"); $("#hiFecha").focus(); return; }
+    if (tipo === "otro" && !$("#hiTxt").value.trim()) { aviso("Ponle un nombre a esa fecha.", "mal"); $("#hiTxt").focus(); return; }
+    const n = nuevoHito(tipo, fecha, $("#hiTxt").value, !!($("#hiSigue") && $("#hiSigue").checked));
+    pinta(); aviso(n === 2 ? "Apuntadas las dos fechas: te aviso antes de que venza el plazo." : "Fecha apuntada.");
+    return;
+  }
+  const hh = t.closest("[data-hito-hecho]");
+  if (hh) {
+    const id = hh.dataset.hitoHecho, O = normalizarOpo();
+    if (id === "plazo") ponCampoOpo("convocatoria.presentada", !O.convocatoria.presentada);
+    else { const h = O.convocatoria.hitos.find(x => x.id === id); if (h) { h.hecho = !h.hecho; guardar("oposicion"); } }
+    pinta(); return;
+  }
+  const hq = t.closest("[data-hito-quitar]");
+  if (hq) {
+    const id = hq.dataset.hitoQuitar, O = normalizarOpo();
+    if (id === "plazo") { ponCampoOpo("convocatoria.plazoFin", ""); ponCampoOpo("convocatoria.presentada", false); }
+    else { O.convocatoria.hitos = O.convocatoria.hitos.filter(x => x.id !== id); guardar("oposicion"); }
+    pinta(); return;
+  }
+});
+alEvento("change", e => {
+  const t = e.target; if (!t) return;
+  if (t.id === "hiTipo") { hiSigueTxt(); return; }
+  if (t.id === "opoTurnosOn") {
+    if (t.checked) { t.checked = false; abrirTurnos(); }
+    else { normalizarOpo().plan.turnos = null; guardar("oposicion"); pinta(); }
+  }
+});
+alEvento("input", e => {
+  if (e.target.id !== "prTexto") return;
+  const pr = S.opo && S.opo.prueba; if (!pr) return;
+  pr.texto = e.target.value.slice(0, 20000);
+  const c = $("#prCuenta"); if (c) c.textContent = palabrasTxt(pr.texto);
+  clearTimeout(prGuarda); prGuarda = setTimeout(() => guardar("oposicion"), 1500);
+});
+
+
 /* ══════════════════ pintado ══════════════════ */
 function pinta() {
   if (BV) { pintaEntrada(); return; }
@@ -11692,6 +12429,7 @@ function pinta() {
   evaluarObjetivos();
   pintaNav();
   chatAntesDePintar();
+  const prFoco = prCapturarFoco();
   const c = $("#contenido");
   c.innerHTML = { escritorio: vistaEscritorio, oposicion: vistaOposicion, tutor: vistaTutor, modulos: vistaModulos, apuntes: vistaApuntes,
     entregas: vistaAgenda, repaso: vistaRepaso, progreso: vistaProgreso,
@@ -11702,7 +12440,7 @@ function pinta() {
   lbClaseCuerpo();
   if (seccion === "apuntes" && apunteActivo && S.apuntes[apunteActivo]) { contarPalabras(); montarLibreta(); }
   if (seccion === "casillero") completarPrevias();
-  if (seccion === "oposicion") { opoCalcularCorte(); opoCalcularSim(); opoCalcularFT(); opoCalcularBolas(); }
+  if (seccion === "oposicion") { opoCalcularCorte(); opoCalcularSim(); opoCalcularFT(); opoCalcularBolas(); prDespuesDePintar(prFoco); }
   /* el simulacro con reloj sigue aunque recargues o llegue de otro dispositivo */
   if (S.opo && S.opo.crono && !S.opo.crono.fin && !cronoOpoTick) arrancarCronoOpo();
 }
@@ -12949,7 +13687,7 @@ function bvPaso1() {
     <div class="rejilla-campos">
       <label class="campo">Cuerpo o plaza<input type="text" id="bvCiclo" value="${esc(p.ciclo)}" placeholder="Ej.: Auxiliar Administrativo del Estado"></label>
       <label class="campo">Convocatoria (opcional)<input type="text" id="bvCurso" value="${esc(p.curso)}" placeholder="Ej.: 2027"></label>
-    </div>`;
+    </div>${bvOpoChips(p)}`;
   if (e === "idioma") return `<h1 class="ent-tit">¿Qué idioma y a qué nivel?</h1>
     <div class="rejilla-campos">
       <label class="campo">Idioma<input type="text" id="bvCiclo" value="${esc(p.ciclo)}" placeholder="Ej.: Inglés"></label>
@@ -13169,9 +13907,11 @@ function bvAplicar() {
   repartirMetas(p.horasSemana);
   guardar("perfil"); guardar("ajustes"); guardar("horas");
   tutorPresentarse();
+  const opoCat = BV.p.etapa === "oposicion" ? opoCatalogoDe(BV.p.ciclo) : null;
   BV = null; $("#entrada").hidden = true; document.body.classList.remove("en-entrada");
+  const nOpo = opoCat && !normalizarOpo().temas.length ? cargarCatalogo(opoCat, false) : 0;
   seccion = esOpositor() ? "oposicion" : "escritorio"; pinta();
-  aviso("Listo. Tu curso ya está montado.");
+  aviso(nOpo ? "Listo. Tu temario del BOE ya está cargado: " + nOpo + " temas, con las reglas del examen." : "Listo. Tu curso ya está montado.");
 }
 
 /* ── clics y campos de la entrada ── */
