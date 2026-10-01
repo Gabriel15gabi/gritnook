@@ -4,7 +4,7 @@ GritNook es código propio, con todos los derechos reservados (ver [LICENSE](LIC
 
 | Qué | Dónde se usa | Licencia |
 |---|---|---|
-| [Phosphor Icons](https://phosphoricons.com) 2.1, estilo duotono | Iconos del menú (riel, barra del móvil y «Más») y símbolos de las libretas del casillero. Los dibujos van copiados dentro de `index.html`. | MIT |
+| [Phosphor Icons](https://phosphoricons.com) 2.1, estilos duotono y regular | Todos los iconos de la app: el menú (riel, barra del móvil y «Más», en duotono) y el resto (regular), menos los de la barra de la libreta. Los dibujos van copiados dentro de `index.html`. | MIT |
 | [Inter](https://rsms.me/inter/), de Rasmus Andersson | Tipografía de toda la app y trazos del logotipo. El archivo va dentro de la app, en `fuentes/`. | SIL Open Font License 1.1 |
 | Caveat, Kalam, Patrick Hand y Shadows Into Light | Letras manuscritas de la hoja de apuntes. Van dentro de la app, en `fuentes/`, y el navegador solo descarga la que elijas. | SIL Open Font License 1.1 |
 | [PDF.js](https://mozilla.github.io/pdf.js/), de Mozilla, 3.11 | Miniaturas y visor de los PDF del casillero. Se carga de cdnjs solo al ver un PDF. | Apache 2.0 |

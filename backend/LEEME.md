@@ -140,6 +140,38 @@ Dos cosas que conviene saber:
   instalada, la vuelta puede abrirse en Safari: si pasa, se entra desde Safari
   o con el correo.
 
+## Avisos con la app cerrada (lo haces tú, 10 minutos)
+
+Los avisos (exámenes, entregas, plazos, repaso, racha y el final del
+cronómetro) ya funcionan con la app abierta o en segundo plano. Para que
+lleguen **con la app cerrada** hace falta encender esto en Supabase. No tienes
+que copiar ninguna clave: la función crea las suyas sola.
+
+1. **SQL Editor → New query**: pega entero `backend/avisos.sql` y dale a
+   **Run**. Si las dos líneas de `create extension` dan error, ve a
+   **Database → Extensions**, activa **pg_cron** y **pg_net**, y vuelve a
+   pasarlo.
+2. **Edge Functions → Deploy a new function → Via Editor**. Nombre:
+   `avisos`. Borra lo que trae y pega entero
+   `backend/funciones/avisos/index.ts`. Antes de desplegar, en sus ajustes,
+   **desactiva «Verify JWT»** (la llama la base de datos con su propia
+   contraseña). **Deploy**.
+3. Espera un par de minutos: el reloj de la base de datos la llama y la función
+   crea sus claves. Para comprobarlo: **Table Editor → servidor_privado** tiene
+   que tener una fila `vapid_publica` (no abras ni copies la privada: no hace
+   falta).
+4. En la app: **Ajustes → Avisos → Activar los avisos**. Tiene que decir «Te
+   llegan aunque cierres la app».
+5. Prueba: pon el cronómetro en 5 minutos (Ajustes → Cronómetro), dale a
+   empezar y **cierra la app del todo**. A los 5 minutos te llega
+   «¡Bien hecho!».
+
+Si no llega, mira **Edge Functions → avisos → Logs**. Si sale «base de datos
+401», la función no encuentra la clave del servidor: dímelo y lo vemos.
+
+En el iPhone los avisos solo llegan si la app está instalada en la pantalla de
+inicio (iOS 16.4 o más); la app ya lo explica en Ajustes → Avisos.
+
 ## Seguridad: lo que queda por encender en el panel
 
 Supabase ya pone lo básico: contraseñas cifradas, conexiones seguras, sesiones

@@ -58,6 +58,10 @@ Subrayar. Al escribir, la hoja se pone al ancho de la pantalla con letra de 16 p
 
 **Inglés.** Traductor a mano, vocabulario propio y repaso espaciado de las palabras que te tocan.
 
+**Avisos.** En las notificaciones del móvil y del ordenador, si los activas (Ajustes → Avisos): exámenes tres días antes y la víspera, entregas la víspera y el mismo día, los plazos de la oposición, el repaso del día, la racha si hoy aún no has estudiado y el final del cronómetro. Con la app abierta o en segundo plano los lanza ella; con la app cerrada los manda el servidor (`backend/avisos.sql` y la función `backend/funciones/avisos`, Web Push cifrado sin librerías de fuera). De noche, nada.
+
+**El cronómetro, en la cuenta.** Lo empiezas en el ordenador y lo ves en el móvil; la pestaña del navegador dice cuánto queda; en el móvil, con la app en segundo plano, la notificación dice cuánto queda y a qué hora acaba, y al terminar llega «¡Bien hecho!» en verde. Cada sesión cuenta una sola vez aunque acabe abierta en dos sitios.
+
 **Objetivos del día.** Se cumplen solos con lo que ya haces: estudiar con el cronómetro, tachar una entrega, escribir un apunte, repasar tarjetas. Con su racha de la semana.
 
 **Repaso.** Tarjetas con repaso espaciado —vuelven justo cuando estás a punto de olvidarlas— y tests tipo examen, a mano o sacados de tus apuntes por el tutor. Lo que fallas en un test pasa a tarjetas.
@@ -132,7 +136,7 @@ La versión pública es para verla y probarla. La de Claude usa sus capacidades 
 node pruebas/correr.js
 ```
 
-869 pruebas que corren **dentro de la app de verdad**, cargada en un iframe, sin
+895 pruebas que corren **dentro de la app de verdad**, cargada en un iframe, sin
 instalar nada. Cubren las cuentas de las notas, entender las fechas escritas a
 mano, el sanitizador, el estado, la libreta, el repaso espaciado, la pantalla de
 bienvenida entera, el modo opositor, las cuentas contra un servidor de mentira y una tanda de datos absurdos a propósito. Las reglas de la base de datos, aparte, contra un Postgres de verdad. El cómo y lo que han encontrado, en [pruebas/](pruebas/LEEME.md).

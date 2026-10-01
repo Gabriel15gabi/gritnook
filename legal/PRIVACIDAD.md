@@ -1,6 +1,6 @@
 # Política de privacidad
 
-En vigor desde el 30 de septiembre de 2026.
+En vigor desde el 1 de octubre de 2026.
 
 ## Lo importante, en pocas líneas
 
@@ -31,7 +31,7 @@ por ahí se atienden todas las peticiones, y se responden en un mes como máximo
 Los que tú escribes o subes a la aplicación: tu nombre o apodo, tu foto de perfil si pones una (es opcional y no hace falta que sea tu cara), qué estudias, tus
 asignaturas con sus notas y sus faltas, tu agenda, tus apuntes y dibujos, los
 archivos que subes al casillero, tus tarjetas de repaso, tu vocabulario de inglés,
-tus minutos de estudio y tus conversaciones con el profe.
+tus minutos de estudio y tus conversaciones con el profe. Si tienes cuenta, también el **cronómetro en marcha** (cuándo empezó, cuándo acaba y de qué es), para que lo veas en tus otros dispositivos.
 
 Para tu cuenta: tu **correo electrónico** y tu **contraseña**, que no se guarda
 tal cual sino cifrada de forma que no se puede leer (nadie puede verla, tampoco el
@@ -46,6 +46,13 @@ correo y, si los tiene, tu nombre y la dirección de tu foto de perfil de allí,
 se guardan junto a tu cuenta. Así no hay contraseña de GritNook que guardar.
 GritNook **no recibe tu contraseña** de Google ni de GitHub y no puede ver nada más
 de esas cuentas: ni tus correos, ni tus contactos, ni tus archivos o repositorios.
+
+**Si activas los avisos** (Ajustes → Avisos), en tu cuenta se guarda, por cada
+dispositivo donde los actives, la dirección que da su navegador para mandarle
+avisos y sus claves públicas; y la lista de avisos de los próximos 40 días: la
+hora, un título y una línea (por ejemplo, «Mañana tienes examen · Programación»).
+Lo ya mandado se borra a la semana; todo, al desactivarlos o al borrar tu cuenta.
+Es opcional, y sin avisos la app funciona igual.
 
 **Las aperturas, sin saber quién eres.** Cada vez que se abre la app se suma 1 a
 un contador: el día y la hora, de dónde llega el enlace, si es un móvil, una
@@ -85,6 +92,7 @@ apunte. Te recomendamos no escribirlos.
 | Mandarte los correos del servicio: cambiar la contraseña o avisarte de un cambio importante | Ejecutar el contrato (art. 6.1.b RGPD) |
 | Saber cuánta gente usa la app y cuánto: qué días entra cada cuenta y de dónde llegó, y cuántas veces se abre la app (de forma anónima), para mejorarla | Interés legítimo en conocer el uso de un servicio que está empezando (art. 6.1.f RGPD). Nunca se apunta lo que haces dentro. Puedes oponerte en Ajustes → Datos o escribiendo al correo de contacto |
 | Sincronizar entre tus dispositivos, si abres la app desde Claude | Ejecutar el contrato (art. 6.1.b RGPD) |
+| Mandarte los avisos que actives (exámenes, entregas, plazos, repaso, racha y el final del cronómetro) | Tu consentimiento, que das al activarlos y retiras desactivándolos (art. 6.1.a RGPD) |
 | Enseñarte el tiempo de tu zona en el Inicio, si lo pides | Tu consentimiento, que das al elegir tu ciudad o tu ubicación y retiras quitándola (art. 6.1.a RGPD) |
 | Recordar el tema claro u oscuro y tus preferencias de la libreta | Interés legítimo en que la app se vea como la dejaste (art. 6.1.f RGPD) |
 | Comprobar que tienes la edad mínima para tener cuenta, y poder saber a quién afecta si la ley la cambia | Cumplir la ley que fija esa edad (art. 6.1.c RGPD, en relación con el art. 7 LOPDGDD) |
@@ -114,8 +122,8 @@ y se borra entero desde Ajustes → Datos o borrando los datos del sitio en tu
 navegador.
 
 Ahí se guardan también unas pocas cosas pequeñas de la propia app: la fecha de tu
-última copia de seguridad (para recordártela), qué avisos ya has visto (para no
-repetirlos) y los últimos fallos que haya dado, que no salen de tu dispositivo. Y,
+última copia de seguridad (para recordártela), qué avisos ya has visto y cuáles te ha mandado la app
+(para no repetirlos), si has activado los avisos en ese navegador y los últimos fallos que haya dado, que no salen de tu dispositivo. Y,
 si al crear una cuenta se pone una fecha que no llega a la edad mínima, el
 navegador lo recuerda **durante un día**, para que no baste con cambiar el año.
 Si tu navegador lo permite, la app le pide que **no borre estos datos** cuando
@@ -140,6 +148,7 @@ proteger las cuentas de todos.
 | Google o GitHub, solo si entras con ellos | Que entras en GritNook con tu cuenta de allí, como en cualquier «Continuar con Google». Ellos tratan ese inicio de sesión según su propia política de privacidad | Google: Unión Europea y Estados Unidos. GitHub: Estados Unidos |
 | Resend, el servicio que manda los correos de la app, como encargado de tratamiento | Tu correo electrónico y el mensaje, solo cuando la app te escribe: el enlace para confirmar tu cuenta o para cambiar la contraseña. No los usa para nada más | Los envía desde Irlanda (Unión Europea); es una empresa de Estados Unidos |
 | Cloudflare, Inc. (el dominio gritnook.com, su correo y el control contra robots) | Si escribes a hola@gritnook.com, tu correo, que reenvía al buzón del responsable sin guardarlo. Al entrar o crear la cuenta, datos técnicos del navegador y tu dirección IP para comprobar que no eres un robot (Turnstile). **No recibe ninguno de tus datos de estudio** | Estados Unidos, con servidores también en la Unión Europea |
+| El servicio de avisos de tu navegador (Google para Chrome y Android, Apple para Safari y el iPhone, Mozilla para Firefox, Microsoft para Edge), solo si activas los avisos | La dirección de tu dispositivo para los avisos y cada aviso **cifrado**: lo lleva hasta tu dispositivo pero no lo puede leer (solo tu dispositivo tiene la clave) | Estados Unidos y otros países, según el navegador |
 | GitHub Pages (GitHub, Inc.) | Solo sirve los archivos de la app. Como cualquier servidor web, registra la dirección IP y el navegador de quien la abre, por seguridad. **No recibe ninguno de tus datos de estudio** | Estados Unidos |
 
 **Lo que ve el responsable de la app.** Tiene un panel con, de cada cuenta: el
@@ -175,6 +184,8 @@ Estados Unidos: si su personal tuviera que entrar desde fuera de Europa para dar
 soporte o mantenimiento, lo cubre su contrato de encargado de tratamiento, con las
 **cláusulas contractuales tipo** de la Comisión Europea. Lo mismo vale para
 **Resend**, que manda los correos de la cuenta desde Irlanda.
+
+**Si activas los avisos**, cada uno pasa por el servicio de avisos de tu navegador, que puede estar fuera de Europa; va cifrado de punta a punta, así que ese servicio no puede leerlo.
 
 **Si entras con Google o con GitHub**, el inicio de sesión pasa por esas empresas,
 que tienen servidores en Estados Unidos y lo tratan con sus propias garantías. Si

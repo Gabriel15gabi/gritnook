@@ -12,11 +12,13 @@ const fs = require("fs");
 const RAIZ = path.join(__dirname, "..");
 const PUERTO = 4176;
 
+/* Chrome primero: desde la versión 154 (octubre de 2026), Edge sin ventana
+   ya no escribe la página con --dump-dom y el resultado no llega */
 const NAVEGADORES = [
-  "C:/Program Files (x86)/Microsoft/Edge/Application/msedge.exe",
-  "C:/Program Files/Microsoft/Edge/Application/msedge.exe",
   "C:/Program Files/Google/Chrome/Application/chrome.exe",
   "C:/Program Files (x86)/Google/Chrome/Application/chrome.exe",
+  "C:/Program Files (x86)/Microsoft/Edge/Application/msedge.exe",
+  "C:/Program Files/Microsoft/Edge/Application/msedge.exe",
   "/usr/bin/google-chrome", "/usr/bin/chromium", "/usr/bin/microsoft-edge",
   "/Applications/Google Chrome.app/Contents/MacOS/Google Chrome"
 ];
@@ -55,7 +57,7 @@ servidor.listen(PUERTO, () => {
   const perfil = path.join(require("os").tmpdir(), "gritnook-pruebas");
   const hijo = spawn(navegador, [
     "--headless=new", "--disable-gpu", "--no-first-run", "--no-default-browser-check",
-    "--user-data-dir=" + perfil, "--virtual-time-budget=480000", "--dump-dom",
+    "--user-data-dir=" + perfil, "--virtual-time-budget=900000", "--dump-dom",
     "http://localhost:" + PUERTO + "/pruebas/pruebas.html"
   ], { windowsHide: true });
 
