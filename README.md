@@ -56,7 +56,7 @@ Subrayar. Al escribir, la hoja se pone al ancho de la pantalla con letra de 16 p
 
 **Casillero.** Una estantería con una libreta en 3D por asignatura, con las anillas del logo en el lomo, su etiqueta de papel, su goma y su símbolo, y **del color que tú elijas** para cada una; al abrirla, la tapa gira y las hojas se abren en abanico; los folios asoman cuando tiene hojas. Al abrirla salen sus hojas con vista previa —la primera página de cada PDF, las primeras líneas de cada texto o código, la foto o la web del enlace— para verlas (los PDF, dentro de la app), descargar o **pasárselas al profe** y preguntarle. Se sueltan archivos encima de una libreta y se guardan en ella. Buscador en todas las libretas, filtro por tipo y las libretas de lo que tienes esta semana. Dentro de Claude los archivos van a su almacén (hasta 20 MB cada uno, las fotos grandes se reducen solas); fuera, se guardan en la app hasta 180 KB.
 
-**Inglés.** Traductor a mano, vocabulario propio y repaso espaciado de las palabras que te tocan.
+**Idiomas.** Cualquier idioma, no solo inglés: vocabulario con frase de ejemplo y repaso espaciado, traductor (el de Chrome, que traduce en el dispositivo, y enlaces a Google Traductor, DeepL, WordReference, Linguee, Reverso, Cambridge y la RAE), oír cómo suena con las voces del dispositivo, dictado, sacar palabras de un texto, tu examen oficial (EOI, Cambridge, IELTS, DELF, Goethe, Aptis u otro) con sus reglas y «¿apruebo?», writing con límite de palabras y reloj, speaking grabándote (no sale del dispositivo) e inmersión que cuenta como estudio. Todo gratis y sin IA.
 
 **Avisos.** En las notificaciones del móvil y del ordenador, si los activas (Ajustes → Avisos): exámenes tres días antes y la víspera, entregas la víspera y el mismo día, los plazos de la oposición, el repaso del día, la racha si hoy aún no has estudiado y el final del cronómetro. Con la app abierta o en segundo plano los lanza ella; con la app cerrada los manda el servidor (`backend/avisos.sql` y la función `backend/funciones/avisos`, Web Push cifrado sin librerías de fuera). De noche, nada.
 
@@ -136,7 +136,7 @@ La versión pública es para verla y probarla. La de Claude usa sus capacidades 
 node pruebas/correr.js
 ```
 
-895 pruebas que corren **dentro de la app de verdad**, cargada en un iframe, sin
+939 pruebas que corren **dentro de la app de verdad**, cargada en un iframe, sin
 instalar nada. Cubren las cuentas de las notas, entender las fechas escritas a
 mano, el sanitizador, el estado, la libreta, el repaso espaciado, la pantalla de
 bienvenida entera, el modo opositor, las cuentas contra un servidor de mentira y una tanda de datos absurdos a propósito. Las reglas de la base de datos, aparte, contra un Postgres de verdad. El cómo y lo que han encontrado, en [pruebas/](pruebas/LEEME.md).

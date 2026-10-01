@@ -30,8 +30,9 @@ por ahí se atienden todas las peticiones, y se responden en un mes como máximo
 
 Los que tú escribes o subes a la aplicación: tu nombre o apodo, tu foto de perfil si pones una (es opcional y no hace falta que sea tu cara), qué estudias, tus
 asignaturas con sus notas y sus faltas, tu agenda, tus apuntes y dibujos, los
-archivos que subes al casillero, tus tarjetas de repaso, tu vocabulario de inglés,
-tus minutos de estudio y tus conversaciones con el profe. Si tienes cuenta, también el **cronómetro en marcha** (cuándo empezó, cuándo acaba y de qué es), para que lo veas en tus otros dispositivos.
+archivos que subes al casillero, tus tarjetas de repaso, tu vocabulario de idiomas
+y lo que apuntes para tu examen de idiomas (simulacros, writings y minutos de
+inmersión), tus minutos de estudio y tus conversaciones con el profe. Si tienes cuenta, también el **cronómetro en marcha** (cuándo empezó, cuándo acaba y de qué es), para que lo veas en tus otros dispositivos.
 
 Para tu cuenta: tu **correo electrónico** y tu **contraseña**, que no se guarda
 tal cual sino cifrada de forma que no se puede leer (nadie puede verla, tampoco el
@@ -149,6 +150,8 @@ proteger las cuentas de todos.
 | Resend, el servicio que manda los correos de la app, como encargado de tratamiento | Tu correo electrónico y el mensaje, solo cuando la app te escribe: el enlace para confirmar tu cuenta o para cambiar la contraseña. No los usa para nada más | Los envía desde Irlanda (Unión Europea); es una empresa de Estados Unidos |
 | Cloudflare, Inc. (el dominio gritnook.com, su correo y el control contra robots) | Si escribes a hola@gritnook.com, tu correo, que reenvía al buzón del responsable sin guardarlo. Al entrar o crear la cuenta, datos técnicos del navegador y tu dirección IP para comprobar que no eres un robot (Turnstile). **No recibe ninguno de tus datos de estudio** | Estados Unidos, con servidores también en la Unión Europea |
 | El servicio de avisos de tu navegador (Google para Chrome y Android, Apple para Safari y el iPhone, Mozilla para Firefox, Microsoft para Edge), solo si activas los avisos | La dirección de tu dispositivo para los avisos y cada aviso **cifrado**: lo lleva hasta tu dispositivo pero no lo puede leer (solo tu dispositivo tiene la clave) | Estados Unidos y otros países, según el navegador |
+| Los traductores y diccionarios de Idiomas (Google Traductor, DeepL, WordReference, Linguee, Reverso, Cambridge, la RAE, Forvo), solo si pulsas su enlace | Lo que escribiste para traducir, porque se abre su página con ese texto. Es como si lo escribieras tú allí: lo tratan según su propia política. «Traducir aquí» (el traductor de Chrome) traduce en tu dispositivo y no envía nada | Según cada servicio |
+| La voz del navegador, solo si escuchas una palabra en Idiomas y para ese idioma tu dispositivo solo tiene una voz en línea (algunas de Chrome) | La frase que quieres escuchar, para leerla en voz alta. La app usa primero las voces que funcionan sin internet. Tus grabaciones de speaking **no se envían a nadie**: se quedan en tu dispositivo | Según el navegador (Google, en Chrome) |
 | GitHub Pages (GitHub, Inc.) | Solo sirve los archivos de la app. Como cualquier servidor web, registra la dirección IP y el navegador de quien la abre, por seguridad. **No recibe ninguno de tus datos de estudio** | Estados Unidos |
 
 **Lo que ve el responsable de la app.** Tiene un panel con, de cada cuenta: el
@@ -212,9 +215,12 @@ Mientras tú quieras. No hay borrado automático ni caducidad.
 - Si borras un apunte o un documento, se borra en ese momento, también de tu cuenta.
 - Si pulsas «Borrar todo», se borran tus datos: lo de este dispositivo, lo de tu
   cuenta y los archivos que hayas subido. La cuenta sigue, vacía.
-- Si pulsas **«Borrar mi cuenta»**, se borra al momento del servidor: tu correo,
-  tu contraseña, todos tus datos, tus archivos y los días que entraste. No se
-  puede deshacer.
+- Si pulsas **«Borrar mi cuenta»** (Ajustes → Perfil o Ajustes → Datos), se
+  borra al momento del servidor: tu correo, tu contraseña, todos tus datos, tus
+  archivos, los días que entraste, tus avisos y tus dispositivos apuntados. No se
+  puede deshacer. Si no puedes entrar, escribe a hola@gritnook.com desde el correo
+  de tu cuenta: se borra en 72 horas como mucho. Todo está explicado en
+  gritnook.com/borrar-cuenta.
 - Si cierras sesión, se borra lo de ese navegador; lo tuyo sigue en tu cuenta.
 - El mes y el año de nacimiento se guardan mientras tengas la cuenta, y se borran
   con ella.
@@ -231,7 +237,7 @@ Puedes pedir, gratis y en cualquier momento:
 - **Acceso**: saber qué datos hay sobre ti. De hecho, los tienes tú: están en tu
   cuenta y te los puedes descargar en un clic.
 - **Rectificación**: corregir lo que esté mal. Se edita directamente en la app.
-- **Supresión**: que se borre todo. Ajustes → Datos → Borrar mi cuenta.
+- **Supresión**: que se borre todo. Ajustes → Perfil → Borrar mi cuenta (o, si no puedes entrar, por correo: gritnook.com/borrar-cuenta).
 - **Portabilidad**: llevarte tus datos. Ajustes → Datos → Descargar copia, que te
   da un archivo JSON con absolutamente todo.
 - **Limitación y oposición** al tratamiento, también a que se cuenten los días

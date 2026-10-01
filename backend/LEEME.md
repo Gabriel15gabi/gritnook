@@ -172,6 +172,22 @@ Si no llega, mira **Edge Functions → avisos → Logs**. Si sale «base de dato
 En el iPhone los avisos solo llegan si la app está instalada en la pantalla de
 inicio (iOS 16.4 o más); la app ya lo explica en Ajustes → Avisos.
 
+## Si alguien te pide por correo que borres su cuenta
+
+Casi siempre se borra desde la app (Ajustes → Perfil → Borrar mi cuenta). Si
+alguien no puede entrar y te escribe a hola@gritnook.com, como explica
+gritnook.com/borrar-cuenta:
+
+1. **Comprueba que el correo llega desde la dirección de la cuenta.** Si llega
+   desde otra, contesta que lo pida desde el correo de la cuenta (así nadie
+   puede borrar la cuenta de otro).
+2. Supabase → **Authentication → Users** → busca su correo → menú **⋯** →
+   **Delete user**. Se lleva en cascada todo lo suyo: documentos, actividad,
+   origen, avisos y dispositivos.
+3. Contéstale que está hecho, **en 72 horas como mucho** (la ley da un mes).
+4. Apúntalo en Documentos → GritNook-legal → REGISTRO.md, en «Peticiones de
+   derechos», y guarda su correo: es la prueba de que lo atendiste.
+
 ## Seguridad: lo que queda por encender en el panel
 
 Supabase ya pone lo básico: contraseñas cifradas, conexiones seguras, sesiones

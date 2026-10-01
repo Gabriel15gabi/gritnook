@@ -5,7 +5,7 @@ de base para la política de privacidad y para el registro de tratamientos que
 exige el Reglamento General de Protección de Datos. Se actualiza cada vez que
 se añade algo que guarde información.
 
-Última revisión: 24 de septiembre de 2026.
+Última revisión: 1 de octubre de 2026.
 
 ## En una frase
 
@@ -32,7 +32,7 @@ hay cookies.
 | Casillero | Archivos subidos (fotos, PDF, textos y código), enlaces guardados, nombre, tamaño, tipo, fecha y una miniatura | El alumno |
 | Repaso | Tarjetas de estudio (pregunta y respuesta), su caja y cuándo tocan | El alumno o el tutor |
 | Progreso | Minutos estudiados por asignatura y día, racha de días y cómo han ido cambiando las notas | La app, al usar el cronómetro |
-| Inglés | Vocabulario propio: palabra, traducción y cuándo toca repasarla | El alumno |
+| Idiomas | El vocabulario de cada idioma: palabra, traducción, frase de ejemplo (opcional), de qué idioma es y cuándo toca repasarla. El idioma que estudias, el examen oficial que preparas (sus partes, sus mínimos y la fecha), los simulacros (fecha y nota de cada parte), los writings (tipo de texto, nivel, palabras, minutos y la nota que te pones; el texto solo se guarda como apunte) y el diario de inmersión (fecha, tipo, minutos y título si lo pones). Las grabaciones de speaking **no se guardan**: están en la memoria del navegador hasta que sales de la app y no salen del dispositivo | El alumno |
 | Objetivos del día | Los objetivos y si están cumplidos | El alumno y la app |
 | Tutor | **La conversación entera** con el profe, los archivos y capturas que se le pasen, los temas trabajados y los repasos que pone | El alumno |
 | Ajustes | Tema claro u oscuro, preferencias de la libreta, minutos del cronómetro, cómo debe tratarle el tutor y, si lo has cambiado, cómo tienes colocado el Inicio (dónde va cada panel, su tamaño, cuáles se ven y en qué orden en el móvil) | El alumno |
@@ -88,6 +88,18 @@ ubicación ni ningún identificador publicitario.
 - **Al pedirle a Claude** que resuma un apunte, saque tarjetas o prepare el plan
   de un examen se envía ese apunte o esos datos concretos.
 - **Al abrir un PDF del casillero** se descarga la librería PDF.js desde cdnjs.
+- **Al traducir en Idiomas**, «Traducir aquí» usa el traductor del propio
+  navegador (Chrome en el ordenador), que traduce en el dispositivo: no sale
+  nada. Los enlaces (Google Traductor, DeepL, WordReference, Linguee, Reverso,
+  Cambridge, la RAE, Forvo) abren esa página con el texto ya puesto, **solo si
+  los pulsas**; lo que escribas lo recibe ese servicio, con sus condiciones.
+- **Al escuchar una palabra o un dictado** se usan las voces del dispositivo, y
+  la app elige primero las que funcionan sin internet. Si para ese idioma solo
+  hay una voz en línea (algunas de Chrome), la frase que escuchas la procesa su
+  proveedor.
+- **Al grabarte en Speaking** el navegador pide permiso para el micrófono. La
+  grabación no se sube a ningún sitio; si la descargas, se guarda en tu
+  dispositivo.
 - **Si pones tu ciudad para ver el tiempo**, se le pide la previsión a Open-Meteo
   (Suiza) con la zona redondeada a unos 10 km; al buscar la ciudad, se le manda
   el nombre que escribes. Dentro de Claude no se pide nada: allí no hay tiempo.
@@ -105,9 +117,12 @@ ubicación ni ningún identificador publicitario.
 - **Borrar un apunte o un documento**: desde su propia pantalla, con confirmación.
 - **Borrar todo**: Ajustes → Datos → Borrar todo. Borra lo del dispositivo, lo
   de la cuenta y los archivos subidos. La cuenta sigue, vacía.
-- **Borrar mi cuenta**: Ajustes → Datos → Borrar mi cuenta. Borra del servidor
-  el usuario, su correo, su contraseña, todos sus documentos y su actividad
-  (`on delete cascade`), y lo del navegador.
+- **Borrar mi cuenta**: Ajustes → Perfil («Tu cuenta») o Ajustes → Datos →
+  Borrar mi cuenta, escribiendo el correo para confirmar. Borra del servidor el
+  usuario, su correo, su contraseña, todos sus documentos, su actividad, sus
+  avisos y sus dispositivos (`on delete cascade`), sus archivos y lo del
+  navegador. Quien no pueda entrar lo pide desde el correo de la cuenta, como
+  explica gritnook.com/borrar-cuenta.
 - **Cerrar sesión**: borra lo de ese navegador; lo suyo sigue en la cuenta.
 - **Sin «Mantener la sesión iniciada»** (ordenadores compartidos): la sesión va en
   `sessionStorage` y se va al cerrar el navegador; al cerrar la pestaña se borra

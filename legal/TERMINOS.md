@@ -1,6 +1,6 @@
 # Términos de uso
 
-En vigor desde el 30 de septiembre de 2026.
+En vigor desde el 1 de octubre de 2026.
 
 ## 1. Qué es esto
 
@@ -43,7 +43,8 @@ fechas que conoce son los de aquí.
   no uses en otro sitio, y no se la dejes a nadie.
 - Tú respondes de lo que se haga con tu cuenta. Si crees que alguien ha entrado
   en ella, cambia la contraseña y escribe al correo de contacto.
-- Puedes borrarla cuando quieras desde Ajustes → Datos → Borrar mi cuenta.
+- Puedes borrarla cuando quieras desde Ajustes → Perfil → Borrar mi cuenta, o
+  pedirlo por correo si no puedes entrar (gritnook.com/borrar-cuenta).
 - El titular puede suspender o borrar una cuenta que se use para romper estos
   términos (por ejemplo, para subir contenido ilegal o para atacar la
   aplicación), avisándote antes salvo que haya un motivo grave y diciéndote

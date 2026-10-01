@@ -41,7 +41,7 @@ const EMPEZAR = `<a class="btn primario" href="/">Empieza gratis</a>`;
 
 /* ── el marco de todas las páginas ── */
 const NAV = [["/oposiciones/", "Oposiciones"], ["/estudiar-y-trabajar/", "Estudiar y trabajar"]];
-const LEGALES = [["/privacidad/", "Privacidad"], ["/terminos/", "Términos"], ["/aviso-legal/", "Aviso legal"], ["/ia/", "La inteligencia artificial"]];
+const LEGALES = [["/privacidad/", "Privacidad"], ["/borrar-cuenta/", "Borrar mi cuenta"], ["/terminos/", "Términos"], ["/aviso-legal/", "Aviso legal"], ["/ia/", "La inteligencia artificial"]];
 const LOGO = `<picture><source srcset="/marca/gritnook-claro.svg" media="(prefers-color-scheme: light)"><img src="/marca/gritnook-oscuro.svg" width="112" height="35" alt="GritNook"></picture>`;
 const CSS = "/web/web.css?v=" + version("web/web.css");
 
@@ -304,6 +304,36 @@ const PAPELES = DOCS.map(([id, archivo, nombre, descripcion]) => {
   };
 });
 
+/* borrar la cuenta: dentro de la app, y desde aquí para quien no puede entrar
+   (Google Play pide una página así para las apps con cuentas) */
+const BORRAR = {
+  ruta: "/borrar-cuenta/", titulo: "Borrar tu cuenta y tus datos · GritNook",
+  descripcion: "Cómo borrar tu cuenta de GritNook y todos tus datos: desde la app en un minuto, o por correo si no puedes entrar. Qué se borra y en cuánto tiempo.",
+  cuerpo: `<div class="ancho"><article class="papel">
+  <h1>Borrar tu cuenta y tus datos</h1>
+  <p>Puedes borrar tu cuenta de GritNook cuando quieras, gratis y sin dar explicaciones. Se borra todo al momento y no se puede deshacer.</p>
+  <h3>Desde la app (lo más rápido)</h3>
+  <ol>
+    <li>Entra en <a href="/">gritnook.com</a> con tu cuenta.</li>
+    <li>Ve a <strong>Ajustes → Perfil</strong> y pulsa <strong>«Borrar mi cuenta»</strong> (también está en Ajustes → Datos).</li>
+    <li>Escribe tu correo para confirmar y pulsa <strong>«Borrar mi cuenta para siempre»</strong>.</li>
+  </ol>
+  <p>Si quieres quedarte con algo, descárgate antes una copia: <strong>Ajustes → Datos → Descargar copia</strong>.</p>
+  <h3>Si no puedes entrar</h3>
+  <p>Si has olvidado la contraseña, en la pantalla de entrar pulsa <strong>«He olvidado la contraseña»</strong> y te llega un enlace para poner otra.</p>
+  <p>Si aun así no puedes, escribe a <a href="mailto:hola@gritnook.com?subject=Borrar%20mi%20cuenta">hola@gritnook.com</a> <strong>desde el correo de tu cuenta</strong>, con el asunto «Borrar mi cuenta». La borramos en un plazo de 72 horas (la ley da un mes como máximo) y te contestamos cuando esté hecho. Para proteger tu cuenta, solo se atienden las peticiones que llegan desde su propio correo.</p>
+  <h3>Qué se borra</h3>
+  <ul>
+    <li><strong>Tu cuenta</strong>: el correo y tu forma de entrar (contraseña, Google o GitHub).</li>
+    <li><strong>Todo lo que guardaste</strong>: perfil y foto, asignaturas, notas y faltas, agenda, apuntes y dibujos, archivos, tarjetas, vocabulario, tu oposición y el cronómetro.</li>
+    <li><strong>Lo demás</strong>: los días que entraste, de dónde llegaste, tus avisos y los dispositivos apuntados para recibirlos.</li>
+  </ul>
+  <p>No queda nada tuyo en GritNook. Solo siguen los contadores anónimos de visitas, que no llevan ni tu nombre ni tu cuenta, y los registros técnicos del servidor, que se borran solos en poco tiempo. Si nos escribiste, ese correo se guarda lo que obligue la ley para poder demostrar que atendimos tu petición. Más detalle en la <a href="/privacidad/">política de privacidad</a>.</p>
+  <h3>Si usas la app sin cuenta</h3>
+  <p>Entonces todo está solo en tu dispositivo: <strong>Ajustes → Datos → «Borrar todo»</strong>, o borra los datos del sitio en tu navegador o desinstala la app.</p>
+</article></div>`
+};
+
 const NO_EXISTE = {
   ruta: "/404.html", titulo: "Esta página no existe · GritNook", descripcion: "La página que buscas no está en GritNook.", noindex: true,
   cuerpo: `<div class="ancho"><section class="hero" style="grid-template-columns:minmax(0,1fr)"><div>
@@ -316,7 +346,7 @@ const NO_EXISTE = {
 
 /* ══════════════════ escribirlo todo ══════════════════ */
 const escribir = (rel, txt) => { const f = path.join(RAIZ, rel); fs.mkdirSync(path.dirname(f), { recursive: true }); fs.writeFileSync(f, txt); console.log("escrito " + rel); };
-const PAGINAS = [OPOSICIONES, TRABAJO, ...PAPELES];
+const PAGINAS = [OPOSICIONES, TRABAJO, ...PAPELES, BORRAR];
 for (const p of PAGINAS) escribir(p.ruta.replace(/^\//, "") + "index.html", pagina(p));
 escribir("404.html", pagina(NO_EXISTE));
 
