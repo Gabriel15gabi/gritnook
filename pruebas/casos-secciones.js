@@ -24,8 +24,8 @@ async function enSeccion(sec, fn, prepara) {
 }
 
 grupo("Hoy: el Inicio cuando ya tienes asignaturas", () => {
-  prueba("la sección se llama «Hoy»", () => {
-    esperar(SECCIONES.find(s => s.id === "escritorio").txt).igualA("Hoy");
+  prueba("en el menú se llama «Inicio», como siempre", () => {
+    esperar(SECCIONES.find(s => s.id === "escritorio").txt).igualA("Inicio");
   });
   prueba("saluda, y enseña los tres anillos, la sesión con su reloj y tu semana", () => enSeccion("escritorio", () => {
     esperar(/Buenos días|Buenas tardes|Buenas noches/.test($("#contenido").textContent)).cierto();

@@ -3452,6 +3452,12 @@ body.nuevo .ls-tit{font:600 15px/1.3 var(--sans)}
 .ax-hechas summary{list-style:none; cursor:pointer}
 .ax-hechas summary::-webkit-details-marker{display:none}
 .ax-hechas:not([open]) h3{margin-bottom:0}
+
+/* el círculo de Inicio en el menú: un morado vivo que brilla un poco, en los dos temas */
+:root{--anillo-inicio:#7c5cfa}
+@media (prefers-color-scheme: dark){:root:not([data-theme="light"]){--anillo-inicio:#b49dff}}
+:root[data-theme="dark"]{--anillo-inicio:#b49dff}
+[data-sec="escritorio"] svg{filter:drop-shadow(0 0 4px color-mix(in srgb, var(--anillo-inicio) 70%, transparent)) drop-shadow(0 0 10px color-mix(in srgb, var(--anillo-inicio) 35%, transparent))}
 /* las secciones sencillas: sus estilos van con los de «Hoy» (lanz/hoy.css) */
 /* ══ Mochila: tarjetas con su vista previa, ordenadas por asignatura ══ */
 .mc-btns{display:flex; gap:8px; align-items:center; flex-wrap:wrap}
@@ -5513,7 +5519,7 @@ function clonarHoja() {
 
 /* ══════════════════ navegación ══════════════════ */
 const SECCIONES = [
-  { id: "escritorio", txt: "Hoy" }, { id: "oposicion", txt: "Oposición", solo: "oposicion" }, { id: "modulos", txt: "Módulos" },
+  { id: "escritorio", txt: "Inicio" }, { id: "oposicion", txt: "Oposición", solo: "oposicion" }, { id: "modulos", txt: "Módulos" },
   { id: "entregas", txt: "Agenda" }, { id: "apuntes", txt: "Apuntes" },
   { id: "repaso", txt: "Repaso" }, { id: "progreso", txt: "Progreso" },
   { id: "casillero", txt: "Mochila" }, { id: "ingles", txt: "Idiomas" },
@@ -18279,7 +18285,7 @@ alEvento("mousemove", e => {
    nombre debajo del icono; y el panel, que enseña lo que hay dentro de la
    sección en la que estás (tus apuntes, tus asignaturas, lo próximo…). En el
    móvil no cambia nada: sigue la barra de pestañas de abajo. */
-const RIEL_TXT = { escritorio: "Hoy" };
+const RIEL_TXT = { escritorio: "Inicio" };
 /* los iconos del menú (riel, barra del móvil y «Más»): Phosphor Icons en duotono.
    MIT License, Copyright (c) 2023 Phosphor Icons (https://phosphoricons.com); texto
    completo en CREDITOS.md. El resto de la app sigue con sus iconos de trazo. */
@@ -18292,8 +18298,8 @@ ICON_RIEL.panel = '<circle cx="96" cy="92" r="40" opacity="0.2"/><circle cx="96"
 ICON_RIEL.escritorio = '<circle cx="128" cy="128" r="70" fill="none" stroke="var(--acento-txt)" stroke-width="41"/>';
 ICON_RIEL.casillero = '<path d="M200,216H56V112A48,48,0,0,1,104,64h48a48,48,0,0,1,48,48Z" opacity="0.2"/><path d="M96,64V52a20,20,0,0,1,20-20h24a20,20,0,0,1,20,20V64" fill="none" stroke="currentColor" stroke-width="16" stroke-linecap="round" stroke-linejoin="round"/><path d="M200,216H56V112A48,48,0,0,1,104,64h48a48,48,0,0,1,48,48Z" fill="none" stroke="currentColor" stroke-width="16" stroke-linecap="round" stroke-linejoin="round"/><path d="M96,216V168a8,8,0,0,1,8-8h48a8,8,0,0,1,8,8v48" fill="none" stroke="currentColor" stroke-width="16" stroke-linecap="round" stroke-linejoin="round"/><path d="M104,112h48" fill="none" stroke="currentColor" stroke-width="16" stroke-linecap="round"/>';
 ICON_RIEL.oposicion = '<circle cx="128" cy="128" r="96" opacity="0.2"/><circle cx="128" cy="128" r="96" fill="none" stroke="currentColor" stroke-width="16"/><circle cx="128" cy="128" r="56" fill="none" stroke="currentColor" stroke-width="16"/><circle cx="128" cy="128" r="18"/>';
-/* ══ los iconos del menú, de Hoy a Mochila: «duotono suave» ══
-   Hoy es el círculo de la «O» del logo, en morado para que resalte; los
+/* ══ los iconos del menú, de Inicio a Mochila: «duotono suave» ══
+   Inicio es el círculo de la «O» del logo, en morado vivo; los
    demás, dibujados para GritNook con el mismo trazo (línea redondeada y un
    relleno suave dentro), en una rejilla de 24 que se escala a la de 256.
    Valen para el riel del ordenador, la barra del móvil, la hoja de «Más» y
@@ -18302,8 +18308,8 @@ const MENU_ICO = (() => {
   const T = 'fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"', F = 'fill="currentColor" fill-opacity=".2"';
   const g = d => `<g transform="scale(10.6667)" ${T}>${d}</g>`;
   return {
-    /* Hoy: el círculo de la «O» de GritNook, siempre en morado para que resalte */
-    escritorio: `<circle cx="128" cy="128" r="70" fill="none" stroke="var(--acento)" stroke-width="41"/>`,
+    /* Inicio: el círculo de la «O» de GritNook, en un morado vivo y con brillo para que resalte */
+    escritorio: `<circle cx="128" cy="128" r="70" fill="none" stroke="var(--anillo-inicio, #7c5cfa)" stroke-width="41"/>`,
     modulos: g(`<path ${F} d="M2.6 9.2 12 4.6l9.4 4.6L12 13.8Z"/><path d="M6.4 11.2v4.4c0 1.6 2.5 3.2 5.6 3.2s5.6-1.6 5.6-3.2v-4.4M21.4 9.2v5.2"/>`),
     entregas: g(`<rect ${F} x="3.6" y="5.2" width="16.8" height="15.2" rx="3"/><path d="M3.6 10h16.8M8.2 3.2v3.6M15.8 3.2v3.6"/><circle fill="currentColor" stroke="none" cx="12" cy="15.2" r="1.4"/>`),
     apuntes: g(`<rect ${F} x="5.6" y="3.2" width="13.6" height="17.6" rx="2.6"/><path d="M9.6 8.4h5.6M9.6 12h5.6M9.6 15.6h3.4M3.6 7.4h3.4M3.6 12h3.4M3.6 16.6h3.4"/>`),
@@ -18382,7 +18388,7 @@ function panelHTML(c) {
   if (seccion === "escritorio") {
     const prox = pend().filter(e => e.fecha).slice(0, 5);
     const clases = clasesDe(diaDe(hoy));
-    return pnCab("Hoy", fechaCorta(hoy))
+    return pnCab("Inicio", fechaCorta(hoy))
       + pnGrupo("Lo próximo") + (prox.length ? prox.map(pnElemento).join("") : pnVacio("Nada a la vista. Apunta entregas y exámenes en la Agenda."))
       + (clases.length ? pnGrupo("Clases de hoy") + clases.map(b => { const m = modPorId(b.modId); return pnFila(' data-sec="entregas"', pnDot(m), m ? m.nombre : (b.titulo || "Clase"), b.ini + (b.fin ? " – " + b.fin : "")); }).join("") : "")
       + (profeActivo() ? pnGrupo("Tu tutor") + tutorCarta(c) : "");
