@@ -1,6 +1,6 @@
 /* El lanzamiento: el Inicio con «tu día» en vez de «Buenos días», el tiempo
-   de tu zona (con la privacidad por delante), las libretas nuevas del
-   casillero con su color, la pantalla de entrar y el movimiento. */
+   de tu zona (con la privacidad por delante), el color de cada
+   asignatura en la Mochila, la pantalla de entrar y el movimiento. */
 
 /* una prueba en el Inicio, sin dejar rastro */
 function conInicio(fn) {
@@ -148,31 +148,36 @@ grupo("Inicio: el tiempo en tu zona", () => {
   });
 });
 
-grupo("Casillero: libretas nuevas y de tu color", () => {
-  const conCasillero = fn => conInicio(() => { S.modulos = [modHoy(), moduloDe([[100, null]], { id: "pro", cod: "PRO", nombre: "Programación", color: 2 })]; seccion = "casillero"; LBP = null; libroAbierto = null; casTipo = null; pinta(); try { return fn(); } finally { libroAbierto = null; LBP = null; } });
-  prueba("cada libreta lleva sus anillas, su etiqueta y el botón de la paleta", () => conCasillero(() => {
-    const l = document.querySelectorAll(".lb-hueco");
+grupo("Mochila: cada asignatura, de tu color", () => {
+  const conCasillero = fn => conInicio(() => { S.modulos = [modHoy(), moduloDe([[100, null]], { id: "pro", cod: "PRO", nombre: "Programación", color: 2 })];
+    S.casillero = { e1: { id: "e1", titulo: "SQLZoo", modId: "bd", tipo: "enlace", url: "https://sqlzoo.net/", creado: "2026-10-01T10:00:00Z" }, e2: { id: "e2", titulo: "MDN", modId: "pro", tipo: "enlace", url: "https://developer.mozilla.org/", creado: "2026-10-02T10:00:00Z" } };
+    seccion = "casillero"; mcCarpeta = null; mcBusca = ""; LBP = null; libroAbierto = null; casTipo = null; pinta(); try { return fn(); } finally { libroAbierto = null; LBP = null; } });
+  /* desde la Mochila no hay libretas en 3D: cada asignatura es un bloque, y la paleta va en su cabecera */
+  prueba("cada asignatura con algo dentro lleva su bloque, con su código, su nombre y el botón de la paleta", () => conCasillero(() => {
+    const l = document.querySelectorAll(".mc-sec[data-soltar-mod]");
     esperar(l.length).igualA(2);
-    esperar(l[0].querySelectorAll(".lb-lomo i").length).igualA(4);
-    esperar(l[0].querySelector(".lb-nombre").textContent).igualA("Bases de Datos");
-    esperar(!!l[0].querySelector('[data-lb-pintar="bd"]')).cierto();
+    const bd = document.querySelector('.mc-sec[data-soltar-mod="bd"]');
+    esperar(bd.querySelector(".mc-sec-cod").textContent).igualA("BD");
+    esperar(bd.querySelector("h2").textContent).igualA("Bases de Datos");
+    esperar(!!bd.querySelector('[data-lb-pintar="bd"]')).cierto();
   }));
-  prueba("elegir un color de la paleta lo pone en la tapa y se guarda con tus ajustes", () => conCasillero(() => {
+  prueba("elegir un color de la paleta lo pone en su bloque y se guarda con tus ajustes", () => conCasillero(() => {
     document.querySelector('[data-lb-pintar="bd"]').click();
     esperar(!!$("#tapaPaleta")).cierto();
     esperar(document.querySelectorAll("#tapaPaleta .tapa-color").length).igualA(16);
     document.querySelector('#tapaPaleta [data-tapa-color="#0F766E"]').click();
     esperar(modPorId("bd").tapa).igualA("#0f766e");
     esperar($("#tapaPaleta")).nulo();
-    esperar(document.querySelector('[data-libro="bd"]').getAttribute("style")).contiene("#0f766e");
+    esperar(document.querySelector('.mc-sec[data-soltar-mod="bd"]').getAttribute("style")).contiene("#0f766e");
     esperar(JSON.stringify(empaqueta("ajustes"))).contiene("#0f766e");
     /* la asignatura conserva su color en el resto de la app */
     esperar(colorMod(modPorId("bd"))).noContiene("#0f766e");
   }));
-  prueba("dentro de la libreta, las hojas van del color de la tapa", () => conCasillero(() => {
+  prueba("dentro de la asignatura, todo va de su color", () => conCasillero(() => {
     ponerTapa("bd", "#9f1239");
     abrirLibro("bd");
-    esperar($(".libro-abierto").getAttribute("style")).contiene("#9f1239");
+    esperar($(".mc-filtrada").getAttribute("style")).contiene("#9f1239");
+    esperar(document.querySelector(".mc-tarjeta").getAttribute("style")).contiene("#9f1239");
   }));
   prueba("cualquier color, con el selector; y «Quitar color» vuelve al de siempre", () => conCasillero(() => {
     document.querySelector('[data-lb-pintar="pro"]').click();
@@ -182,15 +187,14 @@ grupo("Casillero: libretas nuevas y de tu color", () => {
     document.querySelector('#tapaPaleta [data-tapa-color=""]').click();
     esperar(modPorId("pro").tapa).igualA(undefined);
   }));
-  prueba("una tapa clara lleva la letra oscura", () => conCasillero(() => {
-    ponerTapa("bd", "#fde68a"); pinta();
-    esperar(document.querySelector('[data-libro="bd"]').classList.contains("clara")).cierto();
+  prueba("se sabe si un color es claro (para la letra de encima)", () => {
+    esperar(tapaClara("#fde68a")).cierto();
     esperar(tapaClara("#1f2937")).falso();
-  }));
+  });
   prueba("un color que no es un color no entra (ni para colar estilos)", () => conCasillero(() => {
     modPorId("bd").tapa = "red;background:url(https://malo.es/x)";
     pinta();
-    esperar(document.querySelector('[data-libro="bd"]').getAttribute("style")).noContiene("malo.es");
+    esperar(document.querySelector('.mc-sec[data-soltar-mod="bd"]').getAttribute("style")).noContiene("malo.es");
     esperar(ponerTapa("bd", "javascript:alert(1)")).cierto();
     esperar(modPorId("bd").tapa).igualA(undefined);
   }));
@@ -199,7 +203,7 @@ grupo("Casillero: libretas nuevas y de tu color", () => {
     document.dispatchEvent(new KeyboardEvent("keydown", { key: "Escape", bubbles: true }));
     esperar($("#tapaPaleta")).nulo();
     document.querySelector('[data-lb-pintar="bd"]').click();
-    $(".cab").click();
+    $(".sx-cab").click();
     esperar($("#tapaPaleta")).nulo();
   }));
   /* la paleta de las libretas se llamaba igual que la barra de tintas de los

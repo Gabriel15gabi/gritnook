@@ -54,7 +54,7 @@ cuando quieras en **Ajustes → Datos**.
    cuenta en el ordenador (o al revés). ¿Está todo?
 7. **El Inicio.** ¿Lo que dice arriba («Hoy te tocan…») cuadra con tu día? Pon tu
    ciudad y mira si el tiempo es el de verdad.
-8. **Tus libretas.** En el Casillero, cámbiale el color a alguna con la paleta.
+8. **Tu mochila.** En la Mochila, haz una carpeta para un tema dentro de una asignatura, mete algo y cámbiale el color con la paleta.
 9. **Déjala y vuelve mañana.** ¿Sigue todo ahí?
 
 TutorIA y ChatClase salen como «Próximamente»: están en camino. Si tienes ideas

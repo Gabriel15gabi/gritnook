@@ -29,7 +29,7 @@ hay cookies.
 | Asignaturas | Nombre, código, horas del curso, nota objetivo, meta semanal, color, apartados de evaluación con sus pesos y **sus notas**, y **faltas de asistencia** | El alumno |
 | Agenda | Entregas y exámenes (título, asignatura, fecha, hora, estado, pasos y notas) y el horario de clases | El alumno o el tutor, si se le autoriza |
 | Apuntes | Título, texto, formato, **dibujos**, etiquetas, asignatura, tipo de papel y de letra, fechas | El alumno |
-| Casillero | Archivos subidos (fotos, PDF, textos y código), enlaces guardados, nombre, tamaño, tipo, fecha y una miniatura | El alumno |
+| Mochila (antes Casillero) | Archivos subidos (fotos, PDF, textos y código), enlaces guardados, nombre, tamaño, tipo, fecha, una miniatura y en qué carpeta están. Con las asignaturas: los nombres de sus carpetas y, si lo cambias, el color de cada una en la mochila | El alumno |
 | Repaso | Tarjetas de estudio (pregunta y respuesta), su caja, cuándo tocan y el último día que la repasaste (para el anillo de repaso de «Hoy») | El alumno o el tutor |
 | Progreso | Minutos estudiados por asignatura y día, racha de días y cómo han ido cambiando las notas | La app, al usar el cronómetro |
 | Idiomas | El vocabulario de cada idioma: palabra, traducción, frase de ejemplo (opcional), de qué idioma es, cuándo toca repasarla y el último día que la repasaste. El idioma que estudias, el examen oficial que preparas (sus partes, sus mínimos y la fecha), los simulacros (fecha y nota de cada parte), los writings (tipo de texto, nivel, palabras, minutos y la nota que te pones; el texto solo se guarda como apunte) y el diario de inmersión (fecha, tipo, minutos y título si lo pones). Las grabaciones de speaking **no se guardan**: están en la memoria del navegador hasta que sales de la app y no salen del dispositivo | El alumno |
@@ -52,7 +52,7 @@ ubicación ni ningún identificador publicitario.
 | La cuenta del alumno (Supabase, en Irlanda, UE) | Todo lo de arriba, en la tabla `documentos`: una fila por trozo (`escritorio/agenda`, `apuntes/<id>`, `casillero/<id>`…), con su dueño. La actividad, en `actividad` | El alumno, desde cualquier dispositivo. Nadie más: lo impide la base de datos (Row Level Security). Supabase es el encargado de tratamiento |
 | El panel del creador | **Solo** el correo, la fecha de alta, la última vez que entró, los días que ha entrado en 7 y 30 días, qué estudia (etapa), de dónde llegó y cuánto ocupa; y las cifras de conjunto de las aperturas, la vuelta de la gente (retención) y qué estudian. **Nunca el contenido ni la foto** | El creador de la app (la tabla `administradores`, que nadie puede tocar desde la app) |
 | El navegador del alumno | Todo, en el almacenamiento local (claves `desk-daw:*`), para que funcione sin conexión, y la lista de cambios por subir. La app le pide al navegador que no lo borre cuando ande justo de espacio. Al cerrar sesión se borra | Solo quien use ese dispositivo |
-| El almacén de Claude (solo si se abre desde ahí, en lugar de la cuenta) | Los mismos datos, para sincronizar entre dispositivos, y los archivos del casillero | La cuenta de Claude del alumno; el proveedor es Anthropic (Estados Unidos) |
+| El almacén de Claude (solo si se abre desde ahí, en lugar de la cuenta) | Los mismos datos, para sincronizar entre dispositivos, y los archivos de la mochila | La cuenta de Claude del alumno; el proveedor es Anthropic (Estados Unidos) |
 | GitHub Pages | **Nada.** Es una página estática: no hay servidor ni base de datos | Nadie |
 
 ## 3. Qué sale de la aplicación
@@ -87,7 +87,7 @@ ubicación ni ningún identificador publicitario.
   nombre, ni tus notas, ni tus apuntes.** Lo ves entero antes de mandarlo.
 - **Al pedirle a Claude** que resuma un apunte, saque tarjetas o prepare el plan
   de un examen se envía ese apunte o esos datos concretos.
-- **Al abrir un PDF del casillero** se descarga la librería PDF.js desde cdnjs.
+- **Al abrir un PDF de la mochila** se descarga la librería PDF.js desde cdnjs.
 - **Al traducir en Idiomas**, «Traducir aquí» usa el traductor del propio
   navegador (Chrome en el ordenador), que traduce en el dispositivo: no sale
   nada. Los enlaces (Google Traductor, DeepL, WordReference, Linguee, Reverso,

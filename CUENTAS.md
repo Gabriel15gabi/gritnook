@@ -36,7 +36,7 @@ dinero hace perder.**
 Por eso la versión pública **no lleva profe**: las capacidades de IA y de
 sincronización solo existen dentro de Claude, así que fuera de allí la app se
 queda con lo que no cuesta nada de mantener. Y lo que queda es casi todo: notas,
-qué falta para aprobar, faltas, agenda, apuntes, casillero, repaso y cronómetro,
+qué falta para aprobar, faltas, agenda, apuntes, mochila, repaso y cronómetro,
 guardado en el propio navegador. Hosting: 0 €. Mantenimiento: 0 €.
 
 La app ya lo detecta sola y, cuando no hay Claude, se lo explica a quien entre
@@ -99,7 +99,7 @@ let PROFE_ACTIVO = false;
 ```
 
 Apagado, el profe no aparece en ninguna pantalla (menú, bienvenida, Ajustes,
-apuntes, casillero, repaso, oposición) y no se envía nada a ninguna IA, ni
+apuntes, mochila, repaso, oposición) y no se envía nada a ninguna IA, ni
 abriendo la app desde Claude. Las pruebas de `pruebas/casos-sinprofe.js` fallan
 si alguna pantalla lo nombra, y las del profe lo encienden solo mientras duran,
 para que su código siga funcionando.

@@ -30,7 +30,7 @@ por ahí se atienden todas las peticiones, y se responden en un mes como máximo
 
 Los que tú escribes o subes a la aplicación: tu nombre o apodo, tu foto de perfil si pones una (es opcional y no hace falta que sea tu cara), qué estudias, tus
 asignaturas con sus notas y sus faltas, tu agenda, tus apuntes y dibujos, los
-archivos que subes al casillero, tus tarjetas de repaso, tu vocabulario de idiomas
+archivos que guardas en la mochila (con los nombres de tus carpetas), tus tarjetas de repaso, tu vocabulario de idiomas
 y lo que apuntes para tu examen de idiomas (simulacros, writings y minutos de
 inmersión), tus minutos de estudio y tus conversaciones con el profe. Si tienes cuenta, también el **cronómetro en marcha** (cuándo empezó, cuándo acaba y de qué es), para que lo veas en tus otros dispositivos.
 
@@ -143,7 +143,7 @@ proteger las cuentas de todos.
 | Quién | Qué ve | Dónde está |
 |---|---|---|
 | Anthropic (proveedor del profe con IA) | **Ahora mismo, nada: el profe está apagado.** Cuando se encienda, solo lo que se le envíe en cada pregunta. El detalle exacto, campo por campo, está en cómo funciona el profe: en resumen, tu nombre o apodo, tu curso, tus asignaturas con sus notas, tus entregas y exámenes, tu horario, los títulos de tus apuntes, el contenido del que tengas abierto, los últimos mensajes y los archivos que adjuntes | Estados Unidos |
-| Anthropic (almacenamiento de Claude), solo si abres la app desde allí | Tus datos sincronizados y tus archivos del casillero | Estados Unidos |
+| Anthropic (almacenamiento de Claude), solo si abres la app desde allí | Tus datos sincronizados y tus archivos de la mochila | Estados Unidos |
 | Supabase, Inc. (el servidor de las cuentas), como encargado de tratamiento | Tu correo, tu contraseña cifrada, tus datos (también tu foto de perfil, si pones una), tus archivos y los días que entras, para guardarlos. No los usa para nada más | Unión Europea (Irlanda) |
 | Open-Meteo (Suiza), solo si pones tu ciudad para ver el tiempo | La zona aproximada (redondeada a unos 10 km) y, como cualquier web, tu dirección IP. **Nada más: ni tu nombre, ni tu cuenta, ni tus datos de estudio** | Suiza (con decisión de adecuación de la Comisión Europea) |
 | Google o GitHub, solo si entras con ellos | Que entras en GritNook con tu cuenta de allí, como en cualquier «Continuar con Google». Ellos tratan ese inicio de sesión según su propia política de privacidad | Google: Unión Europea y Estados Unidos. GitHub: Estados Unidos |

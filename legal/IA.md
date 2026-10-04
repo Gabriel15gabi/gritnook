@@ -42,7 +42,7 @@ Para poder responderte con sentido, se le envía:
   plazo de la solicitud, hasta cuándo es y si ya la has presentado.
 
 **No se le manda** nada que no esté en esa lista. En concreto, **no** se le
-envían tu foto de perfil, ni los archivos de tu casillero, ni tu vocabulario de inglés, ni lo que hay
+envían tu foto de perfil, ni los archivos de tu mochila, ni tu vocabulario de inglés, ni lo que hay
 escrito en tus tarjetas de repaso, ni el nombre de tu centro, ni el de tu aula,
 ni el texto de los apuntes que no tengas abiertos, ni las notas que escribas en
 cada tema de la oposición, ni los enlaces que guardes a leyes o a las bases, ni
@@ -96,7 +96,7 @@ encargado de tratamiento con el proveedor.]
 
 ## Si no lo quieres usar
 
-El resto de GritNook —notas, faltas, agenda, apuntes, casillero, repaso— funciona
+El resto de GritNook —notas, faltas, agenda, apuntes, mochila, repaso— funciona
 sin el profe.
 
 Puedes apagarlo del todo en **Ajustes → El profe**, quitando la marca de «Usar el
