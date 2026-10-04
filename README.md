@@ -56,7 +56,7 @@ Subrayar. Al escribir, la hoja se pone al ancho de la pantalla con letra de 16 p
 
 **Mochila.** Lo que guardas para clase —PDF, fotos de la pizarra, textos y código, enlaces— como tarjetas con su vista previa de verdad: la primera página de cada PDF, la foto, las primeras líneas o la web. Arriba, buscar en todo y filtrar por asignatura o por tipo. Cada asignatura en su bloque, del color que tú elijas con la paleta (la que tocaste hace menos, primero); en el ordenador los bloques encajan como piezas, sin huecos, y en el móvil cada asignatura es una fila que se desliza. Dentro de cada asignatura, **carpetas por tema**: se crean, se renombran y se borran (lo de dentro no se borra), y las cosas se meten subiéndolas dentro, soltándolas encima, arrastrando la tarjeta o con «Mover». Los PDF se ven dentro de la app; se puede descargar, borrar o **pasárselo al profe**. Dentro de Claude los archivos van a su almacén (hasta 20 MB cada uno, las fotos grandes se reducen solas); fuera, se guardan en la app hasta 180 KB.
 
-**Idiomas.** Cualquier idioma, no solo inglés: vocabulario con frase de ejemplo y repaso espaciado, traductor (el de Chrome, que traduce en el dispositivo, y enlaces a Google Traductor, DeepL, WordReference, Linguee, Reverso, Cambridge y la RAE), oír cómo suena con las voces del dispositivo, dictado, sacar palabras de un texto, tu examen oficial (EOI, Cambridge, IELTS, DELF, Goethe, Aptis u otro) con sus reglas y «¿apruebo?», writing con límite de palabras y reloj, speaking grabándote (no sale del dispositivo) e inmersión que cuenta como estudio. Todo gratis y sin IA.
+**Idiomas.** Arriba, lo de hoy: cuántas palabras te tocan (nuevas y para repasar) con un botón, cuántas ya sabes y su fuerza (débiles, medias y fuertes). Tres pestañas: Palabras, Practicar y Examen. Cualquier idioma, no solo inglés: vocabulario con frase de ejemplo y repaso espaciado, traductor (el de Chrome, que traduce en el dispositivo, y enlaces a Google Traductor, DeepL, WordReference, Linguee, Reverso, Cambridge y la RAE), oír cómo suena con las voces del dispositivo, dictado, sacar palabras de un texto, tu examen oficial (EOI, Cambridge, IELTS, DELF, Goethe, Aptis u otro) con sus reglas y «¿apruebo?», writing con límite de palabras y reloj, speaking grabándote (no sale del dispositivo) e inmersión que cuenta como estudio. Todo gratis y sin IA.
 
 **Avisos.** En las notificaciones del móvil y del ordenador, si los activas (Ajustes → Avisos): exámenes tres días antes y la víspera, entregas la víspera y el mismo día, los plazos de la oposición, el repaso del día, la racha si hoy aún no has estudiado y el final del cronómetro. Con la app abierta o en segundo plano los lanza ella; con la app cerrada los manda el servidor (`backend/avisos.sql` y la función `backend/funciones/avisos`, Web Push cifrado sin librerías de fuera). De noche, nada.
 
@@ -76,7 +76,7 @@ Subrayar. Al escribir, la hoja se pone al ancho de la pantalla con letra de 16 p
 
 **TutorIA y ChatClase, próximamente.** Abajo del menú, aparte, con «Próximamente» en naranja y un avance de lo que harán. ChatClase está entero por dentro —canales por tema, emojis y reacciones, responder, editar, adjuntar apuntes y fotos, compartir tus tareas hechas o pendientes, fijar, reportar, bloquear y moderar—, para ordenador y móvil, con su base de datos y sus pruebas. Pensado para que haya menores: sin mensajes privados, solo un apodo y con normas que se aceptan al entrar.
 
-**Menú.** En el ordenador, un riel con cada sección y su nombre, siempre en el mismo sitio, y la página a todo lo ancho (en Apuntes, al lado, tus apuntes con buscador). En el móvil, una barra de pestañas abajo y un «Más» con el resto de secciones y su dato al día. Las confirmaciones (borrar algo, cargar una copia) son ventanas de la propia app, nunca las del navegador.
+**Menú.** En el ordenador, un riel con cada sección y su nombre, siempre en el mismo sitio, con iconos dibujados para GritNook (línea redondeada con un relleno suave), y la página a todo lo ancho (en Apuntes, al lado, tus apuntes con buscador). En el móvil, una barra de pestañas abajo y un «Más» con el resto de secciones y su dato al día. Las confirmaciones (borrar algo, cargar una copia) son ventanas de la propia app, nunca las del navegador.
 
 **Ajustes.** Perfil, asignaturas con su color, plantilla de evaluación, cronómetro, el tutor —con un interruptor para apagarlo del todo, y entonces no sale nada hacia ninguna IA—, tema, copia de seguridad en JSON y los cuatro documentos legales, que se leen dentro de la app.
 
@@ -134,7 +134,7 @@ La versión pública es para verla y probarla. La de Claude usa sus capacidades 
 node pruebas/correr.js
 ```
 
-987 pruebas que corren **dentro de la app de verdad**, cargada en un iframe, sin
+995 pruebas que corren **dentro de la app de verdad**, cargada en un iframe, sin
 instalar nada. Cubren las cuentas de las notas, entender las fechas escritas a
 mano, el sanitizador, el estado, la libreta, el repaso espaciado, la pantalla de
 bienvenida entera, el modo opositor, las cuentas contra un servidor de mentira y una tanda de datos absurdos a propósito. Las reglas de la base de datos, aparte, contra un Postgres de verdad. El cómo y lo que han encontrado, en [pruebas/](pruebas/LEEME.md).

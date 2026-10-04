@@ -32,8 +32,8 @@ const mcTit = () => [...document.querySelectorAll(".mc-sec[data-soltar-mod] .mc-
 grupo("Mochila: el nombre, el icono y cómo se ordena", () => {
   prueba("la sección se llama Mochila y su icono es una mochila", () => {
     esperar(SECCIONES.find(s => s.id === "casillero").txt).igualA("Mochila");
-    esperar(ICON_RIEL.casillero).contiene("M96,64V52");
-    esperar(ICON_PH.casillero).contiene("M96,64V52");
+    esperar(ICON_RIEL.casillero).contiene("M9 6.2V5");
+    esperar(ICON_PH.casillero).contiene("M9 6.2V5");
   });
   prueba("vacía, lo dice y explica qué meter", () => enMochila(() => {
     esperar($("#contenido").textContent).contiene("Tu mochila está vacía");

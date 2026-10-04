@@ -3669,6 +3669,98 @@ body.nuevo .ls-tit{font:600 15px/1.3 var(--sans)}
   .pz-col em{font-size:11px}
   .pz-col small{font-size:11px}
 }
+/* ══ Idiomas sencillo: lo de hoy, cuántas sabes, tres pestañas ══ */
+.ix-idioma{position:relative; display:inline-flex; align-items:center; gap:8px; padding:0 6px 0 14px; min-height:44px; border-radius:99px; background:var(--surface); border:1px solid var(--line)}
+.ix-idioma svg.i{width:18px; height:18px; color:var(--acento-txt)}
+.ix-idioma select{border:0; background:none; font:700 15px/1 var(--sans); color:var(--ink); padding:10px 8px; cursor:pointer}
+/* lo de hoy: la tarjeta grande, de un color tranquilo */
+.ix-hoy{display:grid; grid-template-columns:minmax(0, 1.2fr) minmax(0, 1fr); gap:24px; align-items:center; padding:26px 28px; border-radius:24px;
+  background:linear-gradient(135deg, color-mix(in srgb, #0d9488 16%, var(--surface)), color-mix(in srgb, #2563eb 10%, var(--surface))); border:1px solid color-mix(in srgb, #0d9488 22%, var(--line))}
+.ix-eti{font:700 12.5px/1 var(--sans); letter-spacing:.1em; text-transform:uppercase; color:color-mix(in srgb, #0d9488 75%, var(--ink))}
+.ix-grande{display:flex; align-items:center; gap:10px; margin:10px 0 6px; font:800 32px/1.1 var(--sans); letter-spacing:-.03em}
+.ix-grande svg.i{width:28px; height:28px; color:#16a34a}
+.ix-sub{margin:0 0 16px; font-size:14.5px; color:var(--ink-2)}
+.ix-btn{display:inline-flex; align-items:center; gap:8px; min-height:46px; padding:0 22px; border:0; border-radius:99px; background:#0d9488; color:#fff; font:700 15px/1 var(--sans); cursor:pointer; box-shadow:0 8px 20px -10px #0d9488}
+.ix-btn svg.i{width:18px; height:18px}
+.ix-btn:hover{filter:brightness(1.07)}
+.ix-btn.suave{background:var(--surface); color:var(--ink); box-shadow:inset 0 0 0 1px var(--line-2)}
+.ix-hoy-der{display:grid; gap:12px; padding:18px; border-radius:18px; background:var(--surface); border:1px solid var(--line)}
+.ix-sabes{display:flex; align-items:center; gap:14px}
+.ix-sabes > b{font:800 44px/1 var(--sans); font-variant-numeric:tabular-nums; letter-spacing:-.03em; color:#0d9488}
+.ix-sabes span{display:grid; gap:2px; font:600 15px/1.25 var(--sans)}
+.ix-sabes small{font:500 12.5px/1.2 var(--sans); color:var(--ink-3)}
+.ix-fuerza{display:flex; gap:3px; height:10px; border-radius:99px; overflow:hidden; background:var(--surface-2)}
+.ix-fuerza i{display:block; min-width:4px}
+.ix-fuerza i.debil, .ix-ley .debil i, .ix-punto.debil{background:#f97316}
+.ix-fuerza i.media, .ix-ley .media i, .ix-punto.media{background:#eab308}
+.ix-fuerza i.fuerte, .ix-ley .fuerte i, .ix-punto.fuerte{background:#16a34a}
+.ix-ley{display:flex; flex-wrap:wrap; gap:6px 14px; font-size:12.5px; color:var(--ink-2)}
+.ix-ley span{display:inline-flex; align-items:center; gap:6px}
+.ix-ley i, .ix-punto{display:inline-block; width:8px; height:8px; border-radius:50%}
+.ix-examen{display:inline-flex; align-items:center; gap:8px; justify-self:start; min-height:36px; padding:0 14px; border:0; border-radius:99px; background:var(--surface-2); font:600 13px/1 var(--sans); color:var(--ink); cursor:pointer}
+.ix-examen svg.i{width:15px; height:15px; color:var(--acento-txt)}
+.ix-tabs{margin-top:4px}
+/* Palabras */
+.ix-pal{display:grid; gap:16px}
+.ix-lado{display:grid; gap:16px; align-content:start; min-width:0}
+@media (min-width:1100px){ .ix-pal{grid-template-columns:minmax(0, 7fr) minmax(0, 5fr); gap:20px; align-items:start} .ix-lado{grid-column:2; grid-row:1} .ix-lista{grid-column:1; grid-row:1} }
+.ix-linea{display:grid; grid-template-columns:minmax(0, 1fr) minmax(0, 1fr) auto; gap:8px}
+.ix-linea input, .ix-mas input, .ix-mas textarea, .ix-trad-cuerpo textarea, .ix-frase input{width:100%; min-height:44px; padding:10px 14px; border-radius:12px; border:1px solid var(--line-2); background:var(--surface); font:500 15px/1.3 var(--sans); color:var(--ink)}
+.ix-linea .btn svg.i{width:16px; height:16px}
+.ix-mas{display:grid; gap:10px}
+.ix-mas summary, .ix-plegable summary{cursor:pointer; list-style:none; font:600 14px/1.2 var(--sans); color:var(--acento-txt)}
+.ix-mas summary::-webkit-details-marker, .ix-plegable summary::-webkit-details-marker{display:none}
+.ix-mas[open] summary{margin-bottom:2px}
+.hy-tarjeta.ix-plegable{display:block}
+.ix-plegable summary{display:flex; justify-content:space-between; align-items:center; gap:10px; color:var(--ink)}
+.ix-plegable summary span{display:inline-flex; align-items:center; gap:10px; font:700 16px/1.2 var(--sans)}
+.ix-plegable summary svg.i{width:18px; height:18px; color:var(--acento-txt)}
+.ix-plegable summary small{font:600 12px/1 var(--sans); color:var(--ink-3)}
+.ix-plegable summary::after{content:"›"; font:700 20px/1 var(--sans); color:var(--ink-3); transform:rotate(90deg); transition:transform .15s}
+.ix-plegable[open] summary::after{transform:rotate(-90deg)}
+.ix-trad-cuerpo{display:grid; gap:10px; margin-top:12px}
+.ix-trad-cuerpo #idiDir{justify-self:start}
+.ix-glosario{list-style:none; margin:12px 0 0; padding:0; display:grid; max-height:340px; overflow:auto}
+.ix-glosario li{display:grid; grid-template-columns:110px minmax(0, 1fr) auto; gap:10px; align-items:center; padding:8px 0; border-top:1px solid var(--line); font-size:13.5px}
+.ix-glosario li:first-child{border-top:0}
+.ix-glosario b{font:700 13.5px/1.2 var(--mono)}
+.ix-glosario span{color:var(--ink-2)}
+.ix-filtros{flex-wrap:wrap}
+.ix-filtros em{font-style:normal; font-family:var(--mono); color:var(--ink-3); margin-left:2px}
+.ix-filtros .sel em{color:inherit; opacity:.8}
+.ix-palabras{list-style:none; margin:0; padding:0; display:grid}
+.ix-palabras li{display:grid; grid-template-columns:minmax(0, 1fr) auto auto; gap:12px; align-items:center; padding:11px 0; border-top:1px solid var(--line)}
+.ix-palabras li:first-child{border-top:0}
+.ix-p{display:flex; flex-wrap:wrap; align-items:center; gap:4px 10px; min-width:0}
+.ix-p > b{font:700 16px/1.25 var(--sans)}
+.ix-es{color:var(--ink-2); font-size:14.5px}
+.ix-ej{flex-basis:100%; font-size:13px; color:var(--ink-3)}
+.ix-barras{display:inline-flex; gap:3px; align-items:flex-end}
+.ix-barras i{display:block; width:5px; border-radius:2px; background:var(--surface-3)}
+.ix-barras i:nth-child(1){height:8px} .ix-barras i:nth-child(2){height:12px} .ix-barras i:nth-child(3){height:16px}
+.ix-barras.debil i:nth-child(1){background:#f97316}
+.ix-barras.media i:nth-child(-n+2){background:#eab308}
+.ix-barras.fuerte i{background:#16a34a}
+/* Practicar */
+.ix-acts{display:grid; grid-template-columns:repeat(auto-fill, minmax(min(100%, 320px), 1fr)); gap:16px}
+.ix-act{grid-template-columns:auto minmax(0, 1fr); align-items:start; gap:14px}
+.ix-act > .btn, .ix-act > .ix-frase{grid-column:1 / -1; justify-self:start}
+.ix-act > .ix-frase{justify-self:stretch}
+.ix-act-ico{width:44px; height:44px; border-radius:14px; display:grid; place-items:center; color:#fff; background:var(--c, var(--acento))}
+.ix-act-ico svg.i{width:22px; height:22px}
+.ix-act.tar{--c:#db2777} .ix-act.dic{--c:#2563eb} .ix-act.pro{--c:#0d9488} .ix-act.wri{--c:#ea580c} .ix-act.spe{--c:#7c3aed} .ix-act.inm{--c:#16a34a}
+.ix-act-t h2{margin:0 0 4px; font:700 17px/1.2 var(--sans)}
+.ix-act-t p{margin:0; font-size:14px; color:var(--ink-2)}
+.ix-frase{display:grid; grid-template-columns:auto auto 1fr; gap:8px}
+.ix-frase input{grid-column:1 / -1}
+.ix-frase .btn svg.i{width:16px; height:16px}
+@media (max-width:880px){
+  .ix-idioma{padding-left:10px}
+  .ix-hoy{grid-template-columns:minmax(0, 1fr); padding:22px 20px; gap:18px}
+  .ix-grande{font-size:26px}
+  .ix-linea{grid-template-columns:minmax(0, 1fr) minmax(0, 1fr)}
+  .ix-linea .btn{grid-column:1 / -1}
+}
 </style>
 </head>
 <body>
@@ -13803,7 +13895,7 @@ const IDI_TABS = [["vocab", "Vocabulario"], ["practicar", "Practicar"], ["examen
 const esInformatica = () => { const p = normalizarPerfil();
   const inf = t => /daw|dam|asir|smr|inform|program|desarroll|sistemas|redes/.test(sinTildes(t || ""));
   return p.etapa ? /^ciclo|^uni/.test(p.etapa) && inf(p.ciclo) : inf(S.config.curso) || S.modulos.some(m => m.cod === "ING"); };
-function vistaIdiomas() {
+function vistaIdiomasAntigua() {
   const I = normalizarIdioma(), lang = idiomaActual(), id = IDIOMA[lang], lista = vocabDe(lang), hoy = hoyISO();
   const pendientes = lista.filter(v => !v.proximo || v.proximo <= hoy).length;
   const cuerpo = idiTab === "practicar" ? idiPracticar(lang, lista) : idiTab === "examen" ? idiExamen(I) : idiTab === "escribir" ? idiEscribir()
@@ -15028,6 +15120,152 @@ function vistaProgreso() {
           return `<li style="${colorMod(m)}"><i></i><span>${esc(x.titulo)}</span><b>${nota(num(x.nota))}</b><small>${x.fecha ? esc(fechaCorta(x.fecha)) : ""}</small></li>`; }).join("")}</ul></section>` : ""}
     </div>`;
 }
+
+
+/* ══════════════════ idiomas sencillo ══════════════════
+   Lo mismo que antes (vocabulario con repaso, traductor, voz, dictado,
+   writing, speaking, inmersión y tu examen), pero sin agobiar:
+   · arriba, lo de hoy, como el resumen de un mazo de Anki: cuántas palabras
+     te tocan (nuevas y para repasar) y un botón; al lado, cuántas ya sabes
+     (como el contador de LingQ) y su fuerza: débiles, medias y fuertes (como
+     el repaso de Busuu);
+   · tres pestañas en vez de seis: Palabras, Practicar y Examen. Writing,
+     Speaking e Inmersión están dentro de Practicar;
+   · en Palabras, añadir en una línea, tu lista con la fuerza de cada una y
+     lo demás (traductor, sacar de un texto, la chuleta) plegado a un lado.
+   Los botones y campos llevan los mismos id de siempre, así que todo lo que
+   ya hacían (repasar, dictado, traducir, oír, añadir, quitar) sigue igual. */
+let ixFiltro = "todas";
+const IX_PRACTICA = ["practicar", "escribir", "hablar", "inmersion"];
+const ixFuerza = v => { const c = num(v.caja, 1); return c <= 2 ? "debil" : c === 3 ? "media" : "fuerte"; };
+const IX_FUERZA = { debil: "Débil", media: "Media", fuerte: "Fuerte" };
+
+/* lo de hoy, y cuántas sabes */
+function ixHoyHTML(lang, lista, I) {
+  const hoy = hoyISO(), id = IDIOMA[lang], tocan = lista.filter(v => !v.proximo || v.proximo <= hoy);
+  const nuevas = tocan.filter(v => !v.vistoEn && num(v.caja, 1) <= 1).length, repasar = tocan.length - nuevas, hechas = lista.filter(v => v.vistoEn === hoy).length;
+  const f = { debil: 0, media: 0, fuerte: 0 }; lista.forEach(v => { f[ixFuerza(v)]++; });
+  const ex = I.examen, dias = ex && esFecha(ex.fecha) ? diasEntre(ex.fecha, hoy) : null;
+  return `<section class="ix-hoy">
+    <div class="ix-hoy-izq">
+      <span class="ix-eti">Hoy en ${esc(id.nombre.toLowerCase())}</span>
+      ${!lista.length ? `<b class="ix-grande">Empieza por tus palabras</b><p class="ix-sub">Apunta las que te salgan en clase, en una serie o en una canción: vuelven justo cuando las ibas a olvidar.</p>
+        <button type="button" class="ix-btn" data-ix-ir="ixPal">${icono("mas")}Añadir la primera</button>`
+      : tocan.length ? `<b class="ix-grande">${tocan.length} ${tocan.length === 1 ? "palabra" : "palabras"} para hoy</b>
+        <p class="ix-sub">${[nuevas ? nuevas + (nuevas === 1 ? " nueva" : " nuevas") : "", repasar ? repasar + " para repasar" : ""].filter(Boolean).join(" · ")}${hechas ? " · ya llevas " + hechas : ""}</p>
+        <button type="button" class="ix-btn" id="btnRepasar">${icono("play")}Repasar ahora</button>`
+      : `<b class="ix-grande">Al día ${icono("hecho")}</b><p class="ix-sub">${hechas ? "Hoy has repasado " + hechas + (hechas === 1 ? " palabra" : " palabras") + ". " : ""}Mañana vuelven las que toquen.</p>
+        <button type="button" class="ix-btn suave" data-ix-ir="ixPal">${icono("mas")}Añadir palabras</button>`}
+    </div>
+    <div class="ix-hoy-der">
+      <div class="ix-sabes"><b>${f.fuerte}</b><span>${f.fuerte === 1 ? "palabra que ya sabes" : "palabras que ya sabes"}<small>de ${lista.length} guardadas</small></span></div>
+      ${lista.length ? `<div class="ix-fuerza" role="img" aria-label="${f.debil} débiles, ${f.media} medias y ${f.fuerte} fuertes">${["debil", "media", "fuerte"].map(k => f[k] ? `<i class="${k}" style="flex:${f[k]}"></i>` : "").join("")}</div>
+        <div class="ix-ley">${["debil", "media", "fuerte"].map(k => `<span class="${k}"><i></i>${f[k]} ${IX_FUERZA[k].toLowerCase()}${f[k] === 1 ? "" : "s"}</span>`).join("")}</div>` : ""}
+      ${ex ? `<button type="button" class="ix-examen" data-idi-tab="examen">${icono("bandera")}<span>${esc(ex.nombre || "Tu examen")}${dias !== null ? " · " + esc(dias >= 0 ? cuandoTxt(dias) : "ya pasó") : ""}</span></button>` : ""}
+    </div>
+  </section>`;
+}
+
+/* Palabras: añadir en una línea, tu lista con su fuerza y, a un lado, lo demás plegado */
+function ixPalabras(lang, lista) {
+  const id = IDIOMA[lang], de = idiDir === "a" ? "es" : lang, a = idiDir === "a" ? lang : "es";
+  const nDe = de === "es" ? "Español" : id.nombre, nA = a === "es" ? "Español" : id.nombre;
+  const f = k => lista.filter(v => ixFuerza(v) === k).length;
+  const vistas = (ixFiltro === "todas" ? lista : lista.filter(v => ixFuerza(v) === ixFiltro)).slice().reverse();
+  return `<div class="ix-pal">
+  <div class="ix-lado">
+    <section class="hy-tarjeta ix-anadir" aria-labelledby="ixAnTit">
+      <div class="hy-cab"><h2 id="ixAnTit">Añadir una palabra</h2></div>
+      <div class="ix-linea">
+        <input type="text" id="idiPal" lang="${lang}" placeholder="${esc(id.nombre)}" aria-label="${esc(id.nombre)}" autocomplete="off" autocapitalize="off" spellcheck="false">
+        <input type="text" id="idiTrad" placeholder="Español" aria-label="Español" autocomplete="off">
+        <button type="button" class="btn primario" id="idiAdd">${icono("mas")}<span>Añadir</span></button>
+      </div>
+      <details class="ix-mas"><summary>Con una frase de ejemplo</summary>
+        <input type="text" id="idiEj" lang="${lang}" placeholder="Una frase donde salga (opcional)" aria-label="Frase de ejemplo" autocomplete="off"></details>
+      <details class="ix-mas idi-texto"><summary>Sacar palabras de un texto</summary>
+        <p class="hy-sub">Pega un texto (de clase, de una canción, de una noticia) y elige qué palabras quieres aprender. Cada una se guarda con la frase donde sale.</p>
+        <textarea id="idiPegado" rows="4" lang="${lang}" placeholder="Pega aquí el texto…"></textarea>
+        <div class="barra-btns"><button type="button" class="btn" id="idiSacar">Sacar palabras</button></div>
+        <div id="idiSacadas"></div>
+      </details>
+    </section>
+    <details class="hy-tarjeta ix-plegable idi-trad">
+      <summary><span>${icono("cambiar")}Traductor</span><small>gratis y sin IA</small></summary>
+      <div class="ix-trad-cuerpo">
+        <button type="button" class="btn mini fantasma" id="idiDir">${icono("cambiar")}${esc(nDe)} → ${esc(nA)}</button>
+        <textarea id="idiTexto" rows="3" lang="${de}" placeholder="${de === "es" ? "Escribe en español lo que quieres decir…" : "Escribe o pega lo que quieres entender…"}"></textarea>
+        <div class="barra-btns">
+          ${traductorAqui() ? `<button type="button" class="btn primario" id="idiTraducir">Traducir aquí</button>` : ""}
+          ${de !== "es" ? botonOir("", lang, " idi-oir-texto").replace('data-oir=""', 'data-oir-de="#idiTexto"') : ""}
+        </div>
+        <div class="idi-salida" id="idiSalida" aria-live="polite" hidden></div>
+        <div class="idi-enlaces" id="idiEnlaces"><span class="meta">${traductorAqui() ? "O ábrelo en:" : "Ábrelo en uno de estos (en este navegador no hay traductor integrado):"}</span><span id="idiLinks" class="idi-links"><em class="meta">escribe algo arriba</em></span></div>
+        <p class="hy-sub">${traductorAqui() ? "«Traducir aquí» usa el traductor de tu navegador: no sale nada de tu ordenador. " : ""}Los enlaces abren otra página, y lo que escribas lo ve ese servicio.</p>
+      </div>
+    </details>
+    ${lang === "en" && esInformatica() ? `<details class="hy-tarjeta ix-plegable">
+      <summary><span>${icono("archivo")}Chuleta de informática</span><small>${GLOSARIO.length} palabras de clase</small></summary>
+      <ul class="ix-glosario">${GLOSARIO.map(([en, es]) => `<li><b lang="en">${esc(en)}</b><span>${esc(mayus(es))}</span>
+        <button type="button" class="btn mini fantasma" data-glos-en="${esc(en)}" data-glos-es="${esc(es)}">Añadir</button></li>`).join("")}</ul>
+    </details>` : ""}
+  </div>
+  <section class="hy-tarjeta ix-lista" aria-labelledby="ixListaTit">
+    <div class="hy-cab"><h2 id="ixListaTit">Tus palabras</h2><span class="hy-etq">${lista.length}</span></div>
+    ${lista.length ? `<div class="sx-chips ix-filtros">${[["todas", "Todas", lista.length], ["debil", "Débiles", f("debil")], ["media", "Medias", f("media")], ["fuerte", "Fuertes", f("fuerte")]].map(([k, t, n]) =>
+      `<button type="button" class="sx-chip${ixFiltro === k ? " sel" : ""}" data-ix-filtro="${k}" aria-pressed="${ixFiltro === k}">${k !== "todas" ? `<i class="ix-punto ${k}"></i>` : ""}${t} <em>${n}</em></button>`).join("")}</div>
+      ${vistas.length ? `<ul class="ix-palabras">${vistas.map(v => { const k = ixFuerza(v); return `<li>
+        <span class="ix-p"><b lang="${lang}">${esc(v.en)}</b>${botonOir(v.en, lang)}<span class="ix-es">${esc(v.es || "—")}</span>${v.ejemplo ? `<i class="ix-ej" lang="${lang}">${esc(v.ejemplo)}</i>` : ""}</span>
+        <span class="ix-barras ${k}" title="${IX_FUERZA[k]} · caja ${num(v.caja, 1)} de 5" aria-label="${IX_FUERZA[k]}"><i></i><i></i><i></i></span>
+        <button type="button" class="hj-borrar" data-borrar-vocab="${v.id}" aria-label="Quitar «${esc(v.en)}»" title="Quitar">${ICO_X}</button>
+      </li>`; }).join("")}</ul>` : `<p class="hy-sub">Ninguna ${IX_FUERZA[ixFiltro].toLowerCase()} ahora mismo.</p>`}`
+      : `<p class="hy-sub">Aún no has guardado ninguna palabra en ${esc(id.nombre.toLowerCase())}. Escríbela a la izquierda con lo que significa.</p>`}
+  </section>
+  </div>`;
+}
+
+/* Practicar: seis cosas, cada una en su tarjeta */
+function ixPracticar(lang, lista) {
+  const voz = puedeHablar(lang), id = IDIOMA[lang], hoy = hoyISO(), toca = lista.filter(v => !v.proximo || v.proximo <= hoy).length;
+  const tarjeta = (cls, ico, tit, txt, boton) => `<section class="hy-tarjeta ix-act ${cls}"><span class="ix-act-ico">${icono(ico)}</span><div class="ix-act-t"><h2>${tit}</h2><p>${txt}</p></div>${boton}</section>`;
+  return `<div class="ix-acts">
+    ${tarjeta("tar", "repaso", "Tarjetas", toca ? "Hoy te tocan " + toca + ". Vuelven justo cuando las ibas a olvidar." : "Hoy no te toca ninguna.", `<button type="button" class="btn${toca ? " primario" : ""}" id="idiRepasar"${lista.length ? "" : " disabled"}>Repasar</button>`)}
+    ${tarjeta("dic", "altavoz", "Dictado", voz ? "La app dice una de tus palabras y tú la escribes: oído y ortografía a la vez." : "Este dispositivo no tiene voz para el " + esc(id.nombre.toLowerCase()) + ".", `<button type="button" class="btn" id="idiDictado"${voz && lista.length ? "" : " disabled"}>Empezar</button>`)}
+    ${tarjeta("pro", "micro", "Pronunciación", voz ? "Escribe una frase y escúchala, normal o despacio. Repítela detrás." : "Sin voz para este idioma en este dispositivo.",
+      `<div class="ix-frase"><input type="text" id="idiFrase" lang="${lang}" placeholder="${lang === "en" ? "I've been studying for two hours." : "Escribe una frase…"}"${voz ? "" : " disabled"} aria-label="Frase para escuchar">
+        <button type="button" class="btn" data-oir-de="#idiFrase" data-oir-lang="${lang}"${voz ? "" : " disabled"}>${icono("altavoz")}Escuchar</button>
+        <button type="button" class="btn fantasma" data-oir-de="#idiFrase" data-oir-lang="${lang}" data-oir-lento="1"${voz ? "" : " disabled"}>Despacio</button></div>`)}
+    ${tarjeta("wri", "lapiz", "Writing", "Una redacción con su límite de palabras y su reloj, como en el examen.", `<button type="button" class="btn" data-idi-tab="escribir">Abrir</button>`)}
+    ${tarjeta("spe", "chat", "Speaking", "Grábate hablando y escúchate. No sale de tu dispositivo.", `<button type="button" class="btn" data-idi-tab="hablar">Abrir</button>`)}
+    ${tarjeta("inm", "play", "Inmersión", "Series, podcasts o lecturas en " + esc(id.nombre.toLowerCase()) + ": apúntalas y cuentan como estudio.", `<button type="button" class="btn" data-idi-tab="inmersion">Abrir</button>`)}
+  </div>`;
+}
+
+function vistaIdiomas() {
+  const I = normalizarIdioma(), lang = idiomaActual(), id = IDIOMA[lang], lista = vocabDe(lang);
+  if (!["vocab", "examen"].concat(IX_PRACTICA).includes(idiTab)) idiTab = "vocab";
+  const enPractica = IX_PRACTICA.includes(idiTab), sub = { escribir: "Writing", hablar: "Speaking", inmersion: "Inmersión" }[idiTab];
+  const cuerpo = idiTab === "examen" ? idiExamen(I) : idiTab === "practicar" ? ixPracticar(lang, lista)
+    : idiTab === "escribir" ? idiEscribir() : idiTab === "hablar" ? idiHablar() : idiTab === "inmersion" ? idiInmersion(I, lang) : ixPalabras(lang, lista);
+  const tabs = [["vocab", "Palabras"], ["practicar", "Practicar"], ["examen", "Examen"]];
+  return `<header class="sx-cab">
+      <div><h1 class="sx-tit">${esc(id.nombre)}</h1><p class="sx-sub">Tus palabras, el traductor, la pronunciación y tu examen. Gratis y sin IA.</p></div>
+      <label class="ix-idioma">${icono("ingles")}<span class="pz-oculto">Idioma que estudias</span><select id="idiSel" aria-label="Idioma que estudias">${IDIOMAS.map(([c, n]) => `<option value="${c}"${c === lang ? " selected" : ""}>${n}</option>`).join("")}</select></label>
+    </header>
+    ${ixHoyHTML(lang, lista, I)}
+    <div class="sx-seg ix-tabs" role="tablist" aria-label="Partes de Idiomas">${tabs.map(([t, n]) => { const sel = t === "practicar" ? enPractica : idiTab === t;
+      return `<button type="button" role="tab" class="sx-seg-b" aria-selected="${sel}" data-idi-tab="${t}">${n}</button>`; }).join("")}</div>
+    ${sub ? `<nav class="mc-migas" aria-label="Estás en"><button type="button" class="mc-volver" data-idi-tab="practicar">${ICO_ATRAS}Practicar</button><span aria-hidden="true">/</span><b>${sub}</b></nav>` : ""}
+    <div class="ix-cuerpo ix-${idiTab}">${cuerpo}</div>`;
+}
+
+alEvento("click", e => {
+  if (seccion !== "ingles") return;
+  const t = e.target;
+  const fl = t.closest("[data-ix-filtro]"); if (fl) { ixFiltro = fl.dataset.ixFiltro; pinta(); return; }
+  const ir = t.closest("[data-ix-ir]");
+  if (ir) { idiTab = "vocab"; pinta(); setTimeout(() => { const i = $("#idiPal"); if (i) { i.focus(); i.scrollIntoView({ block: "center", behavior: "smooth" }); } }, 30); return; }
+});
 
 
 /* ══════════════════ pintado ══════════════════ */
@@ -18055,6 +18293,27 @@ ICON_RIEL.panel = '<circle cx="96" cy="92" r="40" opacity="0.2"/><circle cx="96"
 ICON_RIEL.escritorio = '<circle cx="128" cy="128" r="70" fill="none" stroke="var(--acento-txt)" stroke-width="41"/>';
 ICON_RIEL.casillero = '<path d="M200,216H56V112A48,48,0,0,1,104,64h48a48,48,0,0,1,48,48Z" opacity="0.2"/><path d="M96,64V52a20,20,0,0,1,20-20h24a20,20,0,0,1,20,20V64" fill="none" stroke="currentColor" stroke-width="16" stroke-linecap="round" stroke-linejoin="round"/><path d="M200,216H56V112A48,48,0,0,1,104,64h48a48,48,0,0,1,48,48Z" fill="none" stroke="currentColor" stroke-width="16" stroke-linecap="round" stroke-linejoin="round"/><path d="M96,216V168a8,8,0,0,1,8-8h48a8,8,0,0,1,8,8v48" fill="none" stroke="currentColor" stroke-width="16" stroke-linecap="round" stroke-linejoin="round"/><path d="M104,112h48" fill="none" stroke="currentColor" stroke-width="16" stroke-linecap="round"/>';
 ICON_RIEL.oposicion = '<circle cx="128" cy="128" r="96" opacity="0.2"/><circle cx="128" cy="128" r="96" fill="none" stroke="currentColor" stroke-width="16"/><circle cx="128" cy="128" r="56" fill="none" stroke="currentColor" stroke-width="16"/><circle cx="128" cy="128" r="18"/>';
+/* ══ los iconos del menú, de Hoy a Mochila: «duotono suave» ══
+   Dibujados para GritNook con el mismo trazo (línea redondeada y un relleno
+   suave dentro), en una rejilla de 24 que se escala a la de 256 de los demás.
+   Valen para el riel del ordenador, la barra del móvil, la hoja de «Más» y
+   donde la app pinte el icono de la sección. */
+const MENU_ICO = (() => {
+  const T = 'fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"', F = 'fill="currentColor" fill-opacity=".2"';
+  const g = d => `<g transform="scale(10.6667)" ${T}>${d}</g>`;
+  return {
+    escritorio: g(`<circle ${F} cx="12" cy="12" r="4.2"/><path d="M12 2.6v2.1M12 19.3v2.1M2.6 12h2.1M19.3 12h2.1M5.4 5.4l1.5 1.5M17.1 17.1l1.5 1.5M5.4 18.6l1.5-1.5M17.1 6.9l1.5-1.5"/>`),
+    modulos: g(`<path ${F} d="M2.6 9.2 12 4.6l9.4 4.6L12 13.8Z"/><path d="M6.4 11.2v4.4c0 1.6 2.5 3.2 5.6 3.2s5.6-1.6 5.6-3.2v-4.4M21.4 9.2v5.2"/>`),
+    entregas: g(`<rect ${F} x="3.6" y="5.2" width="16.8" height="15.2" rx="3"/><path d="M3.6 10h16.8M8.2 3.2v3.6M15.8 3.2v3.6"/><circle fill="currentColor" stroke="none" cx="12" cy="15.2" r="1.4"/>`),
+    apuntes: g(`<rect ${F} x="5.6" y="3.2" width="13.6" height="17.6" rx="2.6"/><path d="M9.6 8.4h5.6M9.6 12h5.6M9.6 15.6h3.4M3.6 7.4h3.4M3.6 12h3.4M3.6 16.6h3.4"/>`),
+    repaso: g(`<path d="M4.2 15.4V6.2a2.2 2.2 0 0 1 2.2-2.2h9.2"/><rect ${F} x="7.8" y="7.6" width="12.6" height="12.6" rx="2.6"/><path d="M11.2 14l2.1 2.1 3.6-4"/>`),
+    progreso: g(`<path ${F} stroke="none" d="M3.4 17.6l5.2-5.2 3.6 3.6 7.6-7.6V21H3.4Z"/><path d="M3.4 17.6l5.2-5.2 3.6 3.6 7.6-7.6M14.6 8.4h5.2v5.2M3.4 21h17.2"/>`),
+    casillero: g(`<path d="M9 6.2V5a3 3 0 0 1 6 0v1.2"/><path ${F} d="M18.6 20.6H5.4V11.4a5.2 5.2 0 0 1 5.2-5.2h2.8a5.2 5.2 0 0 1 5.2 5.2Z"/><path d="M8.6 20.6v-4.2a1.2 1.2 0 0 1 1.2-1.2h4.4a1.2 1.2 0 0 1 1.2 1.2v4.2M10 11h4"/>`)
+  };
+})();
+Object.assign(ICON_RIEL, MENU_ICO);
+Object.assign(ICON_PH, MENU_ICO);
+
 function iconoRiel(id) {
   const d = ICON_RIEL[id];
   return d ? '<svg class="ri" viewBox="0 0 256 256" fill="currentColor" aria-hidden="true">' + d + "</svg>" : icono(id);

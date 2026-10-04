@@ -67,12 +67,12 @@ grupo("Idiomas: cualquier idioma, no solo inglés", () => {
   }));
   prueba("al cambiar de idioma cambian el título y la lista", () => conIdiomas(async () => {
     nuevaPalabra("deploy", "desplegar", "", "en"); nuevaPalabra("bonjour", "hola", "", "fr"); pinta();
-    esperar($(".titulo").textContent).igualA("Inglés");
-    esperar($(".palabras").textContent).contiene("deploy");
+    esperar($(".sx-tit").textContent).igualA("Inglés");
+    esperar($(".ix-palabras").textContent).contiene("deploy");
     escribe("#idiSel", "fr", "change");
-    esperar($(".titulo").textContent).igualA("Francés");
-    esperar($(".palabras").textContent).contiene("bonjour");
-    esperar($(".palabras").textContent).noContiene("deploy");
+    esperar($(".sx-tit").textContent).igualA("Francés");
+    esperar($(".ix-palabras").textContent).contiene("bonjour");
+    esperar($(".ix-palabras").textContent).noContiene("deploy");
   }));
   prueba("añadir una palabra con su frase de ejemplo; repetida, avisa y no se duplica", () => conIdiomas(async () => {
     $("#idiPal").value = "rollback"; $("#idiTrad").value = "volver atrás"; $("#idiEj").value = "We did a rollback.";
@@ -80,7 +80,7 @@ grupo("Idiomas: cualquier idioma, no solo inglés", () => {
     esperar(S.vocab.length).igualA(1);
     esperar(S.vocab[0].ejemplo).igualA("We did a rollback.");
     esperar(S.vocab[0].lang).igualA("en");
-    esperar($(".palabras").textContent).contiene("We did a rollback.");
+    esperar($(".ix-palabras").textContent).contiene("We did a rollback.");
     $("#idiPal").value = "Rollback"; $("#idiAdd").click();
     esperar(S.vocab.length).igualA(1);
   }));
@@ -168,7 +168,7 @@ grupo("Idiomas: oír, dictado y palabras de un texto", () => {
     esperar(dichos[0]).igualA({ texto: "Je suis étudiant.", lang: "fr-FR", rate: 1 });
     esperar(dichos[1].rate).igualA(0.7);
     idiTab = "vocab"; pinta();
-    $(".palabra .idi-oir").click();
+    $(".ix-palabras .idi-oir").click();
     esperar(dichos[2].texto).igualA("bonjour");
   })));
   prueba("sin texto no dice nada", () => conVoz(dichos => {
@@ -363,4 +363,71 @@ grupo("Idiomas: writing, speaking e inmersión", () => {
     esperar(p).contiene("20 min");
     esperar(p).contiene("30 días");
   }));
+});
+
+/* Idiomas sencillo: lo de hoy arriba, cuántas sabes y su fuerza, y tres pestañas */
+grupo("Idiomas: sencillo", () => {
+  prueba("sin palabras, lo de hoy invita a añadir la primera", () => conIdiomas(async () => {
+    esperar($(".ix-hoy").textContent).contiene("Empieza por tus palabras");
+    esperar(!!$("#btnRepasar")).falso();
+  }));
+  prueba("lo de hoy cuenta las nuevas y las de repasar, con su botón", () => conIdiomas(async () => {
+    nuevaPalabra("deploy", "desplegar", "", "en"); nuevaPalabra("merge", "fusionar", "", "en");
+    const v = S.vocab.find(x => x.en === "merge"); v.caja = 3; v.vistoEn = sumaDias(hoyISO(), -3); v.proximo = hoyISO();
+    pinta();
+    esperar($(".ix-hoy .ix-grande").textContent).contiene("2 palabras para hoy");
+    esperar($(".ix-hoy").textContent).contiene("1 nueva");
+    esperar($(".ix-hoy").textContent).contiene("1 para repasar");
+    esperar(!!$("#btnRepasar")).cierto();
+  }));
+  prueba("al día, lo dice; y cuenta cuántas sabes (las fuertes) y su fuerza", () => conIdiomas(async () => {
+    nuevaPalabra("deploy", "desplegar", "", "en"); nuevaPalabra("merge", "fusionar", "", "en"); nuevaPalabra("query", "consulta", "", "en");
+    S.vocab.forEach((v, i) => { v.caja = [1, 3, 5][i]; v.proximo = sumaDias(hoyISO(), 4); });
+    pinta();
+    esperar($(".ix-hoy .ix-grande").textContent).contiene("Al día");
+    esperar($(".ix-sabes b").textContent).igualA("1");
+    esperar($(".ix-ley").textContent).contiene("1 débil");
+    esperar($(".ix-ley").textContent).contiene("1 media");
+    esperar($(".ix-ley").textContent).contiene("1 fuerte");
+  }));
+  prueba("filtrar tus palabras por su fuerza", () => conIdiomas(async () => {
+    nuevaPalabra("deploy", "desplegar", "", "en"); nuevaPalabra("query", "consulta", "", "en");
+    S.vocab.find(x => x.en === "query").caja = 5; pinta();
+    $('[data-ix-filtro="fuerte"]').click();
+    esperar([...document.querySelectorAll(".ix-palabras b")].map(b => b.textContent)).igualA(["query"]);
+    $('[data-ix-filtro="debil"]').click();
+    esperar([...document.querySelectorAll(".ix-palabras b")].map(b => b.textContent)).igualA(["deploy"]);
+    $('[data-ix-filtro="todas"]').click();
+  }));
+  prueba("tres pestañas: Writing, Speaking e Inmersión están dentro de Practicar, con su vuelta", () => conIdiomas(async () => {
+    esperar([...document.querySelectorAll(".ix-tabs [data-idi-tab]")].map(b => b.textContent)).igualA(["Palabras", "Practicar", "Examen"]);
+    $('.ix-tabs [data-idi-tab="practicar"]').click();
+    esperar(document.querySelectorAll(".ix-act").length).igualA(6);
+    $('.ix-act [data-idi-tab="hablar"]').click();
+    esperar(idiTab).igualA("hablar");
+    esperar($('.ix-tabs [data-idi-tab="practicar"]').getAttribute("aria-selected")).igualA("true");
+    esperar($(".mc-migas b").textContent).igualA("Speaking");
+    $('.mc-migas [data-idi-tab="practicar"]').click();
+    esperar(idiTab).igualA("practicar");
+  }));
+  prueba("una pestaña que ya no existe vuelve a Palabras", () => conIdiomas(async () => {
+    esperar(!!$("#idiPal")).cierto();
+  }, { tab: "vocabulario-viejo" }));
+});
+
+grupo("Iconos del menú: duotono suave", () => {
+  prueba("de Hoy a Mochila, los siete con el mismo trazo, en el menú y dentro de la app", () => {
+    ["escritorio", "modulos", "entregas", "apuntes", "repaso", "progreso", "casillero"].forEach(id => {
+      esperar(ICON_RIEL[id]).contiene('stroke-width="1.75"');
+      esperar(ICON_RIEL[id]).contiene('fill-opacity=".2"');
+      esperar(ICON_PH[id]).igualA(ICON_RIEL[id]);
+    });
+  });
+  prueba("el riel y la barra del móvil los pintan", () => {
+    const antes = seccion;
+    try {
+      seccion = "progreso"; pinta();
+      esperar($('#riel [data-sec="progreso"]').innerHTML).contiene("M3.4 17.6l5.2-5.2");
+    } finally { seccion = antes; pinta(); }
+  });
 });
