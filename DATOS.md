@@ -5,7 +5,7 @@ de base para la política de privacidad y para el registro de tratamientos que
 exige el Reglamento General de Protección de Datos. Se actualiza cada vez que
 se añade algo que guarde información.
 
-Última revisión: 1 de octubre de 2026.
+Última revisión: 4 de octubre de 2026.
 
 ## En una frase
 
@@ -30,9 +30,9 @@ hay cookies.
 | Agenda | Entregas y exámenes (título, asignatura, fecha, hora, estado, pasos y notas) y el horario de clases | El alumno o el tutor, si se le autoriza |
 | Apuntes | Título, texto, formato, **dibujos**, etiquetas, asignatura, tipo de papel y de letra, fechas | El alumno |
 | Casillero | Archivos subidos (fotos, PDF, textos y código), enlaces guardados, nombre, tamaño, tipo, fecha y una miniatura | El alumno |
-| Repaso | Tarjetas de estudio (pregunta y respuesta), su caja y cuándo tocan | El alumno o el tutor |
+| Repaso | Tarjetas de estudio (pregunta y respuesta), su caja, cuándo tocan y el último día que la repasaste (para el anillo de repaso de «Hoy») | El alumno o el tutor |
 | Progreso | Minutos estudiados por asignatura y día, racha de días y cómo han ido cambiando las notas | La app, al usar el cronómetro |
-| Idiomas | El vocabulario de cada idioma: palabra, traducción, frase de ejemplo (opcional), de qué idioma es y cuándo toca repasarla. El idioma que estudias, el examen oficial que preparas (sus partes, sus mínimos y la fecha), los simulacros (fecha y nota de cada parte), los writings (tipo de texto, nivel, palabras, minutos y la nota que te pones; el texto solo se guarda como apunte) y el diario de inmersión (fecha, tipo, minutos y título si lo pones). Las grabaciones de speaking **no se guardan**: están en la memoria del navegador hasta que sales de la app y no salen del dispositivo | El alumno |
+| Idiomas | El vocabulario de cada idioma: palabra, traducción, frase de ejemplo (opcional), de qué idioma es, cuándo toca repasarla y el último día que la repasaste. El idioma que estudias, el examen oficial que preparas (sus partes, sus mínimos y la fecha), los simulacros (fecha y nota de cada parte), los writings (tipo de texto, nivel, palabras, minutos y la nota que te pones; el texto solo se guarda como apunte) y el diario de inmersión (fecha, tipo, minutos y título si lo pones). Las grabaciones de speaking **no se guardan**: están en la memoria del navegador hasta que sales de la app y no salen del dispositivo | El alumno |
 | Objetivos del día | Los objetivos y si están cumplidos | El alumno y la app |
 | Tutor | **La conversación entera** con el profe, los archivos y capturas que se le pasen, los temas trabajados y los repasos que pone | El alumno |
 | Ajustes | Tema claro u oscuro, preferencias de la libreta, minutos del cronómetro, cómo debe tratarle el tutor y, si lo has cambiado, cómo tienes colocado el Inicio (dónde va cada panel, su tamaño, cuáles se ven y en qué orden en el móvil) | El alumno |

@@ -300,6 +300,7 @@ grupo("Iconos: Phosphor, sin cuadraditos de color", () => {
     const antes = JSON.parse(JSON.stringify(S)), sec = seccion;
     try {
       seccion = "escritorio"; pinta(); await dormir(20);
+      $("#contenido").innerHTML = vistaEscritorioAntigua();          /* las cifras son del Inicio de antes; «Hoy» lleva anillos */
       const ico = $(".hd-dato-ico");
       esperar(!!ico).cierto();
       const fondo = getComputedStyle(ico).backgroundColor;

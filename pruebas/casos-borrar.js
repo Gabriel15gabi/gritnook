@@ -29,7 +29,7 @@ grupo("Borrar la cuenta: dónde está y cómo se confirma", () => {
         esperar($("#dlgTit").textContent).igualA("Borrar tu cuenta");
         esperar($("#dlgCuerpo").textContent).contiene("ana@ejemplo.es");
         esperar($("#dlgCuerpo").textContent).contiene("No se puede deshacer");
-        esperar(!!$("#bcCopia")).cierto();
+        esperar(!!$("#bcBajar")).cierto();
         const b = $("#dlgPie .peligro"), c = $("#bcCorreo");
         esperar(b.disabled).cierto();
         c.value = "bea@ejemplo.es"; c.dispatchEvent(new Event("input", { bubbles: true }));
@@ -40,6 +40,22 @@ grupo("Borrar la cuenta: dónde está y cómo se confirma", () => {
         $("#dlg").close();
       });
     });
+  });
+});
+
+grupo("Borrar la cuenta: la copia de antes", () => {
+  prueba("«descárgate antes una copia» la baja una sola vez", async () => {
+    const real = bajarCopia; let n = 0;
+    bajarCopia = async () => { n++; };
+    try {
+      await conNube(async srv => {
+        await entrarComo(srv, "ana@ejemplo.es");
+        dlgBorrarCuenta(); await dormir(30);
+        $("#bcBajar").click(); await dormir(30);
+        esperar(n).igualA(1);
+        $("#dlg").close();
+      });
+    } finally { bajarCopia = real; }
   });
 });
 

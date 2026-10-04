@@ -3134,6 +3134,325 @@ svg.ph{fill:currentColor !important; stroke:none !important}
   .idi-sel select{min-width:0}
   .tarjeta-repaso .cara{font-size:32px}
 }
+/* ══════════════════ Hoy y secciones (prueba): sencillo, elegante y útil ══════════════════
+   El lenguaje de toda la app menos Apuntes (body.nuevo): fondo lavanda suave
+   y tarjetas blancas (de noche, casi negro y grafito), títulos con peso,
+   cifras en letra de máquina, un acento violeta y nada de adornos. */
+:root{--mono:ui-monospace, "Cascadia Mono", "SF Mono", Menlo, Consolas, "Roboto Mono", monospace}
+body.nuevo{
+  --bg:#f2f1f8; --surface:#ffffff; --surface-2:#ecebf4; --surface-3:#e2e0ec; --line:#e2e0ec; --line-2:#d3d0e0;
+  --ink:#1d1b29; --ink-2:#4a4760; --ink-3:#6f6b88; --ink-4:#8f8aa8; --on-ink:#ffffff; --sombra-panel:none;
+  background-image:none}
+@media (prefers-color-scheme: dark){:root:not([data-theme="light"]) body.nuevo{
+  --bg:#121119; --surface:#1b1a25; --surface-2:#211f2d; --surface-3:#2c2a3a; --line:#2c2a3a; --line-2:#3a3850;
+  --ink:#efedf7; --ink-2:#c0bcd3; --ink-3:#9c97b6; --ink-4:#8f8aa8; --on-ink:#121119;
+  --acento:#a99cf0; --acento-txt:#b9aef7; --acento-suave:#2a2643; --acento-borde:#433b70; --on-acento:#121119}}
+:root[data-theme="dark"] body.nuevo{
+  --bg:#121119; --surface:#1b1a25; --surface-2:#211f2d; --surface-3:#2c2a3a; --line:#2c2a3a; --line-2:#3a3850;
+  --ink:#efedf7; --ink-2:#c0bcd3; --ink-3:#9c97b6; --ink-4:#8f8aa8; --on-ink:#121119;
+  --acento:#a99cf0; --acento-txt:#b9aef7; --acento-suave:#2a2643; --acento-borde:#433b70; --on-acento:#121119}
+
+/* ── en todas (menos Apuntes): tarjetas limpias, títulos con peso, botones sencillos ── */
+body.nuevo #contenido .panel{background:var(--surface); background-image:none; box-shadow:none; border-radius:16px}
+body.nuevo #contenido .panel:not(.modulo){border-color:var(--line)}
+body.nuevo .titulo{font-weight:800; letter-spacing:-.035em}
+body.nuevo .eyebrow{color:var(--ink-3); font-weight:600; letter-spacing:.1em}
+body.nuevo .eyebrow::before{display:none}
+body.nuevo :is(.cifra, .num){font-family:var(--mono); letter-spacing:-.02em}
+body.nuevo :is(#contenido, dialog) .btn.primario{background:var(--acento); background-image:none; border-color:var(--acento); color:var(--on-acento); box-shadow:none; border-radius:999px}
+body.nuevo :is(#contenido, dialog) .btn:not(.primario, .fantasma, .peligro){background:var(--surface); border-color:var(--line-2); box-shadow:none; border-radius:999px}
+body.nuevo .aj-tab[aria-selected="true"]{background:var(--ink); color:var(--surface); border-color:var(--ink)}
+body.nuevo .hd::after{display:none}
+
+/* el móvil: la barra de abajo, blanca, con el recuadro de la sección activa */
+@media (max-width:880px){
+  body.nuevo .barra-movil{background:var(--surface); -webkit-backdrop-filter:none; backdrop-filter:none; border-top:1px solid var(--line)}
+  body.nuevo .bm-item{gap:5px; font:600 11px/1 var(--sans); color:var(--ink-3)}
+  body.nuevo .bm-item svg{position:relative; z-index:1}
+  body.nuevo .bm-item[aria-current="page"], body.nuevo .bm-item[aria-current="page"] svg{color:var(--acento-txt)}
+  body.nuevo .bm-item[aria-current="page"]::before{top:2px; bottom:auto; left:50%; right:auto; width:46px; height:30px; margin-left:-23px; border-radius:10px;
+    background:var(--acento-suave); box-shadow:inset 0 0 0 1.5px var(--acento-borde)}
+  body.nuevo .lateral{background:var(--bg); -webkit-backdrop-filter:none; backdrop-filter:none; border-bottom:1px solid var(--line)}
+}
+
+/* el ordenador: el riel y la página, sin el panel de la izquierda (repetía lo de la página);
+   arriba, la marca a la izquierda y el tema a la derecha; el cronómetro pequeño, flotando */
+@media (min-width:881px){
+  body.nuevo .app{grid-template-columns:80px minmax(0,1fr)}
+  body.nuevo .lateral{display:contents}
+  body.nuevo .lateral .nav, body.nuevo .lateral .nav-pie{display:none}
+  body.nuevo .cabeza-menu{width:auto; background:none; border:0}
+  body.nuevo .lateral-pie{position:fixed; top:22px; right:30px; z-index:7; margin:0; padding:0}
+  body.nuevo .pie-fila{padding:0; border:0; gap:12px}
+  body.nuevo .mini-reloj{position:fixed; right:28px; bottom:28px; width:290px; z-index:30; box-shadow:0 18px 40px -18px rgba(20,18,40,.45)}
+  body.nuevo .principal{padding:96px 48px 56px}
+  body.nuevo .riel{background:var(--bg); border-right:1px solid var(--line)}
+  body.nuevo #contenido{max-width:1180px}
+}
+
+/* ── piezas comunes de las secciones ── */
+.sx-cab{display:flex; justify-content:space-between; align-items:flex-end; gap:16px; flex-wrap:wrap; margin-bottom:18px}
+.sx-tit{margin:0; font:800 clamp(30px, 4vw, 40px)/1.05 var(--sans); letter-spacing:-.04em}
+.sx-sub{margin:6px 0 0; color:var(--ink-3); font-size:14.5px}
+.sx-cab .btn svg{width:16px; height:16px}
+.sx-tarjeta, .hy-tarjeta{display:grid; gap:12px; padding:20px; border-radius:20px; background:var(--surface); border:1px solid var(--line)}
+.sx-h2{margin:0; font:700 16px/1.2 var(--sans); letter-spacing:-.01em}
+.sx-seg{display:inline-flex; gap:4px; padding:4px; margin-bottom:16px; border-radius:999px; background:var(--surface-2); max-width:100%; overflow-x:auto; scrollbar-width:none}
+.sx-seg::-webkit-scrollbar{display:none}
+.sx-seg-b{flex:0 0 auto; min-height:38px; padding:0 18px; border:0; border-radius:999px; background:none; color:var(--ink-3); font:600 14px/1 var(--sans); cursor:pointer}
+.sx-seg-b[aria-selected="true"]{background:var(--surface); color:var(--ink); box-shadow:0 1px 3px rgba(17,19,26,.12)}
+.sx-rapido{margin-bottom:12px}
+.sx-chips{display:flex; gap:6px; margin-bottom:14px; overflow-x:auto; scrollbar-width:none}
+.sx-chips::-webkit-scrollbar{display:none}
+.sx-chip{flex:0 0 auto; display:inline-flex; align-items:center; gap:6px; min-height:34px; padding:0 13px; border-radius:999px; border:1px solid var(--line);
+  background:var(--surface); color:var(--ink-2); font:600 13px/1 var(--sans); cursor:pointer}
+.sx-chip i{width:8px; height:8px; border-radius:50%; background:var(--c)}
+.sx-chip.sel{background:var(--ink); color:var(--surface); border-color:var(--ink)}
+.sx-anillo{flex:0 0 auto; transform:rotate(-90deg)}
+.sx-pista{fill:none; stroke:var(--surface-2); stroke-width:7}
+.sx-aro{fill:none; stroke:var(--c); stroke-width:7; stroke-linecap:round; stroke-dasharray:var(--lleno) var(--largo); animation:hyAro 1s cubic-bezier(.2,.8,.2,1) both}
+.sx-centro{transform:rotate(90deg); transform-origin:32px 32px; text-anchor:middle; dominant-baseline:middle; font:700 13px/1 var(--mono); fill:var(--ink)}
+.sx-filas{list-style:none; margin:0; padding:0; display:grid}
+.sx-filas li{display:grid; grid-template-columns:10px minmax(0,1fr) auto auto; gap:10px; align-items:center; padding:11px 0; border-top:1px solid var(--line)}
+.sx-filas li:first-child{border-top:0; padding-top:2px}
+.sx-punto, .hy-punto{width:9px; height:9px; border-radius:50%; background:var(--c, var(--ink-3))}
+.sx-fila-t{font:600 14px/1.3 var(--sans); min-width:0; overflow:hidden; text-overflow:ellipsis; white-space:nowrap}
+.sx-fila-m{font:500 12.5px/1 var(--mono); color:var(--ink-3); white-space:nowrap}
+.sx-fila-m b{color:#DB2777}
+
+/* ── Agenda: la lista, limpia ── */
+body.nuevo .lista-ag{display:grid; gap:14px}
+body.nuevo .ls-grupo{padding:6px 18px 10px; border-radius:18px; background:var(--surface); border:1px solid var(--line)}
+body.nuevo .ls-cab{padding:12px 0 6px; font:700 13px/1 var(--sans); letter-spacing:.06em; text-transform:uppercase; color:var(--ink-3)}
+body.nuevo .ls-cab .num{margin-left:8px}
+body.nuevo .ls-fila{padding:12px 0; border-top:1px solid var(--line)}
+body.nuevo .ls-cab + .ls-fila{border-top:0}
+body.nuevo .ls-tit{font:600 15px/1.3 var(--sans)}
+
+/* ── Repaso ── */
+.sx-rp-hoy{grid-template-columns:auto minmax(0,1fr); align-items:center; gap:22px; margin-bottom:14px}
+.sx-rp-txt{display:grid; gap:8px; justify-items:start}
+.sx-rp-txt > b{font:800 24px/1.15 var(--sans); letter-spacing:-.03em}
+.sx-rp-txt .sx-sub{margin:0}
+.sx-nueva{margin-bottom:14px}
+.sx-nueva summary{display:flex; align-items:center; gap:8px; cursor:pointer; font:700 15px/1 var(--sans); list-style:none}
+.sx-nueva summary::-webkit-details-marker{display:none}
+.sx-nueva summary svg{width:18px; height:18px; color:var(--acento-txt)}
+.sx-nueva .form-tarjeta{margin-top:14px}
+
+/* ══ Hoy ══ */
+.hy{display:grid; gap:18px}
+.hy-cabeza{display:grid; gap:4px}
+.hy-fecha{font:600 12.5px/1 var(--sans); letter-spacing:.08em; text-transform:uppercase; color:var(--ink-3)}
+.hy-hola{margin:0; font:800 clamp(28px, 4vw, 40px)/1.05 var(--sans); letter-spacing:-.04em}
+.hy-rejilla{display:grid; grid-template-columns:repeat(2, minmax(0,1fr)); gap:16px; align-items:stretch}
+.hy-rejilla > *{min-width:0; margin:0}
+.hy-hoytoca{display:none}
+.hy-oculto{position:absolute; width:1px; height:1px; overflow:hidden; clip:rect(0 0 0 0); white-space:nowrap}
+.hy-cab{display:flex; justify-content:space-between; align-items:baseline; gap:10px}
+.hy-cab h2, .hy-ses-cab h2{margin:0; font:700 16px/1.2 var(--sans); letter-spacing:-.01em}
+.hy-etq{font:600 12px/1 var(--sans); color:var(--ink-3)}
+.hy-sub{margin:0; color:var(--ink-3); font-size:13.5px}
+.hy-enlace{justify-self:start; padding:0; border:0; background:none; font:600 13px/1 var(--sans); color:var(--acento-txt); cursor:pointer; text-decoration:underline; text-underline-offset:3px}
+
+/* los anillos */
+.hy-anillos{grid-template-columns:auto minmax(0,1fr); align-items:center; gap:20px}
+.hy-anillos svg{width:132px; height:132px; transform:rotate(-90deg)}
+.hy-pista{fill:none; stroke:var(--surface-2); stroke-width:11}
+.hy-aro{fill:none; stroke:var(--c); stroke-width:11; stroke-linecap:round; stroke-dasharray:var(--lleno) var(--largo); animation:hyAro 1s cubic-bezier(.2,.8,.2,1) both}
+.hy-aro-2{animation-delay:.12s} .hy-aro-3{animation-delay:.24s}
+@keyframes hyAro{from{stroke-dasharray:0 var(--largo)}}
+.hy-leyenda{list-style:none; margin:0; padding:0; display:grid; gap:12px}
+.hy-leyenda li{display:grid; grid-template-columns:10px minmax(0,1fr) auto; gap:9px; align-items:center; font:500 14.5px/1.2 var(--sans)}
+.hy-leyenda i{width:10px; height:10px; border-radius:50%; background:var(--c)}
+.hy-leyenda small{font:500 11px/1 var(--mono); color:var(--ink-3)}
+.hy-leyenda b{font:600 14px/1 var(--mono); letter-spacing:-.02em; white-space:nowrap}
+
+/* la semana */
+.hy-semana{align-content:start}
+.hy-semana h2{margin:0; font:800 21px/1.15 var(--sans); letter-spacing:-.03em}
+.hy-n{font-family:var(--mono); color:var(--acento-txt)}
+.hy-dias{display:grid; grid-template-columns:repeat(7,minmax(0,1fr)); gap:7px; text-align:center; font:600 11px/1 var(--mono); color:var(--ink-3)}
+.hy-d i{display:block; height:30px; margin-bottom:6px; border-radius:9px; background:var(--surface-2)}
+.hy-d.hecho i{background:var(--acento)}
+.hy-d.descanso i{background:repeating-linear-gradient(135deg, var(--surface-3) 0 4px, transparent 4px 8px); box-shadow:inset 0 0 0 1px var(--line)}
+.hy-d.hoy i{background:var(--acento-suave); box-shadow:inset 0 0 0 2px var(--acento)}
+.hy-d.futuro i{opacity:.55}
+.hy-d.es-hoy{color:var(--ink)}
+
+/* la sesión: la tarjeta al revés (oscura de día, clara de noche) */
+.hy-sesion{background:var(--ink); color:var(--surface); border-color:var(--ink); gap:10px; align-content:start}
+.hy-ses-cab{display:flex; justify-content:space-between; align-items:baseline; gap:10px}
+.hy-ses-cab h2{color:inherit; opacity:.85; font-weight:600; font-size:14px; min-width:0; overflow:hidden; text-overflow:ellipsis; white-space:nowrap}
+.hy-fase{font:600 11.5px/1 var(--sans); letter-spacing:.08em; text-transform:uppercase; opacity:.6; white-space:nowrap}
+.hy-reloj{font:600 clamp(52px, 6vw, 72px)/1 var(--mono); letter-spacing:-.04em}
+.hy-reloj.descanso{color:#4ade80}
+.hy-cinta{height:8px; border-radius:99px; background:color-mix(in srgb, var(--surface) 18%, transparent); overflow:hidden}
+.hy-cinta i{display:block; height:100%; border-radius:99px; background:var(--cinta)}
+.hy-cinta-txt{margin:0; font-size:12.5px; opacity:.7}
+.hy-sel{width:100%; margin-top:4px; padding:10px 12px; border-radius:12px; border:1px solid color-mix(in srgb, var(--surface) 22%, transparent);
+  background:color-mix(in srgb, var(--surface) 8%, transparent); color:inherit; font:500 14px/1.2 var(--sans)}
+.hy-sel option{color:var(--ink); background:var(--surface)}
+.hy-ses-btns{display:flex; flex-wrap:wrap; gap:8px}
+.hy-btn-luz, .hy-btn-sombra{display:inline-flex; align-items:center; justify-content:center; gap:6px; min-height:42px; padding:0 18px; border-radius:999px;
+  font:650 14px/1 var(--sans); cursor:pointer; border:1px solid transparent}
+.hy-btn-luz{flex:1 1 auto; background:var(--surface); color:var(--ink)}
+.hy-btn-sombra{background:transparent; color:inherit; border-color:color-mix(in srgb, var(--surface) 26%, transparent)}
+.hy-btn-sombra svg{width:15px; height:15px}
+.hy-btn-luz:active, .hy-btn-sombra:active{transform:scale(.97)}
+
+/* lo próximo y lo que toca */
+.hy-lista{list-style:none; margin:0; padding:0; display:grid}
+.hy-lista li{display:grid; grid-template-columns:10px minmax(0,1fr) auto; gap:10px; align-items:center; padding:11px 0; border-top:1px solid var(--line)}
+.hy-lista li:first-child{border-top:0; padding-top:2px}
+.hy-lt{font:600 14px/1.3 var(--sans); min-width:0; overflow:hidden; text-overflow:ellipsis; white-space:nowrap}
+.hy-lt small{font:500 12px/1 var(--mono); color:var(--ink-3); margin-left:4px}
+.hy-ld{font:500 12.5px/1 var(--mono); color:var(--ink-3); white-space:nowrap}
+.hy-ld.cerca{color:var(--aviso-txt, #B45309)}
+.hy-mini{min-height:30px; padding:0 12px; border-radius:999px; border:1px solid var(--line-2); background:var(--surface); color:var(--ink); font:600 12.5px/1 var(--sans); cursor:pointer}
+.hy-ok{color:var(--verde-texto, #15803D)} .hy-ok svg{width:18px; height:18px}
+
+/* el ordenador: tres columnas que llenan el ancho */
+@media (min-width:1100px){
+  .hy-rejilla{grid-template-columns:repeat(3, minmax(0,1fr))}
+  .hy-anillos{grid-column:1; grid-row:1}
+  .hy-sesion{grid-column:2; grid-row:1 / span 2}
+  .hy-proximo{grid-column:3; grid-row:1}
+  .hy-semana{grid-column:1; grid-row:2}
+  .hy-hoytoca{display:grid; grid-column:3; grid-row:2}
+}
+@media (min-width:881px) and (max-width:1099px){
+  .hy-hoytoca{display:grid; grid-column:1 / -1}
+}
+/* el móvil: una columna, en el orden del dibujo */
+@media (max-width:880px){
+  .hy{gap:14px}
+  .hy-rejilla{grid-template-columns:minmax(0,1fr); gap:12px}
+  .hy-tarjeta, .sx-tarjeta{padding:16px; border-radius:18px}
+  .hy-anillos svg{width:112px; height:112px}
+  .hy-anillos{gap:16px}
+  .sx-rp-hoy{gap:16px}
+  .sx-cab .btn span{display:none}
+  body.nuevo .ls-grupo{padding:4px 14px 8px}
+}
+@media (prefers-reduced-motion: reduce){ .hy-aro, .sx-aro{animation:none} }
+
+/* ══ Módulos: tu media y una tarjeta de color por asignatura ══ */
+.mx-anadir{width:44px; height:44px; border-radius:50%; border:0; background:var(--acento); color:var(--on-acento); display:grid; place-items:center; cursor:pointer}
+.mx-anadir svg{width:20px; height:20px}
+.mx-cuerpo{display:grid; gap:16px}
+.mx-resumen{display:flex; align-items:center; gap:24px; flex-wrap:wrap; padding:20px 22px; border-radius:20px; background:var(--surface); border:1px solid var(--line)}
+.mx-media{display:grid; gap:4px}
+.mx-media-n{font:700 46px/1 var(--mono); letter-spacing:-.04em}
+.mx-media-t{font:600 12px/1 var(--sans); color:var(--ink-3); text-transform:uppercase; letter-spacing:.08em}
+.mx-cuentas{display:grid; gap:9px; font:500 14px/1.2 var(--sans); color:var(--ink-2)}
+.mx-cuentas span{display:flex; align-items:center; gap:9px}
+.mx-cuentas i{width:8px; height:8px; padding:0; flex:0 0 8px; border-radius:50%; background:var(--ink-4)}
+.mx-cuentas i.ok{background:var(--verde, #15803D)} .mx-cuentas i.riesgo{background:var(--riesgo, #DC2626)} .mx-cuentas i.vacio{background:var(--line-2)}
+.mx-teselas{display:grid; min-width:0; grid-template-columns:repeat(auto-fill, minmax(min(100%, 200px), 1fr)); gap:12px}
+.mx-tesela{display:grid; gap:6px; align-content:start; min-height:156px; padding:16px; border-radius:20px; border:0; text-align:left; cursor:pointer; font:inherit; color:var(--ink);
+  background:linear-gradient(160deg, color-mix(in srgb, var(--c) 22%, var(--surface)), color-mix(in srgb, var(--c) 7%, var(--surface)));
+  box-shadow:inset 0 0 0 1px color-mix(in srgb, var(--c) 24%, transparent); transition:transform .16s ease}
+@media (hover:hover){.mx-tesela:hover{transform:translateY(-2px)}}
+.mx-tesela:active{transform:scale(.97)}
+.mx-tesela:focus-visible{outline:2px solid var(--c); outline-offset:3px}
+.mx-t-cod{font:700 12px/1 var(--mono); letter-spacing:.06em; color:color-mix(in srgb, var(--c) 75%, var(--ink))}
+.mx-t-nota{margin-top:8px; font:700 38px/1 var(--mono); letter-spacing:-.04em}
+.mx-t-nombre{font:600 14px/1.25 var(--sans)}
+.mx-t-estado{display:flex; align-items:center; gap:6px; margin-top:auto; padding-top:6px; font:600 12px/1.2 var(--sans); color:var(--ink-2)}
+.mx-t-estado i{width:7px; height:7px; flex:0 0 7px; border-radius:50%; background:var(--verde, #15803D)}
+.mx-tesela.riesgo .mx-t-estado i{background:var(--riesgo, #DC2626)} .mx-tesela.aviso .mx-t-estado i{background:var(--aviso, #D97706)}
+.mx-lado, .mx-centro{display:grid; gap:16px; align-content:start; min-width:0}
+.mx-nueva, .mx-solo-pc{display:none}
+@media (min-width:1100px){
+  .mx-cuerpo{grid-template-columns:300px minmax(0,1fr); align-items:start; gap:20px}
+  .mx-centro{gap:20px}
+  .mx-lado{gap:20px}
+  .mx-resumen{flex-direction:column; align-items:flex-start; gap:18px}
+  .sx-cab .mx-anadir{display:none}
+  .mx-teselas{grid-template-columns:repeat(4, minmax(0,1fr)); grid-auto-rows:1fr}
+  .mx-solo-pc{display:grid}
+  .mx-estudio .mx-barras{grid-template-columns:auto minmax(0,1fr) auto auto minmax(0,1fr) auto}
+  .mx-estudio .mx-barras li:nth-child(even) .mx-b-cod{padding-left:28px}
+  .mx-nueva{display:grid; place-content:center; justify-items:center; gap:8px; background:none; box-shadow:none; border:1.5px dashed var(--line-2); color:var(--ink-3); font:600 14px/1.2 var(--sans)}
+  .mx-nueva svg{width:22px; height:22px}
+  .mx-nueva:hover{border-color:var(--acento); color:var(--acento-txt)}
+}
+.mx-grande{display:flex; align-items:baseline; gap:10px; flex-wrap:wrap}
+.mx-grande b{font:700 30px/1 var(--mono); letter-spacing:-.04em}
+.mx-grande span{font-size:13.5px; color:var(--ink-3)}
+.mx-barras{list-style:none; margin:0; padding:0; display:grid; grid-template-columns:auto minmax(0,1fr) auto; gap:12px 12px; align-items:center}
+.mx-barras li{display:contents}
+.mx-b-cod{font:700 12px/1 var(--mono); letter-spacing:.04em; color:color-mix(in srgb, var(--c) 75%, var(--ink)); overflow:hidden; text-overflow:ellipsis}
+.mx-b-barra{height:8px; border-radius:99px; background:var(--surface-2); overflow:hidden}
+.mx-b-barra i{display:block; height:100%; border-radius:99px; background:var(--c)}
+.mx-b-num{font:600 12.5px/1 var(--mono); color:var(--ink-2); white-space:nowrap; text-align:right}
+.mx-examenes{list-style:none; margin:0; padding:0; display:grid}
+.mx-examenes li{display:grid; grid-template-columns:10px minmax(0,1fr); gap:12px; align-items:start; padding:12px 0; border-top:1px solid var(--line)}
+.mx-examenes li:first-child{border-top:0; padding-top:2px}
+.mx-examenes i{width:10px; height:10px; margin-top:2px; border-radius:50%; background:var(--c)}
+.mx-e-t{display:grid; gap:5px; min-width:0}
+.mx-e-t b{font:600 14px/1.3 var(--sans); display:-webkit-box; -webkit-line-clamp:2; -webkit-box-orient:vertical; overflow:hidden}
+.mx-e-t small{font-size:12.5px; color:var(--ink-3)}
+.mx-e-cuando{font:600 12.5px/1 var(--mono); color:var(--ink-3); white-space:nowrap}
+.mx-e-cuando.cerca{color:#DB2777}
+@media (max-width:880px){
+  .mx-teselas{grid-template-columns:repeat(2, minmax(0,1fr))}
+  .mx-tesela{min-height:136px; padding:14px}
+  .mx-t-nota{font-size:32px}
+  .mx-resumen{padding:16px 18px; gap:18px}
+  .mx-media-n{font-size:40px}
+}
+/* ¿y si saco un…? */
+.mx-sim-sel{width:auto; flex:0 0 auto; min-height:34px; padding:0 30px 0 12px; border:1px solid var(--line-2); border-radius:999px; background:var(--surface-2); color:var(--ink); font:700 12.5px/1 var(--mono); cursor:pointer}
+.mx-sim-pre{font:500 14px/1.3 var(--sans); color:var(--ink-2)}
+.mx-sim-pre b{font:700 20px/1 var(--mono); color:var(--acento-txt)}
+.mx-sim-x{width:100%; accent-color:var(--acento); cursor:pointer}
+.mx-sim-res{display:grid; gap:8px; padding-top:12px; border-top:1px solid var(--line)}
+.mx-sim-fila{display:flex; justify-content:space-between; align-items:baseline; gap:10px; font-size:13.5px; color:var(--ink-2)}
+.mx-sim-fila b{font:700 18px/1 var(--mono); color:var(--ink)}
+.mx-sim-fila b.ok{color:var(--verde-texto, #15803D)} .mx-sim-fila b.aviso{color:var(--aviso-txt, #B45309)} .mx-sim-fila b.riesgo{color:var(--riesgo-txt, #B91C1C)}
+.mx-sim-frase{margin:-2px 0 0; font:600 13px/1.3 var(--sans)}
+.mx-sim-frase.ok{color:var(--verde-texto, #15803D)} .mx-sim-frase.aviso{color:var(--aviso-txt, #B45309)} .mx-sim-frase.riesgo{color:var(--riesgo-txt, #B91C1C)}
+
+/* ══ Agenda: ¿te da tiempo?, lo próximo por días y, en el ordenador, el mes al lado ══ */
+.ax-rejilla{display:grid; gap:16px}
+.ax-lado{display:grid; gap:16px; min-width:0; align-content:start}
+.ax-cal{display:none}
+@media (min-width:1100px){
+  .ax-rejilla{grid-template-columns:400px minmax(0,1fr); gap:20px; align-items:start}
+  .ax-cal{display:block; min-width:0}
+  .sx-seg-b[data-solo-movil]{display:none}
+}
+.ax-frase{margin:0; font:800 20px/1.2 var(--sans); letter-spacing:-.02em}
+.ax-tiempo.ok .ax-frase{color:var(--verde-texto, #15803D)} .ax-tiempo.justo .ax-frase{color:var(--aviso-txt, #B45309)}
+.ax-barra{display:flex; height:10px; border-radius:99px; background:var(--surface-2); overflow:hidden}
+.ax-barra i{display:block; height:100%; background:var(--acento)}
+.ax-barra i.pasa{background:repeating-linear-gradient(135deg, var(--riesgo, #DC2626) 0 5px, color-mix(in srgb, var(--riesgo, #DC2626) 55%, transparent) 5px 10px)}
+.ax-tiempo .hy-sub b{font-weight:700; color:var(--ink); white-space:nowrap}
+.ax-dias{display:grid; gap:14px}
+.ax-dia h3{display:flex; justify-content:space-between; align-items:baseline; gap:10px; margin:0 4px 8px; font:700 12.5px/1 var(--sans); letter-spacing:.08em; text-transform:uppercase; color:var(--ink-3)}
+.ax-dia h3 em{font:600 12.5px/1 var(--sans); font-style:normal; letter-spacing:0; text-transform:none}
+.ax-dia.tarde h3{color:var(--riesgo-txt, #B91C1C)}
+.ax-filas{border-radius:18px; background:var(--surface); border:1px solid var(--line); overflow:hidden}
+.ax-fila{display:grid; grid-template-columns:24px minmax(0,1fr) auto; gap:12px; align-items:center; padding:12px 14px; border-top:1px solid var(--line); cursor:pointer}
+.ax-fila:first-child{border-top:0}
+.ax-fila:hover{background:var(--surface-2)}
+.ax-check{width:40px; height:40px; margin:-8px; padding:0; border:0; background:none; display:grid; place-items:center; cursor:pointer; color:#fff}
+.ax-check::before{content:""; grid-area:1/1; width:22px; height:22px; border-radius:50%; border:2px solid var(--c, var(--ink-3)); box-sizing:border-box}
+.ax-check svg{grid-area:1/1; position:relative; width:13px; height:13px}
+.ax-fila.hecha .ax-check::before{background:var(--c, var(--ink-3))}
+.ax-fila.hecha .ax-t b{text-decoration:line-through; color:var(--ink-3)}
+.ax-t{display:grid; gap:5px; min-width:0}
+.ax-t b{font:600 14.5px/1.3 var(--sans); display:-webkit-box; -webkit-line-clamp:2; -webkit-box-orient:vertical; overflow:hidden}
+.ax-t small{display:flex; flex-wrap:wrap; gap:8px; align-items:center; font:500 12px/1 var(--sans); color:var(--ink-3)}
+.ax-cod{font:700 12px/1 var(--mono); color:color-mix(in srgb, var(--c) 75%, var(--ink))}
+.ax-examen{padding:3px 8px; border-radius:99px; background:color-mix(in srgb, #DB2777 13%, transparent); color:#DB2777; font-weight:600}
+.ax-horas{font:600 13px/1 var(--sans); font-variant-numeric:tabular-nums; color:var(--ink-3); white-space:nowrap}
+.ax-hechas summary{list-style:none; cursor:pointer}
+.ax-hechas summary::-webkit-details-marker{display:none}
+.ax-hechas:not([open]) h3{margin-bottom:0}
+/* las secciones sencillas: sus estilos van con los de «Hoy» (lanz/hoy.css) */
 </style>
 </head>
 <body>
@@ -3535,6 +3854,7 @@ const totalDia = iso => Object.values(S.horas).reduce((s, reg) => s + (reg[iso] 
    y pulsar botones. Los días de cada caja son los de siempre. */
 const DIAS_PALABRA = [1, 2, 4, 8, 16];
 function responderPalabra(v, bien) {
+  v.vistoEn = hoyISO();
   v.caja = clamp(num(v.caja, 1) + (bien ? 1 : -1), 1, 5);
   v.proximo = sumaDias(hoyISO(), DIAS_PALABRA[v.caja - 1]);
   return v;
@@ -4885,7 +5205,7 @@ function clonarHoja() {
 
 /* ══════════════════ navegación ══════════════════ */
 const SECCIONES = [
-  { id: "escritorio", txt: "Inicio" }, { id: "oposicion", txt: "Oposición", solo: "oposicion" }, { id: "modulos", txt: "Módulos" },
+  { id: "escritorio", txt: "Hoy" }, { id: "oposicion", txt: "Oposición", solo: "oposicion" }, { id: "modulos", txt: "Módulos" },
   { id: "entregas", txt: "Agenda" }, { id: "apuntes", txt: "Apuntes" },
   { id: "repaso", txt: "Repaso" }, { id: "progreso", txt: "Progreso" },
   { id: "casillero", txt: "Casillero" }, { id: "ingles", txt: "Idiomas" },
@@ -5004,7 +5324,7 @@ alEvento("click", e => {
 alEvento("keydown", e => { if (e.key === "Escape" && $("#hojaMas") && !$("#hojaMas").hidden) { e.preventDefault(); cerrarHojaMas(); } });
 
 /* ══════════════════ vistas ══════════════════ */
-function vistaEscritorio() {
+function vistaEscritorioAntigua() {
   const ahora = new Date();
   const proximas = S.tareas.filter(t => !t.hecha && t.fecha).sort((a, b) => a.fecha.localeCompare(b.fecha)).slice(0, 5);
   const pendientesTot = S.tareas.filter(t => !t.hecha).length;
@@ -5122,7 +5442,7 @@ function fraseModulo(c) {
 const estadoModulo = c => c.media === null && !c.imposible && c.faltasPct < 0.7
   ? `<span class="estado neutro"><span class="dot"></span>Sin notas aún</span>` : estadoHTML(c);
 
-function vistaModulos() {
+function vistaModulosAntigua() {
   const abierta = modAbierto && modPorId(modAbierto);
   if (abierta) return vistaFichaModulo(abierta);
   const filas = S.modulos.map(m => ({ m, c: calcModulo(m), semana: minutosSemana(m.id), meta: num(m.metaSemanal) * 60 }));
@@ -12911,7 +13231,7 @@ function dlgBorrarCuenta() {
       <li><b>Lo demás</b>: los días que entraste, de dónde llegaste, tus avisos y los dispositivos apuntados.</li>
     </ul>
     <p class="meta bc-copia">No se puede deshacer: nadie puede recuperarla, tampoco nosotros. Si quieres quedarte con algo,
-      <button type="button" class="lg-enlace" id="bcCopia">descárgate antes una copia</button>.</p>
+      <button type="button" class="lg-enlace" id="bcBajar">descárgate antes una copia</button>.</p>
     <label class="campo bc-campo">Para confirmar, escribe tu correo
       <input type="email" id="bcCorreo" autocomplete="off" autocapitalize="off" spellcheck="false" inputmode="email" placeholder="${esc(correo)}"></label>
     <p class="bc-error" id="bcError" role="alert" hidden></p>`,
@@ -12921,7 +13241,7 @@ function dlgBorrarCuenta() {
   const vale = () => !!correo && campo.value.trim().toLowerCase() === correo.toLowerCase();
   boton.disabled = true;
   $("#dlgCuerpo").oninput = () => { if (!boton.dataset.borrando) boton.disabled = !vale(); };
-  $("#dlgCuerpo").onclick = e => { if (e.target.closest("#bcCopia")) bajarCopia(); };
+  $("#dlgCuerpo").onclick = e => { if (e.target.closest("#bcBajar")) bajarCopia(); };
   $("#dlgCuerpo").onkeydown = e => { if (e.key === "Enter" && e.target === campo && vale()) { e.preventDefault(); hacer(); } };
   setTimeout(() => campo.focus(), 30);
   async function hacer() {
@@ -13627,6 +13947,414 @@ function dlgFinWriting() {
 }
 
 
+/* ══════════════════ Hoy (prueba) ══════════════════
+   El Inicio, sencillo y útil, con cuatro cosas:
+   · tres anillos: estudio (minutos de hoy contra lo que toca hoy), repaso
+     (tarjetas y palabras repasadas hoy contra las que tocaban) y entregas
+     (las de esta semana, hechas contra todas);
+   · tu semana: una racha amable, que no se rompe los días de descanso ni
+     los que no son de estudio;
+   · la sesión: el cronómetro de siempre, con tu cinta del mes;
+   · lo próximo que vence.
+   Para el anillo de repaso, cada tarjeta y cada palabra apuntan el día en que
+   se repasan (vistoEn). */
+
+const hoyDiasEstudio = () => { const p = normalizarPerfil(); return p.diasFuertes.length ? p.diasFuertes : ["lun", "mar", "mie", "jue", "vie"]; };
+
+/* ── los tres anillos ── */
+function anilloEstudio() {
+  const hoy = hoyISO(), hecho = totalDia(hoy), plan = planDeHoy().reduce((s, b) => s + b.min, 0);
+  const diario = hoyDiasEstudio().includes(diaDe(hoy)) ? Math.round(num(normalizarPerfil().horasSemana, 10) * 60 / Math.max(1, hoyDiasEstudio().length)) : 0;
+  const meta = plan || diario;
+  return { hecho, meta, pct: meta ? clamp(hecho / meta, 0, 1) : (hecho ? 1 : 0), txt: meta ? hecho + "/" + meta : hecho ? String(hecho) : "Libre", largo: meta ? horasTxt(hecho) + " de " + horasTxt(meta) : hecho ? horasTxt(hecho) : "día libre" };
+}
+function anilloRepaso() {
+  const hoy = hoyISO(), todo = (S.tarjetas || []).concat(S.vocab || []);
+  const hechas = todo.filter(c => c.vistoEn === hoy).length, quedan = todo.filter(c => !c.proximo || c.proximo <= hoy).length;
+  const total = hechas + quedan;
+  return { hechas, total, pct: total ? hechas / total : 0, txt: total ? hechas + "/" + total : "Al día" };
+}
+function anilloEntregas() {
+  const hoy = hoyISO(), lunes = lunesDe(hoy), domingo = sumaDias(lunes, 6);
+  const sem = (S.tareas || []).filter(t => t.fecha && t.fecha >= lunes && t.fecha <= domingo);
+  const hechas = sem.filter(t => t.hecha).length;
+  return { hechas, total: sem.length, pct: sem.length ? hechas / sem.length : 0, txt: sem.length ? hechas + "/" + sem.length : "—" };
+}
+function anillosHTML() {
+  const E = anilloEstudio(), R = anilloRepaso(), N = anilloEntregas();
+  const aro = (r, pct, color, n) => { const L = 2 * Math.PI * r;
+    return `<circle cx="60" cy="60" r="${r}" class="hy-pista"/>` + (pct <= 0 ? "" : `<circle cx="60" cy="60" r="${r}" class="hy-aro hy-aro-${n}" style="--c:${color}; --largo:${L.toFixed(1)}; --lleno:${(L * pct).toFixed(1)}"/>`); };
+  return `<section class="hy-tarjeta hy-anillos" aria-labelledby="hyAnTit">
+    <h2 class="hy-oculto" id="hyAnTit">Tus anillos de hoy</h2>
+    <svg viewBox="0 0 120 120" role="img" aria-label="Estudio ${E.largo}; repaso ${R.txt}; entregas de la semana ${N.txt}">
+      ${aro(50, E.pct, "var(--acento)", 1)}${aro(36, R.pct, "#DB2777", 2)}${aro(22, N.pct, "#EA580C", 3)}</svg>
+    <ul class="hy-leyenda">
+      <li title="${esc(mayus(E.largo))}"><i style="--c:var(--acento)"></i><span>Estudio <small>min</small></span><b>${esc(E.txt)}</b></li>
+      <li><i style="--c:#DB2777"></i><span>Repaso</span><b>${esc(R.txt)}</b></li>
+      <li><i style="--c:#EA580C"></i><span>Entregas</span><b>${esc(N.txt)}</b></li>
+    </ul>
+  </section>`;
+}
+
+/* ── tu semana: la racha amable ── */
+function rachaAmable() {
+  const p = normalizarPerfil(), dias = hoyDiasEstudio(), desc = p.descansos || {}, hoy = hoyISO();
+  let n = 0;
+  for (let i = 0; i < 180; i++) {
+    const iso = sumaDias(hoy, -i);
+    if (totalDia(iso) > 0) { n++; continue; }
+    if (!dias.includes(diaDe(iso)) || desc[iso] || i === 0) continue;
+    break;
+  }
+  return n;
+}
+function semanaHTML() {
+  const p = normalizarPerfil(), dias = hoyDiasEstudio(), desc = p.descansos || {}, hoy = hoyISO(), lunes = lunesDe(hoy), n = rachaAmable();
+  const letra = { lun: "L", mar: "M", mie: "X", jue: "J", vie: "V", sab: "S", dom: "D" };
+  const txt = { hecho: "estudiado", descanso: "descanso", hoy: "hoy", futuro: "por llegar", vacio: "sin estudio" };
+  const sem = DIAS_ORDEN.map((d, i) => {
+    const iso = sumaDias(lunes, i), estudio = dias.includes(d) && !desc[iso];
+    const est = totalDia(iso) > 0 ? "hecho" : iso > hoy ? (estudio ? "futuro" : "descanso") : !estudio ? "descanso" : iso === hoy ? "hoy" : "vacio";
+    return `<span class="hy-d ${est}${iso === hoy ? " es-hoy" : ""}" title="${esc(DIAS_NOMBRE[d])}: ${txt[est]}"><i></i>${letra[d]}</span>`;
+  }).join("");
+  const puedeDescansar = !totalDia(hoy) && dias.includes(diaDe(hoy));
+  return `<section class="hy-tarjeta hy-semana" aria-labelledby="hySemTit">
+    <span class="hy-etq">Esta semana</span>
+    <h2 id="hySemTit"><span class="hy-n">${n}</span> ${n === 1 ? "día" : "días"} de constancia</h2>
+    <p class="hy-sub">Los días de descanso no rompen tu racha.</p>
+    <div class="hy-dias">${sem}</div>
+    ${puedeDescansar ? `<button type="button" class="hy-enlace" data-hy="descanso">${desc[hoy] ? "Quitar el descanso de hoy" : "Hoy descanso"}</button>` : ""}
+  </section>`;
+}
+
+/* ── la sesión: el cronómetro de siempre, con tu cinta del mes ── */
+function cintaMes() {
+  const hoy = hoyISO(), mes = hoy.slice(0, 8);
+  let min = 0;
+  for (let i = 0; i < 31; i++) { const iso = sumaDias(hoy, -i); if (!iso.startsWith(mes)) break; min += totalDia(iso); }
+  const meta = Math.max(60, Math.round(num(normalizarPerfil().horasSemana, 10) * 60 * 4.3));
+  return { min, meta, pct: clamp(min / meta * 100, 0, 100) };
+}
+function sesionHTML() {
+  const sig = planDeHoy().find(b => !b.hecho), m = modPorId(T.modId) || (sig && modPorId(sig.modId)) || null, c = cintaMes();
+  return `<section class="hy-tarjeta hy-sesion" aria-labelledby="hySesTit">
+    <div class="hy-ses-cab"><h2 id="hySesTit">Sesión${m ? " · " + esc(m.nombre) : ""}</h2><span class="hy-fase" id="faseTimer">Concentración</span></div>
+    <div class="hy-reloj" id="reloj" role="timer" aria-live="off">${String(num(S.config.pomodoro, 25)).padStart(2, "0")}:00</div>
+    <div class="hy-cinta" role="progressbar" aria-label="Tu cinta del mes" aria-valuemin="0" aria-valuemax="${c.meta}" aria-valuenow="${c.min}"><i style="width:${c.pct.toFixed(1)}%"></i></div>
+    <p class="hy-cinta-txt">Tu cinta del mes: ${esc(horasTxt(c.min))} de ${esc(horasTxt(c.meta))}</p>
+    <select id="selTimer" class="hy-sel" aria-label="${esc(mayus(voc()))} que vas a estudiar">
+      <option value="">Elige ${vocG("un", "una")} ${esc(voc())}…</option>
+      ${S.modulos.map(x => `<option value="${x.id}"${(m && m.id === x.id) ? " selected" : ""}>${esc(x.cod)} · ${esc(x.nombre)}</option>`).join("")}
+    </select>
+    ${esOpositor() && normalizarOpo().temas.length ? `<select id="selTimerTema" class="hy-sel" aria-label="Tema que vas a estudiar">
+      <option value="">Sin tema concreto</option>
+      ${normalizarOpo().temas.slice().sort((a, b) => a.n - b.n).map(t => `<option value="${t.id}"${T.temaId === t.id ? " selected" : ""}>Tema ${t.n} · ${esc(t.titulo.slice(0, 70))}</option>`).join("")}
+    </select>` : ""}
+    <div class="hy-ses-btns">
+      <button type="button" class="hy-btn-luz" id="btnTimer">Empezar</button>
+      <button type="button" class="hy-btn-sombra" id="btnReset">Reiniciar</button>
+      <button type="button" class="hy-btn-sombra" id="btnManual">${icono("mas")}30 min</button>
+    </div>
+  </section>`;
+}
+
+/* ── lo próximo que vence ── */
+function proximoHTML() {
+  const hoy = hoyISO();
+  const L = elementos().filter(e => e.estado !== "hecha" && e.fecha && e.fecha >= hoy).sort((a, b) => a.fecha.localeCompare(b.fecha)).slice(0, 3);
+  return `<section class="hy-tarjeta hy-proximo" aria-labelledby="hyProxTit">
+    <div class="hy-cab"><h2 id="hyProxTit">Lo próximo</h2><button type="button" class="hy-enlace" data-ir="entregas">Agenda</button></div>
+    ${L.length ? `<ul class="hy-lista">${L.map(e => { const m = modPorId(e.modId), dd = diasEntre(e.fecha, hoy);
+      return `<li><span class="hy-punto" style="${colorMod(m)}"></span><span class="hy-lt">${esc(e.titulo)}</span><span class="hy-ld${dd <= 2 ? " cerca" : ""}">${e.tipo === "examen" ? "Examen · " : ""}${esc(cuandoTxt(dd))}</span></li>`; }).join("")}</ul>`
+      : `<p class="hy-sub">Nada a la vista. Apunta tus entregas y exámenes en la Agenda.</p>`}
+  </section>`;
+}
+
+/* ── lo que toca hoy, rato a rato (en el ordenador, al lado) ── */
+function hoyTocaHTML() {
+  /* dos ratos seguidos de lo mismo, en uno */
+  const B = [];
+  planDeHoy().forEach(b => { const u = B[B.length - 1]; if (u && u.modId === b.modId && u.hecho === b.hecho) u.min += b.min; else B.push(Object.assign({}, b)); });
+  return `<section class="hy-tarjeta hy-hoytoca" aria-labelledby="hyTocaTit">
+    <div class="hy-cab"><h2 id="hyTocaTit">Hoy toca</h2><button type="button" class="hy-enlace" data-ir-agenda="plan">Tu semana</button></div>
+    ${B.length ? `<ul class="hy-lista">${B.slice(0, 5).map(b => { const m = modPorId(b.modId);
+      return `<li><span class="hy-punto" style="${colorMod(m)}"></span><span class="hy-lt">${esc(m ? m.nombre : voc())} <small>${b.min} min</small></span>
+        ${b.hecho ? `<span class="hy-ok">${icono("hecho")}</span>` : `<button type="button" class="hy-mini" data-plan-empezar="${b.modId}">Empezar</button>`}</li>`; }).join("")}</ul>`
+      : `<p class="hy-sub">Hoy no es día de estudio. Si te apetece, cualquier rato suma.</p>`}
+  </section>`;
+}
+
+function vistaEscritorio() {
+  if (!S.modulos.length || ilEditando) return vistaEscritorioAntigua();
+  const banda = [bandaLegal(), bandaDeApp(), bandaCopia(), bandaAvisos(), bandaInstalar()].find(b => b && String(b).trim()) || "";
+  const ahora = new Date();
+  const saludo = ahora.getHours() < 14 ? "Buenos días" : ahora.getHours() < 21 ? "Buenas tardes" : "Buenas noches";
+  const nombre = normalizarPerfil().nombre;
+  return `<div class="hy">
+    <header class="hy-cabeza"><span class="hy-fecha">${esc(mayus(ahora.toLocaleDateString("es-ES", { weekday: "long", day: "numeric", month: "long" })))}</span>
+      <h1 class="hy-hola">${saludo}${nombre ? ", " + esc(nombre) : ""}</h1></header>
+    ${banda}
+    <div class="hy-rejilla">
+      ${anillosHTML()}${sesionHTML()}${semanaHTML()}${esOpositor() ? opoTarjetaInicio() : proximoHTML()}${hoyTocaHTML()}
+    </div>
+  </div>`;
+}
+
+alEvento("click", e => {
+  const t = e.target; if (!t || !t.closest) return;
+  if (t.closest('[data-hy="descanso"]')) {
+    const p = normalizarPerfil(), hoy = hoyISO(); p.descansos = p.descansos || {};
+    if (p.descansos[hoy]) delete p.descansos[hoy]; else p.descansos[hoy] = true;
+    guardar("perfil"); pinta();
+  }
+});
+
+
+/* ══════════════════ secciones sencillas ══════════════════
+   Cada sección con lo que importa y nada más, en el estilo de «Hoy»:
+   · Agenda: «¿te da tiempo?» (lo que piden los próximos 7 días contra tus
+     horas de estudio de la semana), lo pendiente día a día y una barra para
+     añadir escribiendo normal; en el ordenador, el mes entero al lado;
+     además, Semana y Horario (y Mes en el móvil);
+   · Módulos: tu media y una tarjeta de color por asignatura con su nota y
+     lo que te hace falta; en el ordenador, además, «¿y si saco un…?», los
+     exámenes a la vista y el estudio de la semana (sin faltas: hay quien
+     estudia online);
+   · Repaso: un anillo con lo de hoy, un botón grande y la tarjeta nueva
+     plegada.
+   Apuntes no se toca: ni su vista ni su aspecto (body.nuevo marca el resto).
+   En el ordenador, sin el panel de la izquierda, que repetía lo de la página. */
+
+/* qué sección se ve, para el estilo: Apuntes se queda como estaba */
+function marcarSeccionNueva() {
+  const b = document.body; if (!b) return;
+  b.dataset.seccion = seccion;                       /* no data-sec: ese lo usan los clics para navegar */
+  b.classList.toggle("nuevo", seccion !== "apuntes");
+}
+/* la Agenda, de entrada, en la Lista */
+setTimeout(() => { try { if (agTab === "calendario" || agTab === "tablero") agTab = "lista"; } catch (e) {} }, 0);
+
+const sxAnillo = (pct, color, centro, tam = 64) => {
+  const r = 26, L = 2 * Math.PI * r;
+  return `<svg class="sx-anillo" viewBox="0 0 64 64" width="${tam}" height="${tam}" aria-hidden="true">
+    <circle cx="32" cy="32" r="${r}" class="sx-pista"/>${pct > 0 ? `<circle cx="32" cy="32" r="${r}" class="sx-aro" style="--c:${color}; --largo:${L.toFixed(1)}; --lleno:${(L * clamp(pct, 0, 1)).toFixed(1)}"/>` : ""}
+    <text x="32" y="33" class="sx-centro">${esc(centro)}</text></svg>`;
+};
+
+/* ══ Agenda ══ */
+function vistaAgenda() {
+  normalizarAgenda();
+  if (!agMes) agMes = hoyISO().slice(0, 7) + "-01";
+  if (agTab === "tablero") agTab = "lista";
+  /* en el ordenador el mes ya se ve al lado de la lista; y sin filtro escondido por asignatura */
+  if (agTab === "calendario" && matchMedia("(min-width:1100px)").matches) agTab = "lista";
+  agFiltro.modId = "";
+  const hoy = hoyISO(), tabs = [["lista", "Próximo"], ["calendario", "Mes"], ["plan", "Semana"], ["horario", "Horario"]];
+  const pend = elementos().filter(e => e.estado !== "hecha");
+  const prox = pend.filter(e => e.fecha && e.fecha >= hoy).sort((a, b) => a.fecha.localeCompare(b.fecha))[0];
+  /* Próximo: ¿te da tiempo? y lo que viene por días; en el ordenador, al lado, el mes entero */
+  const cuerpo = agTab === "horario" ? agHorario() : agTab === "plan" ? agPlan() : agTab === "calendario" ? agCalendario()
+    : `<div class="ax-rejilla"><div class="ax-lado">${agTiempoHTML()}${agDiasHTML()}</div><div class="ax-cal">${agCalendario()}</div></div>`;
+  return `
+  <header class="sx-cab">
+    <div><h1 class="sx-tit">Agenda</h1>
+      <p class="sx-sub">${pend.length ? pend.length + (pend.length === 1 ? " cosa pendiente" : " cosas pendientes") + (prox ? " · lo siguiente, " + esc(cuandoTxt(diasEntre(prox.fecha, hoy))) : "") : "Nada pendiente"}</p></div>
+    <button type="button" class="btn" id="btnICS" title="Descarga tus fechas para meterlas en el calendario del móvil">${icono("calendario")}<span>Exportar</span></button>
+  </header>
+  <div class="sx-seg" role="tablist" aria-label="Vista de la agenda">${tabs.map(([id, t]) => `<button type="button" role="tab" class="sx-seg-b" aria-selected="${agTab === id}" data-ag="${id}"${id === "calendario" ? " data-solo-movil" : ""}>${t}</button>`).join("")}</div>
+  ${agTab === "lista" || agTab === "calendario" ? `
+  <div class="ag-rapido sx-rapido">
+    <span class="ag-mas">${icono("mas")}</span>
+    <input type="text" id="agRapido" placeholder="Añade algo: «examen de BD el jueves», «entregar la práctica 3 mañana»" autocomplete="off" aria-label="Añadir a la agenda">
+    <div class="ag-entiende" id="agEntiende" aria-live="polite"></div>
+  </div>` : ""}
+  <div class="sx-cuerpo sx-ag-${agTab}">${cuerpo}</div>
+  ${agPeek ? peekHTML() : ""}`;
+}
+
+/* cuánto pide una entrega o un examen: lo que pongas tú o, si no, lo normal */
+const agMinutos = e => num(e.ref.horas, 0) * 60 || (e.tipo === "examen" ? 240 : 120);
+/* ¿te da tiempo? lo que piden los próximos 7 días contra las horas que tienes para estudiar */
+function agTiempoHTML() {
+  const p = normalizarPerfil(), hoy = hoyISO(), hasta = sumaDias(hoy, 6);
+  const tienes = num(p.horasSemana, 0) * 60 || S.modulos.reduce((s, m) => s + num(m.metaSemanal) * 60, 0);
+  const L = elementos().filter(e => e.estado !== "hecha" && e.fecha && e.fecha <= hasta);
+  const piden = L.reduce((s, e) => s + agMinutos(e), 0), sobra = tienes - piden;
+  const est = !L.length || sobra >= 0 ? "ok" : "justo";
+  const frase = !L.length ? "Nada que entregar estos días. Tu tiempo es tuyo." : sobra >= 30 ? "Te da tiempo y te sobran " + horasTxt(sobra) + " para ti." : sobra >= 0 ? "Te da tiempo, justo." : "Vas justo: te faltan unas " + horasTxt(-sobra) + ".";
+  const ancho = Math.max(tienes, piden) || 1;
+  return `<section class="hy-tarjeta ax-tiempo ${est}" aria-labelledby="axTiempoTit">
+    <div class="hy-cab"><h2 id="axTiempoTit">¿Te da tiempo?</h2><span class="hy-etq">próximos 7 días</span></div>
+    <p class="ax-frase">${esc(frase)}</p>
+    ${L.length ? `<div class="ax-barra" aria-hidden="true"><i style="width:${Math.min(piden, tienes) / ancho * 100}%"></i>${sobra < 0 ? `<i class="pasa" style="width:${-sobra / ancho * 100}%"></i>` : ""}</div>
+    <p class="hy-sub">${L.length === 1 ? "Lo que tienes pide" : "Tus " + L.length + " entregas y exámenes piden"} unas <b>${horasTxt(piden)}</b> · tienes <b>${horasTxt(tienes)}</b> a la semana para estudiar.</p>` : ""}
+  </section>`;
+}
+/* lo que viene, día a día: hoy, mañana, el resto de la semana con su nombre y luego más adelante */
+function agDiasHTML() {
+  const hoy = hoyISO(), els = elementos(), pend = els.filter(e => e.estado !== "hecha");
+  const nombreDia = f => { const t = new Date(f + "T00:00").toLocaleDateString("es-ES", { weekday: "long", day: "numeric" }).replace(",", ""); return t.charAt(0).toUpperCase() + t.slice(1); };
+  const corto = f => new Date(f + "T00:00").toLocaleDateString("es-ES", { weekday: "short", day: "numeric" }).replace(",", "").replace(".", "");
+  const grupos = [["Atrasado", "", e => e.fecha && e.fecha < hoy, " tarde"]];
+  for (let i = 0; i < 7; i++) { const f = sumaDias(hoy, i); grupos.push([i === 0 ? "Hoy" : i === 1 ? "Mañana" : nombreDia(f), i < 2 ? corto(f) : cuandoTxt(i), e => e.fecha === f, ""]); }
+  grupos.push(["Semana que viene", "", e => e.fecha >= sumaDias(hoy, 7) && e.fecha < sumaDias(hoy, 14), ""], ["Más adelante", "", e => e.fecha >= sumaDias(hoy, 14), ""], ["Sin fecha", "", e => !e.fecha, ""]);
+  const fila = e => { const m = modPorId(e.modId), hecha = e.estado === "hecha";
+    return `<div class="ax-fila${hecha ? " hecha" : ""}" data-el="${e.tipo}|${e.id}" tabindex="0" style="${colorMod(m)}">
+      <button type="button" class="ax-check" data-ls-check="${e.tipo}|${e.id}" aria-pressed="${hecha}" aria-label="${hecha ? "Desmarcar" : "Marcar como hecho"}">${hecha ? icono("hecho") : ""}</button>
+      <span class="ax-t"><b>${esc(e.titulo || "Sin título")}</b><small>${m ? `<span class="ax-cod">${esc(m.cod)}</span>` : ""}${e.tipo === "examen" ? `<span class="ax-examen">Examen</span>` : ""}${e.hora ? `<span>${esc(e.hora)}</span>` : ""}</small></span>
+      ${hecha ? "" : `<span class="ax-horas" title="Lo que calculas que te llevará">~${horasTxt(agMinutos(e))}</span>`}
+    </div>`; };
+  const ordena = L => L.sort((a, b) => (a.fecha || "").localeCompare(b.fecha || "") || (a.hora || "").localeCompare(b.hora || ""));
+  const hechas = els.filter(e => e.estado === "hecha").sort((a, b) => (b.fecha || "").localeCompare(a.fecha || "")).slice(0, 15);
+  const html = grupos.map(([t, d, f, extra]) => { const g = ordena(pend.filter(f)); return g.length ? `<section class="ax-dia${extra}"><h3>${esc(t)}${d ? `<em>${esc(d)}</em>` : ""}</h3><div class="ax-filas">${g.map(fila).join("")}</div></section>` : ""; }).join("");
+  return `<div class="ax-dias">${html || `<p class="hy-sub">Nada pendiente. Escribe arriba lo próximo que te manden.</p>`}
+    ${hechas.length ? `<details class="ax-dia ax-hechas"><summary><h3>Hecho<em>${hechas.length}</em></h3></summary><div class="ax-filas">${hechas.map(fila).join("")}</div></details>` : ""}</div>`;
+}
+
+/* ══ Módulos ══ */
+/* lo único que hay que saber de una asignatura, en una frase */
+function mxQueHacer(c) {
+  if (c.imposible) return "Solo con recuperación";
+  if (c.faltasPct >= 1) return "Faltas al límite";
+  if (c.yaEsta) return "Aprobada";
+  if (c.media === null) return c.necesita === null ? "Pon cómo te evalúan" : "Sin notas todavía";
+  if (c.necesita !== null && c.media < c.obj) return "Necesitas un " + nota(c.necesita);
+  if (c.faltasPct >= 0.7) return "Ojo con las faltas";
+  return c.necesita !== null ? "Te basta un " + nota(c.necesita) : "Vas bien";
+}
+/* Módulos: tu media arriba y una tarjeta de color por asignatura, con su nota y lo que te hace falta */
+function vistaModulos() {
+  const abierta = modAbierto && modPorId(modAbierto);
+  if (abierta || !S.modulos.length) return vistaModulosAntigua();
+  const filas = S.modulos.map(m => ({ m, c: calcModulo(m) }));
+  const conNota = filas.filter(f => f.c.media !== null);
+  const media = conNota.length ? conNota.reduce((s, f) => s + f.c.media, 0) / conNota.length : null;
+  const atencion = filas.filter(f => f.c.est === "riesgo" || (f.c.est === "aviso" && f.c.media !== null));
+  const bien = filas.filter(f => f.c.est === "ok"), sinNotas = filas.filter(f => f.c.media === null && f.c.est !== "riesgo");
+  const notaTxt = c => c.media === null ? "—" : nota(c.media);
+  const cab = `<header class="sx-cab"><div><h1 class="sx-tit">${esc(nombreSec("modulos"))}</h1></div>
+    <button type="button" class="mx-anadir" id="btnNuevoMod" aria-label="Añadir ${esc(voc())}">${icono("mas")}</button></header>`;
+  const resumen = `<section class="mx-resumen">
+    <div class="mx-media"><span class="mx-media-n">${media === null ? "—" : nota(media)}</span><span class="mx-media-t">tu media</span></div>
+    <div class="mx-cuentas">
+      <span><i class="ok"></i>${bien.length} ${bien.length === 1 ? "va bien" : "van bien"}</span>
+      ${atencion.length ? `<span><i class="riesgo"></i>${atencion.length} ${atencion.length === 1 ? "necesita" : "necesitan"} atención</span>` : ""}
+      ${sinNotas.length ? `<span><i class="vacio"></i>${sinNotas.length} sin notas</span>` : ""}
+    </div></section>`;
+  const teselas = filas.map(({ m, c }) => `
+    <button type="button" class="mx-tesela ${c.est}" data-editar-mod="${m.id}" style="${colorMod(m)}" aria-label="${esc(m.nombre)}: ${esc(notaTxt(c))}, ${esc(mxQueHacer(c))}">
+      <span class="mx-t-cod">${esc(m.cod)}</span>
+      <span class="mx-t-nota">${esc(notaTxt(c))}</span>
+      <span class="mx-t-nombre">${esc(m.nombre)}</span>
+      <span class="mx-t-estado"><i></i>${esc(mxQueHacer(c))}</span>
+    </button>`).join("");
+  /* en el ordenador sobra sitio: una tarjeta para añadir al final y, debajo, lo que pasa esta semana con tus asignaturas */
+  const nueva = `<button type="button" class="mx-tesela mx-nueva" data-nuevo-mod>${icono("mas")}<span>Añadir ${esc(voc())}</span></button>`;
+  return cab + `<div class="mx-cuerpo">
+    <div class="mx-lado">${resumen}${mxSimHTML(filas)}${mxExamenesHTML()}</div>
+    <div class="mx-centro"><div class="mx-teselas">${teselas}${nueva}</div>${mxEstudioHTML(filas)}</div>
+  </div>`;
+}
+/* ¿y si saco un…? — mueves la nota que crees que sacarás en lo que queda y ves cómo acabas */
+let mxSimId = null, mxSimX = 7;
+function mxSimHTML(filas) {
+  const L = filas.filter(f => f.c.restante > 0.001);
+  if (!L.length) return "";
+  if (!L.some(f => f.m.id === mxSimId)) mxSimId = (L.find(f => f.c.est === "riesgo") || L[0]).m.id;
+  return `<section class="hy-tarjeta mx-solo-pc mx-sim" aria-labelledby="mxSimTit">
+    <div class="hy-cab"><h2 id="mxSimTit">¿Y si saco un…?</h2>
+      <select id="mxSimMod" class="mx-sim-sel" aria-label="${esc(mayus(voc()))} que quieres simular">${L.map(f => `<option value="${f.m.id}"${f.m.id === mxSimId ? " selected" : ""}>${esc(f.m.cod)}</option>`).join("")}</select></div>
+    <label class="mx-sim-pre" for="mxSimX">Si en lo que queda saco un <b id="mxSimN">${nota(mxSimX)}</b></label>
+    <input type="range" id="mxSimX" class="mx-sim-x" min="0" max="10" step="0.5" value="${mxSimX}">
+    <div id="mxSimRes" class="mx-sim-res" aria-live="polite">${mxSimTexto()}</div>
+  </section>`;
+}
+function mxSimTexto() {
+  const m = modPorId(mxSimId); if (!m) return "";
+  const c = calcModulo(m), total = c.pesoEval + c.restante;
+  const final = (c.acumulado + c.restante * mxSimX / 100) * 100 / total;
+  const otras = S.modulos.filter(o => o.id !== m.id).map(o => calcModulo(o).media).filter(x => x !== null);
+  const antes = S.modulos.map(o => calcModulo(o).media).filter(x => x !== null);
+  const mediaAntes = antes.length ? antes.reduce((s, x) => s + x, 0) / antes.length : null;
+  const mediaDespues = (otras.reduce((s, x) => s + x, 0) + final) / (otras.length + 1);
+  const est = final >= c.obj ? "ok" : final >= 5 ? "aviso" : "riesgo";
+  const frase = est === "ok" ? "Llegas a tu " + nota(c.obj) : est === "aviso" ? "Apruebas, pero no llegas a tu " + nota(c.obj) : "No llegarías al 5";
+  return `<div class="mx-sim-fila"><span>${esc(m.cod)} acabaría con</span><b class="${est}">${nota(final)}</b></div>
+    <p class="mx-sim-frase ${est}">${esc(frase)}</p>
+    ${mediaAntes !== null ? `<div class="mx-sim-fila"><span>Tu media</span><b>${nota(mediaAntes)} → ${nota(mediaDespues)}</b></div>` : ""}`;
+}
+document.addEventListener("input", e => {
+  if (e.target.id !== "mxSimX") return;
+  mxSimX = +e.target.value;
+  const n = document.getElementById("mxSimN"), r = document.getElementById("mxSimRes");
+  if (n) n.textContent = nota(mxSimX); if (r) r.innerHTML = mxSimTexto();
+});
+document.addEventListener("change", e => {
+  if (e.target.id !== "mxSimMod") return;
+  mxSimId = e.target.value;
+  const r = document.getElementById("mxSimRes"); if (r) r.innerHTML = mxSimTexto();
+});
+/* cuánto has estudiado esta semana de cada una, contra lo que te propusiste */
+function mxEstudioHTML(filas) {
+  const L = filas.map(({ m }) => ({ m, min: minutosSemana(m.id), meta: num(m.metaSemanal) * 60 })).filter(f => f.min || f.meta);
+  const total = L.reduce((s, f) => s + f.min, 0), meta = L.reduce((s, f) => s + f.meta, 0);
+  return `<section class="hy-tarjeta mx-solo-pc mx-estudio" aria-labelledby="mxEstTit">
+    <div class="hy-cab"><h2 id="mxEstTit">Estudio esta semana</h2><span class="hy-etq">${meta ? "meta " + horasTxt(meta) : ""}</span></div>
+    <div class="mx-grande"><b>${horasTxt(total)}</b>${meta ? `<span>${total >= meta ? "Meta cumplida" : "te quedan " + horasTxt(meta - total)}</span>` : ""}</div>
+    ${L.length ? `<ul class="mx-barras">${L.map(f => `<li style="${colorMod(f.m)}"><span class="mx-b-cod">${esc(f.m.cod)}</span>
+      <span class="mx-b-barra"><i style="width:${clamp(f.meta ? f.min / f.meta * 100 : 100, 0, 100)}%"></i></span><span class="mx-b-num">${horasTxt(f.min)}</span></li>`).join("")}</ul>`
+      : `<p class="hy-sub">Cuando estudies con el reloj, aquí verás cuánto le dedicas a cada una.</p>`}
+  </section>`;
+}
+/* los exámenes que vienen y la nota que te hace falta en esa asignatura */
+function mxExamenesHTML() {
+  const hoy = hoyISO();
+  const L = elementos().filter(e => e.tipo === "examen" && e.estado !== "hecha" && e.fecha && e.fecha >= hoy).sort((a, b) => a.fecha.localeCompare(b.fecha)).slice(0, 4);
+  return `<section class="hy-tarjeta mx-solo-pc" aria-labelledby="mxExTit">
+    <div class="hy-cab"><h2 id="mxExTit">Exámenes a la vista</h2><button type="button" class="hy-enlace" data-ir="entregas">Agenda</button></div>
+    ${L.length ? `<ul class="mx-examenes">${L.map(e => { const m = modPorId(e.modId), c = m && calcModulo(m), dd = diasEntre(e.fecha, hoy);
+      const falta = !c ? "" : c.imposible ? "solo con recuperación" : c.yaEsta ? "ya la tienes aprobada" : c.necesita !== null ? "te hace falta un " + nota(c.necesita) : "";
+      return `<li style="${colorMod(m)}"><i></i><span class="mx-e-t"><span class="mx-e-cuando${dd <= 3 ? " cerca" : ""}">${esc(m ? m.cod + " · " : "")}${esc(cuandoTxt(dd))}</span>
+        <b>${esc(e.titulo)}</b>${falta ? `<small>${esc(falta.charAt(0).toUpperCase() + falta.slice(1))}</small>` : ""}</span></li>`; }).join("")}</ul>`
+      : `<p class="hy-sub">No tienes exámenes apuntados. Añádelos en la Agenda y aquí verás qué nota te hace falta.</p>`}
+  </section>`;
+}
+
+/* ══ Repaso ══ */
+function vistaRepaso() {
+  if (RP.sesion || RP.test) return vistaRepasoAntigua();
+  const T2 = normalizarTarjetas(), hoy = tarjetasHoy(), dia = hoyISO();
+  const hechas = T2.filter(c => c.vistoEn === dia).length, total = hechas + hoy.length;
+  const porMod = S.modulos.map(m => ({ m, total: T2.filter(c => c.modId === m.id).length, hoy: hoy.filter(c => c.modId === m.id).length,
+    dominadas: T2.filter(c => c.modId === m.id && c.caja >= 4).length })).filter(x => x.total);
+  return `
+  <header class="sx-cab">
+    <div><h1 class="sx-tit">Repaso</h1><p class="sx-sub">Tarjetas que vuelven justo cuando las ibas a olvidar.</p></div>
+  </header>
+  <section class="sx-tarjeta sx-rp-hoy">
+    ${sxAnillo(total ? hechas / total : 0, "#DB2777", total ? hechas + "/" + total : "✓", 96)}
+    <div class="sx-rp-txt"><b>${hoy.length ? "Hoy te " + (hoy.length === 1 ? "toca 1 tarjeta" : "tocan " + hoy.length + " tarjetas") : "Al día"}</b>
+      <span class="sx-sub">${T2.length} en total · ${T2.filter(c => c.caja >= 4).length} dominadas</span>
+      ${hoy.length ? `<button type="button" class="btn primario" id="rpEmpezar">Repasar ahora</button>` : ""}</div>
+  </section>
+  <details class="sx-tarjeta sx-nueva"${T2.length ? "" : " open"}>
+    <summary>${icono("mas")}Nueva tarjeta</summary>
+    <div class="form-tarjeta">
+      <label class="campo">${esc(voc(false, true))}<select id="rpManMod">${optsMods(S.modulos[0] && S.modulos[0].id)}</select></label>
+      <label class="campo">Pregunta<input type="text" id="rpFrente" placeholder="¿Qué hace un LEFT JOIN?"></label>
+      <label class="campo">Respuesta<input type="text" id="rpDorso" placeholder="Devuelve todas las filas de la izquierda…"></label>
+      <button type="button" class="btn primario" id="rpAddTarjeta">Añadir</button>
+    </div>
+  </details>
+  ${porMod.length ? `<section class="sx-tarjeta">
+    <h2 class="sx-h2">Por ${esc(voc())}</h2>
+    <ul class="sx-filas">${porMod.map(x => `<li><span class="sx-punto" style="${colorMod(x.m)}"></span><span class="sx-fila-t">${esc(x.m.nombre)}</span>
+      <span class="sx-fila-m">${x.hoy ? "<b>" + x.hoy + " hoy</b> · " : ""}${x.total} · ${x.dominadas} dominadas</span>
+      ${x.hoy ? `<button type="button" class="btn mini" data-rp-mod="${x.m.id}">Repasar</button>` : ""}</li>`).join("")}</ul>
+  </section>` : ""}`;
+}
+
+
 /* ══════════════════ pintado ══════════════════ */
 function pinta() {
   if (BV) { pintaEntrada(); return; }
@@ -13644,6 +14372,7 @@ function pinta() {
   c.innerHTML = { escritorio: vistaEscritorio, oposicion: vistaOposicion, tutor: vistaTutor, modulos: vistaModulos, apuntes: vistaApuntes,
     entregas: vistaAgenda, repaso: vistaRepaso, progreso: vistaProgreso,
     casillero: vistaCasillero, ingles: vistaIdiomas, ajustes: vistaAjustes, panel: vistaPanel, tutoria: vistaTutoria, chat: vistaChat }[seccion]();
+  marcarSeccionNueva();
   if (seccion === "escritorio") { pintaReloj(); tuDiaMontado(); }
   chatDespuesDePintar();
   if (seccion === "tutor") { tutorLeido(); chatAbajo(); }
@@ -13716,7 +14445,7 @@ alEvento("click", async e => {
     aviso("30 minutos apuntados."); pinta(); return;
   }
 
-  if (t.closest("#btnNuevoMod")) { nuevoModulo(); return; }
+  if (t.closest("#btnNuevoMod, [data-nuevo-mod]")) { nuevoModulo(); return; }
   const ed = t.closest("[data-editar-mod]"); if (ed) { abrirFicha(ed.dataset.editarMod); return; }
   const fa = t.closest("[data-falta]"); if (fa) { const m = modPorId(fa.dataset.falta); m.faltas = num(m.faltas) + 1; guardar("ajustes"); pinta(); return; }
   const fq = t.closest("[data-quitar-falta]"); if (fq) { const m = modPorId(fq.dataset.quitarFalta); m.faltas = Math.max(0, num(m.faltas) - 1); guardar("ajustes"); pinta(); return; }
@@ -15895,7 +16624,7 @@ const tarjetaAg = e => { const m = modPorId(e.modId); return `<div class="ag-tar
   <div class="ag-t-props">${pillTipo(e.tipo)}${pillMod(m)}${pillFecha(e.fecha, e.estado, e.hora)}${e.tipo === "entrega" && e.ref.sub.length ? `<span class="meta">${e.ref.sub.filter(x => x.hecho).length}/${e.ref.sub.length}</span>` : ""}${e.tipo === "examen" && e.ref.plan.length ? `<span class="meta">Plan ${e.ref.plan.filter(x => x.hecho).length}/${e.ref.plan.length}</span>` : ""}</div></div>`; };
 
 /* ── la sección ── */
-function vistaAgenda() {
+function vistaAgendaAntigua() {
   normalizarAgenda();
   if (!agMes) agMes = hoyISO().slice(0, 7) + "-01";
   const vistas = [["calendario", "Calendario", "calendario"], ["tablero", "Tablero", "tablero"], ["lista", "Lista", "lista"], ["horario", "Horario", "reloj"], ["plan", "Plan de la semana", "plan"]];
@@ -16305,7 +17034,7 @@ function nuevaTarjeta(modId, frente, dorso, apunteId) {
 }
 function responderTarjeta(c, como) {
   const hoy = hoyISO();
-  c.vistas = num(c.vistas) + 1;
+  c.vistas = num(c.vistas) + 1; c.vistoEn = hoy;
   if (como === "si") { c.caja = Math.min(5, num(c.caja) + 1); c.aciertos = num(c.aciertos) + 1; c.proximo = sumaDias(hoy, CAJAS[c.caja]); }
   else if (como === "duda") { c.caja = Math.max(1, num(c.caja)); c.proximo = sumaDias(hoy, 1); }
   else { c.caja = 1; c.proximo = sumaDias(hoy, 1); }
@@ -16360,7 +17089,7 @@ Entre 6 y 10 preguntas, 4 opciones cada una, una sola correcta ("correcta" es su
 }
 
 /* ── la vista ── */
-function vistaRepaso() {
+function vistaRepasoAntigua() {
   if (RP.sesion) return rpSesion();
   if (RP.test) return rpTest();
   const T2 = normalizarTarjetas(), hoy = tarjetasHoy(), apuntes = Object.values(S.apuntes).sort((a, b) => (b.editado || "").localeCompare(a.editado || ""));
@@ -16638,7 +17367,7 @@ alEvento("mousemove", e => {
    nombre debajo del icono; y el panel, que enseña lo que hay dentro de la
    sección en la que estás (tus apuntes, tus asignaturas, lo próximo…). En el
    móvil no cambia nada: sigue la barra de pestañas de abajo. */
-const RIEL_TXT = { escritorio: "Inicio" };
+const RIEL_TXT = { escritorio: "Hoy" };
 /* los iconos del menú (riel, barra del móvil y «Más»): Phosphor Icons en duotono.
    MIT License, Copyright (c) 2023 Phosphor Icons (https://phosphoricons.com); texto
    completo en CREDITOS.md. El resto de la app sigue con sus iconos de trazo. */
@@ -16717,7 +17446,7 @@ function panelHTML(c) {
   if (seccion === "escritorio") {
     const prox = pend().filter(e => e.fecha).slice(0, 5);
     const clases = clasesDe(diaDe(hoy));
-    return pnCab("Inicio", fechaCorta(hoy))
+    return pnCab("Hoy", fechaCorta(hoy))
       + pnGrupo("Lo próximo") + (prox.length ? prox.map(pnElemento).join("") : pnVacio("Nada a la vista. Apunta entregas y exámenes en la Agenda."))
       + (clases.length ? pnGrupo("Clases de hoy") + clases.map(b => { const m = modPorId(b.modId); return pnFila(' data-sec="entregas"', pnDot(m), m ? m.nombre : (b.titulo || "Clase"), b.ini + (b.fin ? " – " + b.fin : "")); }).join("") : "")
       + (profeActivo() ? pnGrupo("Tu tutor") + tutorCarta(c) : "");

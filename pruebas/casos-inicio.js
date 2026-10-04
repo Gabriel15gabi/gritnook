@@ -1,6 +1,8 @@
 /* El Inicio en piezas: mover, estirar, ocultar y ordenar. Lo que no puede
    pasar nunca es que un panel quede encima de otro o fuera de la rejilla, ni
-   que quien no toque nada vea su Inicio cambiado. */
+   que quien no toque nada vea su Inicio cambiado. Desde «Hoy» este Inicio de
+   piezas se ve solo sin asignaturas (vistaEscritorioAntigua); el de cada día
+   se prueba en casos-secciones.js. */
 
 const pieza = (id, x, y, w, h) => ({ id, x, y, w, h });
 const solapes = lista => {
@@ -120,7 +122,7 @@ grupo("Inicio: lo guardado, de cualquier manera", () => {
     esperar(DOCS.inicio).igualA(["inicio"]);
     enInicio(() => {
       S.inicio = null;
-      const h = vistaEscritorio();
+      const h = vistaEscritorioAntigua();
       esperar(h).contiene("rejilla-12");
       esperar(h).noContiene("il-rejilla");
       esperar(h).contiene('data-widget="objetivos"');
@@ -162,7 +164,7 @@ grupo("Inicio: pintarlo", () => {
   prueba("con un Inicio a tu manera, cada panel en su sitio de la rejilla", () => {
     enInicio(() => {
       S.inicio = { lg: [pieza("objetivos", 0, 0, 12, 30), pieza("sesion", 7, 30, 5, 38)], ocultos: [] };
-      const h = vistaEscritorio();
+      const h = vistaEscritorioAntigua();
       esperar(h).contiene("il-rejilla");
       esperar(h).contiene('data-w="sesion" style="--x:8;--w:5;--y:31;--h:38');
     });
@@ -170,9 +172,9 @@ grupo("Inicio: pintarlo", () => {
   prueba("lo oculto no se pinta, y editando sale para volver a ponerlo", () => {
     enInicio(() => {
       S.inicio = { lg: layoutPorDefecto(), ocultos: ["modulos"] };
-      esperar(vistaEscritorio()).noContiene('data-w="modulos"');
+      esperar(vistaEscritorioAntigua()).noContiene('data-w="modulos"');
       ilEditando = true;
-      const h = vistaEscritorio();
+      const h = vistaEscritorioAntigua();
       esperar(h).contiene('data-il-mostrar="modulos"');
       esperar(h).contiene('data-il-grip="hoy"');
       esperar(h).contiene("ilListo");
@@ -181,9 +183,9 @@ grupo("Inicio: pintarlo", () => {
   prueba("el título de las asignaturas habla como el resto de la app", () => {
     enInicio(() => {
       S.perfil = Object.assign(normalizarPerfil(), { etapa: "eso", listo: true });
-      esperar(vistaEscritorio()).contiene("Estado de las asignaturas");
+      esperar(vistaEscritorioAntigua()).contiene("Estado de las asignaturas");
       S.perfil.etapa = "ciclo-sup";
-      esperar(vistaEscritorio()).contiene("Estado de los módulos");
+      esperar(vistaEscritorioAntigua()).contiene("Estado de los módulos");
     });
   });
   prueba("la primera vez que editas, se mide el Inicio tal y como se ve", () => {
@@ -206,7 +208,7 @@ grupo("Inicio: pintarlo", () => {
       volverAlOriginal();
       esperar(S.inicio).nulo();
       esperar(ilEditando).falso();
-      esperar(vistaEscritorio()).contiene("rejilla-12");
+      esperar(vistaEscritorioAntigua()).contiene("rejilla-12");
     });
   });
   prueba("si te vas del Inicio a medio editar, se da por terminado", () => {
@@ -297,7 +299,7 @@ grupo("Inicio: datos absurdos", () => {
         const L = listaInicio();
         if (!L || solapes(L)) throw new Error("se rompe con " + String(v).slice(0, 20));
         if (L.some(i => !Number.isFinite(i.x) || !Number.isFinite(i.y) || i.x + i.w > 12 || i.w < 1)) throw new Error("fuera de la rejilla con " + String(v).slice(0, 20));
-        vistaEscritorio(); ilEditando = true; vistaEscritorio(); ilEditando = false;
+        vistaEscritorioAntigua(); ilEditando = true; vistaEscritorioAntigua(); ilEditando = false;
       });
     });
   });
@@ -305,7 +307,7 @@ grupo("Inicio: datos absurdos", () => {
     enInicio(() => {
       S.inicio = { lg: [{ id: '"><img src=x onerror=alert(1)>', x: 0, y: 0, w: 6, h: 20 }], ocultos: ['"><b>'], orden: ['"><i>'] };
       ilEditando = true;
-      const h = vistaEscritorio();
+      const h = vistaEscritorioAntigua();
       esperar(h).noContiene("onerror");
       esperar(h).noContiene('"><b>');
     });

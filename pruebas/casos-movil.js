@@ -28,18 +28,20 @@ async function conCursoLargo(fn) {
 grupo("El móvil: nada se pisa ni se sale", () => {
   prueba("en el Inicio, el nombre de lo que vence no se monta encima de su fecha ni de su estado", () => enElMovil(() => conCursoLargo(async () => {
     seccion = "escritorio"; pinta(); await new Promise(r => setTimeout(r, 150));
-    const filas = [...document.querySelectorAll('.panel[aria-labelledby="tProx"] .fila')];
+    const filas = [...document.querySelectorAll(".hy-proximo .hy-lista li")];
     esperar(filas.length >= 2).cierto();
     for (const f of filas) {
-      const t = f.querySelector(".t"), otros = [...f.querySelectorAll(".fecha, .estado")].filter(x => getComputedStyle(x).display !== "none");
+      const t = f.querySelector(".hy-lt"), otros = [...f.querySelectorAll(".hy-ld")].filter(x => getComputedStyle(x).display !== "none");
       for (const c of cajasTexto(t)) for (const o of otros) esperar(sePisan(c, o.getBoundingClientRect())).falso();
     }
   })));
 
-  prueba("en el Inicio, el estado de cada asignatura tampoco pisa su nombre", () => enElMovil(() => conCursoLargo(async () => {
-    seccion = "escritorio"; pinta(); await new Promise(r => setTimeout(r, 150));
-    for (const f of document.querySelectorAll('.panel[aria-labelledby="tMods"] .fila')) {
-      const t = f.querySelector(".t"), otros = [...f.querySelectorAll(".num, .estado")];
+  prueba("en Módulos, lo que te hace falta tampoco pisa el nombre de la asignatura", () => enElMovil(() => conCursoLargo(async () => {
+    seccion = "modulos"; pinta(); await new Promise(r => setTimeout(r, 150));
+    const teselas = document.querySelectorAll(".mx-tesela:not(.mx-nueva)");
+    esperar(teselas.length >= 1).cierto();
+    for (const f of teselas) {
+      const t = f.querySelector(".mx-t-nombre"), otros = [...f.querySelectorAll(".mx-t-nota, .mx-t-estado")];
       for (const c of cajasTexto(t)) for (const o of otros) esperar(sePisan(c, o.getBoundingClientRect())).falso();
     }
   })));
@@ -53,7 +55,7 @@ grupo("El móvil: nada se pisa ni se sale", () => {
 
   prueba("la Lista de la Agenda lleva el título arriba y la fecha debajo, sin pisarse", () => enElMovil(() => conCursoLargo(async () => {
     agTab = "lista"; seccion = "entregas"; pinta(); await new Promise(r => setTimeout(r, 150));
-    const f = document.querySelector(".ls-fila"), t = f.querySelector(".ls-tit"), p = f.querySelector(".ls-props");
+    const f = document.querySelector(".ax-fila"), t = f.querySelector(".ax-t b"), p = f.querySelector(".ax-t small");
     esperar(p.getBoundingClientRect().top >= t.getBoundingClientRect().bottom - 1).cierto();
   })));
 

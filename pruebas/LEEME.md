@@ -8,9 +8,9 @@ Eso levanta un servidor, abre un navegador sin ventana y escribe el resultado en
 la consola. Devuelve 1 si algo falla, que es lo que mira un servidor de
 integración continua.
 
-**939 pruebas.** Sin ventana pueden quedarse en pendiente las 6 que dibujan un
+**954 pruebas.** Sin ventana pueden quedarse en pendiente las 6 que dibujan un
 PDF: sin tarjeta gráfica eso a veces tarda demasiado. Abriendo
-`pruebas/pruebas.html` en un navegador normal pasan las 939.
+`pruebas/pruebas.html` en un navegador normal pasan las 954.
 
 Aparte, las reglas de seguridad de la base de datos se prueban contra un
 Postgres de verdad: `node backend/probar-sql.js` (22 comprobaciones), y las del chat con
@@ -102,6 +102,7 @@ repinte la pantalla.
 | `casos-avisos.js` | **Avisos, cronómetro de cuenta, entrar e iconos**: con cuentas la bienvenida espera a tu cuenta y se ve «Cargando tu cuenta…» (nunca la bienvenida ni la app vacía); el cronómetro como documento de la cuenta, su número de sesión, lo que llega de otro dispositivo (solo si es más nuevo), contar una sola vez, avisar en segundo plano sin cerrar y la cuenta atrás en la pestaña; qué se avisa y cuándo (exámenes, entregas, racha, repaso, cronómetro, oposición), lanzarlos una vez, sin permiso nada, mandar la lista al servidor solo si cambió, no apuntar el dispositivo sin servidor, el service worker; Ajustes → Avisos y la propuesta del Inicio; los iconos de Phosphor y las cifras del Inicio sin cuadradito de color |
 | `casos-borrar.js` | **Borrar la cuenta**: «Tu cuenta» en Ajustes → Perfil (y no sin cuenta), la ventana que no deja borrar hasta escribir tu correo, que confirmada se lo lleva todo (también el aviso de este dispositivo) y que sin conexión no borra nada y lo dice; la página gritnook.com/borrar-cuenta/, su enlace en el pie y en el mapa, y lo que dicen la privacidad y los términos |
 | `casos-idiomas.js` | **Idiomas**: la sección se llama Idiomas y sirve para cualquiera (las palabras de antes son de inglés; si estudias un idioma empieza en ese; cada idioma con su vocabulario), los enlaces de traducción con el texto puesto y solo los que tienen ese idioma, el traductor del navegador (con él y sin él), la voz del idioma y «despacio», el dictado (tildes y signos de menos, sube de caja, cuenta como repaso), las palabras de un texto con su frase, el repaso del idioma que estudias, las reglas de EOI, Cambridge, IELTS, DELF y Goethe con «¿apruebo?» y lo que te frena, +1 h a la destreza floja, writing (palabras, rúbrica y apunte), speaking (se graba en el dispositivo, apaga el micro y no sube nada), inmersión que suma horas y el panel lateral |
+| `casos-secciones.js` | **Hoy, Módulos, Agenda y Repaso**: la sección se llama «Hoy»; saluda y enseña los tres anillos, la sesión con su reloj, tu semana y lo próximo en castellano; repasar una tarjeta o una palabra cuenta en el anillo; en Módulos, una tarjeta por asignatura con su nota y lo que te hace falta, tu media, abrir la ficha, «Añadir», «¿Y si saco un…?» (la cuenta, y que mover la barra no repinta) y los exámenes a la vista con la nota que necesitas; en la Agenda, lo pendiente día a día con el nombre del día, las horas que pide cada cosa, «¿te da tiempo?» (sobra, falta o nada a la vista), marcar y desmarcar, abrir para editar, el mes al lado y sin filtro escondido; en Repaso, «Repasar ahora» solo si toca |
 | `casos-absurdos.js` | **Datos irreales**: notas de 900, faltas negativas, fechas del año 9999, emojis, árabe, textos de diez mil letras, estados de versiones que no existieron |
 
 ## Rellenar la app para verla funcionando

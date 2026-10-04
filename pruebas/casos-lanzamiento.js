@@ -9,6 +9,7 @@ function conInicio(fn) {
   BV = null; $("#entrada").hidden = true; document.body.classList.remove("en-entrada");
   ls.forEach(([k]) => localStorage.removeItem("desk-daw:" + k));
   TIEMPO.datos = null; TIEMPO.error = ""; TIEMPO.falloEn = 0; TIEMPO.cargando = false;
+  S.modulos = [];                                   /* el Inicio de antes, con su tiempo, es el de sin asignaturas */
   const fin = () => {
     S = JSON.parse(antes.S); seccion = antes.seccion; BV = antes.BV; $("#entrada").hidden = !BV;
     tiempoFetch = antes.f; pedirPosicion = antes.geo; TIEMPO.datos = antes.datos; TIEMPO.error = antes.error; TIEMPO.falloEn = antes.falloEn; TIEMPO.cargando = false;
@@ -34,50 +35,18 @@ function tiempoFalso({ codigo = 61, temp = 17.6, falla = false } = {}) {
 }
 const modHoy = (extra = {}) => moduloDe([[100, null]], Object.assign({ id: "bd", cod: "BD", nombre: "Bases de Datos", metaSemanal: 3 }, extra));
 
+/* Con asignaturas, el Inicio es «Hoy» (casos-secciones.js): saluda, y la frase
+   del día, el reloj de arriba y las tres cifras se quedaron en el de antes,
+   que es el que ve quien aún no tiene asignaturas. */
 grupo("Inicio: tu día en vez de «Buenos días»", () => {
-  prueba("ya no saluda: dice cuánto te toca hoy y por dónde empezar", () => conInicio(() => {
-    S.modulos = [modHoy()]; normalizarPerfil().diasFuertes = ["lun", "mar", "mie", "jue", "vie", "sab", "dom"]; normalizarPerfil().horasSemana = 7;
-    seccion = "escritorio"; pinta();
-    const t = $("#contenido").textContent;
-    ["Buenos días", "Buenas tardes", "Buenas noches", "Aún despierto"].forEach(s => esperar(t).noContiene(s));
-    esperar($("#hdTit").textContent).contiene("de estudio");
-    esperar($(".hd-sub").textContent).contiene("Empieza por");
-    esperar(!!$('.hd-acc [data-plan-empezar="bd"]')).cierto();
-    esperar(!!$("#ilEditar")).cierto();
-  }));
-  prueba("si trabajas, lo dice: el estudio va repartido en tu tiempo libre", () => conInicio(() => {
-    S.modulos = [modHoy()]; const p = normalizarPerfil(); p.trabaja = "completa"; p.diasFuertes = ["lun", "mar", "mie", "jue", "vie", "sab", "dom"];
-    seccion = "escritorio"; pinta();
-    esperar($(".hd-sub").textContent).contiene("repartido en tu tiempo libre");
-  }));
-  prueba("un día que no es de estudio: si trabajas, que es para el trabajo; si no, día libre", () => conInicio(() => {
-    S.modulos = [modHoy()]; const p = normalizarPerfil();
-    const otro = DIAS_ORDEN.find(d => d !== diaDe(hoyISO())); p.diasFuertes = [otro];
-    p.trabaja = "completa"; seccion = "escritorio"; pinta();
-    esperar($("#hdTit").textContent).contiene("tu día es para el trabajo");
-    p.trabaja = "no"; pinta();
-    esperar($("#hdTit").textContent).contiene("día libre");
-  }));
   prueba("sin asignaturas, te lleva a ponerlas", () => conInicio(() => {
     S.modulos = []; seccion = "escritorio"; pinta();
     esperar($("#hdTit").textContent).contiene("Empieza por");
     esperar(!!$('.hd-acc [data-ir="modulos"]')).cierto();
   }));
-  prueba("lo que vence en dos días sale también arriba", () => conInicio(() => {
-    S.modulos = [modHoy()]; S.tareas = [{ id: "t1", titulo: "Práctica 3", modId: "bd", fecha: sumaDias(hoyISO(), 1), hecha: false, estado: "pendiente", sub: [] }];
-    seccion = "escritorio"; pinta();
-    esperar($(".hd-vence").textContent).contiene("Práctica 3");
-  }));
   prueba("la hora de arriba es la de ahora, a la manera de aquí", () => conInicio(() => {
     seccion = "escritorio"; pinta();
     esperar(/^\d{2}:\d{2}$/.test($("#hdReloj").textContent)).cierto();
-  }));
-  prueba("las tres cifras cuentan desde cero al entrar, y acaban en su valor", () => conInicio(async () => {
-    S.modulos = [modHoy()]; S.tareas = [1, 2, 3].map(i => ({ id: "t" + i, titulo: "T" + i, modId: "bd", fecha: "", hecha: false, estado: "pendiente", sub: [] }));
-    irASeccion("escritorio");
-    const c = [...document.querySelectorAll(".hd-dato .cifra")][1];
-    esperar(c.dataset.contar).igualA("3");
-    await hasta(() => c.textContent === "3", 2000);
   }));
 });
 

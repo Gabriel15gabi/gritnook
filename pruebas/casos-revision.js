@@ -88,12 +88,15 @@ grupo("Repaso: la oposición habla claro", () => {
       } finally { opoTab = antesTab; }
     });
   });
-  prueba("en Módulos, a un opositor no se le cuentan las faltas (hasta que se acerque al límite)", () => {
+  prueba("en Módulos no se cuentan las faltas (hay quien estudia online): solo se avisa al llegar al límite", () => {
     conEstado(() => {
       opositorDePrueba();
-      esperar(sinEtiquetas(vistaModulos())).noContiene("Faltas:");
+      esperar(sinEtiquetas(vistaModulos())).noContiene("Faltas");
       S.perfil.etapa = "ciclo-sup";
-      esperar(sinEtiquetas(vistaModulos())).contiene("Faltas:");
+      const m = S.modulos[0]; Object.assign(m, { horas: 100, faltas: 0, objetivo: 5, pesos: [{ nombre: "Examen", peso: 100, nota: null }] });
+      esperar(sinEtiquetas(vistaModulos())).noContiene("Faltas");
+      m.faltas = calcModulo(m).faltasMax;
+      esperar(sinEtiquetas(vistaModulos())).contiene("Faltas al límite");
     });
   });
   prueba("Progreso es «Tu oposición» para un opositor y «Tu curso» para los demás", () => {
@@ -183,7 +186,7 @@ grupo("Repaso: el plan y el Inicio", () => {
   });
   prueba("lo próximo que vence lleva la fecha en castellano, no «2026-09-27»", () => conCursoLargo(async () => {
     seccion = "escritorio"; pinta(); await new Promise(r => setTimeout(r, 60));
-    const p = document.querySelector('.panel[aria-labelledby="tProx"]'); if (!p) saltar("sin el panel en el Inicio");
+    const p = document.querySelector(".hy-proximo"); if (!p) saltar("sin «Lo próximo» en Hoy");
     esperar(/\d{4}-\d{2}-\d{2}/.test(p.textContent)).falso();
   }));
   prueba("Ajustes → Aspecto no habla como un diseñador", () => {
@@ -222,7 +225,7 @@ grupo("Repaso: que se lea bien", () => {
   prueba("en Módulos los nombres largos se leen enteros", () => conCursoLargo(async () => {
     S.modulos.forEach((m, i) => { if (i < 3) m.nombre = ["Formación y Orientación Laboral", "Lenguajes de Marcas y Sistemas de Gestión", "Entornos de Desarrollo"][i]; });
     seccion = "modulos"; modAbierto = null; pinta(); await new Promise(r => setTimeout(r, 80));
-    const nombres = [...document.querySelectorAll(".m2-t")];
+    const nombres = [...document.querySelectorAll(".mx-t-nombre")];
     esperar(nombres.length > 0).cierto();
     for (const n of nombres) { esperar(n.scrollWidth <= n.clientWidth + 1).cierto(); esperar(n.scrollHeight <= n.clientHeight + 1).cierto(); }
   }));
