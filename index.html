@@ -5997,7 +5997,6 @@ function vistaApuntes() {
   return `
   <header class="cab">
     <div>
-      <div class="eyebrow">Cuaderno</div>
       <h1 class="titulo">Apuntes</h1>
       <p class="lead">Se guardan solos mientras escribes o dibujas.${sample ? " Claude puede resumirlos, explicártelos y sacarte preguntas de examen." : ""}</p>
     </div>
@@ -18294,15 +18293,17 @@ ICON_RIEL.escritorio = '<circle cx="128" cy="128" r="70" fill="none" stroke="var
 ICON_RIEL.casillero = '<path d="M200,216H56V112A48,48,0,0,1,104,64h48a48,48,0,0,1,48,48Z" opacity="0.2"/><path d="M96,64V52a20,20,0,0,1,20-20h24a20,20,0,0,1,20,20V64" fill="none" stroke="currentColor" stroke-width="16" stroke-linecap="round" stroke-linejoin="round"/><path d="M200,216H56V112A48,48,0,0,1,104,64h48a48,48,0,0,1,48,48Z" fill="none" stroke="currentColor" stroke-width="16" stroke-linecap="round" stroke-linejoin="round"/><path d="M96,216V168a8,8,0,0,1,8-8h48a8,8,0,0,1,8,8v48" fill="none" stroke="currentColor" stroke-width="16" stroke-linecap="round" stroke-linejoin="round"/><path d="M104,112h48" fill="none" stroke="currentColor" stroke-width="16" stroke-linecap="round"/>';
 ICON_RIEL.oposicion = '<circle cx="128" cy="128" r="96" opacity="0.2"/><circle cx="128" cy="128" r="96" fill="none" stroke="currentColor" stroke-width="16"/><circle cx="128" cy="128" r="56" fill="none" stroke="currentColor" stroke-width="16"/><circle cx="128" cy="128" r="18"/>';
 /* ══ los iconos del menú, de Hoy a Mochila: «duotono suave» ══
-   Dibujados para GritNook con el mismo trazo (línea redondeada y un relleno
-   suave dentro), en una rejilla de 24 que se escala a la de 256 de los demás.
+   Hoy es el círculo de la «O» del logo, en morado para que resalte; los
+   demás, dibujados para GritNook con el mismo trazo (línea redondeada y un
+   relleno suave dentro), en una rejilla de 24 que se escala a la de 256.
    Valen para el riel del ordenador, la barra del móvil, la hoja de «Más» y
    donde la app pinte el icono de la sección. */
 const MENU_ICO = (() => {
   const T = 'fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"', F = 'fill="currentColor" fill-opacity=".2"';
   const g = d => `<g transform="scale(10.6667)" ${T}>${d}</g>`;
   return {
-    escritorio: g(`<circle ${F} cx="12" cy="12" r="4.2"/><path d="M12 2.6v2.1M12 19.3v2.1M2.6 12h2.1M19.3 12h2.1M5.4 5.4l1.5 1.5M17.1 17.1l1.5 1.5M5.4 18.6l1.5-1.5M17.1 6.9l1.5-1.5"/>`),
+    /* Hoy: el círculo de la «O» de GritNook, siempre en morado para que resalte */
+    escritorio: `<circle cx="128" cy="128" r="70" fill="none" stroke="var(--acento)" stroke-width="41"/>`,
     modulos: g(`<path ${F} d="M2.6 9.2 12 4.6l9.4 4.6L12 13.8Z"/><path d="M6.4 11.2v4.4c0 1.6 2.5 3.2 5.6 3.2s5.6-1.6 5.6-3.2v-4.4M21.4 9.2v5.2"/>`),
     entregas: g(`<rect ${F} x="3.6" y="5.2" width="16.8" height="15.2" rx="3"/><path d="M3.6 10h16.8M8.2 3.2v3.6M15.8 3.2v3.6"/><circle fill="currentColor" stroke="none" cx="12" cy="15.2" r="1.4"/>`),
     apuntes: g(`<rect ${F} x="5.6" y="3.2" width="13.6" height="17.6" rx="2.6"/><path d="M9.6 8.4h5.6M9.6 12h5.6M9.6 15.6h3.4M3.6 7.4h3.4M3.6 12h3.4M3.6 16.6h3.4"/>`),
