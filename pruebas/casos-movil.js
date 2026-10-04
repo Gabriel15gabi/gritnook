@@ -59,11 +59,12 @@ grupo("El móvil: nada se pisa ni se sale", () => {
     esperar(p.getBoundingClientRect().top >= t.getBoundingClientRect().bottom - 1).cierto();
   })));
 
-  prueba("la tabla de horas de Progreso se desliza dentro de su tarjeta", () => enElMovil(() => conCursoLargo(async () => {
+  prueba("en Progreso, la constancia y las semanas caben en su tarjeta", () => enElMovil(() => conCursoLargo(async () => {
     seccion = "progreso"; pinta(); await new Promise(r => setTimeout(r, 100));
-    const d = document.querySelector(".pg-tabla"); if (!d) saltar("sin tabla de horas");
-    d.open = true;
-    esperar(["auto", "scroll"]).contiene(getComputedStyle(d).overflowX);
+    for (const s of [".pz-const .pz-mapa", ".pz-semanas .pz-barras"]) {
+      const el = document.querySelector(s), caja = el.closest(".hy-tarjeta").getBoundingClientRect(), r = el.getBoundingClientRect();
+      esperar(r.left >= caja.left - 1 && r.right <= caja.right + 1).cierto();
+    }
     esperar(document.documentElement.scrollWidth <= innerWidth + 1).cierto();
   })));
 
