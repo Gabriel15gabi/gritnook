@@ -341,7 +341,7 @@ grupo("Oposición: ponte a prueba, de principio a fin", () => {
       esperar(O.prueba.temaId).igualA("t2");
       esperar(O.prueba.minutos).igualA(10);
       const ta = $("#prTexto"); esperar(!!ta).cierto();
-      esperar(!!$(".aj-tabs")).cierto();
+      esperar(!!$(".oz-tabs")).cierto();
       esperar(!!$(".opo-lista")).falso();   /* mientras dura, solo la prueba */
       ta.focus(); ta.value = "El presidente del gobierno y el consejo de ministros"; ta.setSelectionRange(5, 5);
       ta.dispatchEvent(new Event("input", { bubbles: true }));

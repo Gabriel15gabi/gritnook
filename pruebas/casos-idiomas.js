@@ -416,11 +416,11 @@ grupo("Idiomas: sencillo", () => {
 });
 
 grupo("Iconos del menú: duotono suave", () => {
-  prueba("Inicio es el círculo de la «O», en morado; de Módulos a Mochila, el mismo trazo; en el menú y dentro de la app", () => {
+  prueba("Inicio es el círculo de la «O», en morado; de Módulos a Mochila y la Oposición, el mismo trazo; en el menú y dentro de la app", () => {
     esperar(ICON_RIEL.escritorio).contiene("<circle");
     esperar(ICON_RIEL.escritorio).contiene("var(--acento)");
     esperar(ICON_PH.escritorio).igualA(ICON_RIEL.escritorio);
-    ["modulos", "entregas", "apuntes", "repaso", "progreso", "casillero"].forEach(id => {
+    ["modulos", "entregas", "apuntes", "repaso", "progreso", "casillero", "oposicion"].forEach(id => {
       esperar(ICON_RIEL[id]).contiene('stroke-width="1.75"');
       esperar(ICON_RIEL[id]).contiene('fill-opacity=".2"');
       esperar(ICON_PH[id]).igualA(ICON_RIEL[id]);

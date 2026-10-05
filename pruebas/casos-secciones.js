@@ -146,3 +146,34 @@ grupo("Repaso: lo de hoy de un vistazo", () => {
     esperar($(".sx-rp-hoy").textContent).contiene("Al día");
   }, () => { S.tarjetas = [{ id: "c1", modId: "pro", frente: "¿Qué es una clase?", dorso: "Un molde", caja: 1, proximo: hoyISO() }]; }));
 });
+
+grupo("Hoy: lo que llevas, tu meta y sigue donde lo dejaste", () => {
+  prueba("dentro de la sesión, lo que llevas hoy, asignatura a asignatura", () => enSeccion("escritorio", () => {
+    const t = $(".hy-llevas").textContent;
+    esperar(t).contiene("Hoy llevas");
+    esperar(t).contiene("PRO");
+    esperar(t).contiene(horasTxt(45));
+  }, () => { S.horas = { pro: { [hoyISO()]: 45 } }; }));
+  prueba("sin nada hoy, te dice cómo empezar", () => enSeccion("escritorio", () => {
+    esperar($(".hy-llevas").textContent).contiene("Aún nada");
+  }, () => { S.horas = {}; }));
+  prueba("tu semana, contra tu meta de horas", () => enSeccion("escritorio", () => {
+    const m = $(".hy-sem-meta");
+    esperar(m.textContent).contiene("de " + horasTxt(600) + " esta semana");
+    esperar(!!m.querySelector("[role=progressbar]")).cierto();
+  }, () => { normalizarPerfil().horasSemana = 10; }));
+  prueba("«Sigue donde lo dejaste»: tu último apunte y te lleva a él", () => enSeccion("escritorio", async () => {
+    const b = $('.hy-sigue [data-hy-apunte="a2"]');
+    esperar(!!b).cierto();
+    esperar(b.textContent).contiene("Herencia");
+    esperar($(".hy-sigue").textContent).noContiene("Viejo");
+    b.click(); await dormir(10);
+    esperar(seccion).igualA("apuntes");
+    esperar(apunteActivo).igualA("a2");
+  }, () => { S.apuntes = {
+    a1: { id: "a1", titulo: "Viejo", modId: "pro", html: "<div>x</div>", cuerpo: "x", editado: sumaDias(hoyISO(), -9) + "T10:00:00.000Z" },
+    a2: { id: "a2", titulo: "Herencia", modId: "pro", html: "<div>y</div>", cuerpo: "y", editado: new Date().toISOString() } }; }));
+  prueba("sin apuntes, ni mochila, ni palabras, no sale", () => enSeccion("escritorio", () => {
+    esperar(!!$(".hy-sigue")).falso();
+  }, () => { S.apuntes = {}; S.casillero = {}; S.vocab = []; }));
+});

@@ -2,7 +2,7 @@
 <html lang="es">
 <head>
 <meta charset="utf-8">
-<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no, viewport-fit=cover">
 <title>GritNook · Organiza tu estudio: oposiciones, FP y universidad</title>
 <meta name="description" content="Organiza tu estudio alrededor de tu trabajo y tu tiempo libre: plan diario, notas, simulacros de oposición, apuntes y repaso. Gratis y sin anuncios.">
 <link rel="canonical" href="https://gritnook.com/">
@@ -3312,6 +3312,34 @@ body.nuevo .ls-tit{font:600 15px/1.3 var(--sans)}
 .hy-mini{min-height:30px; padding:0 12px; border-radius:999px; border:1px solid var(--line-2); background:var(--surface); color:var(--ink); font:600 12.5px/1 var(--sans); cursor:pointer}
 .hy-ok{color:var(--verde-texto, #15803D)} .hy-ok svg{width:18px; height:18px}
 
+/* lo que llevas hoy, dentro de la sesión (tarjeta oscura) */
+.hy-llevas{display:grid; gap:10px; margin-top:8px; padding-top:14px; border-top:1px solid color-mix(in srgb, var(--surface) 16%, transparent)}
+.hy-llevas-t{font:600 13px/1 var(--sans); color:color-mix(in srgb, var(--surface) 70%, transparent)}
+.hy-llevas-t b{color:var(--surface); font-weight:700}
+.hy-llevas-l{display:flex; flex-wrap:wrap; gap:8px}
+.hy-llevas-l span{display:inline-flex; align-items:center; gap:7px; padding:7px 11px; border-radius:99px; background:color-mix(in srgb, var(--surface) 10%, transparent); font:700 12px/1 var(--mono); color:var(--surface)}
+.hy-llevas-l i{width:8px; height:8px; border-radius:50%; background:var(--c)}
+.hy-llevas-l b{font:600 12.5px/1 var(--sans); opacity:.8}
+.hy-llevas-v{margin:0; font-size:13px; color:color-mix(in srgb, var(--surface) 62%, transparent)}
+/* esta semana: lo que llevas de tu meta */
+.hy-sem-meta{display:grid; gap:8px; margin-top:4px}
+.hy-sem-meta p{margin:0; font-size:13.5px; color:var(--ink-2)}
+.hy-sem-meta b{font:700 15px/1 var(--sans); color:var(--ink)}
+.hy-sem-barra{height:8px; border-radius:99px; background:var(--surface-2); overflow:hidden}
+.hy-sem-barra i{display:block; height:100%; border-radius:99px; background:var(--acento)}
+/* sigue donde lo dejaste */
+.hy-sigue{grid-column:1 / -1}
+.hy-sig-rej{display:grid; grid-template-columns:repeat(auto-fit, minmax(min(100%, 240px), 1fr)); gap:12px}
+.hy-sig{display:grid; grid-template-columns:auto minmax(0, 1fr) auto; gap:12px; align-items:center; padding:12px 14px; border-radius:16px; border:1px solid var(--line); background:var(--surface-2); color:var(--ink); font:inherit; text-align:left; cursor:pointer; transition:background .15s, transform .15s}
+.hy-sig:hover{background:color-mix(in srgb, var(--c, var(--acento)) 10%, var(--surface-2)); transform:translateY(-1px)}
+.hy-sig-ico{width:40px; height:40px; border-radius:12px; display:grid; place-items:center; background:var(--surface); color:var(--c, var(--acento-txt)); box-shadow:inset 0 0 0 1px var(--line)}
+.hy-sig-ico svg{width:20px; height:20px}
+.hy-sig-t{display:grid; gap:3px; min-width:0}
+.hy-sig-t small{font:600 11.5px/1 var(--sans); letter-spacing:.06em; text-transform:uppercase; color:var(--ink-3)}
+.hy-sig-t b{font:700 14.5px/1.25 var(--sans); overflow:hidden; text-overflow:ellipsis; white-space:nowrap}
+.hy-sig-t em{font-style:normal; font-size:12.5px; color:var(--ink-3); overflow:hidden; text-overflow:ellipsis; white-space:nowrap}
+.hy-sig .hm-chev{width:16px; height:16px; color:var(--ink-4)}
+
 /* el ordenador: tres columnas que llenan el ancho */
 @media (min-width:1100px){
   .hy-rejilla{grid-template-columns:repeat(3, minmax(0,1fr))}
@@ -3320,6 +3348,7 @@ body.nuevo .ls-tit{font:600 15px/1.3 var(--sans)}
   .hy-proximo{grid-column:3; grid-row:1}
   .hy-semana{grid-column:1; grid-row:2}
   .hy-hoytoca{display:grid; grid-column:3; grid-row:2}
+  .hy-sigue{grid-row:3}
 }
 @media (min-width:881px) and (max-width:1099px){
   .hy-hoytoca{display:grid; grid-column:1 / -1}
@@ -3447,11 +3476,14 @@ body.nuevo .ls-tit{font:600 15px/1.3 var(--sans)}
 .ax-t b{font:600 14.5px/1.3 var(--sans); display:-webkit-box; -webkit-line-clamp:2; -webkit-box-orient:vertical; overflow:hidden}
 .ax-t small{display:flex; flex-wrap:wrap; gap:8px; align-items:center; font:500 12px/1 var(--sans); color:var(--ink-3)}
 .ax-cod{font:700 12px/1 var(--mono); color:color-mix(in srgb, var(--c) 75%, var(--ink))}
+.ax-evento{padding:3px 8px; border-radius:99px; background:var(--acento-suave, color-mix(in srgb, var(--acento) 14%, transparent)); color:var(--acento-txt); font-weight:600}
 .ax-examen{padding:3px 8px; border-radius:99px; background:color-mix(in srgb, #DB2777 13%, transparent); color:#DB2777; font-weight:600}
 .ax-horas{font:600 13px/1 var(--sans); font-variant-numeric:tabular-nums; color:var(--ink-3); white-space:nowrap}
 .ax-hechas summary{list-style:none; cursor:pointer}
 .ax-hechas summary::-webkit-details-marker{display:none}
 .ax-hechas:not([open]) h3{margin-bottom:0}
+/* un evento sin asignatura, en el morado de la app también en el mes y en la semana */
+[data-el^="evento|"][style=""]{--c:var(--acento)}
 /* las secciones sencillas: sus estilos van con los de «Hoy» (lanz/hoy.css) */
 /* ══ Mochila: tarjetas con su vista previa, ordenadas por asignatura ══ */
 .mc-btns{display:flex; gap:8px; align-items:center; flex-wrap:wrap}
@@ -3760,6 +3792,139 @@ body.nuevo .ls-tit{font:600 15px/1.3 var(--sans)}
   .ix-grande{font-size:26px}
   .ix-linea{grid-template-columns:minmax(0, 1fr) minmax(0, 1fr)}
   .ix-linea .btn{grid-column:1 / -1}
+}
+/* ══ el móvil, como una app: sin zoom, sin rebote de página y sin que el iPhone acerque al escribir ══ */
+html{touch-action:manipulation; -webkit-tap-highlight-color:transparent}
+html, body{overscroll-behavior:none}
+body{overflow-x:hidden}
+.riel, .barra-movil, .bm-item, .riel-item, .hm-item, .sx-seg-b, .sx-chip, .btn, button{-webkit-user-select:none; user-select:none; -webkit-touch-callout:none}
+@media (max-width:880px){
+  /* por debajo de 16 px, el iPhone acerca la página al tocar un campo */
+  input:not([type="range"]):not([type="checkbox"]):not([type="radio"]):not([type="color"]), select, textarea{font-size:max(16px, 1em)}
+}
+@media (max-width:880px){
+  /* las pestañas (Agenda, Idiomas…) ocupan el ancho justo, repartidas, y nunca se salen */
+  .sx-seg{display:flex; width:100%; max-width:100%; box-sizing:border-box}
+  .sx-seg-b{flex:1 1 0; min-width:0; padding:0 6px; min-height:40px; overflow:hidden; text-overflow:ellipsis; white-space:nowrap}
+  /* lo que se pulsa, de 40 px como poco */
+  #btnICS, .mc-btns .btn{min-height:40px}
+  .ax-hechas summary{min-height:40px; display:flex; align-items:center}
+}
+/* la barra de abajo: el icono de «Más» del mismo tamaño que los demás, para que su nombre no quede debajo de la pastilla */
+.bm-item svg{width:24px; height:24px; flex:0 0 24px}
+.bm-item > span{position:relative; z-index:1}
+/* ══ Oposición sencilla: tu camino al examen, lo de hoy, simulacros contra el corte ══ */
+.oz{display:grid; gap:16px}
+/* en el móvil, una columna en este orden: hoy, simulacros, prueba, lo que se enfría y lo flojo */
+.oz-izq, .oz-der{display:contents}
+.oz-hero{order:0} .oz-hoy{order:1} .oz-sim{order:2} .oz .prb-entrada{order:3} .oz-frios{order:4} .oz-flojos{order:5}
+.oz > *, .oz-izq > *, .oz-der > *{min-width:0; margin:0}
+/* en el ordenador, dos columnas que se rellenan solas, sin huecos */
+@media (min-width:1100px){
+  .oz{grid-template-columns:minmax(0, 7fr) minmax(0, 5fr); gap:20px; align-items:start}
+  .oz-hero{grid-column:1 / -1}
+  .oz-izq, .oz-der{display:grid; gap:20px; align-content:start; min-width:0}
+}
+.oz-tabs{margin-top:4px}
+/* «Ponte a prueba», como las demás tarjetas */
+body.nuevo .oz .prb-entrada{display:grid; gap:12px; justify-items:start; padding:20px; border-radius:20px}
+body.nuevo .oz .prb-entrada .etq{font:700 17px/1.25 var(--sans); letter-spacing:-.01em; text-transform:none; color:var(--ink)}
+body.nuevo .oz .prb-entrada .meta{font-size:14px; color:var(--ink-2)}
+/* tu camino al examen */
+.oz-hero{display:grid; grid-template-columns:auto auto minmax(0, 1fr); gap:28px; align-items:center; padding:26px 28px; border-radius:24px;
+  background:linear-gradient(135deg, color-mix(in srgb, var(--acento) 14%, var(--surface)), color-mix(in srgb, #db2777 7%, var(--surface))); border:1px solid color-mix(in srgb, var(--acento) 22%, var(--line))}
+.oz-cuenta{display:grid; gap:4px; justify-items:start; padding-right:28px; border-right:1px solid color-mix(in srgb, var(--acento) 20%, var(--line))}
+.oz-cuenta > b{font:800 64px/1 var(--sans); font-variant-numeric:tabular-nums; letter-spacing:-.04em; color:var(--acento-txt)}
+.oz-cuenta > span{font:600 14px/1.2 var(--sans); color:var(--ink-2)}
+.oz-etapa{margin-top:6px; padding:5px 11px; border-radius:99px; font:700 12px/1 var(--sans); font-style:normal; letter-spacing:.02em}
+.oz-etapa.margen{background:color-mix(in srgb, #16a34a 14%, transparent); color:var(--oz-verde, #15803d)}
+.oz-etapa.paso{background:color-mix(in srgb, var(--acento) 16%, transparent); color:var(--acento-txt)}
+.oz-etapa.final{background:color-mix(in srgb, #ea580c 16%, transparent); color:var(--oz-naranja, #c2410c)}
+.oz-etapa.semana, .oz-etapa.hoy{background:color-mix(in srgb, #db2777 16%, transparent); color:var(--oz-rosa, #be185d)}
+.oz-vuelta{display:flex; align-items:center; gap:14px}
+.oz-aro{width:112px; height:112px; flex:0 0 112px}
+.oz-pista{fill:none; stroke:color-mix(in srgb, var(--acento) 14%, var(--surface-2)); stroke-width:12}
+.oz-lleno{fill:none; stroke:var(--acento); stroke-width:12; stroke-linecap:round; transform:rotate(-90deg); transform-origin:60px 60px}
+.oz-aro-n{font:800 34px/1 var(--sans); fill:var(--ink); text-anchor:middle}
+.oz-aro-t{font:600 12px/1 var(--sans); fill:var(--ink-3); text-anchor:middle}
+.oz-vuelta-t{display:grid; gap:4px}
+.oz-eti{font:700 12px/1 var(--sans); letter-spacing:.08em; text-transform:uppercase; color:var(--ink-3)}
+.oz-vuelta-t b{font:800 20px/1.15 var(--sans); letter-spacing:-.02em}
+.oz-vuelta-t small{font-size:13px; color:var(--ink-2)}
+.oz-ritmo{display:grid; gap:10px; min-width:0}
+.oz-ritmo p{margin:0; font-size:14.5px; color:var(--ink-2)}
+.oz-ritmo p b{color:var(--ink); font-weight:800}
+.oz-va{justify-self:start; padding:5px 11px; border-radius:99px; font:700 12px/1 var(--sans); font-style:normal}
+.oz-va.bien{background:color-mix(in srgb, #16a34a 14%, transparent); color:var(--oz-verde, #15803d)}
+.oz-va.corto{background:color-mix(in srgb, #ea580c 16%, transparent); color:var(--oz-naranja, #c2410c)}
+.oz-barra{display:flex; gap:3px; height:10px; border-radius:99px; overflow:hidden; background:var(--surface-2)}
+.oz-barra i{display:block; min-width:4px}
+.oz-ley{font-size:12.5px; color:var(--ink-3)}
+/* simulacros */
+.oz-sim-ult{margin:0; font-size:14px; color:var(--ink-2)}
+.oz-sim-ult b{font:800 18px/1.2 var(--sans); color:var(--ink)}
+.oz-barras{position:relative; height:120px; margin-top:16px; display:grid; grid-auto-flow:column; grid-auto-columns:minmax(0, 1fr); gap:8px}
+.oz-col{position:relative; height:100%; display:flex; align-items:flex-end; justify-content:center}
+.oz-col i{display:block; width:100%; max-width:36px; height:var(--h); min-height:3px; border-radius:8px 8px 3px 3px; background:color-mix(in srgb, var(--acento) 40%, var(--surface-2))}
+.oz-col.pasa i{background:var(--acento)}
+.oz-col:last-child i{box-shadow:0 0 0 2px color-mix(in srgb, var(--acento) 35%, transparent)}
+.oz-corte{position:absolute; left:-4px; right:-4px; height:0; border-top:2px dashed color-mix(in srgb, #db2777 70%, transparent); z-index:1; pointer-events:none}
+.oz-corte em{position:absolute; right:0; top:-17px; font:700 11.5px/1 var(--sans); font-style:normal; color:var(--oz-rosa, #be185d); background:var(--surface); padding:0 4px}
+/* las filas de temas, más limpias */
+body.nuevo .oz .opo-lista{display:grid}
+/* de noche, los colores un punto más claros para que se lean */
+:root[data-theme="dark"] body.nuevo{--oz-verde:#4ade80; --oz-naranja:#fb923c; --oz-rosa:#f472b6}
+@media (prefers-color-scheme: dark){:root:not([data-theme="light"]) body.nuevo{--oz-verde:#4ade80; --oz-naranja:#fb923c; --oz-rosa:#f472b6}}
+@media (max-width:520px){
+  .oz-tabs{gap:2px}
+  .oz-tabs .sx-seg-b{flex:1 1 auto; padding:0 4px}
+  .oz-largo{display:none}
+}
+@media (max-width:880px){
+  .oz-hero{grid-template-columns:minmax(0, 1fr); gap:18px; padding:22px 20px}
+  .oz-cuenta{padding-right:0; border-right:0; padding-bottom:16px; border-bottom:1px solid color-mix(in srgb, var(--acento) 20%, var(--line)); grid-template-columns:auto 1fr; align-items:end; column-gap:12px}
+  .oz-cuenta > b{font-size:52px; grid-row:span 2}
+  .oz-aro{width:96px; height:96px; flex-basis:96px}
+}
+/* ══ el tutorial: la tarjeta flotante y el menú en gris ══ */
+.tut-carta{position:fixed; z-index:44; right:28px; bottom:28px; width:min(380px, calc(100vw - 32px)); padding:16px 16px 14px; border-radius:22px;
+  background:color-mix(in srgb, var(--surface) 86%, transparent); backdrop-filter:saturate(1.6) blur(18px); -webkit-backdrop-filter:saturate(1.6) blur(18px);
+  border:1px solid color-mix(in srgb, var(--acento) 22%, var(--line)); box-shadow:0 18px 50px -12px rgba(30,20,70,.35), 0 2px 6px rgba(30,20,70,.08);
+  animation:tutEntra .38s var(--ease-salto, cubic-bezier(.2,.9,.3,1.2))}
+.tut-carta[hidden]{display:none}
+@keyframes tutEntra{from{opacity:0; transform:translateY(14px) scale(.98)} to{opacity:1; transform:none}}
+.tut-cab{display:flex; align-items:center; gap:12px}
+.tut-ico{display:grid; place-items:center; flex:0 0 40px; width:40px; height:40px; border-radius:12px; background:color-mix(in srgb, var(--acento) 14%, var(--surface)); color:var(--acento-txt)}
+.tut-ico svg{width:22px; height:22px}
+.tut-tits{display:grid; gap:2px; min-width:0; flex:1}
+.tut-paso{font:700 11.5px/1 var(--sans); letter-spacing:.06em; text-transform:uppercase; color:var(--ink-3)}
+.tut-tit{font:800 18px/1.2 var(--sans); letter-spacing:-.01em; color:var(--ink)}
+.tut-saltar{align-self:flex-start; min-height:32px; padding:0 10px; border:0; border-radius:99px; background:none; color:var(--ink-3); font:600 13px/1 var(--sans); cursor:pointer}
+.tut-saltar:hover{background:var(--surface-2); color:var(--ink)}
+.tut-barra{display:flex; gap:4px; margin:12px 0 10px}
+.tut-barra i{flex:1; height:4px; border-radius:99px; background:var(--surface-2)}
+.tut-barra i.on{background:color-mix(in srgb, var(--acento) 45%, var(--surface-2))}
+.tut-barra i.aqui{background:var(--acento)}
+.tut-txt{margin:0; font-size:14.5px; line-height:1.45; color:var(--ink-2)}
+.tut-pie{display:flex; justify-content:flex-end; margin-top:12px}
+.tut-pie .btn{min-height:42px; gap:8px}
+.tut-pie .btn svg{width:16px; height:16px; fill:currentColor; stroke:none; opacity:1}
+/* el menú mientras dura: lo que falta, en gris; lo siguiente, con un aro que respira */
+.tut-gris{opacity:.36; filter:grayscale(1); transition:opacity .3s, filter .3s}
+.tut-gris:hover, .tut-gris:focus-visible{opacity:.7}
+.tut-sig{opacity:1; filter:none; position:relative}
+.tut-sig::after{content:""; position:absolute; inset:2px; border-radius:12px; box-shadow:0 0 0 2px var(--acento); animation:tutRespira 1.8s ease-in-out infinite; pointer-events:none}
+.tut-sig.tut-gris{opacity:.85; filter:grayscale(.4)}
+@keyframes tutRespira{0%, 100%{opacity:.25} 50%{opacity:1}}
+.tut-recien{animation:tutAbre .6s var(--ease-salto, cubic-bezier(.2,.9,.3,1.2))}
+@keyframes tutAbre{0%{transform:scale(.86); filter:grayscale(1)} 60%{transform:scale(1.08)} 100%{transform:none; filter:none}}
+@media (prefers-reduced-motion: reduce){ .tut-sig::after, .tut-recien, .tut-carta{animation:none} .tut-sig::after{opacity:.8} }
+/* en el móvil, encima de la barra de abajo, y con sitio al final para leerlo todo */
+@media (max-width:880px){
+  .tut-carta{left:16px; right:16px; width:auto; bottom:calc(80px + env(safe-area-inset-bottom)); padding:14px 14px 12px}
+  body.con-tut #principal{padding-bottom:calc(var(--tut-h, 190px) + 90px)}
+  .bm-item.tut-sig::after{inset:auto; top:2px; left:50%; width:46px; height:30px; margin-left:-23px; border-radius:10px}
+  .hm-fila.tut-sig::after{inset:2px; height:auto}
 }
 </style>
 </head>
@@ -5599,7 +5764,7 @@ function pintaNav() {
   pintaMini();
   pintaCabYo();
 }
-function pintaBarraMovil() {
+function pintaBarraMovilBase() {
   const b = $("#barraMovil"), h = $("#hojaMas"); if (!b) return;
   const c = cuentasNav(), enMas = !enBarra().includes(seccion), abierta = h && !h.hidden;
   const deMas = secVisibles().map(s => s.id).filter(id => !enBarra().includes(id)).reduce((s, id) => s + (c[id] || 0), 0);
@@ -7243,7 +7408,7 @@ function opoAlertaPlazo() {
   return (a ? banda("calendario", a.txt, `<button type="button" class="btn mini" data-opo-presentada>Ya la he presentado</button>`, a.tipo) : "") + opoAlertaHitos();
 }
 
-function vistaOposicion() {
+function vistaOposicionAntigua() {
   const O = normalizarOpo(), p = normalizarPerfil();
   const nombre = p.ciclo || "Tu oposición";
   const pl = planOpo();
@@ -8125,7 +8290,7 @@ function eventosCalendario(hoy = hoyISO()) {
   });
   (S.tareas || []).forEach(t => {
     if (t.hecha || !esFecha(t.fecha) || t.fecha < hoy) return;
-    ev.push({ uid: "en-" + t.id, titulo: "Entregar: " + (t.titulo || "Entrega"), fecha: t.fecha, hora: /^\d{1,2}:\d{2}$/.test(t.hora || "") ? t.hora : "",
+    ev.push({ uid: "en-" + t.id, titulo: (t.evento ? "" : "Entregar: ") + (t.titulo || "Entrega"), fecha: t.fecha, hora: /^\d{1,2}:\d{2}$/.test(t.hora || "") ? t.hora : "",
       minutos: 30, desc: [mod(t.modId), t.peso ? "Vale el " + num(t.peso) + " % de la nota" : ""].filter(Boolean).join("\n") });
   });
   if (esOpositor()) {
@@ -9697,6 +9862,7 @@ function abrirYo(boton) {
     <div class="ym-cab">${avatarYo("med")}<div class="ym-quien"><b>${esc(miNombre() || "Tú")}</b><span>${esc(donde)}</span></div></div>
     <button type="button" role="menuitem" class="ym-item" data-yo="perfil">${icono("yo")}Tu perfil y tu foto</button>
     <button type="button" role="menuitem" class="ym-item" data-yo="ajustes">${icono("ajustes")}Ajustes</button>
+    <button type="button" role="menuitem" class="ym-item" data-yo="tutorial">${icono("chispa")}Ver el tutorial</button>
     ${instalarItemYo()}
     ${conCuenta ? `<div class="ym-sep" role="separator"></div>
     <button type="button" role="menuitem" class="ym-item" data-yo="salir">${icono("salir")}Cerrar sesión</button>` : ""}`;
@@ -9730,6 +9896,7 @@ alEvento("click", e => {
     else if (q === "ajustes") irASeccion("ajustes");
     else if (q === "salir") salirCuenta();
     else if (q === "instalar") instalarApp();
+    else if (q === "tutorial") tutEmpezar();
     return;
   }
   if (YO.abierto && !t.closest("#yoMenu")) cerrarYo();
@@ -13290,8 +13457,8 @@ function avisosProximos(ahora = Date.now(), desde = ahora - 60000) {
   if (pr.entregas) (S.tareas || []).forEach(t => {
     if (t.hecha || !esFecha(t.fecha) || t.fecha < hoy) return;
     const q = [t.titulo || "Entrega", de(t.modId)].filter(Boolean).join(" · ");
-    pon("en-" + t.id + "-1", enHora(sumaDias(t.fecha, -1), 19), "Mañana se entrega", q, "entregas");
-    pon("en-" + t.id + "-0", enHora(t.fecha, 8), "Hoy se entrega", q, "entregas");
+    pon("en-" + t.id + "-1", enHora(sumaDias(t.fecha, -1), 19), t.evento ? "Mañana" + (t.hora ? " a las " + t.hora : "") : "Mañana se entrega", q, "entregas");
+    pon("en-" + t.id + "-0", enHora(t.fecha, 8), t.evento ? "Hoy" + (t.hora ? " a las " + t.hora : "") : "Hoy se entrega", q, "entregas");
   });
   if (pr.opo && esOpositor()) {
     const O = normalizarOpo(), cv = O.convocatoria, nombre = normalizarPerfil().ciclo || "Tu oposición";
@@ -14284,7 +14451,7 @@ function anilloRepaso() {
 }
 function anilloEntregas() {
   const hoy = hoyISO(), lunes = lunesDe(hoy), domingo = sumaDias(lunes, 6);
-  const sem = (S.tareas || []).filter(t => t.fecha && t.fecha >= lunes && t.fecha <= domingo);
+  const sem = (S.tareas || []).filter(t => !t.evento && t.fecha && t.fecha >= lunes && t.fecha <= domingo);
   const hechas = sem.filter(t => t.hecha).length;
   return { hechas, total: sem.length, pct: sem.length ? hechas / sem.length : 0, txt: sem.length ? hechas + "/" + sem.length : "—" };
 }
@@ -14316,6 +14483,12 @@ function rachaAmable() {
   }
   return n;
 }
+/* cuánto llevas esta semana contra lo que te propusiste */
+function semMetaHTML() {
+  const min = (horasPorSemana(1)[0] || {}).total || 0, meta = num(normalizarPerfil().horasSemana, 0) * 60 || S.modulos.reduce((s, m) => s + num(m.metaSemanal) * 60, 0);
+  return `<div class="hy-sem-meta"><p><b>${horasTxt(min)}</b> ${meta ? "de " + horasTxt(meta) + " esta semana" : "esta semana"}</p>
+    ${meta ? `<div class="hy-sem-barra" role="progressbar" aria-label="Horas de la semana" aria-valuemin="0" aria-valuemax="${meta}" aria-valuenow="${min}"><i style="width:${clamp(min / meta * 100, 0, 100).toFixed(1)}%"></i></div>` : ""}</div>`;
+}
 function semanaHTML() {
   const p = normalizarPerfil(), dias = hoyDiasEstudio(), desc = p.descansos || {}, hoy = hoyISO(), lunes = lunesDe(hoy), n = rachaAmable();
   const letra = { lun: "L", mar: "M", mie: "X", jue: "J", vie: "V", sab: "S", dom: "D" };
@@ -14331,6 +14504,7 @@ function semanaHTML() {
     <h2 id="hySemTit"><span class="hy-n">${n}</span> ${n === 1 ? "día" : "días"} de constancia</h2>
     <p class="hy-sub">Los días de descanso no rompen tu racha.</p>
     <div class="hy-dias">${sem}</div>
+    ${semMetaHTML()}
     ${puedeDescansar ? `<button type="button" class="hy-enlace" data-hy="descanso">${desc[hoy] ? "Quitar el descanso de hoy" : "Hoy descanso"}</button>` : ""}
   </section>`;
 }
@@ -14363,8 +14537,45 @@ function sesionHTML() {
       <button type="button" class="hy-btn-sombra" id="btnReset">Reiniciar</button>
       <button type="button" class="hy-btn-sombra" id="btnManual">${icono("mas")}30 min</button>
     </div>
+    ${llevasHTML()}
   </section>`;
 }
+/* lo que llevas hoy, por asignatura (llena la parte de abajo de la sesión) */
+function llevasHTML() {
+  const hoy = hoyISO(), L = S.modulos.map(x => ({ m: x, min: num((S.horas[x.id] || {})[hoy]) })).filter(x => x.min > 0).sort((a, b) => b.min - a.min);
+  const total = L.reduce((s, x) => s + x.min, 0);
+  return `<div class="hy-llevas">
+    <span class="hy-llevas-t">Hoy llevas <b>${horasTxt(total)}</b></span>
+    ${L.length ? `<div class="hy-llevas-l">${L.map(x => `<span style="${colorMod(x.m)}"><i></i>${esc(x.m.cod)}<b>${horasTxt(x.min)}</b></span>`).join("")}</div>`
+      : `<p class="hy-llevas-v">Aún nada. Pulsa «Empezar» y el tiempo cuenta solo.</p>`}
+  </div>`;
+}
+
+/* ── sigue donde lo dejaste ── */
+function sigueHTML() {
+  const hoy = hoyISO(), cuando = iso => { const f = iso ? hoyISO(iso) : ""; if (!f) return ""; const n = diasEntre(hoy, f); return n <= 0 ? "hoy" : n === 1 ? "ayer" : n < 7 ? "hace " + n + " días" : fechaCorta(f); };
+  const items = [];
+  const ap = Object.values(S.apuntes || {}).filter(n => n && n.id).sort((a, b) => (b.editado || "").localeCompare(a.editado || ""))[0];
+  if (ap) { const m = modPorId(ap.modId);
+    items.push(`<button type="button" class="hy-sig" data-hy-apunte="${ap.id}" style="${colorMod(m)}"><span class="hy-sig-ico">${icono("apuntes")}</span>
+      <span class="hy-sig-t"><small>Tu último apunte</small><b>${esc(ap.titulo || "Sin título")}</b><em>${esc([m && m.cod, ap.editado ? "editado " + cuando(ap.editado) : ""].filter(Boolean).join(" · "))}</em></span>${CHEVRON}</button>`); }
+  const doc = Object.values(S.casillero || {}).sort((a, b) => (b.creado || "").localeCompare(a.creado || ""))[0];
+  if (doc) { const m = modPorId(doc.modId);
+    items.push(`<button type="button" class="hy-sig" data-libro="${m ? m.id : SUELTOS}" data-doc="${doc.id}" style="${colorMod(m)}"><span class="hy-sig-ico">${icono("casillero")}</span>
+      <span class="hy-sig-t"><small>Lo último en tu mochila</small><b>${esc(doc.titulo)}</b><em>${esc([m && m.cod, hojaTipo(doc), cuando(doc.creado)].filter(Boolean).join(" · "))}</em></span>${CHEVRON}</button>`); }
+  const pal = (S.vocab || []).filter(v => !v.proximo || v.proximo <= hoy).length;
+  if (pal) items.push(`<button type="button" class="hy-sig" data-ir="ingles"><span class="hy-sig-ico">${icono("ingles")}</span>
+      <span class="hy-sig-t"><small>Idiomas</small><b>${pal} ${pal === 1 ? "palabra" : "palabras"} para hoy</b><em>Repásalas en un momento</em></span>${CHEVRON}</button>`);
+  if (!items.length) return "";
+  return `<section class="hy-tarjeta hy-sigue" aria-labelledby="hySigTit">
+    <div class="hy-cab"><h2 id="hySigTit">Sigue donde lo dejaste</h2></div>
+    <div class="hy-sig-rej">${items.join("")}</div>
+  </section>`;
+}
+alEvento("click", e => {
+  const a = e.target.closest && e.target.closest("[data-hy-apunte]"); if (!a) return;
+  apunteActivo = a.dataset.hyApunte; irASeccion("apuntes");
+});
 
 /* ── lo próximo que vence ── */
 function proximoHTML() {
@@ -14403,7 +14614,7 @@ function vistaEscritorio() {
       <h1 class="hy-hola">${saludo}${nombre ? ", " + esc(nombre) : ""}</h1></header>
     ${banda}
     <div class="hy-rejilla">
-      ${anillosHTML()}${sesionHTML()}${semanaHTML()}${esOpositor() ? opoTarjetaInicio() : proximoHTML()}${hoyTocaHTML()}
+      ${anillosHTML()}${sesionHTML()}${semanaHTML()}${esOpositor() ? opoTarjetaInicio() : proximoHTML()}${hoyTocaHTML()}${sigueHTML()}
     </div>
   </div>`;
 }
@@ -14473,7 +14684,7 @@ function vistaAgenda() {
   ${agTab === "lista" || agTab === "calendario" ? `
   <div class="ag-rapido sx-rapido">
     <span class="ag-mas">${icono("mas")}</span>
-    <input type="text" id="agRapido" placeholder="Añade algo: «examen de BD el jueves», «entregar la práctica 3 mañana»" autocomplete="off" aria-label="Añadir a la agenda">
+    <input type="text" id="agRapido" placeholder="Añade algo: «examen de BD el jueves», «cumpleaños de Ana el sábado»" autocomplete="off" aria-label="Añadir a la agenda">
     <div class="ag-entiende" id="agEntiende" aria-live="polite"></div>
   </div>` : ""}
   <div class="sx-cuerpo sx-ag-${agTab}">${cuerpo}</div>
@@ -14486,7 +14697,7 @@ const agMinutos = e => num(e.ref.horas, 0) * 60 || (e.tipo === "examen" ? 240 : 
 function agTiempoHTML() {
   const p = normalizarPerfil(), hoy = hoyISO(), hasta = sumaDias(hoy, 6);
   const tienes = num(p.horasSemana, 0) * 60 || S.modulos.reduce((s, m) => s + num(m.metaSemanal) * 60, 0);
-  const L = elementos().filter(e => e.estado !== "hecha" && e.fecha && e.fecha <= hasta);
+  const L = elementos().filter(e => e.tipo !== "evento" && e.estado !== "hecha" && e.fecha && e.fecha <= hasta);
   const piden = L.reduce((s, e) => s + agMinutos(e), 0), sobra = tienes - piden;
   const est = !L.length || sobra >= 0 ? "ok" : "justo";
   const frase = !L.length ? "Nada que entregar estos días. Tu tiempo es tuyo." : sobra >= 30 ? "Te da tiempo y te sobran " + horasTxt(sobra) + " para ti." : sobra >= 0 ? "Te da tiempo, justo." : "Vas justo: te faltan unas " + horasTxt(-sobra) + ".";
@@ -14507,10 +14718,10 @@ function agDiasHTML() {
   for (let i = 0; i < 7; i++) { const f = sumaDias(hoy, i); grupos.push([i === 0 ? "Hoy" : i === 1 ? "Mañana" : nombreDia(f), i < 2 ? corto(f) : cuandoTxt(i), e => e.fecha === f, ""]); }
   grupos.push(["Semana que viene", "", e => e.fecha >= sumaDias(hoy, 7) && e.fecha < sumaDias(hoy, 14), ""], ["Más adelante", "", e => e.fecha >= sumaDias(hoy, 14), ""], ["Sin fecha", "", e => !e.fecha, ""]);
   const fila = e => { const m = modPorId(e.modId), hecha = e.estado === "hecha";
-    return `<div class="ax-fila${hecha ? " hecha" : ""}" data-el="${e.tipo}|${e.id}" tabindex="0" style="${colorMod(m)}">
+    return `<div class="ax-fila${hecha ? " hecha" : ""}${e.tipo === "evento" ? " ev" : ""}" data-el="${e.tipo}|${e.id}" tabindex="0" style="${m ? colorMod(m) : "--c:var(--acento)"}">
       <button type="button" class="ax-check" data-ls-check="${e.tipo}|${e.id}" aria-pressed="${hecha}" aria-label="${hecha ? "Desmarcar" : "Marcar como hecho"}">${hecha ? icono("hecho") : ""}</button>
-      <span class="ax-t"><b>${esc(e.titulo || "Sin título")}</b><small>${m ? `<span class="ax-cod">${esc(m.cod)}</span>` : ""}${e.tipo === "examen" ? `<span class="ax-examen">Examen</span>` : ""}${e.hora ? `<span>${esc(e.hora)}</span>` : ""}</small></span>
-      ${hecha ? "" : `<span class="ax-horas" title="Lo que calculas que te llevará">~${horasTxt(agMinutos(e))}</span>`}
+      <span class="ax-t"><b>${esc(e.titulo || "Sin título")}</b><small>${m ? `<span class="ax-cod">${esc(m.cod)}</span>` : ""}${e.tipo === "examen" ? `<span class="ax-examen">Examen</span>` : e.tipo === "evento" ? `<span class="ax-evento">Evento</span>` : ""}${e.hora ? `<span>${esc(e.hora)}</span>` : ""}</small></span>
+      ${hecha || e.tipo === "evento" ? "" : `<span class="ax-horas" title="Lo que calculas que te llevará">~${horasTxt(agMinutos(e))}</span>`}
     </div>`; };
   const ordena = L => L.sort((a, b) => (a.fecha || "").localeCompare(b.fecha || "") || (a.hora || "").localeCompare(b.hora || ""));
   const hechas = els.filter(e => e.estado === "hecha").sort((a, b) => (b.fecha || "").localeCompare(a.fecha || "")).slice(0, 15);
@@ -15267,6 +15478,234 @@ alEvento("click", e => {
 });
 
 
+/* ══ el móvil, como una app ══
+   El zoom de la página no se usa: el pellizco de Safari se para aquí (Android ya
+   lo hace con la etiqueta viewport, y el doble toque lo quita touch-action en el
+   CSS). La libreta de Apuntes tiene su propio zoom con los dedos, que no depende
+   de esto. */
+document.addEventListener("gesturestart", e => { e.preventDefault(); }, { passive: false });
+document.addEventListener("gesturechange", e => { e.preventDefault(); }, { passive: false });
+
+
+/* ══════════════════ eventos libres ══════════════════
+   Además de entregas y exámenes, la Agenda guarda eventos con el título que
+   quieras (un cumpleaños, el médico, una quedada), sin asignatura si no la
+   eliges. Se guardan con las entregas (S.tareas) con la marca «evento», así
+   viajan con la cuenta como siempre. Al escribir en la barra de añadir, lo que
+   no lleva asignatura ni pinta de entrega o de examen se apunta como evento. */
+const EV_ENTREGA = "entreg\\w*|practicas?|trabajos?|ejercicios?|tareas?|deberes|proyectos?|redaccion|informes?|memoria|lecturas?|actividad\\w*";
+function entenderFrase(txt, base) {
+  const r = entenderFraseBase(txt, base);
+  if (r.tipo === "entrega" && !r.modId && String(txt || "").trim() && !reVoz(EV_ENTREGA).test(sinTildes(" " + String(txt || "") + " "))) r.tipo = "evento";
+  return r;
+}
+
+
+/* ══════════════════ oposición sencilla ══════════════════
+   La misma oposición (temario por vueltas, simulacros, plan y convocatoria),
+   en el estilo del resto de la app y sin cansar la vista:
+   · arriba, tu camino al examen en una sola tarjeta: la cuenta atrás con su
+     etapa (como las tarjetas de StudyFlow: margen, recta final, esta
+     semana), la vuelta en la que vas con su anillo y el ritmo que hace falta;
+   · debajo, lo de hoy y tus simulacros contra el corte (como OpositaTest);
+   · luego, lo que se enfría y tus temas flojos, cortos, con «ver todos».
+   Los últimos siete días se quedan en Progreso. Las pestañas y todo lo de
+   dentro (temario, simulacros, examen y plan) son lo de siempre. */
+const ozEtapa = d => d === undefined || d === null || d < 0 ? null : d === 0 ? ["hoy", "Es hoy"] : d <= 7 ? ["semana", "Esta semana"]
+  : d <= 30 ? ["final", "Recta final"] : d <= 90 ? ["paso", "A buen paso"] : ["margen", "Aún hay margen"];
+
+function ozHeroHTML(O, pl) {
+  const va = vueltaActual(), total = O.temas.length, obj = pl.objetivo;
+  const faltan = va === Infinity ? 0 : O.temas.filter(t => !t.dominado && vueltasDe(t) < va).length, hechos = total - faltan;
+  const pct = va === Infinity ? 1 : total ? hechos / total : 0, r = 50, L = 2 * Math.PI * r, et = ozEtapa(pl.dias);
+  const conteo = { dom: 0, v3: 0, v2: 0, v1: 0, nada: 0 }; O.temas.forEach(t => { conteo[estadoTema(t)]++; });
+  const trozo = (k, v) => v ? `<i class="opo-e-${k}" style="flex:${v}"></i>` : "";
+  const ritmo = pl.sinFecha ? "Pon la fecha del examen y te digo a qué ritmo ir."
+    : !isFinite(pl.porDia) ? "Ya no quedan días de estudio antes de los simulacros: repasa lo que se enfría y céntrate en los tests."
+    : `Hacen falta <b>${nota(pl.porDia)}</b> temas al día${pl.ritmo ? ` · tú llevas <b>${nota(pl.ritmo)}</b>` : ""}`;
+  const va2 = pl.ritmo && isFinite(pl.porDia) ? (pl.ritmo >= pl.porDia ? ["bien", "Vas bien"] : ["corto", "Te falta ritmo"]) : null;
+  return `<section class="oz-hero" aria-label="Tu camino al examen">
+    <div class="oz-cuenta">
+      ${pl.dias !== undefined && pl.dias >= 0 ? `<b>${pl.dias}</b><span>${pl.dias === 1 ? "día" : "días"} para el examen</span>${et ? `<em class="oz-etapa ${et[0]}">${et[1]}</em>` : ""}`
+        : `<b>—</b><span>${pl.pasado ? "El examen ya pasó" : "Sin fecha de examen"}</span><button type="button" class="ix-btn suave" data-opo-tab="examen">${pl.pasado ? "Cambiar la fecha" : "Ponerla"}</button>`}
+    </div>
+    <div class="oz-vuelta">
+      <svg class="oz-aro" viewBox="0 0 120 120" aria-hidden="true"><circle cx="60" cy="60" r="${r}" class="oz-pista"/>${pct > 0 ? `<circle cx="60" cy="60" r="${r}" class="oz-lleno" style="stroke-dasharray:${(L * pct).toFixed(1)} ${L.toFixed(1)}"/>` : ""}
+        <text x="60" y="58" class="oz-aro-n">${va === Infinity ? "✓" : Math.min(va, obj)}</text><text x="60" y="78" class="oz-aro-t">de ${obj}</text></svg>
+      <div class="oz-vuelta-t"><span class="oz-eti">${va === Infinity ? "Todo el temario" : "Vuelta " + Math.min(va, obj) + " de " + obj}</span>
+        <b>${va === Infinity ? "dominado" : faltan ? hechos + " de " + total + " temas" : "Vuelta cerrada"}</b>
+        <small>${va === Infinity ? "" : faltan ? "Te faltan " + faltan + (faltan === 1 ? " tema" : " temas") + " para cerrarla" : "¡A por la siguiente!"}</small></div>
+    </div>
+    <div class="oz-ritmo">
+      <p>${ritmo}</p>${va2 ? `<em class="oz-va ${va2[0]}">${va2[1]}</em>` : ""}
+      <div class="oz-barra" role="img" aria-label="Tu temario: ${conteo.dom} dominados, ${conteo.nada} sin empezar">${trozo("dom", conteo.dom)}${trozo("v3", conteo.v3)}${trozo("v2", conteo.v2)}${trozo("v1", conteo.v1)}${trozo("nada", conteo.nada)}</div>
+      <small class="oz-ley">${conteo.dom} dominados · ${conteo.v1 + conteo.v2 + conteo.v3} en marcha · ${conteo.nada} sin empezar</small>
+    </div>
+  </section>`;
+}
+
+/* tus simulacros contra la nota de corte, en barras */
+function ozSimHTML() {
+  const rs = resumenSimulacros(), corte = corteDe();
+  if (!rs.n) return `<section class="hy-tarjeta oz-sim" aria-labelledby="ozSimTit"><div class="hy-cab"><h2 id="ozSimTit">Simulacros</h2></div>
+    <p class="hy-sub">Apunta tu primer simulacro y verás aquí cómo vas contra la nota de corte.</p>
+    <button type="button" class="btn" data-opo-tab="simulacros">${icono("mas")}Apuntar un simulacro</button></section>`;
+  const L = rs.lista.slice(-8), max = Math.max(1, ...L.map(x => x.neta), corte ? corte.valor : 0) * 1.12;
+  const u = rs.ultima, encima = corte && u.neta >= corte.valor;
+  return `<section class="hy-tarjeta oz-sim" aria-labelledby="ozSimTit">
+    <div class="hy-cab"><h2 id="ozSimTit">Simulacros</h2><button type="button" class="hy-enlace" data-opo-tab="simulacros">Ver todos</button></div>
+    <p class="oz-sim-ult"><b>${nota(u.neta)} aciertos netos</b> · ${nota(u.nota10)} sobre 10</p>
+    <p class="hy-sub">${corte ? (encima ? "Por encima del corte (" + nota(corte.valor) + ")" : "Te faltan " + nota(corte.valor - u.neta) + " para el corte (" + nota(corte.valor) + ")") : "Pon una nota de corte en «Examen y plan» para compararte."}</p>
+    <div class="oz-barras" role="img" aria-label="Tus últimos ${L.length} simulacros">
+      ${corte ? `<span class="oz-corte" style="bottom:${(corte.valor / max * 100).toFixed(1)}%"><em>corte</em></span>` : ""}
+      ${L.map(x => `<span class="oz-col${corte && x.neta >= corte.valor ? " pasa" : ""}" style="--h:${(Math.max(0, x.neta) / max * 100).toFixed(1)}%" title="${esc(x.s.fecha ? fechaCorta(x.s.fecha) : "")}: ${nota(x.neta)} aciertos netos"><i></i></span>`).join("")}
+    </div>
+  </section>`;
+}
+
+function ozResumen() {
+  const O = normalizarOpo();
+  if (!O.temas.length) return opoMontar();
+  const pl = planOpo(), hoy = temasDeHoy(), frios = temasFrios(), flojos = temasFlojos();
+  const flojoTxt = x => x.tasa !== null ? Math.round(x.tasa * 100) + " % de fallos"
+    : x.fallosSim ? x.fallosSim + (x.fallosSim === 1 ? " fallo" : " fallos") + " en simulacros"
+    : x.prueba && x.prueba.pct < 50 ? x.prueba.pct + " % en tu última prueba" : "Marcado difícil";
+  return `${opoAlertaPlazo()}${opoRetoHTML()}
+  ${!O.examen.fecha || corteDe() === null ? opoMontar() : ""}
+  <div class="oz">
+    ${ozHeroHTML(O, pl)}
+    <div class="oz-izq"><section class="hy-tarjeta oz-hoy" aria-labelledby="ozHoyTit">
+      <div class="hy-cab"><h2 id="ozHoyTit">Hoy te tocan</h2><span class="hy-etq">${metaHoy(hoy)}</span></div>
+      ${hoy.lista.length ? `<div class="opo-lista">${hoy.lista.map(t => filaTema(t, txtVueltas(t))).join("")}</div>`
+        : `<p class="hy-sub">${hoy.hechos ? (frios.length ? "Plan de hoy hecho. Si te queda cuerda, repasa alguno de los que se enfrían." : "Plan de hoy hecho. Si te queda cuerda, adelanta uno.") : "Hoy no te toca ningún tema nuevo: repasa lo que se enfría o haz un test."}</p>
+          ${hoy.hechos && !frios.length ? `<button type="button" class="btn mini" id="opoUnoMas">${icono("mas")}Uno más</button>` : ""}`}
+    </section>
+    ${frios.length ? `<section class="hy-tarjeta oz-frios" aria-labelledby="ozFriTit">
+      <div class="hy-cab"><h2 id="ozFriTit">Se te están enfriando</h2>${frios.length > 4 ? `<button type="button" class="hy-enlace" data-opo-tab="temario">Ver los ${frios.length}</button>` : ""}</div>
+      <div class="opo-lista">${frios.slice(0, 4).map(t => filaTema(t, diasSinTocar(t) + " días sin tocarlo", "frio")).join("")}</div>
+    </section>` : ""}</div>
+    <div class="oz-der">${ozSimHTML()}${opoPruebaEntrada()}
+    ${flojos.length ? `<section class="hy-tarjeta oz-flojos" aria-labelledby="ozFloTit">
+      <div class="hy-cab"><h2 id="ozFloTit">Tus temas flojos</h2><span class="hy-etq">los que más fallas</span></div>
+      <div class="opo-lista">${flojos.slice(0, 4).map(x => `<div class="opo-fila">
+        <button type="button" class="opo-fila-t" data-opo-tema="${x.t.id}"><span class="opo-n">${x.t.n}</span><span class="opo-titulo">${esc(x.t.titulo)}</span></button>
+        <span class="opo-fila-e">${flojoTxt(x)}</span></div>`).join("")}</div>
+    </section>` : ""}</div>
+  </div>`;
+}
+
+function vistaOposicion() {
+  const O = normalizarOpo(), p = normalizarPerfil(), pl = planOpo(), nombre = p.ciclo || "Tu oposición";
+  let lead;
+  if (!O.temas.length) lead = "Monta tu oposición en tres pasos. Cuando esté, aquí verás cada día qué temas te tocan.";
+  else if (pl.sinFecha) lead = "Aún no hay fecha de examen. Ponla en «Examen y plan» cuando salga y te digo a qué ritmo ir.";
+  else if (pl.pasado) lead = "El examen ya pasó. Cambia la fecha si hay una convocatoria nueva.";
+  else if (pl.fase === "final") lead = "Recta final: toca simulacros y repasar lo que se enfría, no temas nuevos.";
+  else if (pl.llegas === false) lead = isFinite(pl.porDia) ? `A este ritmo no llegas a las ${pl.objetivo} vueltas: sube un poco el ritmo.` : "Ya no quedan días para dar todas las vueltas: repasa y céntrate en los tests.";
+  else if (pl.llegas) lead = `A tu ritmo llegas a las ${pl.objetivo} vueltas con margen. Sigue así.`;
+  else lead = `Tu plan para dar ${pl.objetivo} vueltas antes del examen.`;
+  return `<header class="sx-cab"><div><h1 class="sx-tit">${esc(nombre)}</h1><p class="sx-sub">${lead}</p></div></header>
+    ${opoTab !== "simulacros" ? opoMarcha(false) : ""}
+    <div class="sx-seg oz-tabs" role="tablist" aria-label="Partes de tu oposición">${OPO_TABS.map(([id, t]) => `<button type="button" role="tab" class="sx-seg-b" aria-selected="${opoTab === id}" data-opo-tab="${id}">${t.replace(" y plan", "<span class=\"oz-largo\"> y plan</span>")}</button>`).join("")}</div>
+    <div class="opo-cuerpo">${O.prueba ? opoPruebaPanel() : opoTab === "temario" ? opoTemario() : opoTab === "simulacros" ? opoSimulacros() : opoTab === "examen" ? opoExamen() : ozResumen()}</div>`;
+}
+
+
+/* ══════════════════ el tutorial, sección a sección ══════════════════
+   Al acabar la bienvenida, la app te enseña sus secciones de una en una:
+   empieza en Inicio con un mensaje corto y un «Pasar a Apuntes». Mientras
+   dura, las secciones que aún no has visto salen en gris en el menú y la
+   siguiente brilla; al entrar en una (con el botón o tocándola en el menú) se
+   desbloquea. Se puede saltar cuando quieras y volver a verlo desde tu perfil.
+   Se guarda en este dispositivo (desk-daw:tutorial) y no toca nada de dentro
+   de las secciones. */
+const TUT_ORDEN = ["escritorio", "apuntes", "entregas", "oposicion", "modulos", "repaso", "progreso", "casillero", "ingles"];
+const TUT_TXT = {
+  escritorio: () => (miNombre() ? "¡Hola, " + miNombreCorto() + "! " : "") + "Este es tu Inicio: lo que toca hoy y cómo va tu semana, al ritmo que te deje tu día.",
+  apuntes: () => "Tus apuntes, ordenados por asignatura. Escribe o dibuja y se guardan solos.",
+  entregas: () => "Entregas, exámenes y tus propios planes. Escribe «examen el jueves» o «cena con Ana el sábado» y se apunta solo.",
+  oposicion: () => "La cuenta atrás, tu temario por vueltas y tus simulacros contra la nota de corte.",
+  modulos: () => esOpositor() ? "Los bloques de tu temario y el tiempo que les dedicas cada semana." : "Tus asignaturas y sus notas: te dice qué te falta para aprobar cada una.",
+  repaso: () => "Tarjetas para repasar. Cada día salen solo las que tocan, para que no se te olvide nada.",
+  progreso: () => "Tus horas, tus rachas y tu mes, de un vistazo y sin agobios.",
+  casillero: () => "Tu mochila: PDF, fotos y archivos, en carpetas por tema.",
+  ingles: () => "Tus palabras de otros idiomas, que se repasan justo antes de que se te olviden."
+};
+const TUT_FLECHA = '<svg class="i" viewBox="0 0 256 256" aria-hidden="true"><path d="M221.66,133.66l-72,72a8,8,0,0,1-11.32-11.32L196.69,136H40a8,8,0,0,1,0-16H196.69L138.34,61.66a8,8,0,0,1,11.32-11.32l72,72A8,8,0,0,1,221.66,133.66Z"/></svg>';
+const tutPasos = () => { const v = secVisibles().map(s => s.id); return TUT_ORDEN.filter(id => v.includes(id)); };
+const tutEstado = () => { const t = leeLS("tutorial"); return t && t.on ? t : null; };
+let tutRecien = "";
+
+function tutEmpezar() {
+  guardaLS("tutorial", { on: true, vistas: [] });
+  cerrarYo(); irASeccion("escritorio");
+}
+function tutAcabar(saltado) {
+  guardaLS("tutorial", { on: false, vistas: tutPasos() }); marcarVisto("tutorial");
+  const c = $("#tutCarta"); if (c) c.remove();
+  document.body.classList.remove("con-tut");
+  pintaBarraMovil();
+  if (saltado) aviso("Vale. Si quieres verlo otra vez, está en tu perfil → «Ver el tutorial».");
+}
+
+/* el menú en gris mientras dura: lo visto, normal; lo que falta, en gris; lo siguiente, brillando */
+function tutMarcar() {
+  const t = tutEstado(), pasos = tutPasos();
+  const sig = t ? pasos.find(id => !t.vistas.includes(id)) : null;
+  document.querySelectorAll("#riel [data-sec], #barraMovil [data-sec], #hojaMas [data-sec]").forEach(b => {
+    const id = b.dataset.sec, paso = t && pasos.includes(id);
+    b.classList.toggle("tut-gris", !!(paso && !t.vistas.includes(id)));
+    b.classList.toggle("tut-sig", !!(paso && id === sig));
+    b.classList.toggle("tut-recien", !!(paso && id === tutRecien));
+  });
+  const mas = $("#bmMas");
+  if (mas) mas.classList.toggle("tut-sig", !!(sig && !enBarra().includes(sig)));
+}
+
+/* la tarjeta del paso en el que estás */
+function tutCarta() {
+  let c = $("#tutCarta");
+  const t = tutEstado();
+  if (!t || BV || typeof seccion === "undefined") { if (c) c.remove(); document.body.classList.remove("con-tut"); return; }
+  const pasos = tutPasos();
+  if (pasos.includes(seccion) && !t.vistas.includes(seccion)) {
+    t.vistas.push(seccion); guardaLS("tutorial", t);
+    if (seccion !== "escritorio") { tutRecien = seccion; setTimeout(() => { if (tutRecien === seccion) { tutRecien = ""; tutMarcar(); } }, 1200); }
+  }
+  /* dentro de un cuaderno abierto o en modo foco, la tarjeta se aparta */
+  const oculta = (seccion === "apuntes" && typeof libroAbierto !== "undefined" && libroAbierto) || document.body.classList.contains("foco");
+  if (!c) { c = document.createElement("section"); c.id = "tutCarta"; c.className = "tut-carta"; c.setAttribute("aria-label", "Tutorial"); document.body.appendChild(c); }
+  c.hidden = !!oculta; document.body.classList.toggle("con-tut", !oculta);
+  const sig = pasos.find(id => !t.vistas.includes(id)), aqui = pasos.includes(seccion) ? seccion : null;
+  const n = aqui ? pasos.indexOf(aqui) + 1 : t.vistas.length, total = pasos.length;
+  const barra = pasos.map(id => `<i class="${t.vistas.includes(id) ? "on" : ""}${id === aqui ? " aqui" : ""}"></i>`).join("");
+  const final = !sig && !aqui;
+  c.innerHTML = `<div class="tut-cab">
+      <span class="tut-ico" aria-hidden="true">${final ? icono("chispa") : iconoRiel(aqui || sig)}</span>
+      <div class="tut-tits"><span class="tut-paso">${final ? "Recorrido hecho" : aqui ? "Paso " + n + " de " + total : "Tu recorrido"}</span>
+        <b class="tut-tit">${final ? "¡Ya lo conoces todo!" : esc(nombreSec(aqui || sig))}</b></div>
+      ${sig ? `<button type="button" class="tut-saltar" data-tut-saltar>Saltar</button>` : ""}
+    </div>
+    <div class="tut-barra" aria-hidden="true">${barra}</div>
+    <p class="tut-txt">${esc(final ? "GritNook se adapta a tu tiempo libre, a tu trabajo y a tu vida. Empieza por lo de hoy, aunque sean diez minutos."
+      : aqui ? TUT_TXT[aqui]() : "Sigue el recorrido cuando quieras.")}</p>
+    <div class="tut-pie">${!sig ? `<button type="button" class="btn primario" data-tut-fin>${aqui ? "Terminar" : "Empezar"}</button>`
+      : `<button type="button" class="btn primario" data-tut-ir="${sig}">Pasar a ${esc(nombreSec(sig))}${TUT_FLECHA}</button>`}</div>`;
+}
+
+function pintaBarraMovil() {
+  pintaBarraMovilBase();
+  tutCarta(); tutMarcar();
+}
+
+alEvento("click", e => {
+  const t = e.target;
+  const ir = t.closest("[data-tut-ir]"); if (ir) { irASeccion(ir.dataset.tutIr); return; }
+  if (t.closest("[data-tut-saltar]")) { tutAcabar(true); return; }
+  if (t.closest("[data-tut-fin]")) { tutAcabar(false); irASeccion("escritorio"); aviso("¡Listo! Ya conoces GritNook: se adapta a tu tiempo libre, a tu trabajo y a tu vida."); }
+});
+
+
 /* ══════════════════ pintado ══════════════════ */
 function pinta() {
   if (BV) { pintaEntrada(); return; }
@@ -15646,7 +16085,7 @@ function tutorMirar() {
     ]));
   });
 
-  S.tareas.filter(t => !t.hecha && t.fecha).forEach(t => {
+  S.tareas.filter(t => !t.hecha && t.fecha && !t.evento).forEach(t => {
     const dd = diasEntre(t.fecha, hoy); if (dd < 0 || dd > 2) return;
     const m = modPorId(t.modId), cuando = dd === 0 ? "es para hoy" : dd === 1 ? "es para mañana" : "es pasado mañana";
     suelta("ent:" + t.id, "«" + t.titulo + "»" + (m ? " de " + m.cod : "") + " " + cuando + ". ¿Cómo lo llevas? Si te has atascado, dime en qué punto y lo vemos.");
@@ -16758,10 +17197,10 @@ function bvAplicar() {
   repartirMetas(p.horasSemana);
   guardar("perfil"); guardar("ajustes"); guardar("horas");
   tutorPresentarse();
-  const opoCat = BV.p.etapa === "oposicion" ? opoCatalogoDe(BV.p.ciclo) : null;
+  const opoCat = BV.p.etapa === "oposicion" ? opoCatalogoDe(BV.p.ciclo) : null, tutNuevo = !BV.reconfig;
   BV = null; $("#entrada").hidden = true; document.body.classList.remove("en-entrada");
   const nOpo = opoCat && !normalizarOpo().temas.length ? cargarCatalogo(opoCat, false) : 0;
-  seccion = esOpositor() ? "oposicion" : "escritorio"; pinta();
+  seccion = esOpositor() ? "oposicion" : "escritorio"; if (tutNuevo) tutEmpezar(); else pinta();
   aviso(nOpo ? "Listo. Tu temario del BOE ya está cargado: " + nOpo + " temas, con las reglas del examen." : "Listo. Tu curso ya está montado.");
 }
 
@@ -17345,7 +17784,7 @@ function estadoDe(ref, tipo) {
 }
 function elementos() {
   normalizarAgenda();
-  return S.tareas.map(t => ({ tipo: "entrega", id: t.id, ref: t, titulo: t.titulo, modId: t.modId, fecha: t.fecha || "", hora: t.hora || "", estado: estadoDe(t, "entrega") }))
+  return S.tareas.map(t => ({ tipo: t.evento ? "evento" : "entrega", id: t.id, ref: t, titulo: t.titulo, modId: t.modId, fecha: t.fecha || "", hora: t.hora || "", estado: estadoDe(t, "entrega") }))
     .concat(S.examenes.map(x => ({ tipo: "examen", id: x.id, ref: x, titulo: x.titulo, modId: x.modId, fecha: x.fecha || "", hora: x.hora || "", estado: estadoDe(x, "examen") })));
 }
 const elemento = (tipo, id) => elementos().find(e => e.tipo === tipo && e.id === id);
@@ -17354,7 +17793,7 @@ const examenesPendientes = () => { const hoy = hoyISO(); return elementos().filt
 const clasesDe = dia => { normalizarAgenda(); return S.horario.filter(b => b.dia === dia).sort((a, b) => a.ini.localeCompare(b.ini)); };
 function ponEstado(el, est) {
   el.ref.estado = est;
-  if (el.tipo === "entrega") { el.ref.hecha = est === "hecha"; el.ref.hechaEn = el.ref.hecha ? hoyISO() : ""; }
+  if (el.tipo !== "examen") { el.ref.hecha = est === "hecha"; el.ref.hechaEn = el.ref.hecha ? hoyISO() : ""; }
   guardar("agenda");
 }
 function ponFecha(el, fecha) { el.ref.fecha = fecha; guardar("agenda"); }
@@ -17366,7 +17805,7 @@ function ponFecha(el, fecha) { el.ref.fecha = fecha; guardar("agenda"); }
 const reVoz = s => new RegExp("(?<![\\p{L}\\d])(?:" + s + ")(?![\\p{L}\\d])", "iu");
 const sinTildes = s => s.normalize("NFD").replace(/[\u0300-\u036f]/g, "").toLowerCase();
 const DIA_TXT = { lunes: 0, martes: 1, miercoles: 2, jueves: 3, viernes: 4, sabado: 5, domingo: 6 };
-function entenderFrase(txt, base) {
+function entenderFraseBase(txt, base) {
   const hoy = base || hoyISO();
   let t = " " + String(txt || "") + " ", fecha = "", hora = "", tipo = "entrega", modId = "";
   const tomar = (re, fn) => { const m = t.match(re); if (!m) return false; const r = fn(m); if (r === false) return false; t = t.replace(m[0], " "); return true; };
@@ -17417,7 +17856,7 @@ function entenderFrase(txt, base) {
 }
 function crearElemento(e) {
   normalizarAgenda();
-  const modId = e.modId || (agFiltro.modId || (S.modulos[0] && S.modulos[0].id) || "");
+  const modId = e.tipo === "evento" ? (e.modId || "") : e.modId || (agFiltro.modId || (S.modulos[0] && S.modulos[0].id) || "");
   if (e.tipo === "examen") {
     const ex = { id: uid(), modId, titulo: (e.titulo || "Examen").slice(0, 120), fecha: e.fecha || "", hora: e.hora || "", peso: null, temas: "", nota: null, estado: e.estado || "pendiente", plan: [] };
     if (ex.fecha) ex.plan = planExamenLocal(ex);
@@ -17425,7 +17864,8 @@ function crearElemento(e) {
   }
   const t = { id: uid(), titulo: (e.titulo || "Sin título").slice(0, 120), modId, fecha: e.fecha || "", hora: e.hora || "", peso: null,
     hecha: e.estado === "hecha", hechaEn: e.estado === "hecha" ? hoyISO() : "", estado: e.estado || "pendiente", notas: "", sub: [] };
-  S.tareas.push(t); guardar("agenda"); return { tipo: "entrega", id: t.id };
+  if (e.tipo === "evento") t.evento = true;
+  S.tareas.push(t); guardar("agenda"); return { tipo: t.evento ? "evento" : "entrega", id: t.id };
 }
 
 /* ── el plan de la semana ── */
@@ -17523,7 +17963,7 @@ Reglas: solo fechas entre hoy y el día antes del examen, solo en los días que 
 
 /* ── piezas que se repiten: las propiedades como pastillas ── */
 const pillMod = m => `<span class="codigo" style="${colorMod(m)}">${m ? esc(m.cod) : "—"}</span>`;
-const pillTipo = tipo => `<span class="pill-tipo ${tipo}">${icono(tipo === "examen" ? "examen" : "entrega")}${tipo === "examen" ? "Examen" : "Entrega"}</span>`;
+const pillTipo = tipo => `<span class="pill-tipo ${tipo}">${icono(tipo === "examen" ? "examen" : tipo === "evento" ? "calendario" : "entrega")}${tipo === "examen" ? "Examen" : tipo === "evento" ? "Evento" : "Entrega"}</span>`;
 function pillFecha(f, est, hora) {
   if (!f) return `<span class="pill-fecha vacia">Sin fecha</span>`;
   const dd = diasEntre(f, hoyISO()), cls = est === "hecha" ? "" : dd < 0 ? " atrasada" : dd <= 2 ? " cerca" : "";
@@ -17646,16 +18086,16 @@ function peekHTML() {
   <div class="peek-fondo" data-peek-cerrar></div>
   <aside class="peek" role="dialog" aria-label="${esc(e.titulo)}" style="${colorMod(m)}">
     <div class="peek-cab">
-      <div class="peek-tipo">${[["entrega", "Entrega"], ["examen", "Examen"]].map(([v, t]) => `<button type="button" class="${e.tipo === v ? "sel" : ""}" data-peek-tipo="${v}">${icono(v)}${t}</button>`).join("")}</div>
+      <div class="peek-tipo">${[["entrega", "Entrega"], ["examen", "Examen"], ["evento", "Evento"]].map(([v, t]) => `<button type="button" class="${e.tipo === v ? "sel" : ""}" data-peek-tipo="${v}">${icono(v === "evento" ? "calendario" : v)}${t}</button>`).join("")}</div>
       <button type="button" class="icono-btn" data-peek-cerrar aria-label="Cerrar">${icono("cerrar")}</button>
     </div>
     <input type="text" class="peek-tit" id="pkTitulo" value="${esc(r.titulo)}" aria-label="Título">
     <div class="peek-props">
-      <label class="pp"><span>${esc(voc(false, true))}</span><select id="pkMod">${optsMods(r.modId)}</select></label>
+      <label class="pp"><span>${esc(voc(false, true))}</span><select id="pkMod">${e.tipo === "evento" ? `<option value=""${modPorId(r.modId) ? "" : " selected"}>Ninguna</option>` : ""}${optsMods(r.modId)}</select></label>
       <label class="pp"><span>Fecha</span><input type="date" id="pkFecha" value="${esc(r.fecha || "")}"></label>
       <label class="pp"><span>Hora</span><input type="time" id="pkHora" value="${esc(r.hora || "")}"></label>
       <div class="pp"><span>Estado</span><div class="pk-estados">${ESTADOS.map(([v, t]) => `<button type="button" class="${e.estado === v ? "sel" : ""}" data-pk-estado="${v}">${t}</button>`).join("")}</div></div>
-      <label class="pp"><span>Peso en la nota</span><input type="number" id="pkPeso" min="0" max="100" value="${r.peso === null || r.peso === undefined ? "" : num(r.peso)}" placeholder="%"></label>
+      ${e.tipo === "evento" ? "" : `<label class="pp"><span>Peso en la nota</span><input type="number" id="pkPeso" min="0" max="100" value="${r.peso === null || r.peso === undefined ? "" : num(r.peso)}" placeholder="%"></label>`}
       ${esEx ? `<label class="pp"><span>Nota</span><input type="number" id="pkNota" min="0" max="10" step="0.01" value="${r.nota === null || r.nota === undefined ? "" : r.nota}" placeholder="Cuando la sepas"></label>` : ""}
     </div>
     ${esEx ? `
@@ -17776,7 +18216,7 @@ function pintaEntiende() {
   const inp = $("#agRapido"), caja = $("#agEntiende"); if (!inp || !caja) return;
   const v = inp.value.trim(); if (!v) { caja.innerHTML = ""; return; }
   const e = entenderFrase(v), m = modPorId(e.modId);
-  caja.innerHTML = `${pillTipo(e.tipo)}${m ? pillMod(m) : `<span class="pill-fecha vacia">${esc(voc(false, true))}: ${esc((modPorId(agFiltro.modId) || S.modulos[0] || { cod: "—" }).cod)}</span>`}${e.fecha ? pillFecha(e.fecha, "", e.hora) : `<span class="pill-fecha vacia">Sin fecha</span>`}<span class="meta ag-intro">Intro para añadir</span>`;
+  caja.innerHTML = `${pillTipo(e.tipo)}${e.tipo === "evento" && !m ? "" : m ? pillMod(m) : `<span class="pill-fecha vacia">${esc(voc(false, true))}: ${esc((modPorId(agFiltro.modId) || S.modulos[0] || { cod: "—" }).cod)}</span>`}${e.fecha ? pillFecha(e.fecha, "", e.hora) : `<span class="pill-fecha vacia">Sin fecha</span>`}<span class="meta ag-intro">Intro para añadir</span>`;
 }
 function editarPeekCampo(id, v) {
   if (!agPeek) return;
@@ -17789,6 +18229,17 @@ function editarPeekCampo(id, v) {
 }
 /* cambiar una entrega en examen o al revés: se mueve de lista conservando lo común */
 function cambiarTipo(e, nuevo) {
+  if (e.tipo !== nuevo && (nuevo === "evento" || e.tipo === "evento") && nuevo !== "examen") {
+    if (e.tipo === "examen") {
+      S.examenes = S.examenes.filter(x => x.id !== e.ref.id);
+      agPeek = crearElemento({ titulo: e.ref.titulo, modId: "", fecha: e.ref.fecha, hora: e.ref.hora, estado: e.estado, tipo: "evento" });
+    } else {
+      e.ref.evento = nuevo === "evento";
+      if (!e.ref.evento && !modPorId(e.ref.modId) && S.modulos[0]) e.ref.modId = S.modulos[0].id;
+      agPeek = { tipo: nuevo, id: e.ref.id };
+    }
+    guardar("agenda"); return;
+  }
   if (e.tipo === nuevo) return;
   const r = e.ref, comun = { titulo: r.titulo, modId: r.modId, fecha: r.fecha, hora: r.hora, estado: e.estado };
   if (nuevo === "examen") { S.tareas = S.tareas.filter(t => t.id !== r.id); agPeek = crearElemento(Object.assign(comun, { tipo: "examen" })); const ex = S.examenes.find(x => x.id === agPeek.id); ex.temas = r.notas || ""; ex.peso = r.peso; }
@@ -17879,7 +18330,7 @@ alEvento("keydown", e => {
     t.value = ""; pintaEntiende();
     const m = modPorId(d.modId || agFiltro.modId || (S.modulos[0] && S.modulos[0].id));
     const dd = d.fecha ? diasEntre(d.fecha, hoyISO()) : null;
-    aviso((d.tipo === "examen" ? "Examen apuntado" : "Entrega apuntada") + (m ? " en " + m.cod : "") +
+    aviso((d.tipo === "examen" ? "Examen apuntado" : d.tipo === "evento" ? "Evento apuntado" : "Entrega apuntada") + (m && d.tipo !== "evento" ? " en " + m.cod : "") +
       (dd === null ? "" : dd === 0 ? " para hoy" : dd === 1 ? " para mañana" : " para el " + fechaCorta(d.fecha).toLowerCase()) + ".");
     if (d.fecha && agTab === "calendario") agMes = d.fecha.slice(0, 7) + "-01";
     pinta();
@@ -18292,7 +18743,7 @@ ICON_RIEL.panel = '<circle cx="96" cy="92" r="40" opacity="0.2"/><circle cx="96"
 ICON_RIEL.escritorio = '<circle cx="128" cy="128" r="70" fill="none" stroke="var(--acento-txt)" stroke-width="41"/>';
 ICON_RIEL.casillero = '<path d="M200,216H56V112A48,48,0,0,1,104,64h48a48,48,0,0,1,48,48Z" opacity="0.2"/><path d="M96,64V52a20,20,0,0,1,20-20h24a20,20,0,0,1,20,20V64" fill="none" stroke="currentColor" stroke-width="16" stroke-linecap="round" stroke-linejoin="round"/><path d="M200,216H56V112A48,48,0,0,1,104,64h48a48,48,0,0,1,48,48Z" fill="none" stroke="currentColor" stroke-width="16" stroke-linecap="round" stroke-linejoin="round"/><path d="M96,216V168a8,8,0,0,1,8-8h48a8,8,0,0,1,8,8v48" fill="none" stroke="currentColor" stroke-width="16" stroke-linecap="round" stroke-linejoin="round"/><path d="M104,112h48" fill="none" stroke="currentColor" stroke-width="16" stroke-linecap="round"/>';
 ICON_RIEL.oposicion = '<circle cx="128" cy="128" r="96" opacity="0.2"/><circle cx="128" cy="128" r="96" fill="none" stroke="currentColor" stroke-width="16"/><circle cx="128" cy="128" r="56" fill="none" stroke="currentColor" stroke-width="16"/><circle cx="128" cy="128" r="18"/>';
-/* ══ los iconos del menú, de Inicio a Mochila: «duotono suave» ══
+/* ══ los iconos del menú, de Inicio a Mochila y la Oposición: «duotono suave» ══
    Inicio es el círculo de la «O» del logo, en morado; los
    demás, dibujados para GritNook con el mismo trazo (línea redondeada y un
    relleno suave dentro), en una rejilla de 24 que se escala a la de 256.
@@ -18309,6 +18760,8 @@ const MENU_ICO = (() => {
     apuntes: g(`<rect ${F} x="5.6" y="3.2" width="13.6" height="17.6" rx="2.6"/><path d="M9.6 8.4h5.6M9.6 12h5.6M9.6 15.6h3.4M3.6 7.4h3.4M3.6 12h3.4M3.6 16.6h3.4"/>`),
     repaso: g(`<path d="M4.2 15.4V6.2a2.2 2.2 0 0 1 2.2-2.2h9.2"/><rect ${F} x="7.8" y="7.6" width="12.6" height="12.6" rx="2.6"/><path d="M11.2 14l2.1 2.1 3.6-4"/>`),
     progreso: g(`<path ${F} stroke="none" d="M3.4 17.6l5.2-5.2 3.6 3.6 7.6-7.6V21H3.4Z"/><path d="M3.4 17.6l5.2-5.2 3.6 3.6 7.6-7.6M14.6 8.4h5.2v5.2M3.4 21h17.2"/>`),
+    /* Oposición: la diana, apuntar a tu plaza */
+    oposicion: g(`<circle ${F} cx="12" cy="12" r="8.6"/><circle cx="12" cy="12" r="4.6"/><circle fill="currentColor" stroke="none" cx="12" cy="12" r="1.5"/>`),
     casillero: g(`<path d="M9 6.2V5a3 3 0 0 1 6 0v1.2"/><path ${F} d="M18.6 20.6H5.4V11.4a5.2 5.2 0 0 1 5.2-5.2h2.8a5.2 5.2 0 0 1 5.2 5.2Z"/><path d="M8.6 20.6v-4.2a1.2 1.2 0 0 1 1.2-1.2h4.4a1.2 1.2 0 0 1 1.2 1.2v4.2M10 11h4"/>`)
   };
 })();

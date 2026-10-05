@@ -73,14 +73,14 @@ grupo("Tu foto: el círculo donde estaba el engranaje", () => {
 });
 
 grupo("Tu foto: el menú", () => {
-  prueba("se abre con tu nombre, dónde se guarda lo tuyo, tu perfil y Ajustes", () => conYo(() => {
+  prueba("se abre con tu nombre, dónde se guarda lo tuyo, tu perfil, Ajustes y el tutorial", () => conYo(() => {
     normalizarPerfil().nombre = "Lucía"; pinta();
     $("#rielYo").click();
     const m = $("#yoMenu");
     esperar(m.hidden).falso();
     esperar(m.textContent).contiene("Lucía");
     esperar(m.textContent).contiene(db ? "Con tu cuenta de Claude" : "En este dispositivo");
-    esperar([...m.querySelectorAll("[role=menuitem]")].map(b => b.textContent.trim())).igualA(["Tu perfil y tu foto", "Ajustes"]);
+    esperar([...m.querySelectorAll("[role=menuitem]")].map(b => b.textContent.trim())).igualA(["Tu perfil y tu foto", "Ajustes", "Ver el tutorial"]);
     esperar($("#rielYo").getAttribute("aria-expanded")).igualA("true");
     esperar(document.activeElement.dataset.yo).igualA("perfil");
   }));
@@ -89,9 +89,11 @@ grupo("Tu foto: el menú", () => {
     tecla(document.activeElement, "ArrowDown");
     esperar(document.activeElement.dataset.yo).igualA("ajustes");
     tecla(document.activeElement, "ArrowDown");
+    esperar(document.activeElement.dataset.yo).igualA("tutorial");
+    tecla(document.activeElement, "ArrowDown");
     esperar(document.activeElement.dataset.yo).igualA("perfil");
     tecla(document.activeElement, "End");
-    esperar(document.activeElement.dataset.yo).igualA("ajustes");
+    esperar(document.activeElement.dataset.yo).igualA("tutorial");
     tecla(document.activeElement, "Escape");
     esperar($("#yoMenu").hidden).cierto();
     esperar(document.activeElement.id).igualA("rielYo");
