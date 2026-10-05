@@ -3793,6 +3793,14 @@ body.nuevo .ls-tit{font:600 15px/1.3 var(--sans)}
   .ix-linea{grid-template-columns:minmax(0, 1fr) minmax(0, 1fr)}
   .ix-linea .btn{grid-column:1 / -1}
 }
+/* ══ la marca de arriba: sin la cinta debajo del nombre y, en el ordenador,
+   alineada con la página (encima de la fecha), no encima del riel.
+   128 px = el riel (80) + el margen de la página (48); 1356 px = el riel,
+   los dos márgenes y el ancho máximo del contenido (80 + 96 + 1180). ══ */
+.cabeza-menu .ml-cinta, .lateral .marca .ml-cinta{display:none}
+@media (min-width:881px){
+  body.nuevo .cabeza-menu{position:absolute; left:calc(128px + max(0px, (100% - 1356px) / 2)); padding-left:0}
+}
 /* ══ el móvil, como una app: sin zoom, sin rebote de página y sin que el iPhone acerque al escribir ══ */
 html{touch-action:manipulation; -webkit-tap-highlight-color:transparent}
 html, body{overscroll-behavior:none}
