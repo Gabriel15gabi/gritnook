@@ -213,8 +213,9 @@ aplicación funciona sin él.
 Mientras tú quieras. No hay borrado automático ni caducidad.
 
 - Si borras un apunte o un documento, se borra en ese momento, también de tu cuenta.
-- Si pulsas «Borrar todo», se borran tus datos: lo de este dispositivo, lo de tu
-  cuenta y los archivos que hayas subido. La cuenta sigue, vacía.
+- Si pulsas «Empezar de 0 y borrar todo» (Ajustes → Perfil o Ajustes → Datos),
+  se borran tus datos: lo de este dispositivo, lo de tu cuenta y los archivos que
+  hayas subido. La cuenta sigue, vacía.
 - Si pulsas **«Borrar mi cuenta»** (Ajustes → Perfil o Ajustes → Datos), se
   borra al momento del servidor: tu correo, tu contraseña, todos tus datos, tus
   archivos, los días que entraste, tus avisos y tus dispositivos apuntados. No se

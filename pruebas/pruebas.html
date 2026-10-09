@@ -50,6 +50,12 @@
 <iframe id="marco" src="../index.html?pruebas" title="La app, para probarla"></iframe>
 
 <script>
+/* solo en local: publicada en gritnook.com, esta página tocaría los datos guardados de quien la abra */
+if (!/^(localhost|127\.0\.0\.1|\[::1\]|192\.168\.\d{1,3}\.\d{1,3}|10\.\d{1,3}\.\d{1,3}\.\d{1,3})$/.test(location.hostname)) {
+  const fuera = () => { document.body.innerHTML = '<p style="font:16px system-ui;padding:24px">Esta página es solo para probar la app en el ordenador de desarrollo. <a href="/">Ir a GritNook</a></p>'; };
+  if (document.body) fuera(); else addEventListener("DOMContentLoaded", fuera);
+  throw new Error("solo en local");
+}
 /* ────────────────────────────────────────────────────────────────────
    Cómo funciona esto:
 
@@ -65,7 +71,7 @@
    se devuelve, para que probar no te borre tus apuntes.
    ──────────────────────────────────────────────────────────────────── */
 
-const ARCHIVOS = ["marco.js", "casos-notas.js", "casos-agenda.js", "casos-texto.js", "casos-estado.js", "casos-entrada.js", "casos-libreta.js", "casos-tiempo.js", "casos-tutor.js", "casos-archivos.js", "casos-dibujar.js", "casos-pdf.js", "casos-agenda2.js", "casos-bola.js", "casos-oposicion.js", "casos-absurdos.js", "casos-listo.js", "casos-inicio.js", "casos-sinprofe.js", "casos-cuentas.js", "casos-yo.js", "casos-chat.js", "casos-lanzamiento.js", "casos-hoja.js", "casos-instalar.js", "casos-movil.js", "casos-revision.js", "casos-web.js", "casos-menores.js", "casos-opo3.js", "casos-avisos.js", "casos-borrar.js", "casos-idiomas.js", "casos-secciones.js", "casos-mochila.js", "casos-progreso.js", "casos-eventos.js", "casos-opo4.js", "casos-tutorial.js"];
+const ARCHIVOS = ["marco.js", "casos-notas.js", "casos-agenda.js", "casos-texto.js", "casos-estado.js", "casos-entrada.js", "casos-libreta.js", "casos-tiempo.js", "casos-tutor.js", "casos-archivos.js", "casos-dibujar.js", "casos-pdf.js", "casos-agenda2.js", "casos-bola.js", "casos-oposicion.js", "casos-absurdos.js", "casos-listo.js", "casos-inicio.js", "casos-sinprofe.js", "casos-cuentas.js", "casos-yo.js", "casos-chat.js", "casos-lanzamiento.js", "casos-hoja.js", "casos-instalar.js", "casos-movil.js", "casos-revision.js", "casos-web.js", "casos-menores.js", "casos-opo3.js", "casos-avisos.js", "casos-borrar.js", "casos-idiomas.js", "casos-secciones.js", "casos-mochila.js", "casos-progreso.js", "casos-eventos.js", "casos-opo4.js", "casos-tutorial.js", "casos-cero.js", "casos-seguridad.js"];
 const espera = ms => new Promise(r => setTimeout(r, ms));
 const $ = s => document.querySelector(s);
 

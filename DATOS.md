@@ -115,8 +115,10 @@ ubicación ni ningún identificador publicitario.
 - Los datos se quedan mientras el alumno los quiera.
 - **Descargar una copia**: Ajustes → Datos → Descargar copia (un archivo JSON con todo).
 - **Borrar un apunte o un documento**: desde su propia pantalla, con confirmación.
-- **Borrar todo**: Ajustes → Datos → Borrar todo. Borra lo del dispositivo, lo
-  de la cuenta y los archivos subidos. La cuenta sigue, vacía.
+- **Empezar de 0 y borrar todo**: Ajustes → Perfil (al final) o Ajustes → Datos.
+  Una ventana dice qué se borra y qué se queda, y hay que marcar «Entiendo…».
+  Borra lo del dispositivo, lo de la cuenta y los archivos subidos, y para el
+  cronómetro. La cuenta, la sesión y el tema se quedan.
 - **Borrar mi cuenta**: Ajustes → Perfil («Tu cuenta») o Ajustes → Datos →
   Borrar mi cuenta, escribiendo el correo para confirmar. Borra del servidor el
   usuario, su correo, su contraseña, todos sus documentos, su actividad, sus

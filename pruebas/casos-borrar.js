@@ -18,7 +18,7 @@ grupo("Borrar la cuenta: dónde está y cómo se confirma", () => {
       });
     });
   });
-  prueba("sin cuenta no sale (lo tuyo se borra con «Borrar todo», en Datos)", () => {
+  prueba("sin cuenta no sale (lo tuyo se borra con «Empezar de 0», en Perfil o en Datos)", () => {
     esperar(panelCuenta()).igualA("");
   });
   prueba("el botón abre la ventana; no se puede borrar hasta escribir tu correo", async () => {

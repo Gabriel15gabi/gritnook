@@ -731,7 +731,7 @@ grupo("Cuentas: entrar con Google o GitHub", () => {
 });
 
 grupo("Cuentas: lo que se arregló por el camino", () => {
-  prueba("«Borrar todo» pone a cero en la cuenta también el horario, las tarjetas, el progreso, la oposición y el Inicio", async () => {
+  prueba("«Empezar de 0» pone a cero en la cuenta también el horario, las tarjetas, el progreso, la oposición y el Inicio", async () => {
     await conNube(async srv => {
       await entrarComo(srv, "ana@ejemplo.es");
       S.horario = [{ id: "h", dia: 1, ini: "09:00", fin: "10:00", modId: "" }];
@@ -739,8 +739,8 @@ grupo("Cuentas: lo que se arregló por el camino", () => {
       Object.keys(DOCS).forEach(nd => guardar(nd));
       await hasta(() => (srv.doc("ana@ejemplo.es", "escritorio/repaso") || {}).tarjetas && srv.doc("ana@ejemplo.es", "escritorio/repaso").tarjetas.length === 1);
       seccion = "ajustes"; ajTab = "datos"; pinta();
-      confirmar = async () => true;
-      $("#apBorrarTodo").click();
+      $("[data-empezar-cero]").click(); await dormir(30);
+      $("#ceroOk").click(); $("#dlgPie .peligro").click();
       await hasta(() => (srv.doc("ana@ejemplo.es", "escritorio/repaso") || { tarjetas: [1] }).tarjetas.length === 0);
       await hasta(() => (srv.doc("ana@ejemplo.es", "escritorio/horario") || { horario: [1] }).horario.length === 0);
       if (BV) { BV = null; $("#entrada").hidden = true; }

@@ -76,6 +76,12 @@
 </main>
 
 <script>
+/* solo en local: publicada en gritnook.com, esta página tocaría los datos guardados de quien la abra */
+if (!/^(localhost|127\.0\.0\.1|\[::1\]|192\.168\.\d{1,3}\.\d{1,3}|10\.\d{1,3}\.\d{1,3}\.\d{1,3})$/.test(location.hostname)) {
+  const fuera = () => { document.body.innerHTML = '<p style="font:16px system-ui;padding:24px">Esta página es solo para probar la app en el ordenador de desarrollo. <a href="/">Ir a GritNook</a></p>'; };
+  if (document.body) fuera(); else addEventListener("DOMContentLoaded", fuera);
+  throw new Error("solo en local");
+}
 /* Esto no toca la app: carga GritNook en el marco de abajo y le habla con
    eval indirecto, igual que el banco de pruebas. Así se usan sus propias
    funciones y lo que queda guardado es válido de verdad. */
