@@ -3963,6 +3963,56 @@ html.en-marco-ajeno body > *:not(.marco-ajeno){display:none !important}
   font:500 15px/1.5 var(--sans); color:var(--ink)}
 .marco-ajeno p{margin:0; max-width:34ch}
 .marco-ajeno a{padding:10px 18px; border-radius:999px; background:var(--acento); color:var(--on-acento, #fff); font-weight:600; text-decoration:none}
+/* ── «Hoy no me toca» (naranja) y «Añadir a hoy» (verde): pequeños, sin alargar nada ── */
+:root{--naranja-txt:#C2410C}
+@media (prefers-color-scheme: dark){:root:not([data-theme="light"]){--naranja-txt:#FB923C}}
+:root[data-theme="dark"]{--naranja-txt:#FB923C}
+.hoy-no, .hoy-pon{display:inline-flex; align-items:center; justify-content:center; gap:4px; min-height:30px; padding:0 11px; border-radius:999px; cursor:pointer; white-space:nowrap;
+  font:600 12.5px/1 var(--sans); transition:transform .1s ease-out, background-color .15s}
+.hoy-no{color:var(--naranja-txt); background:color-mix(in srgb, #EA580C 11%, var(--surface)); border:1px solid color-mix(in srgb, #EA580C 40%, transparent)}
+.hoy-no:hover{background:color-mix(in srgb, #EA580C 18%, var(--surface))}
+.hoy-pon{color:var(--verde-texto); background:color-mix(in srgb, #16A34A 10%, var(--surface)); border:1px solid color-mix(in srgb, #16A34A 38%, transparent)}
+.hoy-pon:hover{background:color-mix(in srgb, #16A34A 17%, var(--surface))}
+.hoy-pon svg{width:13px; height:13px}
+.hoy-no:active, .hoy-pon:active{transform:scale(.96)}
+
+/* «Hoy toca»: una línea por asignatura; «+ Añadir» en la cabecera */
+.hy-hoytoca{display:grid; align-content:start}
+.ht-cab{display:flex; align-items:center; gap:12px}
+.ht-cab .hoy-pon{min-height:26px; padding:0 10px; font-size:12px}
+.ht-btns{display:flex; gap:6px}
+.ht-lista li.hecho .hy-lt{color:var(--ink-3)}
+.ht-btns{align-items:center}
+.ht-check{display:grid; place-items:center; width:30px; height:30px; flex:none; padding:0; border-radius:50%; border:1px solid var(--line-2); background:var(--surface); color:var(--ink-3); cursor:pointer; transition:transform .1s ease-out, background-color .15s, color .15s, border-color .15s}
+.ht-check svg{width:16px; height:16px}
+.ht-check:hover{color:var(--verde-texto); border-color:color-mix(in srgb, #16A34A 45%, transparent); background:color-mix(in srgb, #16A34A 10%, var(--surface))}
+.ht-check:active{transform:scale(.9)}
+.ht-lista .hy-ok{display:grid; place-items:center; width:30px; height:30px}
+.ht-elegir{display:grid; gap:6px}
+.ht-opcion{display:flex; align-items:center; gap:10px; width:100%; min-height:44px; padding:8px 14px; border-radius:var(--r-m); border:1px solid var(--line-2);
+  background:var(--surface); color:var(--ink); font:600 14px/1.3 var(--sans); text-align:left; cursor:pointer}
+.ht-opcion:hover{background:var(--surface-2)}
+.ht-opcion small{margin-left:auto; font:500 12px/1 var(--sans); color:var(--naranja-txt)}
+
+/* la sesión: el selector y el botón en la misma fila */
+.hy-sel-fila{display:flex; gap:8px; align-items:stretch; margin-top:4px}
+.hy-sel-fila .hy-sel{flex:1; min-width:0; margin-top:0}
+.hy-ses-plan{display:flex}
+.hy-ses-plan:empty{display:none}
+.hy-ses-plan .hoy-no, .hy-ses-plan .hoy-pon{min-height:100%; border-radius:12px; padding:0 12px}
+.hy-sesion .hoy-no{color:#FDBA74; background:rgba(234,88,12,.16); border-color:rgba(251,146,60,.45)}
+.hy-sesion .hoy-no:hover{background:rgba(234,88,12,.26)}
+.hy-sesion .hoy-pon{color:#86EFAC; background:rgba(22,163,74,.16); border-color:rgba(74,222,128,.42)}
+.hy-sesion .hoy-pon:hover{background:rgba(22,163,74,.26)}
+/* en el tema oscuro la tarjeta de la sesión es clara: los botones, con sus colores de día */
+@media (prefers-color-scheme: dark){ :root:not([data-theme="light"]) .hy-sesion .hoy-no{color:#C2410C; background:rgba(234,88,12,.1); border-color:rgba(234,88,12,.45)}
+  :root:not([data-theme="light"]) .hy-sesion .hoy-pon{color:#15803D; background:rgba(22,163,74,.1); border-color:rgba(22,163,74,.42)} }
+:root[data-theme="dark"] .hy-sesion .hoy-no{color:#C2410C; background:rgba(234,88,12,.1); border-color:rgba(234,88,12,.45)}
+:root[data-theme="dark"] .hy-sesion .hoy-pon{color:#15803D; background:rgba(22,163,74,.1); border-color:rgba(22,163,74,.42)}
+
+/* un aviso con botón */
+.toast-accion{display:flex; align-items:center; gap:14px; justify-content:space-between}
+.toast-btn{flex:none; border:0; background:none; padding:4px 2px; color:inherit; font:700 13px/1 var(--sans); text-decoration:underline; text-underline-offset:3px; cursor:pointer}
 </style>
 </head>
 <body>
@@ -6053,7 +6103,7 @@ function mdHero(m, c) {
 }
 function mdTotal(m) {
   const suma = m.pesos.reduce((s, p) => s + num(p.peso), 0), ok = Math.round(suma) === 100;
-  return `<span class="md-suma${ok ? "" : " mal"}">${ok ? "Los pesos suman 100 %" : "Los pesos suman " + nota(suma) + " %: deberían sumar 100 %"}</span>`;
+  return `<span class="md-suma${ok ? "" : " mal"}">${ok ? "Entre todo, el 100 % de la nota" : "Entre todo suma el " + nota(suma) + " % de la nota: tiene que llegar al 100 %"}</span>`;
 }
 function mdAporte(p) {
   const pt = puntosDe(p), max = num(p.peso) / 10;
@@ -6062,7 +6112,7 @@ function mdAporte(p) {
 }
 const mdFila = p => `<div class="md-fila" data-p="${p.id}">
     <input type="text" class="md-apartado" value="${esc(p.nombre)}" data-campo="nombre" aria-label="Nombre del apartado">
-    <label class="md-peso" title="Cuánto cuenta en la nota final"><input type="number" min="0" max="100" step="1" inputmode="numeric" value="${num(p.peso)}" data-campo="peso" aria-label="Peso de ${esc(p.nombre)} en porcentaje"><span aria-hidden="true">%</span></label>
+    <label class="md-peso" title="Cuánto cuenta en la nota final"><input type="number" min="0" max="100" step="1" inputmode="numeric" value="${num(p.peso)}" data-campo="peso" aria-label="Cuánto cuenta ${esc(p.nombre)} en la nota, en porcentaje"><span aria-hidden="true">%</span></label>
     <input type="number" class="md-nota" min="0" max="10" step="0.01" inputmode="decimal" value="${p.nota === null || p.nota === undefined ? "" : p.nota}" data-campo="nota" placeholder="—" aria-label="Nota de ${esc(p.nombre)}">
     <button type="button" class="md-quitar" data-md-quitar="${p.id}" aria-label="Quitar ${esc(p.nombre)}" title="Quitar apartado">${ICO_X}</button>
     <div class="md-aporte">${mdAporte(p)}</div>
@@ -6106,7 +6156,7 @@ function vistaFichaModulo(m) {
   <div class="md-cuerpo">
     <section class="panel md-notas" aria-labelledby="mdNotasTit">
       <div class="md-sec-cab"><h2 id="mdNotasTit">Notas</h2><p class="meta">Cómo te evalúan y lo que llevas en cada parte. Se guarda solo.</p></div>
-      <div class="md-filas-cab" aria-hidden="true"><span>Apartado</span><span>Peso</span><span>Nota</span></div>
+      <div class="md-filas-cab" aria-hidden="true"><span>Apartado</span><span>Cuenta</span><span>Nota</span></div>
       <div class="md-filas" id="mdFilas">${m.pesos.length ? m.pesos.map(mdFila).join("") : `<p class="pn-vacio md-sin">Añade los apartados con los que te evalúan: exámenes, prácticas, actitud…</p>`}</div>
       <div class="md-notas-pie"><button type="button" class="btn mini fantasma" data-md-add>${icono("mas")}Añadir apartado</button><span id="mdTotal">${mdTotal(m)}</span></div>
     </section>
@@ -6307,7 +6357,7 @@ function vistaEntregas() {
       <label class="campo">Qué hay que entregar<input type="text" id="tTitulo" placeholder="Ejercicio 4: bucles anidados"></label>
       <label class="campo">${esc(mayus(voc()))}<select id="tModulo">${S.modulos.map(m => `<option value="${m.id}">${esc(m.cod)} · ${esc(m.nombre)}</option>`).join("")}</select></label>
       <label class="campo">Fecha límite<input type="date" id="tFecha"></label>
-      <label class="campo">Peso %<input type="number" id="tPeso" min="0" max="100" placeholder="Opcional"></label>
+      <label class="campo">Cuánto cuenta (%)<input type="number" id="tPeso" min="0" max="100" placeholder="Opcional"></label>
       <button class="btn primario" id="btnAddTarea">Apuntar</button>
     </div>
   </section>
@@ -14561,10 +14611,10 @@ function sesionHTML() {
     <div class="hy-reloj" id="reloj" role="timer" aria-live="off">${String(num(S.config.pomodoro, 25)).padStart(2, "0")}:00</div>
     <div class="hy-cinta" role="progressbar" aria-label="Tu cinta del mes" aria-valuemin="0" aria-valuemax="${c.meta}" aria-valuenow="${c.min}"><i style="width:${c.pct.toFixed(1)}%"></i></div>
     <p class="hy-cinta-txt">Tu cinta del mes: ${esc(horasTxt(c.min))} de ${esc(horasTxt(c.meta))}</p>
-    <select id="selTimer" class="hy-sel" aria-label="${esc(mayus(voc()))} que vas a estudiar">
+    <div class="hy-sel-fila"><select id="selTimer" class="hy-sel" aria-label="${esc(mayus(voc()))} que vas a estudiar">
       <option value="">Elige ${vocG("un", "una")} ${esc(voc())}…</option>
       ${S.modulos.map(x => `<option value="${x.id}"${(m && m.id === x.id) ? " selected" : ""}>${esc(x.cod)} · ${esc(x.nombre)}</option>`).join("")}
-    </select>
+    </select>${sesPlanHTML(m)}</div>
     ${esOpositor() && normalizarOpo().temas.length ? `<select id="selTimerTema" class="hy-sel" aria-label="Tema que vas a estudiar">
       <option value="">Sin tema concreto</option>
       ${normalizarOpo().temas.slice().sort((a, b) => a.n - b.n).map(t => `<option value="${t.id}"${T.temaId === t.id ? " selected" : ""}>Tema ${t.n} · ${esc(t.titulo.slice(0, 70))}</option>`).join("")}
@@ -14627,7 +14677,7 @@ function proximoHTML() {
 }
 
 /* ── lo que toca hoy, rato a rato (en el ordenador, al lado) ── */
-function hoyTocaHTML() {
+function hoyTocaHTMLBase() {
   /* dos ratos seguidos de lo mismo, en uno */
   const B = [];
   planDeHoy().forEach(b => { const u = B[B.length - 1]; if (u && u.modId === b.modId && u.hecho === b.hecho) u.min += b.min; else B.push(Object.assign({}, b)); });
@@ -15878,6 +15928,143 @@ if (marcoAjeno()) {
   p.innerHTML = `<p>Por tu seguridad, GritNook no se abre dentro de otra página.</p><a href="https://gritnook.com/" target="_top" rel="noopener">Abrir GritNook</a>`;
   document.body.append(p);
 }
+
+
+/* ══════════════════ «Hoy no me toca» y «Añadir a hoy» ══════════════════
+   El plan reparte tus horas de la semana entre tus días de estudio; no mira
+   el horario de clases. Para que mande quien estudia: quitar de hoy lo que
+   no toca y añadir lo que sí. Vale solo para hoy: se guarda en
+   S.config.hoyPlan = {fecha, quita, pon} (va con los ajustes, así se ve
+   igual en el móvil y en el ordenador) y mañana el plan vuelve a ser el de
+   siempre. Está en la tarjeta de la sesión (junto a «Empezar») y en «Hoy
+   toca», que ahora también sale en el móvil. */
+
+function hoyPlan() {
+  const hoy = hoyISO(), h = S.config && S.config.hoyPlan;
+  const vale = l => Array.isArray(l) ? l.filter((id, i) => typeof id === "string" && modPorId(id) && l.indexOf(id) === i) : [];
+  if (!h || typeof h !== "object" || h.fecha !== hoy) return { fecha: hoy, quita: [], pon: [] };
+  return { fecha: hoy, quita: vale(h.quita), pon: vale(h.pon) };
+}
+function guardaHoyPlan(h) { S.config.hoyPlan = h; guardar("ajustes"); }
+const planBaseDeHoy = () => { const hoy = hoyISO(); return (planSemanaBase(hoy).find(d => d.fecha === hoy) || { bloques: [] }).bloques; };
+
+/* el plan de siempre, con lo que has quitado y añadido hoy */
+function planSemana(desde) {
+  const semana = planSemanaBase(desde), h = hoyPlan(), d = semana.find(x => x.fecha === h.fecha);
+  if (!d || (!h.quita.length && !h.pon.length)) return semana;
+  const bloque = num(S.config.pomodoro, 25);
+  d.bloques = d.bloques.filter(b => !h.quita.includes(b.modId));
+  h.pon.forEach(id => { if (!d.bloques.some(b => b.modId === id)) d.bloques.push({ modId: id, min: bloque, motivo: "Lo has añadido tú", propio: true }); });
+  /* lo hecho, otra vez, contando los ratos de ahora */
+  const hechos = {};
+  d.bloques.forEach(b => {
+    const estudiado = ((S.horas[b.modId] || {})[d.fecha] || 0) - (hechos[b.modId] || 0);
+    b.hecho = estudiado >= b.min;
+    hechos[b.modId] = (hechos[b.modId] || 0) + (b.hecho ? b.min : 0);
+  });
+  return semana;
+}
+
+function quitarDeHoy(id) {
+  const h = hoyPlan();
+  h.pon = h.pon.filter(x => x !== id);
+  if (planBaseDeHoy().some(b => b.modId === id) && !h.quita.includes(id)) h.quita.push(id);
+  guardaHoyPlan(h);
+}
+function ponerHoy(id) {
+  if (!modPorId(id)) return;
+  const h = hoyPlan();
+  h.quita = h.quita.filter(x => x !== id);
+  if (!planBaseDeHoy().some(b => b.modId === id) && !h.pon.includes(id)) h.pon.push(id);
+  guardaHoyPlan(h);
+}
+const enPlanDeHoy = id => planDeHoy().some(b => b.modId === id);
+
+/* un aviso con «Deshacer» */
+function avisoDeshacer(txt, deshacer) {
+  const d = document.createElement("div");
+  d.className = "toast toast-accion"; d.setAttribute("role", "status");
+  d.innerHTML = `<span>${esc(txt)}</span><button type="button" class="toast-btn">Deshacer</button>`;
+  $("#avisos").append(d);
+  const fuera = () => { d.style.opacity = "0"; d.style.transform = "translateY(4px)"; setTimeout(() => d.remove(), 320); };
+  d.querySelector("button").onclick = () => { deshacer(); fuera(); };
+  setTimeout(fuera, 6000);
+}
+
+/* tarjeta de la sesión: el botón va al lado del selector (la tarjeta no crece) */
+const BTN_NO = id => `<button type="button" class="hoy-no" data-no-toca="${id}" title="Solo hoy: mañana vuelve a tu plan">Hoy no me toca</button>`;
+function sesPlanHTML(m) {
+  if (!m || T.activo || T.restante > 0) return `<span class="hy-ses-plan" id="sesPlan"></span>`;
+  const b = planDeHoy().find(x => x.modId === m.id);
+  return `<span class="hy-ses-plan" id="sesPlan">${b ? (b.hecho ? "" : BTN_NO(m.id))
+    : `<button type="button" class="hoy-pon" data-pon-hoy="${m.id}" title="Añadir a hoy">${icono("mas")}Añadir a hoy</button>`}</span>`;
+}
+
+/* «Hoy toca»: una línea por asignatura, con «Hoy no me toca» y «Empezar»; «+ Añadir» arriba */
+function hoyTocaHTML() {
+  const B = [];
+  planDeHoy().forEach(b => { const u = B[B.length - 1]; if (u && u.modId === b.modId && u.hecho === b.hecho) u.min += b.min; else B.push(Object.assign({}, b)); });
+  const h = hoyPlan(), fuera = S.modulos.some(m => !B.some(b => b.modId === m.id));
+  return `<section class="hy-tarjeta hy-hoytoca" aria-labelledby="hyTocaTit">
+    <div class="hy-cab"><h2 id="hyTocaTit">Hoy toca</h2><span class="ht-cab">${fuera ? `<button type="button" class="hoy-pon" data-anadir-hoy>${icono("mas")}Añadir</button>` : ""}<button type="button" class="hy-enlace" data-ir-agenda="plan">Tu semana</button></span></div>
+    ${B.length ? `<ul class="hy-lista ht-lista">${B.slice(0, 6).map(b => { const m = modPorId(b.modId);
+      return `<li${b.hecho ? ' class="hecho"' : ""}><span class="hy-punto" style="${colorMod(m)}"></span><span class="hy-lt">${esc(m ? m.nombre : voc())}${b.min !== num(S.config.pomodoro, 25) ? ` <small>${b.min} min</small>` : ""}</span>
+        ${b.hecho ? `<span class="hy-ok">${icono("hecho")}</span>` : `<span class="ht-btns">${BTN_NO(b.modId)}<button type="button" class="ht-check" data-hecho-hoy="${b.modId}" aria-label="Marcar ${esc(m ? m.nombre : voc())} como hecho hoy" title="Hecho">${icono("hecho")}</button></span>`}</li>`; }).join("")}</ul>`
+      : `<p class="hy-sub">${h.quita.length ? "Lo has quitado todo de hoy." : "Hoy no es día de estudio, pero cualquier rato suma."}</p>`}
+  </section>`;
+}
+
+/* elegir qué añadir: primero lo que habías quitado */
+function dlgAnadirHoy() {
+  const h = hoyPlan(), dentro = new Set(planDeHoy().map(b => b.modId));
+  const L = S.modulos.filter(m => !dentro.has(m.id)).sort((a, b) => (h.quita.includes(b.id) ? 1 : 0) - (h.quita.includes(a.id) ? 1 : 0));
+  abrirDlg("Añadir a hoy", `
+    <p class="meta" style="margin:0 0 12px">Solo para hoy: ${num(S.config.pomodoro, 25)} minutos más en tu plan. Mañana vuelve a ser el de siempre.</p>
+    <div class="ht-elegir">${L.map(m => `<button type="button" class="ht-opcion" data-pon-hoy="${m.id}" style="${colorMod(m)}"><span class="hy-punto"></span><span>${esc(m.nombre)}</span>${h.quita.includes(m.id) ? `<small>La habías quitado</small>` : ""}</button>`).join("")}</div>`,
+    [{ txt: "Cancelar", clase: "btn fantasma" }]);
+}
+
+alEvento("click", e => {
+  const t = e.target; if (!t || !t.closest) return;
+  const no = t.closest("[data-no-toca]");
+  if (no) {
+    const id = no.dataset.noToca, m = modPorId(id), antesT = T.modId;
+    quitarDeHoy(id);
+    if (T.modId === id && !T.activo) { const sig = planDeHoy().find(b => !b.hecho); T.modId = sig ? sig.modId : null; guardarTimer(); }
+    pinta();
+    avisoDeshacer("Hoy no te toca: " + (m ? m.nombre : voc()) + ".", () => { ponerHoy(id); if (!T.activo) { T.modId = antesT; guardarTimer(); } pinta(); });
+    return;
+  }
+  const pon = t.closest("[data-pon-hoy]");
+  if (pon) {
+    const id = pon.dataset.ponHoy, m = modPorId(id);
+    ponerHoy(id);
+    const d = $("#dlg"); if (d && d.open && d.contains(pon)) d.close();
+    pinta(); aviso("Añadido a hoy: " + (m ? m.nombre : voc()) + ".");
+    return;
+  }
+  if (t.closest("[data-anadir-hoy]")) { dlgAnadirHoy(); return; }
+  /* ✓: hecho hoy. Apunta lo que faltaba de su plan (como «+ 30 min», pero lo justo) */
+  const ok = t.closest("[data-hecho-hoy]");
+  if (ok) {
+    const id = ok.dataset.hechoHoy, m = modPorId(id), hoy = hoyISO();
+    const plan = planDeHoy().filter(b => b.modId === id).reduce((s, b) => s + b.min, 0), ya = num((S.horas[id] || {})[hoy]);
+    const falta = Math.max(1, plan - ya);
+    registrarMinutos(id, falta); pinta();
+    avisoDeshacer("Hecho: " + (m ? m.nombre : voc()) + " (" + falta + " min apuntados).", () => {
+      S.horas[id] = S.horas[id] || {}; S.horas[id][hoy] = Math.max(0, num(S.horas[id][hoy]) - falta);
+      if (!S.horas[id][hoy]) delete S.horas[id][hoy];
+      guardar("horas"); pinta();
+    });
+  }
+});
+/* al cambiar de asignatura en la sesión, el botón de abajo cambia con ella */
+alEvento("change", e => {
+  if (!e.target || e.target.id !== "selTimer") return;
+  const m = modPorId(e.target.value), caja = $("#sesPlan"), tit = $("#hySesTit");
+  if (caja) caja.outerHTML = sesPlanHTML(m);
+  if (tit) tit.textContent = "Sesión" + (m ? " · " + m.nombre : "");
+});
 
 
 /* ══════════════════ pintado ══════════════════ */
@@ -17227,10 +17414,10 @@ function bvPaso4() {
   return `
   <h1 class="ent-tit">¿Cómo te evalúan?</h1>
   <p class="ent-lead">Esto es lo que permite decirte «te hace falta un 6,4 en lo que queda». Se aplica a ${vocG("todos", "todas")} tus ${esc(voc(true))} y luego ${vocG("cada uno", "cada una")} se puede cambiar por separado.</p>
-  <table class="tabla-pesos"><thead><tr><th>Apartado</th><th>Peso %</th><th></th></tr></thead><tbody>
+  <table class="tabla-pesos"><thead><tr><th>Apartado</th><th>Cuenta %</th><th></th></tr></thead><tbody>
     ${BV.pesos.map((x, i) => `<tr>
       <td><input type="text" value="${esc(x.nombre)}" data-bv-peso="nombre" data-i="${i}" aria-label="Nombre del apartado"></td>
-      <td style="width:110px"><input type="number" value="${num(x.peso)}" data-bv-peso="peso" data-i="${i}" min="0" max="100" aria-label="Peso"></td>
+      <td style="width:110px"><input type="number" value="${num(x.peso)}" data-bv-peso="peso" data-i="${i}" min="0" max="100" aria-label="Cuánto cuenta, en porcentaje"></td>
       <td style="width:40px"><button type="button" class="btn borrar mini cuadrado" data-bv-quitapeso="${i}" aria-label="Quitar apartado">×</button></td></tr>`).join("")}
   </tbody></table>
   <button type="button" class="btn mini fantasma" id="bvAddPeso" style="margin-top:10px">${icono("mas")}Añadir apartado</button>
@@ -18031,7 +18218,7 @@ function crearElemento(e) {
 }
 
 /* ── el plan de la semana ── */
-function planSemana(desde) {
+function planSemanaBase(desde) {
   normalizarAgenda();
   const p = normalizarPerfil(), hoy = hoyISO(), lunes = lunesDe(desde || hoy);
   const bloque = num(S.config.pomodoro, 25);
@@ -18257,7 +18444,7 @@ function peekHTML() {
       <label class="pp"><span>Fecha</span><input type="date" id="pkFecha" value="${esc(r.fecha || "")}"></label>
       <label class="pp"><span>Hora</span><input type="time" id="pkHora" value="${esc(r.hora || "")}"></label>
       <div class="pp"><span>Estado</span><div class="pk-estados">${ESTADOS.map(([v, t]) => `<button type="button" class="${e.estado === v ? "sel" : ""}" data-pk-estado="${v}">${t}</button>`).join("")}</div></div>
-      ${e.tipo === "evento" ? "" : `<label class="pp"><span>Peso en la nota</span><input type="number" id="pkPeso" min="0" max="100" value="${r.peso === null || r.peso === undefined ? "" : num(r.peso)}" placeholder="%"></label>`}
+      ${e.tipo === "evento" ? "" : `<label class="pp"><span>Cuánto cuenta en la nota</span><input type="number" id="pkPeso" min="0" max="100" value="${r.peso === null || r.peso === undefined ? "" : num(r.peso)}" placeholder="%"></label>`}
       ${esEx ? `<label class="pp"><span>Nota</span><input type="number" id="pkNota" min="0" max="10" step="0.01" value="${r.nota === null || r.nota === undefined ? "" : r.nota}" placeholder="Cuando la sepas"></label>` : ""}
     </div>
     ${esEx ? `
