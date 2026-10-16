@@ -4013,6 +4013,25 @@ html.en-marco-ajeno body > *:not(.marco-ajeno){display:none !important}
 /* un aviso con botón */
 .toast-accion{display:flex; align-items:center; gap:14px; justify-content:space-between}
 .toast-btn{flex:none; border:0; background:none; padding:4px 2px; color:inherit; font:700 13px/1 var(--sans); text-decoration:underline; text-underline-offset:3px; cursor:pointer}
+/* en móviles estrechos: el nombre puede ir en dos líneas (no se corta) y el botón naranja, un pelo más pequeño */
+.ht-lista li{align-items:center}
+.ht-lista .hy-lt{white-space:normal; display:-webkit-box; -webkit-line-clamp:2; -webkit-box-orient:vertical; line-height:1.25}
+@media (max-width:400px){ .ht-btns .hoy-no{padding:0 9px; font-size:12px} .ht-btns{gap:5px} }
+/* ── la sesión no se sale de su tarjeta aunque la asignatura tenga un nombre muy largo ── */
+.hy-sesion{grid-template-columns:minmax(0, 1fr)}
+.hy-sesion > *{min-width:0}
+.hy-ses-cab .hy-fase{flex:none}
+.hy-sel{text-overflow:ellipsis}
+/* ── «Esta semana»: los días sin estudio («vacio») heredaban el estilo general .vacio y bajaban 18 px ── */
+.hy-dias .hy-d.vacio{padding:0; font-size:inherit}
+/* ── Progreso: el periodo de «Dónde va tu tiempo» ── */
+.pz-periodos{display:flex; flex-wrap:wrap; gap:6px; margin:2px 0 4px}
+.pz-periodos button{min-height:30px; padding:0 12px; border-radius:999px; border:1px solid var(--line-2); background:var(--surface); color:var(--ink-2);
+  font:600 12.5px/1 var(--sans); cursor:pointer; transition:background-color .15s, color .15s, transform .1s ease-out}
+.pz-periodos button:hover{background:var(--surface-2)}
+.pz-periodos button[aria-pressed="true"]{background:var(--acento); border-color:var(--acento); color:var(--on-acento, #fff)}
+.pz-periodos button:active{transform:scale(.96)}
+.pz-desde{margin:4px 0 0; font:500 12.5px/1.4 var(--sans); color:var(--ink-3)}
 </style>
 </head>
 <body>
@@ -4532,7 +4551,7 @@ function migrarConfig() {
 alEvento("click", e => {
   const t = e.target;
   if (t.closest("#mrPlay")) { if (T.activo) pausarTimer(); else iniciarTimer(); return; }
-  if (t.closest("#mrCerrar")) { T.fase = "trabajo"; reiniciarTimer(); return; }
+  if (t.closest("#mrCerrar")) { if (relojEnCurso()) terminarAhora(); else { T.fase = "trabajo"; reiniciarTimer(); } return; }
   if (t.closest("#mrInfo")) { irASeccion("escritorio"); return; }
 });
 /* con la pestaña en segundo plano el navegador frena los temporizadores: al volver se comprueba en el acto */
@@ -4566,6 +4585,7 @@ function pintaReloj() {
   el.classList.toggle("descanso", T.fase === "descanso" && !hecho);
   el.classList.toggle("hecho", hecho);
   const b = $("#btnTimer"); if (b) b.textContent = T.activo ? "Pausar" : hecho ? "Empezar descanso" : (T.restante > 0 ? "Seguir" : "Empezar");
+  const rb = $("#btnReset"); if (rb) { const fin = relojEnCurso(); rb.textContent = fin ? "Terminar" : "Reiniciar"; rb.title = fin ? "Acabar ya y guardar los minutos que llevas" : ""; }
   const f = $("#faseTimer"); if (f) f.textContent = hecho ? "¡Bien hecho!" : T.fase === "trabajo" ? "Concentración" : "Descanso";
 }
 
@@ -15379,7 +15399,7 @@ function pzSemanasHTML() {
   </section>`;
 }
 /* ── dónde se va tu tiempo (últimas 4 semanas) ── */
-function pzRepartoHTML() {
+function pzRepartoHTMLBase() {
   const hoy = hoyISO(), ini = sumaDias(hoy, -27), L = S.modulos.map(m => ({ m, min: pzMinMod(m.id, ini, hoy) })).filter(x => x.min).sort((a, b) => b.min - a.min);
   const total = L.reduce((s, x) => s + x.min, 0);
   return `<section class="hy-tarjeta pz-reparto" aria-labelledby="pzRepTit">
@@ -16067,6 +16087,66 @@ alEvento("change", e => {
 });
 
 
+/* ══════════════════ el cronómetro, cuando tú quieras ══════════════════
+   Las sesiones son de 25 minutos (o lo que tengas puesto), pero se pueden
+   acabar antes: «Terminar» apunta los minutos enteros que llevas (6:35 → 6;
+   nunca redondea hacia arriba). Mientras hay una sesión a medias,
+   «Reiniciar» pasa a ser «Terminar», y la × del cronómetro pequeño también
+   guarda lo hecho en vez de tirarlo. */
+function relojEnCurso() { return T.fase === "trabajo" && (T.activo || T.restante > 0) && T.aviso !== "hecho"; }
+function minutosHechos() { return Math.floor(Math.max(0, num(S.config.pomodoro, 25) * 60 - segsRestantes()) / 60); }
+function terminarAhora() {
+  const m = modPorId(T.modId);
+  if (T.fase !== "trabajo") {
+    clearInterval(T.tick); Object.assign(T, { activo: false, restante: 0, fase: "trabajo", aviso: "" });
+    guardarTimer(); pinta(); aviso("Descanso terminado."); return;
+  }
+  const mins = minutosHechos();
+  clearInterval(T.tick); Object.assign(T, { activo: false, restante: 0, aviso: "" });
+  if (mins >= 1 && (!T.sid || T.cerrada !== T.sid)) {
+    registrarMinutos(T.modId, mins);
+    if (T.temaId) registrarMinutosTema(T.temaId, mins);
+    T.cerrada = T.sid || "";
+  }
+  guardarTimer(); pinta();
+  aviso(mins >= 1 ? mins + (mins === 1 ? " minuto " : " minutos ") + queEstudiaste(m) + ", guardados." : "Menos de un minuto: no se apunta nada.");
+}
+
+/* ══════════════════ tus horas, desde siempre ══════════════════
+   Los minutos de cada asignatura se guardan día a día y no caducan. En
+   Progreso, «Dónde va tu tiempo» deja elegir el periodo: las últimas 4
+   semanas, 3 meses, 6 meses o todo lo que llevas, con el total y desde
+   cuándo. */
+const PZ_PERIODOS = [["4s", "4 semanas", 27], ["3m", "3 meses", 91], ["6m", "6 meses", 182], ["todo", "Todo", null]];
+let pzPeriodo = "4s";
+function pzPrimerDia() {
+  let p = "";
+  S.modulos.forEach(m => Object.keys(S.horas[m.id] || {}).forEach(f => { if (esFecha(f) && num(S.horas[m.id][f]) > 0 && (!p || f < p)) p = f; }));
+  return p;
+}
+function pzRepartoHTML() {
+  const hoy = hoyISO(), per = PZ_PERIODOS.find(x => x[0] === pzPeriodo) || PZ_PERIODOS[0];
+  const primero = pzPrimerDia(), ini = per[2] === null ? (primero || hoy) : sumaDias(hoy, -per[2]);
+  const L = S.modulos.map(m => ({ m, min: pzMinMod(m.id, ini, hoy) })).filter(x => x.min).sort((a, b) => b.min - a.min);
+  const total = L.reduce((s, x) => s + x.min, 0);
+  const desde = per[2] === null && primero ? "desde el " + fechaCortaAnio(primero) : "";
+  return `<section class="hy-tarjeta pz-reparto" aria-labelledby="pzRepTit">
+    <div class="hy-cab"><h2 id="pzRepTit">Dónde va tu tiempo</h2>${total ? `<span class="hy-etq">${horasTxt(total)}</span>` : ""}</div>
+    <div class="pz-periodos" role="group" aria-label="Periodo">${PZ_PERIODOS.map(([id, n]) => `<button type="button" data-pz-periodo="${id}" aria-pressed="${id === per[0]}">${n}</button>`).join("")}</div>
+    ${total ? `<div class="pz-tira" role="img" aria-label="Reparto de tu estudio por ${esc(voc())}">${L.map(x => `<i style="${colorMod(x.m)}; flex:${x.min}" title="${esc(x.m.nombre)}: ${horasTxt(x.min)}"></i>`).join("")}</div>
+      <ul class="pz-lista">${L.map(x => `<li style="${colorMod(x.m)}"><i></i><span>${esc(x.m.nombre)}</span><b>${horasTxt(x.min)}</b><small>${Math.round(x.min / total * 100)} %</small></li>`).join("")}</ul>
+      ${desde ? `<p class="pz-desde">En total ${horasTxt(total)}, ${esc(desde)}.</p>` : ""}`
+      : `<p class="hy-sub">${primero ? "En este periodo no hay nada apuntado." : "Cuando estudies con el cronómetro, aquí verás cuánto llevas en cada " + esc(voc()) + "."}</p>`}
+  </section>`;
+}
+alEvento("click", e => {
+  const t = e.target; if (!t || !t.closest) return;
+  const b = t.closest("[data-pz-periodo]"); if (!b) return;
+  pzPeriodo = b.dataset.pzPeriodo;
+  const c = $(".pz-reparto"); if (c) c.outerHTML = pzRepartoHTML();
+});
+
+
 /* ══════════════════ pintado ══════════════════ */
 function pinta() {
   if (BV) { pintaEntrada(); return; }
@@ -16150,7 +16230,7 @@ alEvento("click", async e => {
   if (t.closest("#btnObjetivos")) { dlgObjetivos(); return; }
 
   if (t.closest("#btnTimer")) { T.activo ? pausarTimer() : iniciarTimer(); return; }
-  if (t.closest("#btnReset")) { reiniciarTimer(); return; }
+  if (t.closest("#btnReset")) { relojEnCurso() ? terminarAhora() : reiniciarTimer(); return; }
   if (t.closest("#btnManual")) {
     if (!T.modId) { aviso("Elige antes " + vocG("el", "la") + " " + voc() + "."); return; }
     registrarMinutos(T.modId, 30); if (T.temaId) registrarMinutosTema(T.temaId, 30);
