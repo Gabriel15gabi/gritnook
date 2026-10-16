@@ -4032,6 +4032,15 @@ html.en-marco-ajeno body > *:not(.marco-ajeno){display:none !important}
 .pz-periodos button[aria-pressed="true"]{background:var(--acento); border-color:var(--acento); color:var(--on-acento, #fff)}
 .pz-periodos button:active{transform:scale(.96)}
 .pz-desde{margin:4px 0 0; font:500 12.5px/1.4 var(--sans); color:var(--ink-3)}
+/* ══ modo claro, más suave para la vista: «lavanda suave» ══
+   Nada de blanco puro. El fondo baja a #e6e4ee y las tarjetas a #f2f1f6
+   (un 12 % menos de brillo); las líneas, un pelo más marcadas para que las
+   tarjetas se sigan separando; y el texto secundario gana contraste (de
+   4,3:1 a más de 5:1). Solo el modo claro: las reglas del oscuro son más
+   fuertes y no les afecta. Apuntes no lleva body.nuevo: no se toca. */
+body.nuevo{
+  --bg:#e6e4ee; --surface:#f2f1f6; --surface-2:#ebe9f1; --surface-3:#dfdce8; --line:#dad6e5; --line-2:#c9c4d8;
+  --ink:#211e2c; --ink-2:#46425b; --ink-3:#605b77; --ink-4:#8a85a2}
 </style>
 </head>
 <body>
