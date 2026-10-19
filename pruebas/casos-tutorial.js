@@ -107,9 +107,10 @@ grupo("Tutorial: sección a sección", () => {
     if (aj) esperar(aj.classList.contains("tut-gris")).falso();
   }));
   prueba("al acabar la bienvenida de una cuenta nueva empieza solo; al reconfigurar, no", () => {
-    const src = bvAplicar.toString();
-    esperar(src).contiene("tutNuevo = !BV.reconfig");
-    esperar(src).contiene("if (tutNuevo) tutEmpezar(); else pinta();");
+    /* sin espacios, para que valga también con el código minificado */
+    const src = bvAplicar.toString().replace(/\s+/g, "");
+    esperar(src).contiene("=!BV.reconfig");
+    esperar(src).contiene("tutEmpezar()");
   });
 });
 
