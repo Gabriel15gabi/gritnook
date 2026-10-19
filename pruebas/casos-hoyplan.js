@@ -80,23 +80,13 @@ grupo("Hoy no me toca: los botones", () => {
     t.querySelector("button").click(); await dormir(30);
     esperar(idsHoy().includes(id)).cierto();
   }));
-  prueba("en la sesión: si toca hoy, «Hoy no me toca»; si no, «Añadir a hoy»; con el reloj en marcha, nada", () => conPlanHoy(async () => {
+  prueba("la tarjeta de la sesión ya no lleva «Hoy no me toca» ni «Añadir a hoy»: solo «Hoy toca»", () => conPlanHoy(async () => {
     const dentro = modPorId(idsHoy()[0]), fuera = S.modulos.find(m => !idsHoy().includes(m.id));
-    esperar(sesPlanHTML(dentro)).contiene("data-no-toca");
-    esperar(sesPlanHTML(fuera)).contiene("data-pon-hoy");
-    T.activo = true; esperar(sesPlanHTML(dentro).includes("data-no-toca")).falso(); T.activo = false;
+    esperar(sesPlanHTML(dentro).includes("data-no-toca")).falso();
+    esperar(sesPlanHTML(fuera).includes("data-pon-hoy")).falso();
+    esperar($(".hy-sesion [data-no-toca], .hy-sesion [data-pon-hoy]")).nulo();
     const s = $("#selTimer"); s.value = fuera.id; s.dispatchEvent(new Event("change", { bubbles: true })); await dormir(20);
-    esperar($("#sesPlan").textContent).contiene("Añadir a hoy");
     esperar($("#hySesTit").textContent).contiene(fuera.nombre);
-    $("#sesPlan [data-pon-hoy]").click(); await dormir(30);
-    esperar(idsHoy().includes(fuera.id)).cierto();
-  }));
-  prueba("quitar la de la sesión pasa a la siguiente que toca", () => conPlanHoy(async () => {
-    const [a, b] = idsHoy();
-    T.modId = a; pinta(); await dormir(20);
-    $("#sesPlan [data-no-toca]").click(); await dormir(30);
-    esperar(T.modId).igualA(b);
-    esperar($("#hySesTit").textContent).contiene(modPorId(b).nombre);
   }));
   prueba("«Añadir a hoy» enseña lo que falta, primero lo que habías quitado, y elegir lo añade", () => conPlanHoy(async () => {
     const quitada = idsHoy()[0]; quitarDeHoy(quitada); pinta(); await dormir(20);

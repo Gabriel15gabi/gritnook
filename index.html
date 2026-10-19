@@ -4341,6 +4341,7 @@ function guardar(nd) {
 function guardarApunte(n) {
   guardarLocal();
   if (!db) return;
+  if (!S.apuntes || !S.apuntes[n.id]) return;
   const tam = JSON.stringify(n).length, nombre = "«" + (n.titulo || "Este apunte") + "»";
   if (tam > 245000) { avisoUnaVez("lleno-" + n.id, nombre + " pesa demasiado para sincronizarse. Se queda guardado en este dispositivo; sigue en un apunte nuevo."); return; }
   if (tam > 190000) avisoUnaVez("casi-" + n.id, nombre + " se está llenando. Si vas a dibujar mucho más, sigue en un apunte nuevo.", "");
@@ -4385,12 +4386,12 @@ function suscribir() {
   let primerAp = true, primerCas = true;
   db.collection("apuntes").onSnapshot(qs => {
     const m = {}; qs.docs.forEach(d => { const v = clonar(d.data()); v.id = d.id; m[d.id] = v; });
-    if (primerAp) { primerAp = false; Object.values(S.apuntes).forEach(n => { if (!m[n.id]) { m[n.id] = n; guardarApunte(n); } }); }
+    if (primerAp) { primerAp = false; const fuera = new Set(qs.borradas || []); Object.values(S.apuntes).forEach(n => { if (!m[n.id] && !fuera.has(n.id)) { m[n.id] = n; guardarApunte(n); } }); }
     S.apuntes = m; guardarLocal(); if (!editando()) pinta();
   }, () => {});
   db.collection("casillero").onSnapshot(qs => {
     const m = {}; qs.docs.forEach(d => { const v = clonar(d.data()); v.id = d.id; m[d.id] = v; });
-    if (primerCas) { primerCas = false; Object.values(S.casillero).forEach(d => { if (!m[d.id]) { m[d.id] = d; db.doc("casillero/" + d.id).set(d).catch(() => {}); } }); }
+    if (primerCas) { primerCas = false; const fuera = new Set(qs.borradas || []); Object.values(S.casillero).forEach(d => { if (!m[d.id] && !fuera.has(d.id)) { m[d.id] = d; db.doc("casillero/" + d.id).set(d).catch(() => {}); } }); }
     S.casillero = m; guardarLocal(); if (!editando()) pinta();
   }, () => {});
   tutorMirar();
@@ -9171,7 +9172,7 @@ let proveedoresNube = null, irA = url => location.assign(url);
 /* para ver los botones en tu ordenador antes de encenderlos en Supabase:
    http://localhost:4174/?ver-proveedores (no cuenta como visita). En gritnook.com no hace nada */
 const verProveedores = () => /^(localhost|127\.0\.0\.1)$/.test(location.hostname) && /[?&]ver-proveedores(&|=|$)/.test(location.search);
-async function cargarProveedores() {
+async function cargarProveedoresBase() {
   if (!proveedoresNube && verProveedores()) {
     proveedoresNube = { google: true, github: true };
     if (ACC && (ACC.modo === "entrar" || ACC.modo === "crear")) pintaAcceso();
@@ -9328,7 +9329,7 @@ function crearNube() {
             if (d) docs.push({ id, data: () => d });
           });
           [...pend].filter(c => c.startsWith(pre)).forEach(c => { const d = datosLocales(c); if (d) docs.push({ id: c.slice(pre.length), data: () => d }); });
-          fns.forEach(fn => fn({ docs }));
+          fns.forEach(fn => fn({ docs, borradas: borradas.map(c => c.slice(pre.length)) }));
         }
         sinRed = false; marcas(); estado();
       } catch (e) { fallo(e); }
@@ -16023,10 +16024,8 @@ function avisoDeshacer(txt, deshacer) {
 /* tarjeta de la sesión: el botón va al lado del selector (la tarjeta no crece) */
 const BTN_NO = id => `<button type="button" class="hoy-no" data-no-toca="${id}" title="Solo hoy: mañana vuelve a tu plan">Hoy no me toca</button>`;
 function sesPlanHTML(m) {
-  if (!m || T.activo || T.restante > 0) return `<span class="hy-ses-plan" id="sesPlan"></span>`;
-  const b = planDeHoy().find(x => x.modId === m.id);
-  return `<span class="hy-ses-plan" id="sesPlan">${b ? (b.hecho ? "" : BTN_NO(m.id))
-    : `<button type="button" class="hoy-pon" data-pon-hoy="${m.id}" title="Añadir a hoy">${icono("mas")}Añadir a hoy</button>`}</span>`;
+  /* en la tarjeta de la sesión, nada: los botones van solo junto a cada asignatura de «Hoy toca» */
+  return `<span class="hy-ses-plan" id="sesPlan"></span>`;
 }
 
 /* «Hoy toca»: una línea por asignatura, con «Hoy no me toca» y «Empezar»; «+ Añadir» arriba */
@@ -16154,6 +16153,37 @@ alEvento("click", e => {
   pzPeriodo = b.dataset.pzPeriodo;
   const c = $(".pz-reparto"); if (c) c.outerHTML = pzRepartoHTML();
 });
+
+
+/* ══════════════════ velocidad en el móvil ══════════════════
+   La pantalla de entrar se pintaba dos veces: primero sin los botones de
+   Google y GitHub y, cuando el servidor contestaba que estaban encendidos,
+   otra vez entera. En un móvil lento eso llegaba a los 8 segundos, que es
+   justo lo que mide Google (el «LCP»). Ahora, en gritnook.com, sale desde
+   el principio como la última vez (o con los dos, que es como está la
+   cuenta) y la comprobación va por detrás: solo se repinta si de verdad
+   ha cambiado algo. En local y en las pruebas todo sigue como antes. */
+const provActivos = p => PROVEEDORES.filter(([id]) => p && p[id] === true).map(([id]) => id).join(",");
+if (!proveedoresNube && nubeLista() && /(^|\.)gritnook\.com$/i.test(location.hostname)) {
+  const g = leeLS("proveedores");
+  proveedoresNube = g && typeof g === "object" ? g : { google: true, github: true };
+}
+let proveedoresVistos = false;
+async function cargarProveedores() {
+  if (!proveedoresNube) proveedoresVistos = false;
+  if (!proveedoresNube && verProveedores()) {
+    proveedoresNube = { google: true, github: true };
+    if (ACC && (ACC.modo === "entrar" || ACC.modo === "crear")) pintaAcceso();
+  }
+  if (!nubeLista() || proveedoresVistos || verProveedores()) return proveedoresNube;
+  proveedoresVistos = true;
+  const antes = provActivos(proveedoresNube);
+  try { const s = await nubePedir("/auth/v1/settings", { conSesion: false }); proveedoresNube = (s && s.external) || {}; }
+  catch (e) { proveedoresVistos = false; return proveedoresNube; }
+  guardaLS("proveedores", Object.fromEntries(PROVEEDORES.map(([id]) => [id, proveedoresNube[id] === true])));
+  if (provActivos(proveedoresNube) !== antes && ACC && (ACC.modo === "entrar" || ACC.modo === "crear")) pintaAcceso();
+  return proveedoresNube;
+}
 
 
 /* ══════════════════ pintado ══════════════════ */
